@@ -1,0 +1,58 @@
+//
+//  MKItemAnnotation.swift
+//  TumenCity
+//
+//  Created by Павел Кай on 16.02.2023.
+//
+
+import MapKit
+
+final class MKItemAnnotation: NSObject, MKAnnotation {
+    
+    enum MarkType: Int {
+        case cold = 1
+        case hot = 2
+        case otop = 4
+        case electro = 5
+        case gaz = 6
+        case none = 7
+        
+        var image: UIImage? {
+            switch self {
+                
+            case .cold:
+                return UIImage(systemName: "house.fill")
+            case .hot:
+                return UIImage(systemName: "house.fill")
+            case .otop:
+                return UIImage(systemName: "house.fill")
+            case .electro:
+                return UIImage(systemName: "house.fill")
+            case .gaz:
+                return UIImage(systemName: "house.fill")
+            case .none:
+                return UIImage(systemName: "circle.fill")
+            }
+        }
+    }
+ 
+    var coordinate: CLLocationCoordinate2D
+    var workType: String
+    var dateStart: String
+    var dateFinish: String
+    var orgTitle: String
+    var markDescription: MarkDescription
+    var markType: MarkType
+    var image: UIImage? { return markType.image }
+    
+    init(coordinate: CLLocationCoordinate2D, workType: String, dateStart: String, dateFinish: String, orgTitle: String, markDescription: MarkDescription, markType: MarkType.RawValue) {
+        self.coordinate = coordinate
+        self.workType = workType
+        self.dateStart = dateStart
+        self.dateFinish = dateFinish
+        self.orgTitle = orgTitle
+        self.markDescription = markDescription
+        self.markType = MarkType(rawValue: markType) ?? .none
+    }
+    
+}

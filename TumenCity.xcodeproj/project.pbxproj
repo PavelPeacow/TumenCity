@@ -9,19 +9,35 @@
 /* Begin PBXBuildFile section */
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
-		B5F7A873299D33060001ED69 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* ViewController.swift */; };
+		B5F7A873299D33060001ED69 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* MainMapViewController.swift */; };
 		B5F7A878299D33070001ED69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5F7A877299D33070001ED69 /* Assets.xcassets */; };
 		B5F7A87B299D33070001ED69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5F7A879299D33070001ED69 /* LaunchScreen.storyboard */; };
+		B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A885299DFFB50001ED69 /* APIManager.swift */; };
+		B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */; };
+		B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A889299E02620001ED69 /* CommunalServices.swift */; };
+		B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A88C299E04E60001ED69 /* MKItemAnnotation.swift */; };
+		B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A88E299E10D10001ED69 /* CommunalServiceFormatted.swift */; };
+		B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */; };
+		B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */; };
+		B5F7A897299E44180001ED69 /* MainMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A896299E44180001ED69 /* MainMapViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B5F7A872299D33060001ED69 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B5F7A872299D33060001ED69 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
 		B5F7A877299D33070001ED69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5F7A87A299D33070001ED69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B5F7A87C299D33070001ED69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B5F7A885299DFFB50001ED69 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
+		B5F7A889299E02620001ED69 /* CommunalServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServices.swift; sourceTree = "<group>"; };
+		B5F7A88C299E04E60001ED69 /* MKItemAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKItemAnnotation.swift; sourceTree = "<group>"; };
+		B5F7A88E299E10D10001ED69 /* CommunalServiceFormatted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServiceFormatted.swift; sourceTree = "<group>"; };
+		B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
+		B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKItemAnnotationView.swift; sourceTree = "<group>"; };
+		B5F7A896299E44180001ED69 /* MainMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +71,10 @@
 			isa = PBXGroup;
 			children = (
 				B5F7A882299DFD340001ED69 /* App */,
+				B5F7A890299E149C0001ED69 /* API */,
+				B5F7A895299E298E0001ED69 /* MKAnnotationView */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
+				B5F7A88B299E02650001ED69 /* Model */,
 				B5F7A883299DFD380001ED69 /* Resources */,
 			);
 			path = TumenCity;
@@ -83,9 +102,38 @@
 		B5F7A884299DFD3E0001ED69 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				B5F7A872299D33060001ED69 /* ViewController.swift */,
+				B5F7A872299D33060001ED69 /* MainMapViewController.swift */,
+				B5F7A896299E44180001ED69 /* MainMapViewModel.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		B5F7A88B299E02650001ED69 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B5F7A88C299E04E60001ED69 /* MKItemAnnotation.swift */,
+				B5F7A889299E02620001ED69 /* CommunalServices.swift */,
+				B5F7A88E299E10D10001ED69 /* CommunalServiceFormatted.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B5F7A890299E149C0001ED69 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				B5F7A885299DFFB50001ED69 /* APIManager.swift */,
+				B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		B5F7A895299E298E0001ED69 /* MKAnnotationView */ = {
+			isa = PBXGroup;
+			children = (
+				B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */,
+				B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */,
+			);
+			path = MKAnnotationView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,9 +206,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5F7A873299D33060001ED69 /* ViewController.swift in Sources */,
+				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
+				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
+				B5F7A897299E44180001ED69 /* MainMapViewModel.swift in Sources */,
+				B5F7A873299D33060001ED69 /* MainMapViewController.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
+				B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */,
+				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
+				B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
+				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
+				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
