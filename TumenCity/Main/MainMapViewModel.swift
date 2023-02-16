@@ -47,7 +47,7 @@ final class MainMapViewModel {
     }
     
     private func formatData() {
-        communalServices!.card.forEach { card in
+        communalServices?.card.forEach { card in
             let cardID = card.numCard
             let workType = card.vidWork
             let dateStart = card.datStart
