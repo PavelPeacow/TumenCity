@@ -8,6 +8,7 @@
 import MapKit
 
 final class ClusterAnnotationView: MKAnnotationView {
+    
     static let identifier = "ClusterAnnotationView"
     
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
@@ -22,9 +23,26 @@ final class ClusterAnnotationView: MKAnnotationView {
     
     override var annotation: MKAnnotation? {
         didSet {
+            guard let clusterAnnotation = annotation as? MKClusterAnnotation else { return }
+            
             displayPriority = .defaultHigh
+            
+            if isClusterWithTheSameCoordinates() {
+                canShowCallout = true
+                detailCalloutAccessoryView = ClusterCalloutView(cluster: clusterAnnotation)
+            } else {
+                canShowCallout = false
+            }
+            
             updateImage()
         }
+    }
+    
+    
+    private func isClusterWithTheSameCoordinates() -> Bool {
+        guard let clusterAnnotation = annotation as? MKClusterAnnotation else { return false }
+        guard let annotations = clusterAnnotation.memberAnnotations as? [MKItemAnnotation] else { return false }
+        return annotations.dropFirst().allSatisfy( { $0.coordinate.latitude == annotations.first?.coordinate.latitude } )
     }
     
     private func updateImage() {
@@ -34,22 +52,22 @@ final class ClusterAnnotationView: MKAnnotationView {
             self.image = image(count: 1)
         }
     }
-
+    
     func image(count: Int) -> UIImage {
         let bounds = CGRect(origin: .zero, size: CGSize(width: 60, height: 60))
-
+        
         let renderer = UIGraphicsImageRenderer(bounds: bounds)
         return renderer.image { _ in
             UIBezierPath(ovalIn: bounds).fill()
-
+            
             UIColor.white.setFill()
             UIBezierPath(ovalIn: bounds.insetBy(dx: 8, dy: 8)).fill()
-
+            
             let attributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.black,
                 .font: UIFont.boldSystemFont(ofSize: 20)
             ]
-
+            
             let text = "\(count)"
             let size = text.size(withAttributes: attributes)
             let origin = CGPoint(x: bounds.midX - size.width / 2, y: bounds.midY - size.height / 2)

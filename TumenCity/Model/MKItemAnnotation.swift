@@ -21,15 +21,15 @@ final class MKItemAnnotation: NSObject, MKAnnotation {
             switch self {
                 
             case .cold:
-                return UIImage(systemName: "house.fill")
+                return UIImage(named: "filter-1")
             case .hot:
-                return UIImage(systemName: "house.fill")
+                return UIImage(named: "filter-2")
             case .otop:
-                return UIImage(systemName: "house.fill")
+                return UIImage(named: "filter-4")
             case .electro:
-                return UIImage(systemName: "house.fill")
+                return UIImage(named: "filter-5")
             case .gaz:
-                return UIImage(systemName: "house.fill")
+                return UIImage(named: "filter-6")
             case .none:
                 return UIImage(systemName: "circle.fill")
             }

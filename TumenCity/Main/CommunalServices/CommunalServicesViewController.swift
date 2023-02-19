@@ -109,8 +109,7 @@ extension CommunalServicesViewController: MKMapViewDelegate {
             
             let annotations = cluster.memberAnnotations
             annotations.forEach { print($0.coordinate) }
-            
-            mapView.showAnnotations(cluster.memberAnnotations, animated: true)
+                        
         } else if let annotation = view.annotation as? MKItemAnnotation {
             print(annotation.markDescription.address)
         }
