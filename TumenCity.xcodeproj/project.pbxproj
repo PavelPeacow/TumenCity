@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B571088229A0E9C4003698C8 /* MainMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* MainMapView.swift */; };
+		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* MainMapViewController.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B571088129A0E9C4003698C8 /* MainMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapView.swift; sourceTree = "<group>"; };
+		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +55,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B571088529A0F1FB003698C8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		B5F7A862299D33060001ED69 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +85,7 @@
 				B5F7A882299DFD340001ED69 /* App */,
 				B5F7A890299E149C0001ED69 /* API */,
 				B5F7A895299E298E0001ED69 /* MKAnnotationView */,
+				B571088529A0F1FB003698C8 /* View */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
 				B5F7A88B299E02650001ED69 /* Model */,
 				B5F7A883299DFD380001ED69 /* Resources */,
@@ -103,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				B5F7A872299D33060001ED69 /* MainMapViewController.swift */,
+				B571088129A0E9C4003698C8 /* MainMapView.swift */,
 				B5F7A896299E44180001ED69 /* MainMapViewModel.swift */,
 			);
 			path = Main;
@@ -209,9 +223,11 @@
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* MainMapViewModel.swift in Sources */,
+				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
 				B5F7A873299D33060001ED69 /* MainMapViewController.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */,
+				B571088229A0E9C4003698C8 /* MainMapView.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,

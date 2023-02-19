@@ -7,28 +7,43 @@
 
 import MapKit
 
-protocol MainMapViewModelDelegate {
+protocol MainMapViewModelDelegate: AnyObject {
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation])
+    func didUpdateAnnotations(_ annotations: [MKItemAnnotation])
 }
 
 final class MainMapViewModel {
     
-    private var communalServices: CommunalServices?
+    //MARK: - Properties
+    
+    var annotations = [MKItemAnnotation]()
+    
+    var communalServices: CommunalServices?
     var communalServicesFormatted = [CommunalServicesFormatted]()
     
-    var delegate: MainMapViewModelDelegate?
+    weak var delegate: MainMapViewModelDelegate?
     
     init() {
         Task {
             await getCommunalServices()
             formatData()
+            addAnnotations()
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.delegate?.didFinishAddingAnnotations(self.addAnnotations())
+                self.delegate?.didFinishAddingAnnotations(self.annotations)
             }
             
         }
+    }
+    
+    func filterCommunalServices(with filterID: Int) {
+        let filteredAnnotations = annotations.filter { $0.markDescription.accidentID == filterID }
+        delegate?.didUpdateAnnotations(filteredAnnotations)
+    }
+    
+    func resetFilterCommunalServices() {
+        delegate?.didUpdateAnnotations(annotations)
     }
     
     func setRegion() -> MKCoordinateRegion {
@@ -36,6 +51,8 @@ final class MainMapViewModel {
         let span = MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
         return MKCoordinateRegion(center: coordinate, span: span)
     }
+    
+    //MARK: - API Call
     
     func getCommunalServices() async {
         do {
@@ -45,6 +62,8 @@ final class MainMapViewModel {
             print(error)
         }
     }
+    
+    //MARK: - Format data
     
     private func formatData() {
         communalServices?.card.forEach { card in
@@ -80,9 +99,9 @@ final class MainMapViewModel {
         
     }
     
-    private func addAnnotations() -> [MKItemAnnotation] {
-        var annotations = [MKItemAnnotation]()
-        
+    //MARK: - Add annotations
+    
+    private func addAnnotations() {
         communalServicesFormatted.forEach { card in
             
             card.mark.forEach { mark in
@@ -94,7 +113,6 @@ final class MainMapViewModel {
             }
         }
         
-        return annotations
     }
     
 }

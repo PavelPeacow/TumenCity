@@ -10,37 +10,73 @@ import MapKit
 
 final class MainMapViewController: UIViewController {
     
+    let mainMapView = MainMapView()
     let viewModel = MainMapViewModel()
     
-    lazy var map: MKMapView = {
-        let map = MKMapView()
-        map.translatesAutoresizingMaskIntoConstraints = false
-        map.register(MKItemAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKItemAnnotationView.identifier)
-        map.register(ClusterAnnotationView.self, forAnnotationViewWithReuseIdentifier: ClusterAnnotationView.identifier)
-        map.setRegion(viewModel.setRegion(), animated: true)
-        return map
-    }()
+    override func loadView() {
+        view = mainMapView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(map)
-                
+        mainMapView.map.setRegion(viewModel.setRegion(), animated: true)
+        
+        title = "Администрация города Тюмени"
+        
         setDelegates()
-        setConstraints()
     }
     
     private func setDelegates() {
-        map.delegate = self
+        mainMapView.map.delegate = self
         viewModel.delegate = self
+    }
+    
+    private func addServicesInfo() {
+        guard let communalServices = viewModel.communalServices else { return }
+        
+        for serviceInfo in communalServices.info {
+            let icon = UIImage(named: "filter-\(serviceInfo.id)") ?? .add
+            let title = serviceInfo.title
+            let count = String(serviceInfo.count)
+            
+            let serviceInfoView = ServiceInfoView(icon: icon, title: title, count: count, serviceType: serviceInfo.id)
+            serviceInfoView.delegate = self
+            
+            mainMapView.servicesInfoStackView.addArrangedSubview(serviceInfoView)
+        }
+    }
+    
+}
+
+extension MainMapViewController: ServiceInfoViewDelegate {
+    
+    func didTapServiceInfoView(_ serviceType: Int, _ view: ServiceInfoView) {
+        guard !view.isTapAlready else {
+            mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+            viewModel.resetFilterCommunalServices()
+            return
+        }
+        
+        mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+        viewModel.filterCommunalServices(with: serviceType)
+        view.isTapAlready = true
     }
     
 }
 
 extension MainMapViewController: MainMapViewModelDelegate {
     
+    func didUpdateAnnotations(_ annotations: [MKItemAnnotation]) {
+        let allAnnotations = mainMapView.map.annotations
+        mainMapView.map.removeAnnotations(allAnnotations)
+        
+        mainMapView.map.addAnnotations(annotations)
+    }
+    
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation]) {
-        map.addAnnotations(annotations)
+        mainMapView.map.addAnnotations(annotations)
+        addServicesInfo()
     }
     
 }
@@ -80,18 +116,5 @@ extension MainMapViewController: MKMapViewDelegate {
         }
     }
     
-    
-}
-
-extension MainMapViewController {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            map.topAnchor.constraint(equalTo: view.topAnchor),
-            map.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            map.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            map.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
-    }
     
 }
