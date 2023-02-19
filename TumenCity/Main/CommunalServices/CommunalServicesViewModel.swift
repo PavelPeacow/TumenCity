@@ -7,12 +7,12 @@
 
 import MapKit
 
-protocol MainMapViewModelDelegate: AnyObject {
+protocol CommunalServicesViewModelDelegate: AnyObject {
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation])
     func didUpdateAnnotations(_ annotations: [MKItemAnnotation])
 }
 
-final class MainMapViewModel {
+final class CommunalServicesViewModel {
     
     //MARK: - Properties
     
@@ -21,7 +21,7 @@ final class MainMapViewModel {
     var communalServices: CommunalServices?
     var communalServicesFormatted = [CommunalServicesFormatted]()
     
-    weak var delegate: MainMapViewModelDelegate?
+    weak var delegate: CommunalServicesViewModelDelegate?
     
     init() {
         Task {

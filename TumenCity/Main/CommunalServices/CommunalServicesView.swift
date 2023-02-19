@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-final class MainMapView: UIView {
+final class CommunalServicesView: UIView {
     
     lazy var servicesInfoStackView: UIStackView = {
         let stackView = UIStackView()
@@ -44,7 +44,7 @@ final class MainMapView: UIView {
         
 }
 
-extension MainMapView {
+extension CommunalServicesView {
     
     func setConstraints() {
         NSLayoutConstraint.activate([

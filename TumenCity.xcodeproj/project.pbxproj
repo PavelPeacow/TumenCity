@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B571088229A0E9C4003698C8 /* MainMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* MainMapView.swift */; };
+		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
+		B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088729A215D3003698C8 /* MainMenuViewController.swift */; };
+		B571088B29A21644003698C8 /* MenuItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088A29A21644003698C8 /* MenuItemButton.swift */; };
+		B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088C29A216F6003698C8 /* UIButton+Blur.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
-		B5F7A873299D33060001ED69 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* MainMapViewController.swift */; };
+		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
 		B5F7A878299D33070001ED69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5F7A877299D33070001ED69 /* Assets.xcassets */; };
 		B5F7A87B299D33070001ED69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5F7A879299D33070001ED69 /* LaunchScreen.storyboard */; };
 		B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A885299DFFB50001ED69 /* APIManager.swift */; };
@@ -21,16 +24,19 @@
 		B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A88E299E10D10001ED69 /* CommunalServiceFormatted.swift */; };
 		B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */; };
 		B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */; };
-		B5F7A897299E44180001ED69 /* MainMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A896299E44180001ED69 /* MainMapViewModel.swift */; };
+		B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B571088129A0E9C4003698C8 /* MainMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapView.swift; sourceTree = "<group>"; };
+		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
+		B571088729A215D3003698C8 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		B571088A29A21644003698C8 /* MenuItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemButton.swift; sourceTree = "<group>"; };
+		B571088C29A216F6003698C8 /* UIButton+Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Blur.swift"; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B5F7A872299D33060001ED69 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
+		B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesViewController.swift; sourceTree = "<group>"; };
 		B5F7A877299D33070001ED69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5F7A87A299D33070001ED69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B5F7A87C299D33070001ED69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,7 +47,7 @@
 		B5F7A88E299E10D10001ED69 /* CommunalServiceFormatted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServiceFormatted.swift; sourceTree = "<group>"; };
 		B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
 		B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKItemAnnotationView.swift; sourceTree = "<group>"; };
-		B5F7A896299E44180001ED69 /* MainMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewModel.swift; sourceTree = "<group>"; };
+		B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +67,40 @@
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		B571088629A215C0003698C8 /* CommunalServices */ = {
+			isa = PBXGroup;
+			children = (
+				B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */,
+				B571088129A0E9C4003698C8 /* CommunalServicesView.swift */,
+				B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */,
+			);
+			path = CommunalServices;
+			sourceTree = "<group>";
+		};
+		B571088929A215D6003698C8 /* MainMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B571088729A215D3003698C8 /* MainMenuViewController.swift */,
+			);
+			path = MainMenu;
+			sourceTree = "<group>";
+		};
+		B571088E29A216F8003698C8 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B571088C29A216F6003698C8 /* UIButton+Blur.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		B571088F29A222A5003698C8 /* Subclass */ = {
+			isa = PBXGroup;
+			children = (
+				B571088A29A21644003698C8 /* MenuItemButton.swift */,
+			);
+			path = Subclass;
 			sourceTree = "<group>";
 		};
 		B5F7A862299D33060001ED69 = {
@@ -85,6 +125,8 @@
 				B5F7A882299DFD340001ED69 /* App */,
 				B5F7A890299E149C0001ED69 /* API */,
 				B5F7A895299E298E0001ED69 /* MKAnnotationView */,
+				B571088E29A216F8003698C8 /* Extension */,
+				B571088F29A222A5003698C8 /* Subclass */,
 				B571088529A0F1FB003698C8 /* View */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
 				B5F7A88B299E02650001ED69 /* Model */,
@@ -115,9 +157,8 @@
 		B5F7A884299DFD3E0001ED69 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				B5F7A872299D33060001ED69 /* MainMapViewController.swift */,
-				B571088129A0E9C4003698C8 /* MainMapView.swift */,
-				B5F7A896299E44180001ED69 /* MainMapViewModel.swift */,
+				B571088929A215D6003698C8 /* MainMenu */,
+				B571088629A215C0003698C8 /* CommunalServices */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -222,13 +263,16 @@
 			files = (
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
-				B5F7A897299E44180001ED69 /* MainMapViewModel.swift in Sources */,
+				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
 				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
-				B5F7A873299D33060001ED69 /* MainMapViewController.swift in Sources */,
+				B571088B29A21644003698C8 /* MenuItemButton.swift in Sources */,
+				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
+				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */,
-				B571088229A0E9C4003698C8 /* MainMapView.swift in Sources */,
+				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
+				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
@@ -300,7 +344,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -354,7 +398,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

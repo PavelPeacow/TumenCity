@@ -8,10 +8,10 @@
 import UIKit
 import MapKit
 
-final class MainMapViewController: UIViewController {
+final class CommunalServicesViewController: UIViewController {
     
-    let mainMapView = MainMapView()
-    let viewModel = MainMapViewModel()
+    let mainMapView = CommunalServicesView()
+    let viewModel = CommunalServicesViewModel()
     
     override func loadView() {
         view = mainMapView
@@ -49,7 +49,7 @@ final class MainMapViewController: UIViewController {
     
 }
 
-extension MainMapViewController: ServiceInfoViewDelegate {
+extension CommunalServicesViewController: ServiceInfoViewDelegate {
     
     func didTapServiceInfoView(_ serviceType: Int, _ view: ServiceInfoView) {
         guard !view.isTapAlready else {
@@ -65,7 +65,7 @@ extension MainMapViewController: ServiceInfoViewDelegate {
     
 }
 
-extension MainMapViewController: MainMapViewModelDelegate {
+extension CommunalServicesViewController: CommunalServicesViewModelDelegate {
     
     func didUpdateAnnotations(_ annotations: [MKItemAnnotation]) {
         let allAnnotations = mainMapView.map.annotations
@@ -81,7 +81,7 @@ extension MainMapViewController: MainMapViewModelDelegate {
     
 }
 
-extension MainMapViewController: MKMapViewDelegate {
+extension CommunalServicesViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         switch annotation {
