@@ -46,12 +46,6 @@ final class CommunalServicesViewModel {
         delegate?.didUpdateAnnotations(annotations)
     }
     
-    func setRegion() -> MKCoordinateRegion {
-        let coordinate = CLLocationCoordinate2D(latitude: 57.148470, longitude: 65.549138)
-        let span = MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
-        return MKCoordinateRegion(center: coordinate, span: span)
-    }
-    
     //MARK: - API Call
     
     func getCommunalServices() async {

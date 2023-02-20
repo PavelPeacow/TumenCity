@@ -20,9 +20,9 @@ final class CommunalServicesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainMapView.map.setRegion(viewModel.setRegion(), animated: true)
+        mainMapView.map.setDefaultRegion()
         
-        title = "Администрация города Тюмени"
+        title = "Отключение ЖКУ"
         
         setDelegates()
     }
