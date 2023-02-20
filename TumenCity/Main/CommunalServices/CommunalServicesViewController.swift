@@ -88,10 +88,11 @@ extension CommunalServicesViewController: MKMapViewDelegate {
         switch annotation {
             
         case is MKItemAnnotation:
-            return mapView.dequeueReusableAnnotationView(withIdentifier: MKItemAnnotationView.identifier, for: annotation)
+            //fix flickiring, but decrease performance!
+            return MKItemAnnotationView(annotation: annotation, reuseIdentifier: MKItemAnnotationView.identifier)
             
         case is MKClusterAnnotation:
-            return mapView.dequeueReusableAnnotationView(withIdentifier: ClusterAnnotationView.identifier, for: annotation)
+            return ClusterAnnotationView(annotation: annotation, reuseIdentifier: ClusterAnnotationView.identifier)
             
         default:
             return nil

@@ -88,9 +88,13 @@ final class ClusterAnnotationView: MKAnnotationView {
                 startAngle = endAngle
             }
  
+            let centerPath = UIBezierPath(arcCenter: center, radius: radius / 1.5, startAngle: 0, endAngle: 2 * .pi, clockwise: true)
+               UIColor.white.setFill()
+               centerPath.fill()
+            
             let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.white,
-                .font: UIFont.boldSystemFont(ofSize: 20)
+                .foregroundColor: UIColor.black,
+                .font: UIFont.boldSystemFont(ofSize: 16)
             ]
             
             let text = "\(clusterMembers.count)"
