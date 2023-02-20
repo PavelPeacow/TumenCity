@@ -13,6 +13,7 @@
 		B571088B29A21644003698C8 /* MenuItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088A29A21644003698C8 /* MenuItemButton.swift */; };
 		B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088C29A216F6003698C8 /* UIButton+Blur.swift */; };
 		B571089729A25EF1003698C8 /* ClusterCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089629A25EF1003698C8 /* ClusterCalloutView.swift */; };
+		B571089929A374BD003698C8 /* MapKit+FillAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
@@ -35,6 +36,7 @@
 		B571088A29A21644003698C8 /* MenuItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemButton.swift; sourceTree = "<group>"; };
 		B571088C29A216F6003698C8 /* UIButton+Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Blur.swift"; sourceTree = "<group>"; };
 		B571089629A25EF1003698C8 /* ClusterCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCalloutView.swift; sourceTree = "<group>"; };
+		B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapKit+FillAnnotations.swift"; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,7 +80,6 @@
 				B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */,
 				B571088129A0E9C4003698C8 /* CommunalServicesView.swift */,
 				B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */,
-				B571089229A23EB1003698C8 /* DetailView */,
 			);
 			path = CommunalServices;
 			sourceTree = "<group>";
@@ -95,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088C29A216F6003698C8 /* UIButton+Blur.swift */,
+				B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -105,13 +107,6 @@
 				B571088A29A21644003698C8 /* MenuItemButton.swift */,
 			);
 			path = Subclass;
-			sourceTree = "<group>";
-		};
-		B571089229A23EB1003698C8 /* DetailView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DetailView;
 			sourceTree = "<group>";
 		};
 		B5F7A862299D33060001ED69 = {
@@ -287,6 +282,7 @@
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
+				B571089929A374BD003698C8 /* MapKit+FillAnnotations.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,
 			);

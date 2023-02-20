@@ -34,6 +34,24 @@ final class MKItemAnnotation: NSObject, MKAnnotation {
                 return UIImage(systemName: "circle.fill")
             }
         }
+        
+        var color: UIColor {
+            switch self {
+                
+            case .cold:
+                return .blue
+            case .hot:
+                return .red
+            case .otop:
+                return .green
+            case .electro:
+                return .orange
+            case .gaz:
+                return .cyan
+            case .none:
+                return .white
+            }
+        }
     }
  
     var coordinate: CLLocationCoordinate2D
@@ -44,6 +62,8 @@ final class MKItemAnnotation: NSObject, MKAnnotation {
     var markDescription: MarkDescription
     var markType: MarkType
     var image: UIImage? { return markType.image }
+    var color: UIColor { return markType.color }
+    var index: Int { return markType.rawValue }
     
     init(coordinate: CLLocationCoordinate2D, workType: String, dateStart: String, dateFinish: String, orgTitle: String, markDescription: MarkDescription, markType: MarkType.RawValue) {
         self.coordinate = coordinate

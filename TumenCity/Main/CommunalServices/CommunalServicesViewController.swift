@@ -72,6 +72,7 @@ extension CommunalServicesViewController: CommunalServicesViewModelDelegate {
         mainMapView.map.removeAnnotations(allAnnotations)
         
         mainMapView.map.addAnnotations(annotations)
+        mainMapView.map.fitAllAnnotations()
     }
     
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation]) {

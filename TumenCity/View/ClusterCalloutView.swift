@@ -76,7 +76,7 @@ class ClusterCalloutView: UIView {
         dateStart.text = clusterMember.first?.dateStart
         dateFinish.text = clusterMember.first?.dateFinish
         
-        for annotation in clusterMember {
+        for annotation in clusterMember.sorted(by: { $0.index > $1.index }) {
             
             let image = annotation.image
             let imageView = UIImageView(image: image)
