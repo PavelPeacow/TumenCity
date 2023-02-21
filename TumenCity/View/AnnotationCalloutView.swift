@@ -1,15 +1,15 @@
 //
-//  ClusterCalloutView.swift
+//  AnnotationCalloutView.swift
 //  TumenCity
 //
-//  Created by Павел Кай on 19.02.2023.
+//  Created by Павел Кай on 20.02.2023.
 //
 
 import UIKit
 import MapKit
 
-class ClusterCalloutView: UIView {
-
+final class AnnotationCalloutView: UIView {
+    
     lazy var accidentCategoryStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.distribution = .fill
@@ -61,11 +61,11 @@ class ClusterCalloutView: UIView {
         return label
     }()
     
-    init(cluster: MKClusterAnnotation) {
+    init(annotation: MKItemAnnotation) {
         super.init(frame: .zero)
         
         addSubview(stackView)
-        configure(cluster: cluster)
+        configure(annotation: annotation)
         setConstraints()
     }
     
@@ -73,41 +73,37 @@ class ClusterCalloutView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure(cluster: MKClusterAnnotation) {
-        guard let clusterMember = cluster.memberAnnotations as? [MKItemAnnotation] else { return }
-        address.text = "Адрес: \(clusterMember.first?.markDescription.address ?? "")"
-        organization.text = "Устраняющая организация: \(clusterMember.first?.orgTitle ?? "")"
-        dateStart.text = "Дата начала работ: \(clusterMember.first?.dateStart ?? "")"
-        dateFinish.text = "Дата окончания работ: \(clusterMember.first?.dateFinish ?? "")"
+    private func configure(annotation: MKItemAnnotation) {
+        address.text = "Адрес: \(annotation.markDescription.address)"
+        organization.text = "Устраняющая организация: \(annotation.orgTitle)"
+        dateStart.text = "Дата начала работ: \(annotation.dateStart)"
+        dateFinish.text = "Дата окончания работ: \(annotation.dateFinish)"
         
-        for annotation in clusterMember.sorted(by: { $0.index > $1.index }) {
-            
-            let image = annotation.image
-            let imageView = UIImageView(image: image)
-            imageView.contentMode = .scaleAspectFit
-            
-            let label = UILabel()
-            label.text = annotation.markDescription.accident
-            
-            let stackView = UIStackView(arrangedSubviews: [imageView, label])
-            stackView.distribution = .fill
-            stackView.alignment = .center
-            stackView.axis = .horizontal
-            stackView.spacing = 8
-            stackView.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                imageView.heightAnchor.constraint(equalToConstant: 25),
-                imageView.widthAnchor.constraint(equalToConstant: 25),
-            ])
-            
-            self.stackView.insertArrangedSubview(stackView, at: 1)
-        }
+        let image = annotation.image
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        
+        let label = UILabel()
+        label.text = annotation.markDescription.accident
+        
+        let stackView = UIStackView(arrangedSubviews: [imageView, label])
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant: 25),
+            imageView.widthAnchor.constraint(equalToConstant: 25),
+        ])
+        
+        self.stackView.insertArrangedSubview(stackView, at: 1)
     }
-    
 }
 
-extension ClusterCalloutView {
+
+extension AnnotationCalloutView {
     
     func setConstraints() {
         NSLayoutConstraint.activate([

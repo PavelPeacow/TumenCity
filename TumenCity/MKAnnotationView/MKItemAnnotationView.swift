@@ -25,20 +25,7 @@ final class MKItemAnnotationView: MKAnnotationView {
             image = annotation.image
             clusteringIdentifier = "MKItemAnnotationView"
             canShowCallout = true
-            
-            let detailLabel = UILabel()
-            detailLabel.numberOfLines = 0
-            detailLabel.textAlignment = .center
-            detailLabel.font = detailLabel.font.withSize(16)
-            detailLabel.text = """
-            \(annotation.orgTitle)
-            \(annotation.workType)
-            \(annotation.markDescription.address)
-            \(annotation.markDescription.accident)
-            \(annotation.dateStart)
-            \(annotation.dateFinish)
-            """
-            detailCalloutAccessoryView = detailLabel
+            detailCalloutAccessoryView = AnnotationCalloutView(annotation: annotation)
         }
     }
 }

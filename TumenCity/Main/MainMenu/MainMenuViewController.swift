@@ -64,7 +64,7 @@ class MainMenuViewController: UIViewController {
         view.addSubview(imageBackground)
         view.addSubview(logoStackView)
         view.addSubview(menuStackView)
-        
+        navigationController?.navigationBar.isOpaque = true
         addMenuItems()
         setConstraints()
     }
@@ -118,11 +118,11 @@ extension MainMenuViewController {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            logoStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            logoStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             logoStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             logoStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
             
-            menuStackView.topAnchor.constraint(equalTo: mainMenuTitle.bottomAnchor, constant: 25),
+            menuStackView.topAnchor.constraint(equalTo: mainMenuTitle.bottomAnchor, constant: 15),
             menuStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             menuStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
         ])

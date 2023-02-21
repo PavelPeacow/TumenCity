@@ -54,7 +54,7 @@ extension CommunalServicesView {
             
             map.topAnchor.constraint(equalTo: servicesInfoStackView.bottomAnchor, constant: 10),
             map.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1),
-            map.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5),
+            map.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
     
