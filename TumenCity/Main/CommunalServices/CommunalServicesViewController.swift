@@ -12,6 +12,13 @@ final class CommunalServicesViewController: UIViewController {
     
     let mainMapView = CommunalServicesView()
     let viewModel = CommunalServicesViewModel()
+    var timer: Timer?
+    
+    lazy var searchController: UISearchController = {
+        let search = UISearchController()
+        search.searchResultsUpdater = self
+        return search
+    }()
     
     override func loadView() {
         view = mainMapView
@@ -24,12 +31,21 @@ final class CommunalServicesViewController: UIViewController {
         
         title = "Отключение ЖКУ"
         
+        registerKeyboardNotification()
+        setUpSearchController()
         setDelegates()
     }
     
     private func setDelegates() {
         mainMapView.map.delegate = self
         viewModel.delegate = self
+    }
+    
+    private func setUpSearchController() {
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Введите адресс..."
     }
     
     private func addServicesInfo() {
@@ -45,6 +61,51 @@ final class CommunalServicesViewController: UIViewController {
             
             mainMapView.servicesInfoStackView.addArrangedSubview(serviceInfoView)
         }
+    }
+        
+    private func registerKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        
+        let keyboardHeight = keyboardSize.height
+        
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.mainMapView.frame.origin.y -= keyboardHeight
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.mainMapView.frame.origin.y = 0
+        }
+    }
+    
+}
+
+extension CommunalServicesViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        timer?.invalidate()
+        
+        guard let searchText = searchController.searchBar.text else { return mainMapView.map.setDefaultRegion() }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+            if let annotation = self?.viewModel.findAnnotationByAddressName(searchText) {
+                self?.mainMapView.map.showAnnotations([annotation], animated: false)
+                self?.mainMapView.map.deselectAnnotation(annotation, animated: false)
+                self?.mainMapView.map.selectAnnotation(annotation, animated: true)
+            } else {
+                self?.mainMapView.map.setDefaultRegion()
+            }
+        })
+        
+        
     }
     
 }
@@ -111,7 +172,7 @@ extension CommunalServicesViewController: MKMapViewDelegate {
             
             let annotations = cluster.memberAnnotations
             annotations.forEach { print($0.coordinate) }
-                        
+            
         } else if let annotation = view.annotation as? MKItemAnnotation {
             print(annotation.markDescription.address)
         }

@@ -17,6 +17,7 @@ final class CommunalServicesViewModel {
     //MARK: - Properties
     
     var annotations = [MKItemAnnotation]()
+    var filteredAnnotations = [MKItemAnnotation]()
     
     var communalServices: CommunalServices?
     var communalServicesFormatted = [CommunalServicesFormatted]()
@@ -38,12 +39,17 @@ final class CommunalServicesViewModel {
     }
     
     func filterCommunalServices(with filterID: Int) {
-        let filteredAnnotations = annotations.filter { $0.markDescription.accidentID == filterID }
+        filteredAnnotations = annotations.filter { $0.markDescription.accidentID == filterID }
         delegate?.didUpdateAnnotations(filteredAnnotations)
     }
     
     func resetFilterCommunalServices() {
+        filteredAnnotations = annotations
         delegate?.didUpdateAnnotations(annotations)
+    }
+    
+    func findAnnotationByAddressName(_ address: String) -> MKItemAnnotation? {
+        return filteredAnnotations.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
     }
     
     //MARK: - API Call
@@ -57,10 +63,23 @@ final class CommunalServicesViewModel {
         }
     }
     
+    //MARK: - Format Date
+    
+    private func formatDateString(_ dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        return dateFormatter.date(from: dateString)!
+    }
+    
+    private func isDateToday(_ date: Date) -> Bool {
+        return Date() >= date
+    }
+    
     //MARK: - Format data
     
     private func formatData() {
         communalServices?.card.forEach { card in
+            guard isDateToday(formatDateString(card.datStart)) else { print("future date"); print(card.datStart); return }
             let cardID = card.numCard
             let workType = card.vidWork
             let dateStart = card.datStart
@@ -106,6 +125,8 @@ final class CommunalServicesViewModel {
                 annotations.append(annotation)
             }
         }
+        
+        filteredAnnotations = annotations
         
     }
     
