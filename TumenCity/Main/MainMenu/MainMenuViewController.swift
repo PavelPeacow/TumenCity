@@ -7,38 +7,37 @@
 
 import UIKit
 
-class MainMenuViewController: UIViewController {
+enum MenuItemType: String {
+    case sport = "Спорт"
+    case cityCleaning = "Уборка города"
+    case bikePaths = "Велодорожки"
+    case urbanImprovements = "Благоустройство"
+    case communalServices = "Отключение ЖКУ"
+    case roadClose = "Перекрытие дорог"
+    case digWork = "Земляные работы"
+    case tradeObjects = "Нестационарные торговые объекты"
+    case none
+}
+
+final class MainMenuViewController: UIViewController {
     
+    let menuTypes: [MenuItemType] = [.sport, .cityCleaning, .bikePaths, .urbanImprovements, .communalServices, .roadClose, .digWork, .tradeObjects]
     let menuTitles = ["Спорт", "Уборка города", "Велодорожки", "Благоустройство", "Отключение ЖКУ", "Перекрытие дорог", "Земляные работы", "Нестационарные торговые объекты"]
     let images = ["main-1", "main-2", "main-3"]
     
-    lazy var logoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [mainMenuLogo, mainMenuTitle])
-        stackView.distribution = .fillProportionally
-        stackView.alignment = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    lazy var mainMenuLogo: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFit
-        image.image = UIImage(named: "logo")
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
-    }()
-    
-    lazy var mainMenuTitle: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .black)
-        label.numberOfLines = 0
-        label.textColor = .white
-        label.textAlignment = .center
-        label.text = "Портал цифровых сервисов Тюмень"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewCompositionalLayout(section: .createMainLayout())
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(MenuCollectionViewCell.self, forCellWithReuseIdentifier: MenuCollectionViewCell.identifier)
+        collectionView.register(MenuHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MenuHeaderCollectionReusableView.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.alwaysBounceVertical = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.backgroundView = imageBackground
+        return collectionView
     }()
     
     lazy var imageBackground: UIImageView = {
@@ -48,46 +47,49 @@ class MainMenuViewController: UIViewController {
         return image
     }()
     
-    lazy var menuStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.addSubview(imageBackground)
-        view.addSubview(logoStackView)
-        view.addSubview(menuStackView)
-        navigationController?.navigationBar.isOpaque = true
-        addMenuItems()
-        setConstraints()
+        title = "Меню"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        view.addSubview(collectionView)
     }
     
     override func viewDidLayoutSubviews() {
-        imageBackground.frame = view.bounds
-    }
-    
-    private func addMenuItems() {
-        for item in menuTitles {
-            let menuItemView = MenuItemButton(menuIcon: UIImage(systemName: "house")!, menuTitle: item)
-            menuItemView.addTarget(self, action: #selector(didTapMenuItem(_:)), for: .touchUpInside)
-            menuStackView.addArrangedSubview(menuItemView)
-        }
+        collectionView.frame = view.bounds
     }
 
 }
 
-extension MainMenuViewController {
+extension MainMenuViewController: UICollectionViewDataSource {
     
-    @objc func didTapMenuItem(_ sender: UIButton) {
-        guard let tappedBtn = sender as? MenuItemButton else { return }
-        let type = tappedBtn.type
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        menuTitles.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuCollectionViewCell.identifier, for: indexPath) as! MenuCollectionViewCell
+        
+        cell.configure(with: .add, menuTitle: menuTitles[indexPath.row], type: menuTypes[indexPath.row])
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MenuHeaderCollectionReusableView.identifier, for: indexPath)
+        return header
+    }
+    
+}
+
+extension MainMenuViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let tappedItem = collectionView.cellForItem(at: indexPath) as? MenuCollectionViewCell else { return }
+        let type = tappedItem.type
         
         switch type {
         case .sport:
@@ -110,22 +112,6 @@ extension MainMenuViewController {
         case .none:
             return
         }
-    }
-    
-}
-
-extension MainMenuViewController {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            logoStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            logoStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
-            logoStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            
-            menuStackView.topAnchor.constraint(equalTo: mainMenuTitle.bottomAnchor, constant: 15),
-            menuStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            menuStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-        ])
     }
     
 }

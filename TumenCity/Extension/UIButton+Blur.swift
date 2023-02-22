@@ -7,23 +7,6 @@
 
 import UIKit
 
-extension UIButton {
-    
-    func setBlur() {
-        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.frame = bounds
-        blurView.isUserInteractionEnabled = false
-        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        insertSubview(blurView, at: 0)
-        
-        if let imageView = imageView{
-            bringSubviewToFront(imageView)
-        }
-    }
-    
-}
-
 extension UIView {
     
     func setBlurView() {

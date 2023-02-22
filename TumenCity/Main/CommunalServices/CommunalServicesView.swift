@@ -48,7 +48,7 @@ extension CommunalServicesView {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            servicesInfoStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 15),
+            servicesInfoStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             servicesInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25),
             servicesInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25),
             
