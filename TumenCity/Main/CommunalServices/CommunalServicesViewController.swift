@@ -37,6 +37,7 @@ final class CommunalServicesViewController: UIViewController {
         view.addSubview(segmentControl)
         
         registyView.isHidden = true
+        registyView.delegate = self
         
         view.backgroundColor = .systemBackground
         view.addSubview(mainMapView)
@@ -121,6 +122,20 @@ extension CommunalServicesViewController {
             registyView.isHidden = false
         default:
             return
+        }
+    }
+    
+}
+
+extension CommunalServicesViewController: RegistryViewDelegate {
+    
+    func didGetAddress(_ mark: MarkDescription) {
+        segmentControl.selectedSegmentIndex = 0
+        segmentControl.sendActions(for: .valueChanged)
+        
+        if let annotation = viewModel.annotations.first(where: { $0.markDescription.address == mark.address } ) {
+            mainMapView.map.showAnnotations([annotation], animated: false)
+            mainMapView.map.selectAnnotation(annotation, animated: true)
         }
     }
     

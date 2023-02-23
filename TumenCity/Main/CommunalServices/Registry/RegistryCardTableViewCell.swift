@@ -7,9 +7,30 @@
 
 import UIKit
 
+protocol RegistryCardTableViewCellDelegate {
+    func updateTableWhenShowAddresses()
+    func didTapAddress(_ mark: MarkDescription)
+}
+
 final class RegistryCardTableViewCell: UITableViewCell {
     
     static let identifier = "RegistryCardTableViewCell"
+    
+    var addresses = [MarkDescription]()
+    
+    var isTapOnAddresses = false
+    
+    var delegate: RegistryCardTableViewCellDelegate?
+    
+    lazy var tableView: UITableView = {
+        let table = UITableView()
+        table.delegate = self
+        table.estimatedRowHeight = UITableView.automaticDimension
+        table.dataSource = self
+        table.isHidden = true
+        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return table
+    }()
     
     lazy var containerView: UIView = {
         let view = UIView()
@@ -36,7 +57,7 @@ final class RegistryCardTableViewCell: UITableViewCell {
     }()
     
     lazy var stackViewMainInformation: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [cardID, accidentTitle, orgTitle, time])
+        let stackView = UIStackView(arrangedSubviews: [cardID, accidentTitle, orgTitle, time, showAddresses, tableView])
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .vertical
@@ -77,6 +98,15 @@ final class RegistryCardTableViewCell: UITableViewCell {
         let atrString = NSMutableAttributedString(string: "c")
         atrString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 1))
         label.attributedText = atrString
+        return label
+    }()
+    
+    lazy var showAddresses: UILabel = {
+        let label = UILabel()
+        label.textColor = .blue
+        label.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowAdresses))
+        label.addGestureRecognizer(gesture)
         return label
     }()
 
@@ -147,6 +177,11 @@ final class RegistryCardTableViewCell: UITableViewCell {
         timeText.append(finish)
         time.attributedText = timeText
         
+        let addresses = Array(Set(communalService.mark.map { $0.address }))
+        self.addresses = communalService.mark.uniques(by: \.address)
+        
+        showAddresses.text = "Отключено адресов: \(addresses.count)"
+        
         let accidentsID = Set(communalService.mark.map { $0.accidentID }).sorted()
 
         for id in accidentsID {
@@ -163,10 +198,69 @@ final class RegistryCardTableViewCell: UITableViewCell {
     
 }
 
+extension Array {
+
+    func uniques<T: Hashable>(by keyPath: KeyPath<Element, T>) -> [Element] {
+        return reduce([]) { result, element in
+            let alreadyExists = (result.contains(where: { $0[keyPath: keyPath] == element[keyPath: keyPath] }))
+            return alreadyExists ? result : result + [element]
+        }
+    }
+}
+
+
+extension RegistryCardTableViewCell {
+    
+    @objc func didTapShowAdresses() {
+        isTapOnAddresses.toggle()
+        if isTapOnAddresses {
+            UIView.animate(withDuration: 0.25) { [weak self] in
+                self?.tableView.isHidden = false
+            }
+        } else {
+            UIView.animate(withDuration: 0.25) { [weak self] in
+                self?.tableView.isHidden = true
+            }
+        }
+
+        delegate?.updateTableWhenShowAddresses()
+    }
+    
+}
+
+extension RegistryCardTableViewCell: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        addresses.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        cell.textLabel?.text = addresses[indexPath.row].address
+        
+        return cell
+    }
+    
+}
+
+extension RegistryCardTableViewCell: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let item = addresses[indexPath.row]
+        delegate?.didTapAddress(item)
+    }
+    
+}
+
 extension RegistryCardTableViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
+            tableView.heightAnchor.constraint(equalToConstant: 80),
+            
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),

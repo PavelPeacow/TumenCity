@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol RegistryViewDelegate {
+    func didGetAddress(_ mark: MarkDescription)
+}
+
 final class RegistryView: UIView {
     
     var cards = [CommunalServicesFormatted]()
+    
+    var delegate: RegistryViewDelegate?
     
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -36,6 +42,21 @@ final class RegistryView: UIView {
     
 }
 
+extension RegistryView: RegistryCardTableViewCellDelegate {
+    
+    func didTapAddress(_ mark: MarkDescription) {
+        delegate?.didGetAddress(mark)
+    }
+    
+    func updateTableWhenShowAddresses() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.tableView.beginUpdates()
+            self?.tableView.endUpdates()
+        }
+    }
+    
+}
+
 extension RegistryView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -47,6 +68,7 @@ extension RegistryView: UITableViewDataSource {
         
         let card = cards[indexPath.row]
         cell.configure(communalService: card)
+        cell.delegate = self
         
         return cell
     }
