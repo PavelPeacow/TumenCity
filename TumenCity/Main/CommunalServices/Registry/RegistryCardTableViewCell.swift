@@ -47,24 +47,36 @@ final class RegistryCardTableViewCell: UITableViewCell {
     
     lazy var cardID: UILabel = {
         let label = UILabel()
+        let atrString = NSMutableAttributedString(string: "# ")
+        atrString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 1))
+        label.attributedText = atrString
         return label
     }()
     
     lazy var accidentTitle: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
+        let atrString = NSMutableAttributedString(string: "Причина:\n" )
+        atrString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: atrString.length))
+        label.attributedText = atrString
         return label
     }()
     
     lazy var orgTitle: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
+        let atrString = NSMutableAttributedString(string: "Устраняющая организация:\n")
+        atrString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: atrString.length))
+        label.attributedText = atrString
         return label
     }()
     
     lazy var time: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
+        let atrString = NSMutableAttributedString(string: "c")
+        atrString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 1))
+        label.attributedText = atrString
         return label
     }()
 
@@ -86,19 +98,57 @@ final class RegistryCardTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(communalService: CommunalServicesFormatted) {
-        cardID.text = "# \(communalService.cardID)"
-        accidentTitle.text = "Причина: \(communalService.workType)"
-        orgTitle.text = "Устраняющая организация: \(communalService.orgTitle)"
-        time.text = "с \(communalService.dateStart) по \(communalService.dateFinish)"
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
-        let accidentsID = Set(communalService.mark.map { $0.accidentID })
-
+        resetCellWhenReuse()
+    }
+    
+    private func resetCellWhenReuse() {
+        let cardIDString = NSMutableAttributedString(string: "# ")
+        cardIDString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 1))
+        cardID.attributedText = cardIDString
+        
+        let accidentTitleString = NSMutableAttributedString(string: "Причина:\n" )
+        accidentTitleString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: accidentTitleString.length))
+        accidentTitle.attributedText = accidentTitleString
+        
+        let orgTitleString = NSMutableAttributedString(string: "Устраняющая организация:\n")
+        orgTitleString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: orgTitleString.length))
+        orgTitle.attributedText = orgTitleString
+        
+        let timeString = NSMutableAttributedString(string: "c")
+        timeString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 1))
+        time.attributedText = timeString
+        
         stackViewAccidentIcon.arrangedSubviews.forEach {
             stackViewAccidentIcon.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
+    }
+    
+    func configure(communalService: CommunalServicesFormatted) {
+        let cardIDText = NSMutableAttributedString(attributedString: cardID.attributedText ?? .init(string: ""))
+        cardIDText.append(NSAttributedString(string: "\(communalService.cardID)"))
+        cardID.attributedText = cardIDText
         
+        let accidentText = NSMutableAttributedString(attributedString: accidentTitle.attributedText ?? .init(string: ""))
+        accidentText.append(NSAttributedString(string: "\(communalService.workType)"))
+        accidentTitle.attributedText = accidentText
+        
+        let orgText = NSMutableAttributedString(attributedString: orgTitle.attributedText ?? .init(string: ""))
+        orgText.append(NSAttributedString(string: "\(communalService.orgTitle)"))
+        orgTitle.attributedText = orgText
+        
+        let timeText = NSMutableAttributedString(attributedString: time.attributedText ?? .init(string: ""))
+        timeText.insert(NSAttributedString(string: " \(communalService.dateStart) "), at: 1)
+        let finish = NSMutableAttributedString(string: "по \(communalService.dateFinish)")
+        finish.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 2))
+        timeText.append(finish)
+        time.attributedText = timeText
+        
+        let accidentsID = Set(communalService.mark.map { $0.accidentID }).sorted()
+
         for id in accidentsID {
             print(communalService.cardID)
             print(id)
