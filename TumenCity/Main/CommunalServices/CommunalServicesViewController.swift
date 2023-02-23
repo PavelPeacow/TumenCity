@@ -11,6 +11,8 @@ import MapKit
 final class CommunalServicesViewController: UIViewController {
     
     let mainMapView = CommunalServicesView()
+    let registyView = RegistryView()
+    
     let viewModel = CommunalServicesViewModel()
     var timer: Timer?
     
@@ -20,20 +22,33 @@ final class CommunalServicesViewController: UIViewController {
         return search
     }()
     
-    override func loadView() {
-        view = mainMapView
-    }
+    lazy var segmentControl: UISegmentedControl = {
+        let items = ["Карта", "Реестр"]
+        let segment = UISegmentedControl(items: items)
+        segment.selectedSegmentIndex = 0
+        segment.translatesAutoresizingMaskIntoConstraints = false
+        return segment
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mainMapView.map.setDefaultRegion()
+        view.addSubview(segmentControl)
+        
+        registyView.isHidden = true
+        
+        view.backgroundColor = .systemBackground
+        view.addSubview(mainMapView)
+        view.addSubview(registyView)
         
         title = "Отключение ЖКУ"
         
         registerKeyboardNotification()
         setUpSearchController()
+        addTarget()
         setDelegates()
+        setConstraints()
     }
     
     private func setDelegates() {
@@ -46,6 +61,10 @@ final class CommunalServicesViewController: UIViewController {
         definesPresentationContext = true
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Введите адресс..."
+    }
+    
+    private func addTarget() {
+        segmentControl.addTarget(self, action: #selector(didSlideSegmentedControl(_:)), for: .valueChanged)
     }
     
     private func addServicesInfo() {
@@ -83,6 +102,25 @@ final class CommunalServicesViewController: UIViewController {
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.25) { [weak self] in
             self?.mainMapView.frame.origin.y = 0
+        }
+    }
+    
+}
+
+extension CommunalServicesViewController {
+    
+    @objc func didSlideSegmentedControl(_ sender: UISegmentedControl) {
+        let index = sender.selectedSegmentIndex
+        
+        switch index {
+        case 0:
+            mainMapView.isHidden = false
+            registyView.isHidden = true
+        case 1:
+            mainMapView.isHidden = true
+            registyView.isHidden = false
+        default:
+            return
         }
     }
     
@@ -139,6 +177,8 @@ extension CommunalServicesViewController: CommunalServicesViewModelDelegate {
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation]) {
         mainMapView.map.addAnnotations(annotations)
         addServicesInfo()
+        registyView.cards = viewModel.communalServicesFormatted
+        registyView.tableView.reloadData()
     }
     
 }
@@ -178,5 +218,31 @@ extension CommunalServicesViewController: MKMapViewDelegate {
         }
     }
     
+    
+}
+
+extension CommunalServicesViewController {
+    
+    func setConstraints() {
+        mainMapView.translatesAutoresizingMaskIntoConstraints = false
+        registyView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            segmentControl.heightAnchor.constraint(equalToConstant: 25),
+            segmentControl.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            segmentControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            segmentControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            
+            mainMapView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 5),
+            mainMapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mainMapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mainMapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            registyView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 5),
+            registyView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            registyView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            registyView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+    }
     
 }

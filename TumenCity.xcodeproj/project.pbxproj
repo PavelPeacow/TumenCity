@@ -17,6 +17,8 @@
 		B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089C29A4DD86003698C8 /* MenuCollectionViewCell.swift */; };
 		B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */; };
 		B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */; };
+		B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A329A63FF4003698C8 /* RegistryView.swift */; };
+		B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
@@ -43,6 +45,8 @@
 		B571089C29A4DD86003698C8 /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSectionForMainMenu.swift; sourceTree = "<group>"; };
 		B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
+		B57108A329A63FF4003698C8 /* RegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryView.swift; sourceTree = "<group>"; };
+		B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryCardTableViewCell.swift; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +91,7 @@
 				B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */,
 				B571088129A0E9C4003698C8 /* CommunalServicesView.swift */,
 				B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */,
+				B57108A529A63FFB003698C8 /* Registry */,
 			);
 			path = CommunalServices;
 			sourceTree = "<group>";
@@ -117,6 +122,15 @@
 				B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		B57108A529A63FFB003698C8 /* Registry */ = {
+			isa = PBXGroup;
+			children = (
+				B57108A329A63FF4003698C8 /* RegistryView.swift */,
+				B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */,
+			);
+			path = Registry;
 			sourceTree = "<group>";
 		};
 		B5F7A862299D33060001ED69 = {
@@ -222,6 +236,8 @@
 			dependencies = (
 			);
 			name = TumenCity;
+			packageProductDependencies = (
+			);
 			productName = TumenCity;
 			productReference = B5F7A86B299D33060001ED69 /* TumenCity.app */;
 			productType = "com.apple.product-type.application";
@@ -250,6 +266,8 @@
 				Base,
 			);
 			mainGroup = B5F7A862299D33060001ED69;
+			packageReferences = (
+			);
 			productRefGroup = B5F7A86C299D33060001ED69 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -283,6 +301,7 @@
 				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
 				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
+				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B571089729A25EF1003698C8 /* ClusterCalloutView.swift in Sources */,
 				B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */,
@@ -293,6 +312,7 @@
 				B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */,
 				B571089B29A3D95F003698C8 /* AnnotationCalloutView.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
+				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
 				B571089929A374BD003698C8 /* MapKit+FillAnnotations.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
