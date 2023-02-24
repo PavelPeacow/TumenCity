@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
 		B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088729A215D3003698C8 /* MainMenuViewController.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
 		B571088729A215D3003698C8 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				B57108A329A63FF4003698C8 /* RegistryView.swift */,
+				B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */,
 				B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */,
 			);
 			path = Registry;
@@ -299,6 +302,7 @@
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
 				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
 				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
+				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
 				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
