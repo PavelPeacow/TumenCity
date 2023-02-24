@@ -41,7 +41,7 @@ final class RegistryCardTableViewCell: UITableViewCell {
     
     lazy var separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .label
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -103,7 +103,7 @@ final class RegistryCardTableViewCell: UITableViewCell {
     
     lazy var showAddresses: UILabel = {
         let label = UILabel()
-        label.textColor = .blue
+        label.textColor = .systemBlue
         label.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapShowAdresses))
         label.addGestureRecognizer(gesture)

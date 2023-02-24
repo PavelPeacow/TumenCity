@@ -91,7 +91,7 @@ final class CommunalServicesViewController: UIViewController {
         navigationItem.searchController = searchController
         definesPresentationContext = true
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Введите адресадрес..."
+        searchController.searchBar.placeholder = "Введите адрес..."
         didTapSearchBar = false
     }
     

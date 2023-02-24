@@ -66,7 +66,7 @@ extension RegistySearchResultViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.didTapResultAddress(addresses[indexPath.row])
+        delegate?.didTapResultAddress(filteredAdresses[indexPath.row])
     }
     
 }
