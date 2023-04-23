@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import YandexMapsMobile
 
 final class CommunalServicesView: UIView {
     
@@ -20,11 +21,17 @@ final class CommunalServicesView: UIView {
         return stackView
     }()
     
-    lazy var map: MKMapView = {
-        let map = MKMapView()
+//    lazy var map: MKMapView = {
+//        let map = MKMapView()
+//        map.translatesAutoresizingMaskIntoConstraints = false
+//        map.register(MKItemAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKItemAnnotationView.identifier)
+//        map.register(ClusterAnnotationView.self, forAnnotationViewWithReuseIdentifier: ClusterAnnotationView.identifier)
+//        return map
+//    }()
+    
+    lazy var map: YMKMapView = {
+        let map = YMKMapView()
         map.translatesAutoresizingMaskIntoConstraints = false
-        map.register(MKItemAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKItemAnnotationView.identifier)
-        map.register(ClusterAnnotationView.self, forAnnotationViewWithReuseIdentifier: ClusterAnnotationView.identifier)
         return map
     }()
 
@@ -48,13 +55,13 @@ extension CommunalServicesView {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            servicesInfoStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            servicesInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25),
-            servicesInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25),
-            
-            map.topAnchor.constraint(equalTo: servicesInfoStackView.bottomAnchor, constant: 10),
+//            servicesInfoStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+//            servicesInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25),
+//            servicesInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25),
+//
+            map.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             map.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1),
-            map.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            map.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
     }
     

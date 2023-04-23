@@ -6,8 +6,9 @@
 //
 
 import MapKit
+import YandexMapsMobile
 
-final class MKItemAnnotation: NSObject, MKAnnotation {
+final class MKItemAnnotation: YMKPoint {
     
     enum MarkType: Int {
         case cold = 1
@@ -64,6 +65,14 @@ final class MKItemAnnotation: NSObject, MKAnnotation {
     var image: UIImage? { return markType.image }
     var color: UIColor { return markType.color }
     var index: Int { return markType.rawValue }
+    
+    override var latitude: Double {
+        coordinate.latitude.magnitude
+    }
+    
+    override var longitude: Double {
+        coordinate.longitude.magnitude
+    }
     
     init(coordinate: CLLocationCoordinate2D, workType: String, dateStart: String, dateFinish: String, orgTitle: String, markDescription: MarkDescription, markType: MarkType.RawValue) {
         self.coordinate = coordinate

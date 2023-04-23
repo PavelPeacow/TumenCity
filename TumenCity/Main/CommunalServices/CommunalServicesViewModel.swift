@@ -6,6 +6,7 @@
 //
 
 import MapKit
+import YandexMapsMobile
 
 protocol CommunalServicesViewModelDelegate: AnyObject {
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation])
@@ -38,19 +39,19 @@ final class CommunalServicesViewModel {
         }
     }
     
-    func filterCommunalServices(with filterID: Int) {
-        filteredAnnotations = annotations.filter { $0.markDescription.accidentID == filterID }
-        delegate?.didUpdateAnnotations(filteredAnnotations)
-    }
+//    func filterCommunalServices(with filterID: Int) {
+//        filteredAnnotations = annotations.filter { $0.markDescription.accidentID == filterID }
+//        delegate?.didUpdateAnnotations(filteredAnnotations)
+//    }
     
     func resetFilterCommunalServices() {
         filteredAnnotations = annotations
         delegate?.didUpdateAnnotations(annotations)
     }
     
-    func findAnnotationByAddressName(_ address: String) -> MKItemAnnotation? {
-        return filteredAnnotations.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
-    }
+//    func findAnnotationByAddressName(_ address: String) -> MKItemAnnotation? {
+//        return filteredAnnotations.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
+//    }
     
     //MARK: - API Call
     
@@ -122,6 +123,7 @@ final class CommunalServicesViewModel {
                 let annotation = MKItemAnnotation(coordinate: coordinate, workType: card.workType,
                                                   dateStart: card.dateStart, dateFinish: card.dateFinish,
                                                   orgTitle: card.orgTitle, markDescription: mark, markType: mark.accidentID)
+//                let annotation = YMKPoint(latitude: mark.coordinates.latitude, longitude: mark.coordinates.lontitude)
                 annotations.append(annotation)
             }
         }

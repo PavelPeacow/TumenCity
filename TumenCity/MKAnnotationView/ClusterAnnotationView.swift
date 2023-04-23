@@ -107,34 +107,34 @@ final class ClusterAnnotationView: MKAnnotationView {
     
 }
 
-extension Sequence where Element == MKItemAnnotation {
-    var coldCount: (count: CGFloat, color: UIColor) {
-        let count = CGFloat(self.filter { $0.markType == .cold }.count)
-        let color = self.first(where: { $0.markType == .cold })?.color ?? .white
-        return (count, color)
-    }
-    
-    var hotCount: (count: CGFloat, color: UIColor) {
-        let count = CGFloat(self.filter { $0.markType == .hot }.count)
-        let color = self.first(where: { $0.markType == .hot })?.color ?? .white
-        return (count, color)
-    }
-    
-    var otopCount: (count: CGFloat, color: UIColor) {
-        let count = CGFloat(self.filter { $0.markType == .otop }.count)
-        let color = self.first(where: { $0.markType == .otop })?.color ?? .white
-        return (count, color)
-    }
-    
-    var electroCount: (count: CGFloat, color: UIColor) {
-        let count = CGFloat(self.filter { $0.markType == .electro }.count)
-        let color = self.first(where: { $0.markType == .electro })?.color ?? .white
-        return (count, color)
-    }
-    
-    var gazCount: (count: CGFloat, color: UIColor) {
-        let count = CGFloat(self.filter { $0.markType == .gaz }.count)
-        let color = self.first(where: { $0.markType == .gaz })?.color ?? .white
-        return (count, color)
-    }
-}
+//extension Sequence where Element == MKItemAnnotation {
+//    var coldCount: (count: CGFloat, color: UIColor) {
+//        let count = CGFloat(self.filter { $0.markType == .cold }.count)
+//        let color = self.first(where: { $0.markType == .cold })?.color ?? .white
+//        return (count, color)
+//    }
+//    
+//    var hotCount: (count: CGFloat, color: UIColor) {
+//        let count = CGFloat(self.filter { $0.markType == .hot }.count)
+//        let color = self.first(where: { $0.markType == .hot })?.color ?? .white
+//        return (count, color)
+//    }
+//    
+//    var otopCount: (count: CGFloat, color: UIColor) {
+//        let count = CGFloat(self.filter { $0.markType == .otop }.count)
+//        let color = self.first(where: { $0.markType == .otop })?.color ?? .white
+//        return (count, color)
+//    }
+//    
+//    var electroCount: (count: CGFloat, color: UIColor) {
+//        let count = CGFloat(self.filter { $0.markType == .electro }.count)
+//        let color = self.first(where: { $0.markType == .electro })?.color ?? .white
+//        return (count, color)
+//    }
+//    
+//    var gazCount: (count: CGFloat, color: UIColor) {
+//        let count = CGFloat(self.filter { $0.markType == .gaz }.count)
+//        let color = self.first(where: { $0.markType == .gaz })?.color ?? .white
+//        return (count, color)
+//    }
+//}

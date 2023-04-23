@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import YandexMapsMobile
 
 final class CommunalServicesViewController: UIViewController {
     
@@ -35,6 +36,7 @@ final class CommunalServicesViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.delegate = self
+        scrollView.isScrollEnabled = false
         return scrollView
     }()
     
@@ -81,7 +83,7 @@ final class CommunalServicesViewController: UIViewController {
     }
     
     private func setDelegates() {
-        mainMapView.map.delegate = self
+//        mainMapView.map.delegate = self
         viewModel.delegate = self
         registyView.delegate = self
         registrySearchResult.delegate = self
@@ -138,10 +140,10 @@ final class CommunalServicesViewController: UIViewController {
         segmentControl.selectedSegmentIndex = 0
         segmentControl.sendActions(for: .valueChanged)
         
-        if let annotation = viewModel.annotations.first(where: { $0.markDescription.address == mark.address } ) {
-            mainMapView.map.showAnnotations([annotation], animated: false)
-            mainMapView.map.selectAnnotation(annotation, animated: true)
-        }
+//        if let annotation = viewModel.annotations.first(where: { $0.markDescription.address == mark.address } ) {
+//            mainMapView.map.showAnnotations([annotation], animated: false)
+//            mainMapView.map.selectAnnotation(annotation, animated: true)
+//        }
     }
     
 }
@@ -244,23 +246,23 @@ extension CommunalServicesViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         timer?.invalidate()
         
-        guard let searchText = searchController.searchBar.text else { return mainMapView.map.setDefaultRegion() }
-        guard !searchText.isEmpty else { return mainMapView.map.setDefaultRegion()}
+//        guard let searchText = searchController.searchBar.text else { return mainMapView.map.setDefaultRegion() }
+//        guard !searchText.isEmpty else { return mainMapView.map.setDefaultRegion()}
         
         if segmentControl.selectedSegmentIndex == 1 {
-            registrySearchResult.filterSearch(with: searchText)
+//            registrySearchResult.filterSearch(with: searchText)
             return
         }
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
-            if let annotation = self?.viewModel.findAnnotationByAddressName(searchText) {
-                self?.mainMapView.map.showAnnotations([annotation], animated: false)
-                self?.mainMapView.map.deselectAnnotation(annotation, animated: false)
-                self?.mainMapView.map.selectAnnotation(annotation, animated: true)
-            } else {
-                self?.mainMapView.map.setDefaultRegion()
-            }
-        })
+//        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+//            if let annotation = self?.viewModel.findAnnotationByAddressName(searchText) {
+//                self?.mainMapView.map.showAnnotations([annotation], animated: false)
+//                self?.mainMapView.map.deselectAnnotation(annotation, animated: false)
+//                self?.mainMapView.map.selectAnnotation(annotation, animated: true)
+//            } else {
+//                self?.mainMapView.map.setDefaultRegion()
+//            }
+//        })
         
         
     }
@@ -291,7 +293,7 @@ extension CommunalServicesViewController: ServiceInfoViewDelegate {
         }
         
         mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
-        viewModel.filterCommunalServices(with: serviceType)
+//        viewModel.filterCommunalServices(with: serviceType)
         view.isTapAlready = true
     }
     
@@ -302,27 +304,31 @@ extension CommunalServicesViewController: ServiceInfoViewDelegate {
 extension CommunalServicesViewController: CommunalServicesViewModelDelegate {
     
     func didUpdateAnnotations(_ annotations: [MKItemAnnotation]) {
-        let allAnnotations = mainMapView.map.annotations
-        mainMapView.map.removeAnnotations(allAnnotations)
-        
-        mainMapView.map.addAnnotations(annotations)
-        mainMapView.map.fitAllAnnotations()
+//        let allAnnotations = mainMapView.map.annotations
+//        mainMapView.map.removeAnnotations(allAnnotations)
+//
+//        mainMapView.map.addAnnotations(annotations)
+//        mainMapView.map.fitAllAnnotations()
     }
     
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation]) {
-        mainMapView.map.addAnnotations(annotations)
-        addServicesInfo()
-        registyView.cards = viewModel.communalServicesFormatted
-        registyView.tableView.reloadData()
-        
-        registrySearchResult.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
+//        mainMapView.map.addAnnotations(annotations)
+        let collection = mainMapView.map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+        mainMapView.map.mapWindow.map.mapObjects.addTapListener(with: self)
+        mainMapView.map.addAnnotations(annotations, cluster: collection)
+       
+//        addServicesInfo()
+//        registyView.cards = viewModel.communalServicesFormatted
+//        registyView.tableView.reloadData()
+//        
+//        registrySearchResult.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
     }
     
 }
 
 //MARK: - MapDelegate
 
-extension CommunalServicesViewController: MKMapViewDelegate {
+extension CommunalServicesViewController: MKMapViewDelegate, YMKClusterListener {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         switch annotation {
@@ -357,6 +363,24 @@ extension CommunalServicesViewController: MKMapViewDelegate {
         }
     }
     
+    func onClusterAdded(with cluster: YMKCluster) {
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKItemAnnotation }
+        
+        cluster.appearance.setPieChart(clusterAnnotations: annotations)
+    }
+
+}
+
+extension CommunalServicesViewController: YMKMapObjectTapListener {
+    
+    func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
+        guard let annotation = mapObject.userData as? MKItemAnnotation else { return false }
+        print(mapObject.userData)
+        let callout = CalloutService()
+        callout.configure(annotation: annotation)
+        callout.showAlert(in: self)
+        return true
+    }
     
 }
 
