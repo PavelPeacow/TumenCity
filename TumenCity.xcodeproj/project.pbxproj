@@ -21,6 +21,7 @@
 		B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */; };
 		B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A329A63FF4003698C8 /* RegistryView.swift */; };
 		B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */; };
+		B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
@@ -50,6 +51,7 @@
 		B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		B57108A329A63FF4003698C8 /* RegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryView.swift; sourceTree = "<group>"; };
 		B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryCardTableViewCell.swift; sourceTree = "<group>"; };
+		B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientBorder.swift"; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088C29A216F6003698C8 /* UIButton+Blur.swift */,
+				B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */,
 				B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */,
 				B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */,
 				B53A680229F54564005DE734 /* Cluster+PieChart.swift */,
@@ -366,6 +369,7 @@
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* CalloutService.swift in Sources */,
+				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
 				B571089929A374BD003698C8 /* MapKit+FillAnnotations.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,

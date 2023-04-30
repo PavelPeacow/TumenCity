@@ -17,9 +17,6 @@ final class CalloutService: UIViewController {
         view.layer.cornerRadius = 15
         view.clipsToBounds = true
         
-        view.layer.borderWidth = 1.5
-        view.layer.borderColor = UIColor.orange.cgColor
-        
         let blurEffect = UIBlurEffect(style: .prominent)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.isUserInteractionEnabled = false
@@ -105,9 +102,11 @@ final class CalloutService: UIViewController {
         guard let annotation = annotations.first else { return }
         
         address.text = "Адрес: \(annotation.markDescription.address)"
-        organization.text = "Устраняющая организация: \(annotation.orgTitle)"
-        dateStart.text = "Дата начала работ: \(annotation.dateStart)"
-        dateFinish.text = "Дата окончания работ: \(annotation.dateFinish)"
+        organization.text = "Устраняющая организация:\n\(annotation.orgTitle)"
+        dateStart.text = "Дата начала работ:\n\(annotation.dateStart)"
+        dateFinish.text = "Дата окончания работ:\n\(annotation.dateFinish)"
+        
+        let colors = annotations.uniques(by: \.color).map { $0.color }
         
         for annotation in annotations.sorted(by: { $0.index > $1.index }) {
             
@@ -131,7 +130,17 @@ final class CalloutService: UIViewController {
             ])
             
             self.stackView.insertArrangedSubview(stackView, at: 1)
+            
         }
+        
+        view.layoutSubviews()
+        
+        if annotations.count == 1 {
+            alertBackground.layer.borderColor = annotation.color.cgColor
+        } else {
+            alertBackground.addGradientBorder(bounds: alertBackground.bounds, colors: colors)
+        }
+        alertBackground.layer.borderWidth = 2.5
     }
     
     func showAlert(in viewController: UIViewController) {
