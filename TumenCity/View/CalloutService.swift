@@ -101,36 +101,40 @@ final class CalloutService: UIViewController {
         moveOut()
     }
     
-    func configure(annotation: MKItemAnnotation) {
+    func configure(annotations: [MKItemAnnotation]) {
+        guard let annotation = annotations.first else { return }
+        
         address.text = "Адрес: \(annotation.markDescription.address)"
         organization.text = "Устраняющая организация: \(annotation.orgTitle)"
         dateStart.text = "Дата начала работ: \(annotation.dateStart)"
         dateFinish.text = "Дата окончания работ: \(annotation.dateFinish)"
         
-        let image = annotation.image
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        
-        let label = UILabel()
-        label.text = annotation.markDescription.accident
-        
-        let stackView = UIStackView(arrangedSubviews: [imageView, label])
-        stackView.distribution = .fill
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalToConstant: 25),
-            imageView.widthAnchor.constraint(equalToConstant: 25),
-        ])
-        
-        self.stackView.insertArrangedSubview(stackView, at: 1)
+        for annotation in annotations.sorted(by: { $0.index > $1.index }) {
+            
+            let image = annotation.image
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFit
+            
+            let label = UILabel()
+            label.text = annotation.markDescription.accident
+            
+            let stackView = UIStackView(arrangedSubviews: [imageView, label])
+            stackView.distribution = .fill
+            stackView.alignment = .center
+            stackView.axis = .horizontal
+            stackView.spacing = 8
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                imageView.heightAnchor.constraint(equalToConstant: 25),
+                imageView.widthAnchor.constraint(equalToConstant: 25),
+            ])
+            
+            self.stackView.insertArrangedSubview(stackView, at: 1)
+        }
     }
     
     func showAlert(in viewController: UIViewController) {
-
         targetViewController = viewController
 
         targetViewController.addChild(self)
@@ -138,6 +142,7 @@ final class CalloutService: UIViewController {
         targetViewController.view.addSubview(self.view)
         self.didMove(toParent: targetViewController)
         targetViewController.navigationController?.navigationBar.isUserInteractionEnabled = false
+        
         moveIn()
     }
         

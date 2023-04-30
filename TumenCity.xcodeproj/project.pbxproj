@@ -15,9 +15,7 @@
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
 		B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088729A215D3003698C8 /* MainMenuViewController.swift */; };
 		B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088C29A216F6003698C8 /* UIButton+Blur.swift */; };
-		B571089729A25EF1003698C8 /* ClusterCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089629A25EF1003698C8 /* ClusterCalloutView.swift */; };
 		B571089929A374BD003698C8 /* MapKit+FillAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */; };
-		B571089B29A3D95F003698C8 /* AnnotationCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089A29A3D95F003698C8 /* AnnotationCalloutView.swift */; };
 		B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089C29A4DD86003698C8 /* MenuCollectionViewCell.swift */; };
 		B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */; };
 		B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */; };
@@ -33,8 +31,6 @@
 		B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A889299E02620001ED69 /* CommunalServices.swift */; };
 		B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A88C299E04E60001ED69 /* MKItemAnnotation.swift */; };
 		B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A88E299E10D10001ED69 /* CommunalServiceFormatted.swift */; };
-		B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */; };
-		B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */; };
 		B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,9 +44,7 @@
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
 		B571088729A215D3003698C8 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		B571088C29A216F6003698C8 /* UIButton+Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Blur.swift"; sourceTree = "<group>"; };
-		B571089629A25EF1003698C8 /* ClusterCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCalloutView.swift; sourceTree = "<group>"; };
 		B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapKit+FillAnnotations.swift"; sourceTree = "<group>"; };
-		B571089A29A3D95F003698C8 /* AnnotationCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationCalloutView.swift; sourceTree = "<group>"; };
 		B571089C29A4DD86003698C8 /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSectionForMainMenu.swift; sourceTree = "<group>"; };
 		B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
@@ -68,8 +62,6 @@
 		B5F7A889299E02620001ED69 /* CommunalServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServices.swift; sourceTree = "<group>"; };
 		B5F7A88C299E04E60001ED69 /* MKItemAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKItemAnnotation.swift; sourceTree = "<group>"; };
 		B5F7A88E299E10D10001ED69 /* CommunalServiceFormatted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServiceFormatted.swift; sourceTree = "<group>"; };
-		B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
-		B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKItemAnnotationView.swift; sourceTree = "<group>"; };
 		B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesViewModel.swift; sourceTree = "<group>"; };
 		BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TumenCity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -97,8 +89,6 @@
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B571089629A25EF1003698C8 /* ClusterCalloutView.swift */,
-				B571089A29A3D95F003698C8 /* AnnotationCalloutView.swift */,
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
 				B51698A229F55DB80094E3B0 /* CalloutService.swift */,
 			);
@@ -178,7 +168,6 @@
 			children = (
 				B5F7A882299DFD340001ED69 /* App */,
 				B5F7A890299E149C0001ED69 /* API */,
-				B5F7A895299E298E0001ED69 /* MKAnnotationView */,
 				B571088E29A216F8003698C8 /* Extension */,
 				B571088529A0F1FB003698C8 /* View */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
@@ -233,15 +222,6 @@
 				B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */,
 			);
 			path = API;
-			sourceTree = "<group>";
-		};
-		B5F7A895299E298E0001ED69 /* MKAnnotationView */ = {
-			isa = PBXGroup;
-			children = (
-				B5F7A891299E225A0001ED69 /* ClusterAnnotationView.swift */,
-				B5F7A893299E24AF0001ED69 /* MKItemAnnotationView.swift */,
-			);
-			path = MKAnnotationView;
 			sourceTree = "<group>";
 		};
 		E65ECA55415E63BD3EE6801A /* Pods */ = {
@@ -377,15 +357,11 @@
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
-				B571089729A25EF1003698C8 /* ClusterCalloutView.swift in Sources */,
-				B5F7A892299E225A0001ED69 /* ClusterAnnotationView.swift in Sources */,
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
-				B5F7A894299E24AF0001ED69 /* MKItemAnnotationView.swift in Sources */,
 				B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */,
-				B571089B29A3D95F003698C8 /* AnnotationCalloutView.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
