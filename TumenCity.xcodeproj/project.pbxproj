@@ -97,15 +97,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		B571088629A215C0003698C8 /* CommunalServices */ = {
+		B571088629A215C0003698C8 /* CommunalServicesModule */ = {
 			isa = PBXGroup;
 			children = (
-				B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */,
-				B571088129A0E9C4003698C8 /* CommunalServicesView.swift */,
-				B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */,
-				B57108A529A63FFB003698C8 /* Registry */,
+				B5F7A88B299E02650001ED69 /* Model */,
+				B5B06B6029FE9D4A00614772 /* Controller */,
+				B5B06B6129FE9D5100614772 /* View */,
+				B5B06B6229FE9D5400614772 /* ViewModel */,
+				B57108A529A63FFB003698C8 /* CommunalServicesRegistry */,
 			);
-			path = CommunalServices;
+			path = CommunalServicesModule;
 			sourceTree = "<group>";
 		};
 		B571088929A215D6003698C8 /* MainMenu */ = {
@@ -138,14 +139,38 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		B57108A529A63FFB003698C8 /* Registry */ = {
+		B57108A529A63FFB003698C8 /* CommunalServicesRegistry */ = {
 			isa = PBXGroup;
 			children = (
 				B57108A329A63FF4003698C8 /* RegistryView.swift */,
 				B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */,
 				B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */,
 			);
-			path = Registry;
+			path = CommunalServicesRegistry;
+			sourceTree = "<group>";
+		};
+		B5B06B6029FE9D4A00614772 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B5B06B6129FE9D5100614772 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B571088129A0E9C4003698C8 /* CommunalServicesView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B5B06B6229FE9D5400614772 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B5F7A896299E44180001ED69 /* CommunalServicesViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B5F7A862299D33060001ED69 = {
@@ -174,7 +199,6 @@
 				B571088E29A216F8003698C8 /* Extension */,
 				B571088529A0F1FB003698C8 /* View */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
-				B5F7A88B299E02650001ED69 /* Model */,
 				B5F7A883299DFD380001ED69 /* Resources */,
 			);
 			path = TumenCity;
@@ -203,7 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
-				B571088629A215C0003698C8 /* CommunalServices */,
+				B571088629A215C0003698C8 /* CommunalServicesModule */,
 			);
 			path = Main;
 			sourceTree = "<group>";
