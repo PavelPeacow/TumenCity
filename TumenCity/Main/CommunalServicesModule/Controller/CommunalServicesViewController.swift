@@ -215,6 +215,7 @@ extension CommunalServicesViewController: UIScrollViewDelegate {
 extension CommunalServicesViewController: RegistryViewDelegate {
     
     func didGetAddress(_ mark: MarkDescription) {
+        mainMapView.infoTitle.isHidden = true
         showSelectedMark(mark)
     }
     
@@ -223,6 +224,7 @@ extension CommunalServicesViewController: RegistryViewDelegate {
 extension CommunalServicesViewController: RegistySearchResultViewControllerDelegate {
     
     func didTapResultAddress(_ mark: MarkDescription) {
+        mainMapView.infoTitle.isHidden = true
         showSelectedMark(mark)
     }
     

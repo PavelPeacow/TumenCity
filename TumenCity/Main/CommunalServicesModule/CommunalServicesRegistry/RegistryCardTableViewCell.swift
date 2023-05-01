@@ -18,7 +18,19 @@ final class RegistryCardTableViewCell: UITableViewCell {
     
     var addresses = [MarkDescription]()
     
-    var isTapOnAddresses = false
+    var isTapOnAddresses = false {
+        didSet {
+            if isTapOnAddresses {
+                UIView.animate(withDuration: 0.25) { [weak self] in
+                    self?.tableView.isHidden = false
+                }
+            } else {
+                UIView.animate(withDuration: 0.25) { [weak self] in
+                    self?.tableView.isHidden = true
+                }
+            }
+        }
+    }
     
     var delegate: RegistryCardTableViewCellDelegate?
     
@@ -135,6 +147,9 @@ final class RegistryCardTableViewCell: UITableViewCell {
     }
     
     private func resetCellWhenReuse() {
+        addresses = []
+        isTapOnAddresses = false
+        
         let cardIDString = NSMutableAttributedString(string: "# ")
         cardIDString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 1))
         cardID.attributedText = cardIDString
@@ -180,6 +195,8 @@ final class RegistryCardTableViewCell: UITableViewCell {
         let addresses = Array(Set(communalService.mark.map { $0.address }))
         self.addresses = communalService.mark.uniques(by: \.address)
         
+        tableView.reloadData()
+        
         showAddresses.text = "Отключено адресов: \(addresses.count)"
         
         let accidentsID = Set(communalService.mark.map { $0.accidentID }).sorted()
@@ -213,16 +230,7 @@ extension RegistryCardTableViewCell {
     
     @objc func didTapShowAdresses() {
         isTapOnAddresses.toggle()
-        if isTapOnAddresses {
-            UIView.animate(withDuration: 0.25) { [weak self] in
-                self?.tableView.isHidden = false
-            }
-        } else {
-            UIView.animate(withDuration: 0.25) { [weak self] in
-                self?.tableView.isHidden = true
-            }
-        }
-
+        
         delegate?.updateTableWhenShowAddresses()
     }
     
