@@ -22,6 +22,7 @@
 		B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A329A63FF4003698C8 /* RegistryView.swift */; };
 		B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */; };
 		B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */; };
+		B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
@@ -52,6 +53,7 @@
 		B57108A329A63FF4003698C8 /* RegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryView.swift; sourceTree = "<group>"; };
 		B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryCardTableViewCell.swift; sourceTree = "<group>"; };
 		B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientBorder.swift"; sourceTree = "<group>"; };
+		B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Encrypt.swift; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -173,6 +175,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		B5B06B652A000E0F00614772 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		B5F7A862299D33060001ED69 = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +206,7 @@
 			children = (
 				B5F7A882299DFD340001ED69 /* App */,
 				B5F7A890299E149C0001ED69 /* API */,
+				B5B06B652A000E0F00614772 /* Helper */,
 				B571088E29A216F8003698C8 /* Extension */,
 				B571088529A0F1FB003698C8 /* View */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
@@ -378,6 +389,7 @@
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
 				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
+				B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */,
 				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
 				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
 				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,

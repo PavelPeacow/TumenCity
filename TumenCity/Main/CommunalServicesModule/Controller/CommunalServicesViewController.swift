@@ -23,7 +23,7 @@ final class CommunalServicesViewController: UIViewController {
     
     lazy var searchController: UISearchController = {
         let search = UISearchController()
-        search.searchResultsUpdater = self
+        search.hidesNavigationBarDuringPresentation = false
         return search
     }()
     
@@ -119,6 +119,7 @@ final class CommunalServicesViewController: UIViewController {
     private func changeSearchController(withSearchResultsController: Bool = false) {
         let search = UISearchController(searchResultsController: withSearchResultsController ? registrySearchResult : nil)
         search.searchResultsUpdater = self
+        search.hidesNavigationBarDuringPresentation = false
         searchController = search
         setUpSearchController()
     }
