@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CryptoKit
 
 enum MenuItemType: String {
     case sport = "Спорт"
@@ -49,8 +50,9 @@ final class MainMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "Меню"
-//        navigationController?.navigationBar.prefersLargeTitles = true
+        
         view.addSubview(collectionView)
     }
     

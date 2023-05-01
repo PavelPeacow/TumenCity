@@ -22,6 +22,9 @@ final class APIManager {
     init(jsonDecoder: JSONDecoder = .init(), urlSession: URLSession = .shared) {
         self.jsonDecoder = jsonDecoder
         self.urlSession = urlSession
+        
+        print("----shaKey----")
+        print(sha256(string: "20230105123456"))
     }
     
     func getAPIContent<T: Decodable>(type: T.Type, endpoint: APIEndpoint) async throws -> T {

@@ -31,6 +31,8 @@ final class ServiceInfoView: UIView {
     
     var serviceType = 0
     
+    var serviceTitle: String?
+    
     var isTapAlready = false {
         didSet {
             if isTapAlready {
@@ -65,7 +67,8 @@ final class ServiceInfoView: UIView {
     init(icon: UIImage, title: String, count: String, serviceType: Int) {
         super.init(frame: .zero)
         serviceInfoIcon.image = icon
-        serviceInfoTitle.text = "\(title): \(count)"
+        serviceInfoTitle.text = "\(count)"
+        serviceTitle = title
         self.serviceType = serviceType
 
         addSubview(contentStackView)

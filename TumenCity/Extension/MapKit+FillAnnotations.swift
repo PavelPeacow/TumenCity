@@ -6,6 +6,49 @@
 //
 
 import MapKit
+import UIKit
+import YandexMapsMobile
+
+extension YMKMapView {
+    
+    func setDefaultRegion() {
+        let tumenLatitude = 57.148470
+        let tumenLongitude = 65.549138
+        
+        let center = YMKPoint(latitude: tumenLatitude, longitude: tumenLongitude)
+        let zoom = Float(10)
+        let azimuth = Float(0)
+        let tilt = Float(0)
+        
+        let cameraPosition = YMKCameraPosition(target: center, zoom: zoom, azimuth: azimuth, tilt: tilt)
+        
+        mapWindow.map.move(with: cameraPosition, animationType: .init(type: .smooth, duration: 0.35), cameraCallback: nil)
+    }
+    
+    func addAnnotations(_ annotations: [MKItemAnnotation], cluster: YMKClusterizedPlacemarkCollection) {
+        annotations.forEach { annotation in
+            let placemark = cluster.addPlacemark(with: annotation, image: annotation.image ?? .add)
+            placemark.userData = annotation
+            
+        }
+        cluster.clusterPlacemarks(withClusterRadius: 60, minZoom: 25)
+    }
+    
+    func moveCameraToAnnotation(_ annotation: MKItemAnnotation) {
+        let latitude = annotation.latitude
+        let longitude = annotation.longitude
+        
+        let center = YMKPoint(latitude: latitude, longitude: longitude)
+        let zoom = Float(18)
+        let azimuth = Float(0)
+        let tilt = Float(0)
+
+        let cameraPosition = YMKCameraPosition(target: center, zoom: zoom, azimuth: azimuth, tilt: tilt)
+        
+        mapWindow.map.move(with: cameraPosition, animationType: .init(type: .smooth, duration: 0.35), cameraCallback: nil)
+    }
+      
+}
 
 extension MKMapView {
     

@@ -6,6 +6,7 @@
 //
 
 import MapKit
+import YandexMapsMobile
 
 protocol CommunalServicesViewModelDelegate: AnyObject {
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation])
@@ -50,6 +51,10 @@ final class CommunalServicesViewModel {
     
     func findAnnotationByAddressName(_ address: String) -> MKItemAnnotation? {
         return filteredAnnotations.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
+    }
+    
+    func isClusterWithTheSameCoordinates(annotations: [MKItemAnnotation]) -> Bool {
+        return annotations.dropFirst().allSatisfy( { $0.coordinate.latitude == annotations.first?.coordinate.latitude } )
     }
     
     //MARK: - API Call
@@ -124,6 +129,7 @@ final class CommunalServicesViewModel {
                                                   orgTitle: card.orgTitle, markDescription: mark, markType: mark.accidentID)
                 annotations.append(annotation)
             }
+            
         }
         
         filteredAnnotations = annotations
