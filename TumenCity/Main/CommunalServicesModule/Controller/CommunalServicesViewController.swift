@@ -24,7 +24,6 @@ final class CommunalServicesViewController: UIViewController {
     lazy var searchController: UISearchController = {
         let search = UISearchController()
         search.searchResultsUpdater = self
-        search.searchBar.delegate = self
         return search
     }()
     
@@ -57,7 +56,8 @@ final class CommunalServicesViewController: UIViewController {
     }()
     
     lazy var segmentLine: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 1))
+        view.layoutSubviews()
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: segmentControl.frame.width / 2, height: 1))
         view.backgroundColor = .red
         return view
     }()
@@ -116,19 +116,9 @@ final class CommunalServicesViewController: UIViewController {
         }
     }
     
-    private func didTapSearch() {
-        didTapSearchBar.toggle()
-        if didTapSearchBar {
-            scrollView.isScrollEnabled = false
-        } else {
-            scrollView.isScrollEnabled = true
-        }
-    }
-    
     private func changeSearchController(withSearchResultsController: Bool = false) {
         let search = UISearchController(searchResultsController: withSearchResultsController ? registrySearchResult : nil)
         search.searchResultsUpdater = self
-        search.searchBar.delegate = self
         searchController = search
         setUpSearchController()
     }
@@ -265,18 +255,6 @@ extension CommunalServicesViewController: UISearchResultsUpdating {
     
 }
 
-extension CommunalServicesViewController: UISearchBarDelegate {
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        didTapSearch()
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        didTapSearch()
-    }
-    
-}
-
 //MARK: - ServiceInfoViewDelegate
 
 extension CommunalServicesViewController: ServiceInfoViewDelegate {
@@ -285,11 +263,23 @@ extension CommunalServicesViewController: ServiceInfoViewDelegate {
         guard !view.isTapAlready else {
             mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
             viewModel.resetFilterCommunalServices()
+            
+            UIView.animate(withDuration: 0.15) { [weak self] in
+                self?.mainMapView.infoTitle.isHidden = true
+            }
+           
             return
         }
         
         mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
         viewModel.filterCommunalServices(with: serviceType)
+        
+        UIView.animate(withDuration: 0.15) { [weak self] in
+            self?.mainMapView.infoTitle.isHidden = false
+            self?.mainMapView.infoTitle.text = view.serviceTitle
+            self?.mainMapView.servicesInfoStackViewWithTitle.layoutIfNeeded()
+        }
+        
         view.isTapAlready = true
     }
     
@@ -309,6 +299,7 @@ extension CommunalServicesViewController: CommunalServicesViewModelDelegate {
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation]) {
         mainMapView.map.mapWindow.map.mapObjects.addTapListener(with: self)
         mainMapView.map.addAnnotations(annotations, cluster: collection)
+        
         addServicesInfo()
         registyView.cards = viewModel.communalServicesFormatted
         registyView.tableView.reloadData()
@@ -335,6 +326,7 @@ extension CommunalServicesViewController: YMKMapObjectTapListener {
     
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         guard let annotation = mapObject.userData as? MKItemAnnotation else { return false }
+        
         let callout = CalloutService()
         callout.configure(annotations: [annotation])
         callout.showAlert(in: self)
@@ -346,20 +338,16 @@ extension CommunalServicesViewController: YMKClusterTapListener {
     
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKItemAnnotation }
-        if isClusterWithTheSameCoordinates(annotations: annotations) {
+        
+        if viewModel.isClusterWithTheSameCoordinates(annotations: annotations) {
             let callout = CalloutService()
             callout.configure(annotations: annotations)
             callout.showAlert(in: self)
             return true
-        } else {
-            return false
         }
+        
+        return false
     }
-    
-    private func isClusterWithTheSameCoordinates(annotations: [MKItemAnnotation]) -> Bool {
-        return annotations.dropFirst().allSatisfy( { $0.coordinate.latitude == annotations.first?.coordinate.latitude } )
-    }
-    
     
 }
 
