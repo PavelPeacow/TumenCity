@@ -10,6 +10,7 @@ import Foundation
 enum APIEndpoint {
     case communalServices
     case closeRoads
+    case sport
     
     var url: URL? {
         
@@ -20,6 +21,9 @@ enum APIEndpoint {
             
         case .closeRoads:
             return urlComponents(host: "api.tgt72.ru", path: "/api/v5/roadworks")
+            
+        case .sport:
+            return urlComponents(host: "info.agt72.ru", path: "/api/sport/main/institutions/json")
         }
         
     }
@@ -46,6 +50,9 @@ enum APIEndpoint {
             let formData = "token=\(createToken())"
             request.httpBody = formData.data(using: .utf8)
             print(createToken())
+            
+        case .sport:
+            break
         }
         print()
         print("url \(request.url)")

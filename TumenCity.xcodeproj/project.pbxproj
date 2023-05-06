@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */; };
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
+		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
+		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
+		B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896342A063FCD006A85D9 /* SportViewModel.swift */; };
+		B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896372A064145006A85D9 /* MKSportAnnotation.swift */; };
+		B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528963A2A06B359006A85D9 /* SportCallout.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
 		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
@@ -48,6 +53,11 @@
 		7A77344C4C7C47ED6692D1C9 /* Pods-TumenCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.debug.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.debug.xcconfig"; sourceTree = "<group>"; };
 		95D7D91F1F0CD00991DC2652 /* Pods-TumenCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.release.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.release.xcconfig"; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
+		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
+		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
+		B52896342A063FCD006A85D9 /* SportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewModel.swift; sourceTree = "<group>"; };
+		B52896372A064145006A85D9 /* MKSportAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKSportAnnotation.swift; sourceTree = "<group>"; };
+		B528963A2A06B359006A85D9 /* SportCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCallout.swift; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
 		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
@@ -106,9 +116,45 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B528962F2A06342D006A85D9 /* SportModule */ = {
+			isa = PBXGroup;
+			children = (
+				B52896322A063449006A85D9 /* Model */,
+				B52896332A063481006A85D9 /* Controller */,
+				B52896362A063FCF006A85D9 /* ViewModel */,
+			);
+			path = SportModule;
+			sourceTree = "<group>";
+		};
+		B52896322A063449006A85D9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B52896372A064145006A85D9 /* MKSportAnnotation.swift */,
+				B52896302A063447006A85D9 /* Sport.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B52896332A063481006A85D9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B528962D2A0633FE006A85D9 /* SportViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B52896362A063FCF006A85D9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B52896342A063FCD006A85D9 /* SportViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		B53D664A2A028E520010F846 /* CloseRoadsModule */ = {
 			isa = PBXGroup;
 			children = (
+				B53D664D2A0293470010F846 /* Model */,
 				B53D66512A029A2B0010F846 /* Controller */,
 				B53D66522A029A330010F846 /* ViewModel */,
 			);
@@ -164,6 +210,7 @@
 				B51698A229F55DB80094E3B0 /* Callout.swift */,
 				B53D665B2A06211A0010F846 /* CommunalServiceCallout.swift */,
 				B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */,
+				B528963A2A06B359006A85D9 /* SportCallout.swift */,
 			);
 			path = Callout;
 			sourceTree = "<group>";
@@ -193,7 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				B571088729A215D3003698C8 /* MainMenuViewController.swift */,
-				B53D664D2A0293470010F846 /* Model */,
 				B57108A029A51A68003698C8 /* Cell */,
 			);
 			path = MainMenu;
@@ -317,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
+				B528962F2A06342D006A85D9 /* SportModule */,
 				B53D664A2A028E520010F846 /* CloseRoadsModule */,
 				B571088629A215C0003698C8 /* CommunalServicesModule */,
 			);
@@ -466,9 +513,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
+				B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
 				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
+				B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
@@ -484,9 +533,11 @@
 				B53D66502A029A270010F846 /* CloseRoadsViewModel.swift in Sources */,
 				B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
+				B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
+				B52896312A063447006A85D9 /* Sport.swift in Sources */,
 				B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */,
 				B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
@@ -497,6 +548,7 @@
 				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,
+				B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

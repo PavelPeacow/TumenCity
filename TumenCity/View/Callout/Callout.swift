@@ -16,6 +16,7 @@ class Callout: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 15
         view.clipsToBounds = true
+        view.layer.borderWidth = 2.5
         
         let blurEffect = UIBlurEffect(style: .prominent)
         let blurView = UIVisualEffectView(effect: blurEffect)

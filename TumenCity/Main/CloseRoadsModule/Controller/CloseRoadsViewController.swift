@@ -61,7 +61,7 @@ extension CloseRoadsViewController: YMKClusterListener {
     
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKCloseRoadAnnotation }
-        cluster.appearance.setStaticImage(clusterAnnotations: annotations)
+        cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .red)
     }
     
 }

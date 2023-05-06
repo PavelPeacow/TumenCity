@@ -95,6 +95,8 @@ extension MainMenuViewController: UICollectionViewDelegate {
         
         switch type {
         case .sport:
+            let vc = SportViewController()
+            navigationController?.pushViewController(vc, animated: true)
             return
         case .cityCleaning:
             return

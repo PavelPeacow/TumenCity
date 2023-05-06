@@ -9,7 +9,7 @@ import YandexMapsMobile
 
 extension YMKPlacemarkMapObject {
     
-    func setStaticImage(clusterAnnotations: [MKCloseRoadAnnotation]) {
+    func setStaticImage(inClusterItemsCount: UInt, color: UIColor) {
 
         let bounds = CGRect(origin: .zero, size: CGSize(width: 60, height: 60))
 
@@ -24,7 +24,7 @@ extension YMKPlacemarkMapObject {
                 path.addArc(withCenter: center, radius: radius, startAngle: startAngle, endAngle: 360, clockwise: true)
                 path.close()
                 
-            let color = UIColor.red
+            let color = color
                 color.setFill()
                 path.fill()
 
@@ -38,7 +38,7 @@ extension YMKPlacemarkMapObject {
                 .font: UIFont.boldSystemFont(ofSize: 16)
             ]
             
-            let text = "\(clusterAnnotations.count)"
+            let text = "\(inClusterItemsCount)"
             let size = text.size(withAttributes: attributes)
             let origin = CGPoint(x: bounds.midX - size.width / 2, y: bounds.midY - size.height / 2)
             let rect = CGRect(origin: origin, size: size)

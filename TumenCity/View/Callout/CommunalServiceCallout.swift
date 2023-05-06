@@ -111,7 +111,6 @@ final class CommunalServiceCallout: Callout {
         } else {
             alertBackground.addGradientBorder(bounds: alertBackground.bounds, colors: colors)
         }
-        alertBackground.layer.borderWidth = 2.5
     }
 }
 
