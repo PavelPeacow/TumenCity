@@ -71,8 +71,9 @@ extension CloseRoadsViewController: YMKMapObjectTapListener {
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         guard let annotation = mapObject.userData as? MKCloseRoadAnnotation else { return false }
         
-        print(annotation.itemDescription)
-        print(annotation.title)
+        let callout = CloseRoadCallout()
+        callout.configure(annotation: annotation)
+        callout.showAlert(in: self)
         return true
     }
     

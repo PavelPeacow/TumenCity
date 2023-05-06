@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */; };
-		B51698A329F55DB80094E3B0 /* CalloutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* CalloutService.swift */; };
+		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
 		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
@@ -16,6 +16,8 @@
 		B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66532A02C6F90010F846 /* MKCloseRoadAnnotation.swift */; };
 		B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66552A02CF690010F846 /* Cluster+StaticStyle.swift */; };
 		B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */; };
+		B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D665B2A06211A0010F846 /* CommunalServiceCallout.swift */; };
+		B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
@@ -45,7 +47,7 @@
 /* Begin PBXFileReference section */
 		7A77344C4C7C47ED6692D1C9 /* Pods-TumenCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.debug.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.debug.xcconfig"; sourceTree = "<group>"; };
 		95D7D91F1F0CD00991DC2652 /* Pods-TumenCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.release.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.release.xcconfig"; sourceTree = "<group>"; };
-		B51698A229F55DB80094E3B0 /* CalloutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutService.swift; sourceTree = "<group>"; };
+		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
 		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
@@ -53,6 +55,8 @@
 		B53D66532A02C6F90010F846 /* MKCloseRoadAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKCloseRoadAnnotation.swift; sourceTree = "<group>"; };
 		B53D66552A02CF690010F846 /* Cluster+StaticStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+StaticStyle.swift"; sourceTree = "<group>"; };
 		B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddAnnotations.swift"; sourceTree = "<group>"; };
+		B53D665B2A06211A0010F846 /* CommunalServiceCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServiceCallout.swift; sourceTree = "<group>"; };
+		B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadCallout.swift; sourceTree = "<group>"; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
@@ -154,11 +158,21 @@
 			path = Cluster;
 			sourceTree = "<group>";
 		};
+		B53D665F2A06286D0010F846 /* Callout */ = {
+			isa = PBXGroup;
+			children = (
+				B51698A229F55DB80094E3B0 /* Callout.swift */,
+				B53D665B2A06211A0010F846 /* CommunalServiceCallout.swift */,
+				B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */,
+			);
+			path = Callout;
+			sourceTree = "<group>";
+		};
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
-				B51698A229F55DB80094E3B0 /* CalloutService.swift */,
+				B53D665F2A06286D0010F846 /* Callout */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -452,7 +466,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
+				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
 				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
+				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
@@ -476,7 +492,7 @@
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
-				B51698A329F55DB80094E3B0 /* CalloutService.swift in Sources */,
+				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
 				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
