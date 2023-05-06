@@ -10,12 +10,18 @@
 		9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */; };
 		B51698A329F55DB80094E3B0 /* CalloutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* CalloutService.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
+		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
+		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
+		B53D66502A029A270010F846 /* CloseRoadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664F2A029A270010F846 /* CloseRoadsViewModel.swift */; };
+		B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66532A02C6F90010F846 /* MKCloseRoadAnnotation.swift */; };
+		B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66552A02CF690010F846 /* Cluster+StaticStyle.swift */; };
+		B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
 		B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088729A215D3003698C8 /* MainMenuViewController.swift */; };
 		B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088C29A216F6003698C8 /* UIButton+Blur.swift */; };
-		B571089929A374BD003698C8 /* MapKit+FillAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */; };
+		B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089829A374BD003698C8 /* YandexMK+Utilities.swift */; };
 		B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089C29A4DD86003698C8 /* MenuCollectionViewCell.swift */; };
 		B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */; };
 		B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */; };
@@ -41,12 +47,18 @@
 		95D7D91F1F0CD00991DC2652 /* Pods-TumenCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.release.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.release.xcconfig"; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* CalloutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutService.swift; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
+		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
+		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
+		B53D664F2A029A270010F846 /* CloseRoadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewModel.swift; sourceTree = "<group>"; };
+		B53D66532A02C6F90010F846 /* MKCloseRoadAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKCloseRoadAnnotation.swift; sourceTree = "<group>"; };
+		B53D66552A02CF690010F846 /* Cluster+StaticStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+StaticStyle.swift"; sourceTree = "<group>"; };
+		B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddAnnotations.swift"; sourceTree = "<group>"; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
 		B571088729A215D3003698C8 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		B571088C29A216F6003698C8 /* UIButton+Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Blur.swift"; sourceTree = "<group>"; };
-		B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapKit+FillAnnotations.swift"; sourceTree = "<group>"; };
+		B571089829A374BD003698C8 /* YandexMK+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+Utilities.swift"; sourceTree = "<group>"; };
 		B571089C29A4DD86003698C8 /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSectionForMainMenu.swift; sourceTree = "<group>"; };
 		B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
@@ -90,6 +102,58 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B53D664A2A028E520010F846 /* CloseRoadsModule */ = {
+			isa = PBXGroup;
+			children = (
+				B53D66512A029A2B0010F846 /* Controller */,
+				B53D66522A029A330010F846 /* ViewModel */,
+			);
+			path = CloseRoadsModule;
+			sourceTree = "<group>";
+		};
+		B53D664D2A0293470010F846 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B53D66532A02C6F90010F846 /* MKCloseRoadAnnotation.swift */,
+				B53D664B2A0293430010F846 /* CloseRoad.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B53D66512A029A2B0010F846 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B53D66522A029A330010F846 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B53D664F2A029A270010F846 /* CloseRoadsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B53D66572A061B4B0010F846 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				B571089829A374BD003698C8 /* YandexMK+Utilities.swift */,
+				B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		B53D66582A061B4F0010F846 /* Cluster */ = {
+			isa = PBXGroup;
+			children = (
+				B53A680229F54564005DE734 /* Cluster+PieChart.swift */,
+				B53D66552A02CF690010F846 /* Cluster+StaticStyle.swift */,
+			);
+			path = Cluster;
+			sourceTree = "<group>";
+		};
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088729A215D3003698C8 /* MainMenuViewController.swift */,
+				B53D664D2A0293470010F846 /* Model */,
 				B57108A029A51A68003698C8 /* Cell */,
 			);
 			path = MainMenu;
@@ -125,9 +190,9 @@
 			children = (
 				B571088C29A216F6003698C8 /* UIButton+Blur.swift */,
 				B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */,
-				B571089829A374BD003698C8 /* MapKit+FillAnnotations.swift */,
 				B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */,
-				B53A680229F54564005DE734 /* Cluster+PieChart.swift */,
+				B53D66572A061B4B0010F846 /* Map */,
+				B53D66582A061B4F0010F846 /* Cluster */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -238,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
+				B53D664A2A028E520010F846 /* CloseRoadsModule */,
 				B571088629A215C0003698C8 /* CommunalServicesModule */,
 			);
 			path = Main;
@@ -386,6 +452,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
+				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
+				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
 				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
@@ -397,16 +465,20 @@
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,
+				B53D66502A029A270010F846 /* CloseRoadsViewModel.swift in Sources */,
+				B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
+				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */,
+				B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* CalloutService.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
-				B571089929A374BD003698C8 /* MapKit+FillAnnotations.swift in Sources */,
+				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,
 			);

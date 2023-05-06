@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum APIConstant {
+    static let shaKey = "M0b!1e@pp!nf0!ntegr@t!0ne_crm2O23"
+}
+
 enum APIError: Error {
     case badURL
     case cannotCreateRequest
@@ -22,9 +26,6 @@ final class APIManager {
     init(jsonDecoder: JSONDecoder = .init(), urlSession: URLSession = .shared) {
         self.jsonDecoder = jsonDecoder
         self.urlSession = urlSession
-        
-        print("----shaKey----")
-        print(sha256(string: "20230105123456"))
     }
     
     func getAPIContent<T: Decodable>(type: T.Type, endpoint: APIEndpoint) async throws -> T {

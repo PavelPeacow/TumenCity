@@ -23,6 +23,7 @@ final class CommunalServicesViewController: UIViewController {
     
     lazy var searchController: UISearchController = {
         let search = UISearchController()
+        search.searchResultsUpdater = self
         search.hidesNavigationBarDuringPresentation = false
         return search
     }()

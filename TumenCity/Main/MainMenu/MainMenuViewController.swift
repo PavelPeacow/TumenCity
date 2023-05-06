@@ -106,6 +106,8 @@ extension MainMenuViewController: UICollectionViewDelegate {
             let vc = CommunalServicesViewController()
             navigationController?.pushViewController(vc, animated: true)
         case .roadClose:
+            let vc = CloseRoadsViewController()
+            navigationController?.pushViewController(vc, animated: true)
             return
         case .digWork:
             return

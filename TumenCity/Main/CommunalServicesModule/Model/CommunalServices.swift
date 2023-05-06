@@ -21,7 +21,7 @@ struct Card: Codable {
     let vidWork, datStart, datFinish, usOrg: String
     let planRab: Int
     let accident: [Accident]?
-    let fkAddress: [FkAddress]
+    let fkAddress: [FkAddress]?
 
     enum CodingKeys: String, CodingKey {
         case numCard = "num_card"
