@@ -24,7 +24,7 @@ final class SportCallout: Callout {
     }()
     
     lazy var stackViewContent: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [stackViewTitle, stackViewContacts, stackViewAddresses])
+        let stackView = UIStackView(arrangedSubviews: [stackViewTitle, stackViewContacts, stackViewEmail, stackViewAddresses])
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .vertical
@@ -78,11 +78,27 @@ final class SportCallout: Callout {
         return label
     }()
     
+    lazy var stackViewEmail: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [calloutEmail, emailDivider])
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     lazy var calloutEmail: UILabel = {
         let label = UILabel()
         label.text = "Электронная почта:"
         label.font = . systemFont(ofSize: 17, weight: .bold)
         return label
+    }()
+    
+    lazy var emailDivider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .label
+        return view
     }()
     
     lazy var stackViewAddresses: UIStackView = {
@@ -123,7 +139,7 @@ final class SportCallout: Callout {
     func configure(annotation: MKSportAnnotation) {
         calloutTitle.text = annotation.title
         calloutIcon.image = UIImage(named: "sportIcon") ?? .add
-
+        
         annotation.contacts.phones.forEach { contact in
            
             //Validation for empty contacts
@@ -136,22 +152,14 @@ final class SportCallout: Callout {
 
         }
         
+        if let email = annotation.contacts.emails?.first {
+            let emailLabel = SportLabelView(label: email.email)
+            stackViewEmail.addArrangedSubview(emailLabel)
+        }
+    
         annotation.addresses.forEach { address in
-            let addressBack = UIView()
-            addressBack.backgroundColor = .systemGray5
-            addressBack.layer.cornerRadius = 6
-            
-            let addressLabel = UILabel()
-            addressLabel.numberOfLines = 0
-            addressLabel.textColor = .systemGreen
-            addressLabel.text = address.title
-            
-            addressBack.addSubview(addressLabel)
-            addressLabel.snp.makeConstraints {
-                $0.edges.equalToSuperview().inset(5)
-            }
-            
-            stackViewAddresses.addArrangedSubview(addressBack)
+            let addressLabel = SportLabelView(label: address.title)
+            stackViewAddresses.addArrangedSubview(addressLabel)
         }
         
     }
@@ -189,6 +197,10 @@ extension SportCallout {
         }
         
         addressesDivider.snp.makeConstraints {
+            $0.height.equalTo(1)
+        }
+        
+        emailDivider.snp.makeConstraints {
             $0.height.equalTo(1)
         }
     }

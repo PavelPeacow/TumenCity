@@ -17,6 +17,7 @@
 		B528963E2A077D68006A85D9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B528963D2A077D68006A85D9 /* SnapKit */; };
 		B52896402A078AAC006A85D9 /* sportMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B528963F2A078AAC006A85D9 /* sportMock.json */; };
 		B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896412A07B34C006A85D9 /* SportContactView.swift */; };
+		B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896442A07BB3D006A85D9 /* SportLabelView.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
 		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
@@ -63,6 +64,7 @@
 		B528963A2A06B359006A85D9 /* SportCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCallout.swift; sourceTree = "<group>"; };
 		B528963F2A078AAC006A85D9 /* sportMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sportMock.json; sourceTree = "<group>"; };
 		B52896412A07B34C006A85D9 /* SportContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportContactView.swift; sourceTree = "<group>"; };
+		B52896442A07BB3D006A85D9 /* SportLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportLabelView.swift; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
 		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
@@ -157,6 +159,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		B52896432A07BB25006A85D9 /* SportModule */ = {
+			isa = PBXGroup;
+			children = (
+				B52896412A07B34C006A85D9 /* SportContactView.swift */,
+				B52896442A07BB3D006A85D9 /* SportLabelView.swift */,
+			);
+			path = SportModule;
+			sourceTree = "<group>";
+		};
 		B53D664A2A028E520010F846 /* CloseRoadsModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,7 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
-				B52896412A07B34C006A85D9 /* SportContactView.swift */,
+				B52896432A07BB25006A85D9 /* SportModule */,
 				B53D665F2A06286D0010F846 /* Callout */,
 			);
 			path = View;
@@ -549,6 +560,7 @@
 				B53D66502A029A270010F846 /* CloseRoadsViewModel.swift in Sources */,
 				B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
+				B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */,
 				B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
