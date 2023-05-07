@@ -30,12 +30,14 @@ class SportViewModel {
     }
     
     func getSportElements() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: [SportElement].self, endpoint: .sport)
-            sportElements = result
-        } catch {
-            print(error)
-        }
+//        do {
+//            let result = try await APIManager().getAPIContent(type: [SportElement].self, endpoint: .sport)
+//            sportElements = result
+//        } catch {
+//            print(error)
+//        }
+        sportElements = await APIManager().decodeMock()
+        
     }
     
     func addSportAnnotations() {

@@ -14,6 +14,9 @@
 		B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896342A063FCD006A85D9 /* SportViewModel.swift */; };
 		B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896372A064145006A85D9 /* MKSportAnnotation.swift */; };
 		B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528963A2A06B359006A85D9 /* SportCallout.swift */; };
+		B528963E2A077D68006A85D9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B528963D2A077D68006A85D9 /* SnapKit */; };
+		B52896402A078AAC006A85D9 /* sportMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B528963F2A078AAC006A85D9 /* sportMock.json */; };
+		B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896412A07B34C006A85D9 /* SportContactView.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
 		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
@@ -58,6 +61,8 @@
 		B52896342A063FCD006A85D9 /* SportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewModel.swift; sourceTree = "<group>"; };
 		B52896372A064145006A85D9 /* MKSportAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKSportAnnotation.swift; sourceTree = "<group>"; };
 		B528963A2A06B359006A85D9 /* SportCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCallout.swift; sourceTree = "<group>"; };
+		B528963F2A078AAC006A85D9 /* sportMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sportMock.json; sourceTree = "<group>"; };
+		B52896412A07B34C006A85D9 /* SportContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportContactView.swift; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
 		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
@@ -102,6 +107,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */,
+				B528963E2A077D68006A85D9 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
+				B52896412A07B34C006A85D9 /* SportContactView.swift */,
 				B53D665F2A06286D0010F846 /* Callout */,
 			);
 			path = View;
@@ -385,6 +392,7 @@
 			children = (
 				B5F7A885299DFFB50001ED69 /* APIManager.swift */,
 				B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */,
+				B528963F2A078AAC006A85D9 /* sportMock.json */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -416,6 +424,9 @@
 			dependencies = (
 			);
 			name = TumenCity;
+			packageProductDependencies = (
+				B528963D2A077D68006A85D9 /* SnapKit */,
+			);
 			productName = TumenCity;
 			productReference = B5F7A86B299D33060001ED69 /* TumenCity.app */;
 			productType = "com.apple.product-type.application";
@@ -444,6 +455,9 @@
 				Base,
 			);
 			mainGroup = B5F7A862299D33060001ED69;
+			packageReferences = (
+				B528963C2A077D68006A85D9 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = B5F7A86C299D33060001ED69 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -460,6 +474,7 @@
 			files = (
 				B5F7A87B299D33070001ED69 /* LaunchScreen.storyboard in Resources */,
 				B5F7A878299D33070001ED69 /* Assets.xcassets in Resources */,
+				B52896402A078AAC006A85D9 /* sportMock.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +529,7 @@
 			files = (
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
 				B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */,
+				B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
 				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
@@ -758,6 +774,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B528963C2A077D68006A85D9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B528963D2A077D68006A85D9 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B528963C2A077D68006A85D9 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B5F7A863299D33060001ED69 /* Project object */;
 }
