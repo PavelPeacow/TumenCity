@@ -8,98 +8,65 @@
 import UIKit
 import YandexMapsMobile
 
-final class CommunalServicesViewController: UIViewController {
+final class CommunalServicesViewController: UIViewControllerMapSegmented {
     
-    lazy var mainMapView = CommunalServicesView()
-    lazy var registyView = RegistryView()
-    lazy var registrySearchResult = RegistySearchResultViewController()
+    private lazy var collection = serviceMap.map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    lazy var collection = mainMapView.map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private let viewModel = CommunalServicesViewModel()
+    private var timer: Timer?
     
-    let viewModel = CommunalServicesViewModel()
-    var timer: Timer?
+    private let serviceMap: CommunalServicesView
+    private let serviceRegistry: RegistryView
+    private let serviceSearch: RegistySearchResultViewController
     
-    var didTapSearchBar = false
+    init(serviceMap: CommunalServicesView, serviceRegistry: RegistryView, serviceSearch: RegistySearchResultViewController) {
+        self.serviceMap = serviceMap
+        self.serviceRegistry = serviceRegistry
+        self.serviceSearch = serviceSearch
+        super.init(mainMapView: serviceMap, registryView: serviceRegistry, registrySearchResult: serviceSearch)
+    }
     
-    lazy var searchController: UISearchController = {
-        let search = UISearchController()
-        search.searchResultsUpdater = self
-        search.hidesNavigationBarDuringPresentation = false
-        return search
-    }()
-    
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 300, width: view.bounds.width, height: view.bounds.height))
-        scrollView.isPagingEnabled = true
-        scrollView.bounces = false
-        scrollView.alwaysBounceHorizontal = false
-        scrollView.alwaysBounceVertical = false
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.delegate = self
-        scrollView.isScrollEnabled = false
-        return scrollView
-    }()
-    
-    lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [mainMapView, registyView])
-        stackView.distribution = .equalSpacing
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    lazy var segmentControl: UISegmentedControl = {
-        let items = ["Карта", "Реестр"]
-        let segment = UISegmentedControl(items: items)
-        segment.selectedSegmentIndex = 0
-        segment.translatesAutoresizingMaskIntoConstraints = false
-        return segment
-    }()
-    
-    lazy var segmentLine: UIView = {
-        view.layoutSubviews()
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: segmentControl.frame.width / 2, height: 1))
-        view.backgroundColor = .red
-        return view
-    }()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainMapView.map.setDefaultRegion()
-        view.addSubview(segmentControl)
-        segmentControl.addSubview(segmentLine)
-        
-        view.addSubview(scrollView)
-        scrollView.addSubview(stackView)
-        
+        serviceMap.map.setDefaultRegion()
+        addItemsToSegmentControll()
         view.backgroundColor = .systemBackground
         
         title = "Отключение ЖКУ"
         
-        registerKeyboardNotification()
-        setUpSearchController()
-        addTarget()
         setDelegates()
-        setConstraints()
     }
+    
+    override func updateSearchResults(for searchController: UISearchController) {
+        timer?.invalidate()
+
+        guard let searchText = searchController.searchBar.text else { return serviceMap.map.setDefaultRegion() }
+        guard !searchText.isEmpty else { return serviceMap.map.setDefaultRegion() }
+
+        if segmentedIndex == 1 {
+            serviceSearch.filterSearch(with: searchText)
+            return
+        }
+
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+            if let annotation = self?.viewModel.findAnnotationByAddressName(searchText) {
+                self?.serviceMap.map.moveCameraToAnnotation(annotation)
+            } else {
+                self?.serviceMap.map.setDefaultRegion()
+            }
+        })
+    }
+    
     
     private func setDelegates() {
         viewModel.delegate = self
-        registyView.delegate = self
-        registrySearchResult.delegate = self
-    }
-    
-    private func setUpSearchController() {
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Введите адрес..."
-        didTapSearchBar = false
-    }
-    
-    private func addTarget() {
-        segmentControl.addTarget(self, action: #selector(didSlideSegmentedControl(_:)), for: .valueChanged)
+        serviceRegistry.delegate = self
+        serviceSearch.delegate = self
     }
     
     private func addServicesInfo() {
@@ -113,101 +80,23 @@ final class CommunalServicesViewController: UIViewController {
             let serviceInfoView = ServiceInfoView(icon: icon, title: title, count: count, serviceType: serviceInfo.id)
             serviceInfoView.delegate = self
             
-            mainMapView.servicesInfoStackView.addArrangedSubview(serviceInfoView)
+            serviceMap.servicesInfoStackView.addArrangedSubview(serviceInfoView)
         }
     }
-    
-    private func changeSearchController(withSearchResultsController: Bool = false) {
-        let search = UISearchController(searchResultsController: withSearchResultsController ? registrySearchResult : nil)
-        search.searchResultsUpdater = self
-        search.hidesNavigationBarDuringPresentation = false
-        searchController = search
-        setUpSearchController()
-    }
-    
+
     private func showSelectedMark(_ mark: MarkDescription) {
         viewModel.resetFilterCommunalServices()
-        mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+        serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
         
-        segmentControl.selectedSegmentIndex = 0
-        segmentControl.sendActions(for: .valueChanged)
+        resetSegmentedControlAfterRegistryView()
         
         if let annotation = viewModel.annotations.first(where: { $0.markDescription.address == mark.address } ) {
-            mainMapView.map.moveCameraToAnnotation(annotation)
+            serviceMap.map.moveCameraToAnnotation(annotation)
         }
     }
     
-}
-
-//MARK: - NotificationCenter
-
-extension CommunalServicesViewController {
-    
-    private func registerKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        let keyboardHeight = keyboardSize.height
-        
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.mainMapView.frame.origin.y -= keyboardHeight
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.mainMapView.frame.origin.y = 0
-        }
-    }
-    
-}
-
-//MARK: - Objc Functions
-
-extension CommunalServicesViewController {
-    
-    @objc func didSlideSegmentedControl(_ sender: UISegmentedControl) {
-        let index = sender.selectedSegmentIndex
-        print(index)
-        switch index {
-            
-        case 0:
-            scrollView.scrollRectToVisible(mainMapView.frame, animated: true)
-            changeSearchController()
-        case 1:
-            scrollView.scrollRectToVisible(registyView.frame, animated: true)
-            changeSearchController(withSearchResultsController: true)
-        default:
-            return
-        }
-    }
-    
-}
-
-//MARK: - UIScrollViewDelegate
-
-extension CommunalServicesViewController: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        segmentLine.frame = CGRect(x: scrollView.contentOffset.x / 2, y: 0, width: 100, height: 1)
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageWidth = scrollView.bounds.width
-        let pageFraction = scrollView.contentOffset.x/pageWidth
-        
-        if segmentControl.selectedSegmentIndex == Int((round(pageFraction))) {
-            return
-        } else {
-            segmentControl.selectedSegmentIndex = Int((round(pageFraction)))
-            segmentControl.sendActions(for: .valueChanged)
-        }
+    func addItemsToSegmentControll() {
+        super.addItemsToSegmentControll(["Карта", "Реестр"])
     }
     
 }
@@ -217,7 +106,7 @@ extension CommunalServicesViewController: UIScrollViewDelegate {
 extension CommunalServicesViewController: RegistryViewDelegate {
     
     func didGetAddress(_ mark: MarkDescription) {
-        mainMapView.infoTitle.isHidden = true
+        serviceMap.infoTitle.isHidden = true
         showSelectedMark(mark)
     }
     
@@ -226,35 +115,8 @@ extension CommunalServicesViewController: RegistryViewDelegate {
 extension CommunalServicesViewController: RegistySearchResultViewControllerDelegate {
     
     func didTapResultAddress(_ mark: MarkDescription) {
-        mainMapView.infoTitle.isHidden = true
+        serviceMap.infoTitle.isHidden = true
         showSelectedMark(mark)
-    }
-    
-}
-
-//MARK: - Search
-
-extension CommunalServicesViewController: UISearchResultsUpdating {
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        timer?.invalidate()
-        
-        guard let searchText = searchController.searchBar.text else { return mainMapView.map.setDefaultRegion() }
-        guard !searchText.isEmpty else { return mainMapView.map.setDefaultRegion() }
-        
-        if segmentControl.selectedSegmentIndex == 1 {
-            registrySearchResult.filterSearch(with: searchText)
-            return
-        }
-
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
-            if let annotation = self?.viewModel.findAnnotationByAddressName(searchText) {
-                self?.mainMapView.map.moveCameraToAnnotation(annotation)
-            } else {
-                self?.mainMapView.map.setDefaultRegion()
-            }
-        })
-        
     }
     
 }
@@ -265,23 +127,23 @@ extension CommunalServicesViewController: ServiceInfoViewDelegate {
     
     func didTapServiceInfoView(_ serviceType: Int, _ view: ServiceInfoView) {
         guard !view.isTapAlready else {
-            mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+            serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
             viewModel.resetFilterCommunalServices()
             
             UIView.animate(withDuration: 0.15) { [weak self] in
-                self?.mainMapView.infoTitle.isHidden = true
+                self?.serviceMap.infoTitle.isHidden = true
             }
            
             return
         }
         
-        mainMapView.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+        serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
         viewModel.filterCommunalServices(with: serviceType)
         
         UIView.animate(withDuration: 0.15) { [weak self] in
-            self?.mainMapView.infoTitle.isHidden = false
-            self?.mainMapView.infoTitle.text = view.serviceTitle
-            self?.mainMapView.servicesInfoStackViewWithTitle.layoutIfNeeded()
+            self?.serviceMap.infoTitle.isHidden = false
+            self?.serviceMap.infoTitle.text = view.serviceTitle
+            self?.serviceMap.servicesInfoStackViewWithTitle.layoutIfNeeded()
         }
         
         view.isTapAlready = true
@@ -296,19 +158,19 @@ extension CommunalServicesViewController: CommunalServicesViewModelDelegate {
     func didUpdateAnnotations(_ annotations: [MKItemAnnotation]) {
         collection.clear()
 
-        mainMapView.map.addAnnotations(annotations, cluster: collection)
-        mainMapView.map.setDefaultRegion()
+        serviceMap.map.addAnnotations(annotations, cluster: collection)
+        serviceMap.map.setDefaultRegion()
     }
     
     func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation]) {
-        mainMapView.map.mapWindow.map.mapObjects.addTapListener(with: self)
-        mainMapView.map.addAnnotations(annotations, cluster: collection)
+        serviceMap.map.mapWindow.map.mapObjects.addTapListener(with: self)
+        serviceMap.map.addAnnotations(annotations, cluster: collection)
         
         addServicesInfo()
-        registyView.cards = viewModel.communalServicesFormatted
-        registyView.tableView.reloadData()
+        serviceRegistry.cards = viewModel.communalServicesFormatted
+        serviceRegistry.tableView.reloadData()
         
-        registrySearchResult.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
+        serviceSearch.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
     }
     
 }
@@ -351,41 +213,6 @@ extension CommunalServicesViewController: YMKClusterTapListener {
         }
         
         return false
-    }
-    
-}
-
-//MARK: - Constraints
-
-extension CommunalServicesViewController {
-    
-    func setConstraints() {
-        mainMapView.translatesAutoresizingMaskIntoConstraints = false
-        registyView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            segmentControl.heightAnchor.constraint(equalToConstant: 25),
-            segmentControl.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            segmentControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            segmentControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            
-            mainMapView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            mainMapView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            registyView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            registyView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            scrollView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 5),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom + 10),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-        ])
     }
     
 }

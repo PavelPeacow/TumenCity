@@ -29,6 +29,10 @@ class SportViewModel {
         }
     }
     
+    func searchAnnotationByName(_ name: String) -> MKSportAnnotation? {
+        sportAnnotations.first(where: { $0.title.lowercased().contains(name.lowercased()) })
+    }
+    
     func getSportElements() async {
 //        do {
 //            let result = try await APIManager().getAPIContent(type: [SportElement].self, endpoint: .sport)

@@ -18,6 +18,11 @@
 		B52896402A078AAC006A85D9 /* sportMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B528963F2A078AAC006A85D9 /* sportMock.json */; };
 		B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896412A07B34C006A85D9 /* SportContactView.swift */; };
 		B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896442A07BB3D006A85D9 /* SportLabelView.swift */; };
+		B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896482A091005006A85D9 /* UIViewControllerMapSegmented.swift */; };
+		B528964C2A0912D3006A85D9 /* SportViewMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528964B2A0912D3006A85D9 /* SportViewMap.swift */; };
+		B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528964E2A091440006A85D9 /* SportRegistrySearchViewController.swift */; };
+		B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896512A091464006A85D9 /* SportRegistryView.swift */; };
+		B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896532A091726006A85D9 /* SportRegistryTableViewCell.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
 		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
@@ -65,6 +70,11 @@
 		B528963F2A078AAC006A85D9 /* sportMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sportMock.json; sourceTree = "<group>"; };
 		B52896412A07B34C006A85D9 /* SportContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportContactView.swift; sourceTree = "<group>"; };
 		B52896442A07BB3D006A85D9 /* SportLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportLabelView.swift; sourceTree = "<group>"; };
+		B52896482A091005006A85D9 /* UIViewControllerMapSegmented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerMapSegmented.swift; sourceTree = "<group>"; };
+		B528964B2A0912D3006A85D9 /* SportViewMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewMap.swift; sourceTree = "<group>"; };
+		B528964E2A091440006A85D9 /* SportRegistrySearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistrySearchViewController.swift; sourceTree = "<group>"; };
+		B52896512A091464006A85D9 /* SportRegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistryView.swift; sourceTree = "<group>"; };
+		B52896532A091726006A85D9 /* SportRegistryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistryTableViewCell.swift; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
 		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
@@ -129,6 +139,8 @@
 			children = (
 				B52896322A063449006A85D9 /* Model */,
 				B52896332A063481006A85D9 /* Controller */,
+				B528964D2A0912D7006A85D9 /* View */,
+				B52896502A091442006A85D9 /* SportRegistry */,
 				B52896362A063FCF006A85D9 /* ViewModel */,
 			);
 			path = SportModule;
@@ -166,6 +178,32 @@
 				B52896442A07BB3D006A85D9 /* SportLabelView.swift */,
 			);
 			path = SportModule;
+			sourceTree = "<group>";
+		};
+		B528964A2A09101B006A85D9 /* Subclass */ = {
+			isa = PBXGroup;
+			children = (
+				B52896482A091005006A85D9 /* UIViewControllerMapSegmented.swift */,
+			);
+			path = Subclass;
+			sourceTree = "<group>";
+		};
+		B528964D2A0912D7006A85D9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B528964B2A0912D3006A85D9 /* SportViewMap.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B52896502A091442006A85D9 /* SportRegistry */ = {
+			isa = PBXGroup;
+			children = (
+				B52896512A091464006A85D9 /* SportRegistryView.swift */,
+				B528964E2A091440006A85D9 /* SportRegistrySearchViewController.swift */,
+				B52896532A091726006A85D9 /* SportRegistryTableViewCell.swift */,
+			);
+			path = SportRegistry;
 			sourceTree = "<group>";
 		};
 		B53D664A2A028E520010F846 /* CloseRoadsModule */ = {
@@ -351,6 +389,7 @@
 				B5F7A890299E149C0001ED69 /* API */,
 				B5B06B652A000E0F00614772 /* Helper */,
 				B571088E29A216F8003698C8 /* Extension */,
+				B528964A2A09101B006A85D9 /* Subclass */,
 				B571088529A0F1FB003698C8 /* View */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
 				B5F7A883299DFD380001ED69 /* Resources */,
@@ -543,6 +582,7 @@
 				B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
 				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
+				B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */,
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
 				B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
@@ -552,8 +592,11 @@
 				B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */,
 				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
 				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
+				B528964C2A0912D3006A85D9 /* SportViewMap.swift in Sources */,
+				B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */,
 				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
+				B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,
@@ -572,6 +615,7 @@
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
+				B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
 				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
