@@ -40,12 +40,12 @@ final class APIManager {
         return result
     }
     
-    func decodeMock() async -> [SportElement] {
-        let url = Bundle.main.url(forResource: "sportMock", withExtension: "json")!
+    func decodeMock<T: Decodable>(type: T.Type, forResourse: String) async -> T {
+        let url = Bundle.main.url(forResource: forResourse, withExtension: "json")!
         
         let data = try! Data(contentsOf: url)
         
-        return try! jsonDecoder.decode([SportElement].self, from: data)
+        return try! jsonDecoder.decode(T.self, from: data)
     }
     
 }

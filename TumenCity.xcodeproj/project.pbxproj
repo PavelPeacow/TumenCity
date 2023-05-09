@@ -23,6 +23,12 @@
 		B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528964E2A091440006A85D9 /* SportRegistrySearchViewController.swift */; };
 		B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896512A091464006A85D9 /* SportRegistryView.swift */; };
 		B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896532A091726006A85D9 /* SportRegistryTableViewCell.swift */; };
+		B52896562A0A1CF2006A85D9 /* DigWorkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896552A0A1CF2006A85D9 /* DigWorkViewController.swift */; };
+		B528965A2A0A1D12006A85D9 /* DigWorkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896592A0A1D12006A85D9 /* DigWorkViewModel.swift */; };
+		B528965D2A0A1E82006A85D9 /* DigWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528965C2A0A1E82006A85D9 /* DigWork.swift */; };
+		B52896602A0A1F0C006A85D9 /* digWorkMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B528965F2A0A1F0C006A85D9 /* digWorkMock.json */; };
+		B52896622A0A2067006A85D9 /* MKDigWorkAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896612A0A2067006A85D9 /* MKDigWorkAnnotation.swift */; };
+		B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
 		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
@@ -75,6 +81,12 @@
 		B528964E2A091440006A85D9 /* SportRegistrySearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistrySearchViewController.swift; sourceTree = "<group>"; };
 		B52896512A091464006A85D9 /* SportRegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistryView.swift; sourceTree = "<group>"; };
 		B52896532A091726006A85D9 /* SportRegistryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistryTableViewCell.swift; sourceTree = "<group>"; };
+		B52896552A0A1CF2006A85D9 /* DigWorkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkViewController.swift; sourceTree = "<group>"; };
+		B52896592A0A1D12006A85D9 /* DigWorkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkViewModel.swift; sourceTree = "<group>"; };
+		B528965C2A0A1E82006A85D9 /* DigWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWork.swift; sourceTree = "<group>"; };
+		B528965F2A0A1F0C006A85D9 /* digWorkMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = digWorkMock.json; sourceTree = "<group>"; };
+		B52896612A0A2067006A85D9 /* MKDigWorkAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKDigWorkAnnotation.swift; sourceTree = "<group>"; };
+		B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkCallout.swift; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
 		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
@@ -206,6 +218,41 @@
 			path = SportRegistry;
 			sourceTree = "<group>";
 		};
+		B52896572A0A1CF5006A85D9 /* DigWorkModule */ = {
+			isa = PBXGroup;
+			children = (
+				B528965E2A0A1E85006A85D9 /* Model */,
+				B52896582A0A1D01006A85D9 /* Controller */,
+				B528965B2A0A1D15006A85D9 /* ViewModel */,
+			);
+			path = DigWorkModule;
+			sourceTree = "<group>";
+		};
+		B52896582A0A1D01006A85D9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B52896552A0A1CF2006A85D9 /* DigWorkViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B528965B2A0A1D15006A85D9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B52896592A0A1D12006A85D9 /* DigWorkViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B528965E2A0A1E85006A85D9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B52896612A0A2067006A85D9 /* MKDigWorkAnnotation.swift */,
+				B528965C2A0A1E82006A85D9 /* DigWork.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		B53D664A2A028E520010F846 /* CloseRoadsModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,6 +313,7 @@
 				B53D665B2A06211A0010F846 /* CommunalServiceCallout.swift */,
 				B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */,
 				B528963A2A06B359006A85D9 /* SportCallout.swift */,
+				B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */,
 			);
 			path = Callout;
 			sourceTree = "<group>";
@@ -420,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
+				B52896572A0A1CF5006A85D9 /* DigWorkModule */,
 				B528962F2A06342D006A85D9 /* SportModule */,
 				B53D664A2A028E520010F846 /* CloseRoadsModule */,
 				B571088629A215C0003698C8 /* CommunalServicesModule */,
@@ -443,6 +492,7 @@
 				B5F7A885299DFFB50001ED69 /* APIManager.swift */,
 				B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */,
 				B528963F2A078AAC006A85D9 /* sportMock.json */,
+				B528965F2A0A1F0C006A85D9 /* digWorkMock.json */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -523,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5F7A87B299D33070001ED69 /* LaunchScreen.storyboard in Resources */,
+				B52896602A0A1F0C006A85D9 /* digWorkMock.json in Resources */,
 				B5F7A878299D33070001ED69 /* Assets.xcassets in Resources */,
 				B52896402A078AAC006A85D9 /* sportMock.json in Resources */,
 			);
@@ -605,7 +656,10 @@
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
 				B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */,
 				B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */,
+				B528965A2A0A1D12006A85D9 /* DigWorkViewModel.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
+				B52896622A0A2067006A85D9 /* MKDigWorkAnnotation.swift in Sources */,
+				B52896562A0A1CF2006A85D9 /* DigWorkViewController.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B52896312A063447006A85D9 /* Sport.swift in Sources */,
@@ -615,11 +669,13 @@
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
+				B528965D2A0A1E82006A85D9 /* DigWork.swift in Sources */,
 				B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
 				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,
+				B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */,
 				B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

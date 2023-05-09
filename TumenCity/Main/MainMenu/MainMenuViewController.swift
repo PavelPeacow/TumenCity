@@ -112,6 +112,8 @@ extension MainMenuViewController: UICollectionViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
             return
         case .digWork:
+            let vc = DigWorkViewController()
+            navigationController?.pushViewController(vc, animated: true)
             return
         case .tradeObjects:
             return

@@ -40,7 +40,7 @@ class SportViewModel {
 //        } catch {
 //            print(error)
 //        }
-        sportElements = await APIManager().decodeMock()
+        sportElements = await APIManager().decodeMock(type: [SportElement].self, forResourse: "sportMock")
         
     }
     
