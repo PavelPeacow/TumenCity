@@ -1,5 +1,5 @@
 //
-//  DigWorkModal.swift
+//  DigWorkBottomSheet.swift
 //  TumenCity
 //
 //  Created by Павел Кай on 13.05.2023.
@@ -7,15 +7,15 @@
 
 import UIKit
 
-protocol DigWorkModalDelegate: AnyObject {
+protocol DigWorkBottomSheetDelegate: AnyObject {
     func didTapAddress(_ annotation: MKDigWorkAnnotation)
 }
 
-final class DigWorkModal: ModalWindow {
+final class DigWorkBottomSheet: CustomBottomSheet {
         
     var annotations = [MKDigWorkAnnotation]()
     
-    weak var delegate: DigWorkModalDelegate?
+    weak var delegate: DigWorkBottomSheetDelegate?
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -64,7 +64,7 @@ final class DigWorkModal: ModalWindow {
         
 }
 
-extension DigWorkModal: UITableViewDataSource {
+extension DigWorkBottomSheet: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         annotations.count
@@ -79,7 +79,7 @@ extension DigWorkModal: UITableViewDataSource {
     
 }
 
-extension DigWorkModal: UITableViewDelegate {
+extension DigWorkBottomSheet: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

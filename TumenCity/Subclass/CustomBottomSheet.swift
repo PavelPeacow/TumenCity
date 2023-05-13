@@ -1,5 +1,5 @@
 //
-//  ModalWindow.swift
+//  CustomBottomSheet.swift
 //  TumenCity
 //
 //  Created by Павел Кай on 13.05.2023.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class ModalWindow: UIViewController {
+class CustomBottomSheet: UIViewController {
     
     private var hasSetPointOrigin = false
     private var pointOrigin: CGPoint?
@@ -65,7 +65,7 @@ class ModalWindow: UIViewController {
     
 }
 
-private extension ModalWindow {
+private extension CustomBottomSheet {
     
     @objc private func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
         guard let pointOrigin = self.pointOrigin else { return }
@@ -90,7 +90,7 @@ private extension ModalWindow {
     
 }
 
-extension ModalWindow: UIViewControllerTransitioningDelegate {
+extension CustomBottomSheet: UIViewControllerTransitioningDelegate {
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         PresentationController(presentedViewController: presented, presenting: presenting)
