@@ -35,7 +35,7 @@ final class DigWorkCallout: Callout {
     
     lazy var stackViewTitle: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [calloutIcon, calloutTitle])
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .horizontal
         stackView.spacing = 8

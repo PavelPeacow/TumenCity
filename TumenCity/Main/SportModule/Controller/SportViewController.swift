@@ -77,6 +77,7 @@ extension SportViewController: SportViewModelDelegate {
         sportMapView.map.mapWindow.map.mapObjects.addTapListener(with: self)
         
         sportRegistryView.sportElements = viewModel.sportElements
+        sportRegistrySearchResult.configure(sportElements: viewModel.sportElements)
         sportRegistryView.tableView.reloadData()
     }
     
@@ -98,6 +99,8 @@ extension SportViewController: SportRegistryViewDelegate {
 extension SportViewController: SportRegistrySearchViewControllerDelegate {
     
     func didTapSearchResult(_ result: SportElement) {
+        resetSegmentedControlAfterRegistryView()
+        
         if let annotation = viewModel.sportAnnotations.first(where: { $0.title == result.title }) {
             sportMapView.map.moveCameraToAnnotation(annotation)
         }

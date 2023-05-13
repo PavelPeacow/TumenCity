@@ -28,6 +28,10 @@ class DigWorkViewModel {
         }
     }
     
+    func isClusterWithTheSameCoordinates(annotations: [MKDigWorkAnnotation]) -> Bool {
+        return annotations.dropFirst().allSatisfy( { $0.title == annotations.first?.title } )
+    }
+    
     func getDigWorkElements() async {
         let result = await APIManager().decodeMock(type: DigWork.self, forResourse: "digWorkMock")
         digWorkElements = result.features
