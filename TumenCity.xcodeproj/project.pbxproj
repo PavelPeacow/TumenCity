@@ -56,6 +56,16 @@
 		B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */; };
 		B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E32A10DD3600AFAFEF /* FilterView.swift */; };
 		B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E72A10DE5B00AFAFEF /* Strings.swift */; };
+		B5EF44EE2A10E42D00AFAFEF /* BikePathsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44ED2A10E42D00AFAFEF /* BikePathsViewController.swift */; };
+		B5EF44F12A10E44D00AFAFEF /* BikePathsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44F02A10E44D00AFAFEF /* BikePathsViewModel.swift */; };
+		B5EF44F42A10E45800AFAFEF /* BikePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44F32A10E45800AFAFEF /* BikePaths.swift */; };
+		B5EF44F72A110D0C00AFAFEF /* bikePathMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B5EF44F62A110D0C00AFAFEF /* bikePathMock.json */; };
+		B5EF44FB2A11273B00AFAFEF /* BikePathsInfoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44FA2A11273B00AFAFEF /* BikePathsInfoItemView.swift */; };
+		B5EF44FD2A11288000AFAFEF /* BikePathInfoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */; };
+		B5EF44FF2A112A0100AFAFEF /* BikePathInfoLegend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44FE2A112A0100AFAFEF /* BikePathInfoLegend.swift */; };
+		B5EF45012A112A8800AFAFEF /* bikePathInfoLegend.json in Resources */ = {isa = PBXBuildFile; fileRef = B5EF45002A112A8800AFAFEF /* bikePathInfoLegend.json */; };
+		B5EF45042A112BC100AFAFEF /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B5EF45032A112BC100AFAFEF /* SDWebImage */; };
+		B5EF45072A11328000AFAFEF /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = B5EF45062A11328000AFAFEF /* SDWebImageSVGCoder */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
@@ -119,6 +129,14 @@
 		B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkFilterBottomSheet.swift; sourceTree = "<group>"; };
 		B5EF44E32A10DD3600AFAFEF /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		B5EF44E72A10DE5B00AFAFEF /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		B5EF44ED2A10E42D00AFAFEF /* BikePathsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathsViewController.swift; sourceTree = "<group>"; };
+		B5EF44F02A10E44D00AFAFEF /* BikePathsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathsViewModel.swift; sourceTree = "<group>"; };
+		B5EF44F32A10E45800AFAFEF /* BikePaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePaths.swift; sourceTree = "<group>"; };
+		B5EF44F62A110D0C00AFAFEF /* bikePathMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bikePathMock.json; sourceTree = "<group>"; };
+		B5EF44FA2A11273B00AFAFEF /* BikePathsInfoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathsInfoItemView.swift; sourceTree = "<group>"; };
+		B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathInfoBottomSheet.swift; sourceTree = "<group>"; };
+		B5EF44FE2A112A0100AFAFEF /* BikePathInfoLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathInfoLegend.swift; sourceTree = "<group>"; };
+		B5EF45002A112A8800AFAFEF /* bikePathInfoLegend.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bikePathInfoLegend.json; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -140,8 +158,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5EF45042A112BC100AFAFEF /* SDWebImage in Frameworks */,
 				9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */,
 				B528963E2A077D68006A85D9 /* SnapKit in Frameworks */,
+				B5EF45072A11328000AFAFEF /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +290,7 @@
 			children = (
 				B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */,
 				B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */,
+				B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -342,6 +363,7 @@
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B5EF44FA2A11273B00AFAFEF /* BikePathsInfoItemView.swift */,
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
 				B52896672A0F93B5006A85D9 /* Modal */,
 				B52896432A07BB25006A85D9 /* SportModule */,
@@ -434,6 +456,41 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		B5EF44EC2A10E41200AFAFEF /* BikePathsModule */ = {
+			isa = PBXGroup;
+			children = (
+				B5EF44F52A10E45A00AFAFEF /* Model */,
+				B5EF44EF2A10E44100AFAFEF /* Controller */,
+				B5EF44F22A10E45000AFAFEF /* ViewModel */,
+			);
+			path = BikePathsModule;
+			sourceTree = "<group>";
+		};
+		B5EF44EF2A10E44100AFAFEF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B5EF44ED2A10E42D00AFAFEF /* BikePathsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B5EF44F22A10E45000AFAFEF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B5EF44F02A10E44D00AFAFEF /* BikePathsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B5EF44F52A10E45A00AFAFEF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B5EF44F32A10E45800AFAFEF /* BikePaths.swift */,
+				B5EF44FE2A112A0100AFAFEF /* BikePathInfoLegend.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		B5F7A862299D33060001ED69 = {
 			isa = PBXGroup;
 			children = (
@@ -491,6 +548,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
+				B5EF44EC2A10E41200AFAFEF /* BikePathsModule */,
 				B52896572A0A1CF5006A85D9 /* DigWorkModule */,
 				B528962F2A06342D006A85D9 /* SportModule */,
 				B53D664A2A028E520010F846 /* CloseRoadsModule */,
@@ -514,8 +572,10 @@
 			children = (
 				B5F7A885299DFFB50001ED69 /* APIManager.swift */,
 				B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */,
+				B5EF44F62A110D0C00AFAFEF /* bikePathMock.json */,
 				B528963F2A078AAC006A85D9 /* sportMock.json */,
 				B528965F2A0A1F0C006A85D9 /* digWorkMock.json */,
+				B5EF45002A112A8800AFAFEF /* bikePathInfoLegend.json */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -549,6 +609,8 @@
 			name = TumenCity;
 			packageProductDependencies = (
 				B528963D2A077D68006A85D9 /* SnapKit */,
+				B5EF45032A112BC100AFAFEF /* SDWebImage */,
+				B5EF45062A11328000AFAFEF /* SDWebImageSVGCoder */,
 			);
 			productName = TumenCity;
 			productReference = B5F7A86B299D33060001ED69 /* TumenCity.app */;
@@ -580,6 +642,8 @@
 			mainGroup = B5F7A862299D33060001ED69;
 			packageReferences = (
 				B528963C2A077D68006A85D9 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				B5EF45022A112BC100AFAFEF /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				B5EF45052A11328000AFAFEF /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */,
 			);
 			productRefGroup = B5F7A86C299D33060001ED69 /* Products */;
 			projectDirPath = "";
@@ -595,6 +659,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5EF45012A112A8800AFAFEF /* bikePathInfoLegend.json in Resources */,
+				B5EF44F72A110D0C00AFAFEF /* bikePathMock.json in Resources */,
 				B5F7A87B299D33070001ED69 /* LaunchScreen.storyboard in Resources */,
 				B52896602A0A1F0C006A85D9 /* digWorkMock.json in Resources */,
 				B5F7A878299D33070001ED69 /* Assets.xcassets in Resources */,
@@ -653,6 +719,7 @@
 			files = (
 				B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */,
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
+				B5EF44EE2A10E42D00AFAFEF /* BikePathsViewController.swift in Sources */,
 				B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */,
 				B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
@@ -660,9 +727,11 @@
 				B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */,
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
 				B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */,
+				B5EF44F12A10E44D00AFAFEF /* BikePathsViewModel.swift in Sources */,
 				B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */,
 				B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
+				B5EF44FF2A112A0100AFAFEF /* BikePathInfoLegend.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
 				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
@@ -678,10 +747,12 @@
 				B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
+				B5EF44F42A10E45800AFAFEF /* BikePaths.swift in Sources */,
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,
 				B53D66502A029A270010F846 /* CloseRoadsViewModel.swift in Sources */,
 				B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
+				B5EF44FB2A11273B00AFAFEF /* BikePathsInfoItemView.swift in Sources */,
 				B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */,
 				B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */,
 				B528965A2A0A1D12006A85D9 /* DigWorkViewModel.swift in Sources */,
@@ -704,6 +775,7 @@
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,
 				B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */,
+				B5EF44FD2A11288000AFAFEF /* BikePathInfoBottomSheet.swift in Sources */,
 				B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -924,6 +996,22 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		B5EF45022A112BC100AFAFEF /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		B5EF45052A11328000AFAFEF /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSVGCoder";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -931,6 +1019,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B528963C2A077D68006A85D9 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		B5EF45032A112BC100AFAFEF /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5EF45022A112BC100AFAFEF /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		B5EF45062A11328000AFAFEF /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5EF45052A11328000AFAFEF /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

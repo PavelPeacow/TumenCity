@@ -7,6 +7,7 @@
 
 import UIKit
 import YandexMapsMobile
+import SDWebImageSVGCoder
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         YMKMapKit.setApiKey("2e070b60-1c92-4b86-a972-72de2ef25c1d")
         YMKMapKit.sharedInstance()
+        
+        let SVGCoder = SDImageSVGCoder.shared
+        SDImageCodersManager.shared.addCoder(SVGCoder)
         return true
     }
 

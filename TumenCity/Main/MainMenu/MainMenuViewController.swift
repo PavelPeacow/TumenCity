@@ -101,6 +101,8 @@ extension MainMenuViewController: UICollectionViewDelegate {
         case .cityCleaning:
             return
         case .bikePaths:
+            let vc = BikePathsViewController()
+            navigationController?.pushViewController(vc, animated: true)
             return
         case .urbanImprovements:
             return
