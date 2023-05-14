@@ -29,7 +29,8 @@ class DigWorkViewModel {
     }
     
     func isClusterWithTheSameCoordinates(annotations: [MKDigWorkAnnotation]) -> Bool {
-        return annotations.dropFirst().allSatisfy( { $0.title == annotations.first?.title } )
+        annotations.dropFirst().allSatisfy( { $0.title == annotations.first?.title } ) ||
+        annotations.dropFirst().allSatisfy( { String(format: "%.4f", $0.coordinates.latitude) == String(format: "%.4f", annotations.first!.coordinates.latitude) } )
     }
     
     func getDigWorkElements() async {

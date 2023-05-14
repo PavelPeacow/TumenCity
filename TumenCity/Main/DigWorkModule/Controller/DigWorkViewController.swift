@@ -51,7 +51,7 @@ class DigWorkViewController: UIViewController {
 extension DigWorkViewController {
     
     @objc func didTapFilterIcon() {
-        let vc = DigWorkBottomSheet()
+        let vc = DigWorkFilterBottomSheet()
         present(vc, animated: true)
     }
     
@@ -99,6 +99,8 @@ extension DigWorkViewController: YMKClusterTapListener {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKDigWorkAnnotation }
 
         annotations.forEach { print($0.coordinates) }
+        annotations.forEach { print($0.title) }
+        
         if viewModel.isClusterWithTheSameCoordinates(annotations: annotations) {
             let modal = DigWorkBottomSheet()
             modal.delegate = self

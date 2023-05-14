@@ -139,7 +139,8 @@ final class PresentationController: UIPresentationController {
     
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
-        presentedView!.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        presentedView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        presentedView?.layer.cornerRadius = 15
     }
     
     override func containerViewDidLayoutSubviews() {

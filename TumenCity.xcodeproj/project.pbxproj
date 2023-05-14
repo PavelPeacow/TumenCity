@@ -53,6 +53,9 @@
 		B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */; };
 		B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */; };
 		B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */; };
+		B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */; };
+		B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E32A10DD3600AFAFEF /* FilterView.swift */; };
+		B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E72A10DE5B00AFAFEF /* Strings.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
@@ -113,6 +116,9 @@
 		B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryCardTableViewCell.swift; sourceTree = "<group>"; };
 		B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientBorder.swift"; sourceTree = "<group>"; };
 		B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Encrypt.swift; sourceTree = "<group>"; };
+		B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkFilterBottomSheet.swift; sourceTree = "<group>"; };
+		B5EF44E32A10DD3600AFAFEF /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		B5EF44E72A10DE5B00AFAFEF /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -201,6 +207,7 @@
 			children = (
 				B52896482A091005006A85D9 /* UIViewControllerMapSegmented.swift */,
 				B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */,
+				B5EF44E32A10DD3600AFAFEF /* FilterView.swift */,
 			);
 			path = Subclass;
 			sourceTree = "<group>";
@@ -262,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */,
+				B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -474,6 +482,7 @@
 			isa = PBXGroup;
 			children = (
 				B5F7A877299D33070001ED69 /* Assets.xcassets */,
+				B5EF44E72A10DE5B00AFAFEF /* Strings.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -642,6 +651,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */,
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
 				B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */,
 				B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */,
@@ -651,6 +661,7 @@
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
 				B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */,
 				B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */,
+				B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
@@ -660,6 +671,7 @@
 				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
 				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,
 				B528964C2A0912D3006A85D9 /* SportViewMap.swift in Sources */,
+				B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */,
 				B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */,
 				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
