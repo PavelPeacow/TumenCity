@@ -16,6 +16,7 @@
 		B50D32442A18CCE50034B860 /* MKTradeObjectAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32432A18CCE50034B860 /* MKTradeObjectAnnotation.swift */; };
 		B50D32462A18D55B0034B860 /* TradeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32452A18D55B0034B860 /* TradeObject.swift */; };
 		B50D324A2A18DEFA0034B860 /* TradeObjectCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */; };
+		B50D324C2A1907DB0034B860 /* TradeObjectsTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D324B2A1907DB0034B860 /* TradeObjectsTypeView.swift */; };
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
 		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
 		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
@@ -97,6 +98,7 @@
 		B50D32432A18CCE50034B860 /* MKTradeObjectAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKTradeObjectAnnotation.swift; sourceTree = "<group>"; };
 		B50D32452A18D55B0034B860 /* TradeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObject.swift; sourceTree = "<group>"; };
 		B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectCallout.swift; sourceTree = "<group>"; };
+		B50D324B2A1907DB0034B860 /* TradeObjectsTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsTypeView.swift; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
 		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
 		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B50D324B2A1907DB0034B860 /* TradeObjectsTypeView.swift */,
 				B5EF44FA2A11273B00AFAFEF /* BikePathsInfoItemView.swift */,
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
 				B52896672A0F93B5006A85D9 /* Modal */,
@@ -794,6 +797,7 @@
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
 				B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
+				B50D324C2A1907DB0034B860 /* TradeObjectsTypeView.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B5EF44F42A10E45800AFAFEF /* BikePaths.swift in Sources */,
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,

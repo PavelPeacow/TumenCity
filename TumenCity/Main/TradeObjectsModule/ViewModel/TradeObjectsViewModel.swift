@@ -9,6 +9,7 @@ import Foundation
 
 protocol TradeObjectsViewModelDelegate: AnyObject {
     func didFinishAddingAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation])
+    func didFilterAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation])
 }
 
 @MainActor
@@ -16,6 +17,9 @@ final class TradeObjectsViewModel {
     
     var tradeObjects = [TradeObjectsRow]()
     var tradeObjectsAnnotations = [MKTradeObjectAnnotation]()
+    
+    var activeTradeObjectsAnnotations = [MKTradeObjectAnnotation]()
+    var freeTradeObjectsAnnotations = [MKTradeObjectAnnotation]()
     
     weak var delegate: TradeObjectsViewModelDelegate?
     
@@ -28,6 +32,15 @@ final class TradeObjectsViewModel {
         }
     }
     
+    func filterAnnotationsByType(_ type: MKTradeObjectAnnotation.AnnotationType) {
+        switch type {
+        case .activeTrade:
+            delegate?.didFilterAnnotations(activeTradeObjectsAnnotations)
+        case .freeTrade:
+            delegate?.didFilterAnnotations(freeTradeObjectsAnnotations)
+        }
+    }
+    
     func isTradeObjectDateGreaterThanToday(_ strDate: String?) -> Bool {
         guard let strDate else { return false }
         
@@ -36,7 +49,7 @@ final class TradeObjectsViewModel {
         
         guard let tradeObjectDate = date.date(from: strDate) else { return false}
 
-        if tradeObjectDate > Date() {
+        if tradeObjectDate >= Date() {
             return true
         }
         
@@ -79,6 +92,9 @@ final class TradeObjectsViewModel {
             
             tradeObjectsAnnotations.append(annotation)
         }
+        
+        activeTradeObjectsAnnotations = tradeObjectsAnnotations.filter { $0.type == .activeTrade }
+        freeTradeObjectsAnnotations = tradeObjectsAnnotations.filter { $0.type == .freeTrade }
     }
     
 }

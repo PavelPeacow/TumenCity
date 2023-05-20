@@ -49,6 +49,9 @@ struct Strings {
     }
     
     struct TradeObjectsModule {
+        static let filterActiveTitle = "НТО с действующими договорами: "
+        static let filterFreeTitle = "Свободные места: "
+        
         static let urName = "Наименование юридического лица: "
         static let numDoc = "Номер договора: "
         static let dateDoc = "Срок действия договора: "
