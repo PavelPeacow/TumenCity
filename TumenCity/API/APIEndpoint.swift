@@ -12,6 +12,9 @@ enum APIEndpoint {
     case closeRoads
     case sport
     
+    case tradeObjects
+    case tradeObjectBy(id: String)
+    
     var url: URL? {
         
         switch self {
@@ -24,6 +27,12 @@ enum APIEndpoint {
             
         case .sport:
             return urlComponents(host: "info.agt72.ru", path: "/api/sport/main/institutions/json")
+            
+        case .tradeObjects:
+            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/select/json")
+            
+        case .tradeObjectBy:
+            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/selectById/json")
         }
         
     }
@@ -53,8 +62,27 @@ enum APIEndpoint {
             
         case .sport:
             break
+            
+        case .tradeObjects:
+            request.httpMethod = "POST"
+            
+            let formData = "token=\(createToken())"
+            request.httpBody = formData.data(using: .utf8)
+            print(createToken())
+            
+        case .tradeObjectBy(let id):
+            request.httpMethod = "POST"
+            
+            let formData = [
+                "token" : createToken(),
+                "id" : id
+            ].map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+            
+            request.httpBody = formData.data(using: .utf8)
+            print(createToken())
+            
         }
-        print()
+
         print("url \(request.url)")
         return request
     }

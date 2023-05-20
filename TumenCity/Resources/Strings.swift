@@ -47,4 +47,20 @@ struct Strings {
     struct MainMenuViewController {
         
     }
+    
+    struct TradeObjectsModule {
+        static let urName = "Наименование юридического лица: "
+        static let numDoc = "Номер договора: "
+        static let dateDoc = "Срок действия договора: "
+        static let area = "Округ: "
+        static let typeObject = "Тип объекта: "
+        static let purpose = "Целевое назначение: "
+        static let period = "Период функционирования: "
+        
+        static let parametersTitle = "Параметры и характеристики нестационарного торгового объекта"
+        
+        static let areaSquare = "Площадь, кв.м: "
+        static let floors = "Количество этажей: "
+        static let height = "Высота, м: "
+    }
 }

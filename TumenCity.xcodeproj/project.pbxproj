@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */; };
 		B50D32352A17CD750034B860 /* YandexMapMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32342A17CD750034B860 /* YandexMapMaker.swift */; };
+		B50D32382A18C7200034B860 /* TradeObjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32372A18C7200034B860 /* TradeObjectsViewController.swift */; };
+		B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D323B2A18C9750034B860 /* TradeObjectsViewModel.swift */; };
+		B50D323F2A18C9C80034B860 /* TradeObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D323E2A18C9C80034B860 /* TradeObjects.swift */; };
+		B50D32422A18CA1E0034B860 /* tradeObjectsMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B50D32412A18CA1E0034B860 /* tradeObjectsMock.json */; };
+		B50D32442A18CCE50034B860 /* MKTradeObjectAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32432A18CCE50034B860 /* MKTradeObjectAnnotation.swift */; };
+		B50D32462A18D55B0034B860 /* TradeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32452A18D55B0034B860 /* TradeObject.swift */; };
+		B50D324A2A18DEFA0034B860 /* TradeObjectCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */; };
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
 		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
 		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
@@ -83,6 +90,13 @@
 		7A77344C4C7C47ED6692D1C9 /* Pods-TumenCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.debug.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.debug.xcconfig"; sourceTree = "<group>"; };
 		95D7D91F1F0CD00991DC2652 /* Pods-TumenCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.release.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.release.xcconfig"; sourceTree = "<group>"; };
 		B50D32342A17CD750034B860 /* YandexMapMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapMaker.swift; sourceTree = "<group>"; };
+		B50D32372A18C7200034B860 /* TradeObjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsViewController.swift; sourceTree = "<group>"; };
+		B50D323B2A18C9750034B860 /* TradeObjectsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsViewModel.swift; sourceTree = "<group>"; };
+		B50D323E2A18C9C80034B860 /* TradeObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjects.swift; sourceTree = "<group>"; };
+		B50D32412A18CA1E0034B860 /* tradeObjectsMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tradeObjectsMock.json; sourceTree = "<group>"; };
+		B50D32432A18CCE50034B860 /* MKTradeObjectAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKTradeObjectAnnotation.swift; sourceTree = "<group>"; };
+		B50D32452A18D55B0034B860 /* TradeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObject.swift; sourceTree = "<group>"; };
+		B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectCallout.swift; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
 		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
 		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
@@ -174,6 +188,42 @@
 				BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B50D32392A18C7230034B860 /* TradeObjectsModule */ = {
+			isa = PBXGroup;
+			children = (
+				B50D32402A18C9CA0034B860 /* Model */,
+				B50D323A2A18C96A0034B860 /* Controller */,
+				B50D323D2A18C9780034B860 /* ViewModel */,
+			);
+			path = TradeObjectsModule;
+			sourceTree = "<group>";
+		};
+		B50D323A2A18C96A0034B860 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B50D32372A18C7200034B860 /* TradeObjectsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B50D323D2A18C9780034B860 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B50D323B2A18C9750034B860 /* TradeObjectsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B50D32402A18C9CA0034B860 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B50D32432A18CCE50034B860 /* MKTradeObjectAnnotation.swift */,
+				B50D32452A18D55B0034B860 /* TradeObject.swift */,
+				B50D323E2A18C9C80034B860 /* TradeObjects.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		B528962F2A06342D006A85D9 /* SportModule */ = {
@@ -347,6 +397,7 @@
 				B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */,
 				B528963A2A06B359006A85D9 /* SportCallout.swift */,
 				B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */,
+				B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */,
 			);
 			path = Callout;
 			sourceTree = "<group>";
@@ -540,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
+				B50D32392A18C7230034B860 /* TradeObjectsModule */,
 				B5EF44EC2A10E41200AFAFEF /* BikePathsModule */,
 				B52896572A0A1CF5006A85D9 /* DigWorkModule */,
 				B528962F2A06342D006A85D9 /* SportModule */,
@@ -564,6 +616,7 @@
 			children = (
 				B5F7A885299DFFB50001ED69 /* APIManager.swift */,
 				B5F7A887299DFFC10001ED69 /* APIEndpoint.swift */,
+				B50D32412A18CA1E0034B860 /* tradeObjectsMock.json */,
 				B5EF44F62A110D0C00AFAFEF /* bikePathMock.json */,
 				B528963F2A078AAC006A85D9 /* sportMock.json */,
 				B528965F2A0A1F0C006A85D9 /* digWorkMock.json */,
@@ -653,6 +706,7 @@
 			files = (
 				B5EF45012A112A8800AFAFEF /* bikePathInfoLegend.json in Resources */,
 				B5EF44F72A110D0C00AFAFEF /* bikePathMock.json in Resources */,
+				B50D32422A18CA1E0034B860 /* tradeObjectsMock.json in Resources */,
 				B5F7A87B299D33070001ED69 /* LaunchScreen.storyboard in Resources */,
 				B52896602A0A1F0C006A85D9 /* digWorkMock.json in Resources */,
 				B5F7A878299D33070001ED69 /* Assets.xcassets in Resources */,
@@ -709,11 +763,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B50D32382A18C7200034B860 /* TradeObjectsViewController.swift in Sources */,
 				B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */,
 				B5F7A88D299E04E60001ED69 /* MKItemAnnotation.swift in Sources */,
 				B5EF44EE2A10E42D00AFAFEF /* BikePathsViewController.swift in Sources */,
 				B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */,
 				B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */,
+				B50D32462A18D55B0034B860 /* TradeObject.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
 				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
 				B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */,
@@ -754,18 +810,22 @@
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B52896312A063447006A85D9 /* Sport.swift in Sources */,
+				B50D323F2A18C9C80034B860 /* TradeObjects.swift in Sources */,
 				B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */,
 				B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
+				B50D32442A18CCE50034B860 /* MKTradeObjectAnnotation.swift in Sources */,
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
 				B528965D2A0A1E82006A85D9 /* DigWork.swift in Sources */,
 				B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */,
+				B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
 				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,
+				B50D324A2A18DEFA0034B860 /* TradeObjectCallout.swift in Sources */,
 				B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */,
 				B5EF44FD2A11288000AFAFEF /* BikePathInfoBottomSheet.swift in Sources */,
 				B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */,

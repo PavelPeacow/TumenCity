@@ -35,6 +35,8 @@ final class APIManager {
         
         guard let (data, _) = try? await urlSession.data(for: requst) else { throw APIError.cannotGet }
         
+        print(String(data: data, encoding: .utf8))
+            
         guard let result = try? jsonDecoder.decode(T.self, from: data) else { throw APIError.cannotDecode }
         
         return result

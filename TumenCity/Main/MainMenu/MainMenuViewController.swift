@@ -118,6 +118,8 @@ extension MainMenuViewController: UICollectionViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
             return
         case .tradeObjects:
+            let vc = TradeObjectsViewController()
+            navigationController?.pushViewController(vc, animated: true)
             return
         case .none:
             return

@@ -45,4 +45,13 @@ extension YMKMapView {
         cluster.clusterPlacemarks(withClusterRadius: 60, minZoom: 25)
     }
     
+    func addAnnotations(_ annotations: [MKTradeObjectAnnotation], cluster: YMKClusterizedPlacemarkCollection) {
+        annotations.forEach { annotation in
+            let placemark = cluster.addPlacemark(with: annotation, image: annotation.image ?? .add)
+            placemark.userData = annotation
+            
+        }
+        cluster.clusterPlacemarks(withClusterRadius: 60, minZoom: 25)
+    }
+    
 }
