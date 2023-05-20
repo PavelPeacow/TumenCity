@@ -33,7 +33,10 @@ final class RegistryView: UIView {
         super.init(frame: frame)
 
         addSubview(tableView)
-        setConstraints()
+        
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -75,18 +78,4 @@ extension RegistryView: UITableViewDataSource {
     
 }
 
-extension RegistryView: UITableViewDelegate {
-    
-}
-
-extension RegistryView {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
-    }
-}
+extension RegistryView: UITableViewDelegate { }

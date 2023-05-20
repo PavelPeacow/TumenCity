@@ -95,10 +95,9 @@ final class CommunalServiceCallout: Callout {
             stackView.spacing = 8
             stackView.translatesAutoresizingMaskIntoConstraints = false
             
-            NSLayoutConstraint.activate([
-                imageView.heightAnchor.constraint(equalToConstant: 25),
-                imageView.widthAnchor.constraint(equalToConstant: 25),
-            ])
+            imageView.snp.makeConstraints {
+                $0.size.equalTo(25)
+            }
             
             self.stackView.insertArrangedSubview(stackView, at: 1)
             
@@ -117,17 +116,15 @@ final class CommunalServiceCallout: Callout {
 extension CommunalServiceCallout {
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            alertBackground.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -15),
-            alertBackground.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 15),
-            alertBackground.widthAnchor.constraint(equalToConstant: 280),
-
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.leadingAnchor.constraint(equalTo: alertBackground.leadingAnchor, constant: 15),
-            stackView.trailingAnchor.constraint(equalTo: alertBackground.trailingAnchor, constant: -15),
-            
-        ])
+        alertBackground.snp.makeConstraints {
+            $0.top.bottom.equalTo(stackView).inset(-15)
+            $0.width.equalTo(280)
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.center.equalTo(view)
+            $0.leading.trailing.equalTo(alertBackground).inset(15)
+        }
     }
     
 }

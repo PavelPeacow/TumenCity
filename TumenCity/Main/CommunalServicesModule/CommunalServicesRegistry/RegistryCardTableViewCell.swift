@@ -266,27 +266,33 @@ extension RegistryCardTableViewCell: UITableViewDelegate {
 extension RegistryCardTableViewCell {
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.heightAnchor.constraint(equalToConstant: 80),
-            
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25),
-            
-            separator.leadingAnchor.constraint(equalTo: stackViewAccidentIcon.trailingAnchor, constant: 5),
-            separator.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-            separator.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-            separator.widthAnchor.constraint(equalToConstant: 1),
-            
-            stackViewAccidentIcon.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-            stackViewAccidentIcon.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5),
-            stackViewAccidentIcon.widthAnchor.constraint(equalToConstant: 30),
-            
-            stackViewMainInformation.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-            stackViewMainInformation.leadingAnchor.constraint(equalTo: separator.trailingAnchor, constant: 5),
-            stackViewMainInformation.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
-            stackViewMainInformation.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-        ])
+        
+        tableView.snp.makeConstraints {
+            $0.height.equalTo(80)
+        }
+        
+        containerView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.bottom.equalToSuperview().inset(25)
+        }
+        
+        stackViewAccidentIcon.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(5)
+            $0.leading.equalToSuperview().inset(5)
+            $0.width.equalTo(30)
+        }
+        
+        separator.snp.makeConstraints {
+            $0.leading.equalTo(stackViewAccidentIcon.snp.trailing).offset(5)
+            $0.top.bottom.equalToSuperview().inset(5)
+            $0.width.equalTo(1)
+        }
+        
+        stackViewMainInformation.snp.makeConstraints {
+            $0.leading.equalTo(separator).offset(5)
+            $0.trailing.equalToSuperview().inset(5)
+            $0.top.bottom.equalToSuperview().inset(5)
+        }
     }
 }

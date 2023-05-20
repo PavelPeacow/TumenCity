@@ -41,13 +41,7 @@ final class CommunalServicesView: UIView {
         return label
     }()
     
-    lazy var map: YMKMapView = {
-        let map = YMKMapView()
-        map.mapWindow.map.logo.setAlignmentWith(.init(horizontalAlignment: .left, verticalAlignment: .bottom))
-        map.mapWindow.map.logo.setPaddingWith(.init(horizontalPadding: 20, verticalPadding: 50*2))
-        map.translatesAutoresizingMaskIntoConstraints = false
-        return map
-    }()
+    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -69,15 +63,15 @@ final class CommunalServicesView: UIView {
 extension CommunalServicesView {
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            servicesInfoStackViewWithTitle.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            servicesInfoStackViewWithTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-            servicesInfoStackViewWithTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            
-            map.topAnchor.constraint(equalTo: servicesInfoStackViewWithTitle.bottomAnchor, constant: 5),
-            map.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1),
-            map.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-        ])
+        servicesInfoStackViewWithTitle.snp.makeConstraints {
+            $0.topMargin.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(5)
+        }
+        
+        YandexMapMaker.setYandexMapLayout(map: map, in: self) { [weak self] in
+            guard let self else { return }
+            $0.top.equalTo(self.servicesInfoStackViewWithTitle.snp.bottom).offset(5)
+        }
     }
     
 }

@@ -31,9 +31,14 @@ final class SportRegistryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         backgroundColor = .red
+        
         addSubview(tableView)
-        setConstraints()
+        
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -69,18 +74,4 @@ extension SportRegistryView: UITableViewDataSource {
     
 }
 
-extension SportRegistryView: UITableViewDelegate {
-    
-}
-
-extension SportRegistryView {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
-    }
-}
+extension SportRegistryView: UITableViewDelegate { }

@@ -23,13 +23,7 @@ class DigWorkViewController: UIViewController {
         return search
     }()
     
-    lazy var map: YMKMapView = {
-        let map = YMKMapView()
-        map.mapWindow.map.logo.setAlignmentWith(.init(horizontalAlignment: .left, verticalAlignment: .bottom))
-        map.mapWindow.map.logo.setPaddingWith(.init(horizontalPadding: 20, verticalPadding: 50*2))
-        map.translatesAutoresizingMaskIntoConstraints = false
-        return map
-    }()
+    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +37,7 @@ class DigWorkViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterIcon))
         view.addSubview(map)
         
-        setConstraints()
+        YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
     }
     
 }
@@ -122,18 +116,6 @@ extension DigWorkViewController: YMKMapObjectTapListener {
         callout.configure(annotation: annotation)
         callout.showAlert(in: self)
         return true
-    }
-    
-}
-
-extension DigWorkViewController {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            map.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            map.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            map.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-        ])
     }
     
 }

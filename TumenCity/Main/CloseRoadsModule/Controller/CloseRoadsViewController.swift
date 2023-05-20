@@ -14,14 +14,7 @@ class CloseRoadsViewController: UIViewController {
     
     lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    lazy var map: YMKMapView = {
-        let map = YMKMapView()
-        map.setDefaultRegion()
-        map.mapWindow.map.logo.setAlignmentWith(.init(horizontalAlignment: .left, verticalAlignment: .bottom))
-        map.mapWindow.map.logo.setPaddingWith(.init(horizontalPadding: 20, verticalPadding: 50*2))
-        map.translatesAutoresizingMaskIntoConstraints = false
-        return map
-    }()
+    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +24,7 @@ class CloseRoadsViewController: UIViewController {
         view.addSubview(map)
 
         setDelegates()
-        setConstraints()
+        YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
     }
     
     func setDelegates() {
@@ -75,18 +68,6 @@ extension CloseRoadsViewController: YMKMapObjectTapListener {
         callout.configure(annotation: annotation)
         callout.showAlert(in: self)
         return true
-    }
-    
-}
-
-extension CloseRoadsViewController {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            map.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
-            map.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            map.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-        ])
     }
     
 }

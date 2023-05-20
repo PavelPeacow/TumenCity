@@ -45,24 +45,15 @@ final class MenuHeaderCollectionReusableView: UICollectionReusableView {
         super.init(frame: frame)
         
         addSubview(logoStackView)
-        setConstraints()
+        
+        logoStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(10)
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-}
-
-extension MenuHeaderCollectionReusableView {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            logoStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            logoStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            logoStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            logoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-        ])
     }
     
 }

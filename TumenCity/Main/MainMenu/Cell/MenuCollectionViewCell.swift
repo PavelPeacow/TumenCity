@@ -74,19 +74,19 @@ final class MenuCollectionViewCell: UICollectionViewCell {
 extension MenuCollectionViewCell {
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            menuStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            menuStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            menuStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            menuStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            menuStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-
-            mainMenuIcon.heightAnchor.constraint(equalToConstant: 30),
-            mainMenuIcon.widthAnchor.constraint(equalToConstant: 30),
-            
-            separator.heightAnchor.constraint(equalTo: mainMenuTitle.heightAnchor, multiplier: 1),
-            separator.widthAnchor.constraint(equalToConstant: 1),
-        ])
+        menuStackView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(10)
+            $0.leading.trailing.equalToSuperview().inset(10)
+        }
+        
+        mainMenuIcon.snp.makeConstraints {
+            $0.size.equalTo(30)
+        }
+        
+        separator.snp.makeConstraints {
+            $0.height.equalTo(mainMenuTitle.snp.height).multipliedBy(1)
+            $0.width.equalTo(1)
+        }
     }
     
 }

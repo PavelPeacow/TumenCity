@@ -13,14 +13,7 @@ class BikePathsViewController: UIViewController {
     
     let viewModel = BikePathsViewModel()
     
-    lazy var map: YMKMapView = {
-        let map = YMKMapView()
-        map.setDefaultRegion()
-        map.mapWindow.map.logo.setAlignmentWith(.init(horizontalAlignment: .left, verticalAlignment: .bottom))
-        map.mapWindow.map.logo.setPaddingWith(.init(horizontalPadding: 20, verticalPadding: 50*2))
-        map.translatesAutoresizingMaskIntoConstraints = false
-        return map
-    }()
+    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +25,7 @@ class BikePathsViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = .init(image: UIImage(systemName: "info.square"), style: .done, target: self, action: #selector(didTapBikeStatInfo))
         
-        setConstraints()
+        YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
     }
     
 }
@@ -63,18 +56,6 @@ extension BikePathsViewController: BikePathsViewModelDelegate {
             polylineCreated.strokeWidth = 2.5
             polylineCreated.setStrokeColorWith(polyline.value)
         }
-    }
-    
-}
-
-extension BikePathsViewController {
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            map.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            map.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            map.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-        ])
     }
     
 }

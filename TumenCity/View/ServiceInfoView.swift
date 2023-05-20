@@ -104,15 +104,14 @@ extension ServiceInfoView {
 extension ServiceInfoView {
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 3),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3),
-            
-            serviceInfoIcon.heightAnchor.constraint(equalToConstant: 30),
-            serviceInfoIcon.widthAnchor.constraint(equalToConstant: 30),
-        ])
+        contentStackView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(3)
+            $0.leading.trailing.equalToSuperview().inset(5)
+        }
+        
+        serviceInfoIcon.snp.makeConstraints {
+            $0.size.equalTo(30)
+        }
     }
     
 }

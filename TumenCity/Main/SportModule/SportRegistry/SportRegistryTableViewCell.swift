@@ -190,29 +190,35 @@ extension SportRegistryTableViewCell {
 extension SportRegistryTableViewCell {
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25),
-            
-            separator.leadingAnchor.constraint(equalTo: sportIcon.trailingAnchor, constant: 5),
-            separator.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-            separator.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-            separator.widthAnchor.constraint(equalToConstant: 1),
-            
-            sportIcon.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-            sportIcon.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5),
-            sportIcon.widthAnchor.constraint(equalToConstant: 30),
-            
-            sportTitle.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-            sportTitle.leadingAnchor.constraint(equalTo: separator.trailingAnchor, constant: 5),
-            sportTitle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
-            
-            stackViewMainInformation.topAnchor.constraint(equalTo: sportTitle.bottomAnchor, constant: 5),
-            stackViewMainInformation.leadingAnchor.constraint(equalTo: separator.trailingAnchor, constant: 5),
-            stackViewMainInformation.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
-            stackViewMainInformation.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-        ])
+        containerView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.bottom.equalToSuperview().inset(25)
+        }
+        
+        sportTitle.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(5)
+            $0.trailing.equalToSuperview().inset(5)
+            $0.leading.equalTo(separator.snp.trailing).offset(5)
+        }
+        
+        sportIcon.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(5)
+            $0.leading.equalToSuperview().inset(5)
+            $0.width.equalTo(30)
+        }
+        
+        separator.snp.makeConstraints {
+            $0.leading.equalTo(sportIcon.snp.trailing).offset(5)
+            $0.top.bottom.equalToSuperview().inset(5)
+            $0.width.equalTo(1)
+        }
+        
+        stackViewMainInformation.snp.makeConstraints {
+            $0.leading.equalTo(separator).offset(5)
+            $0.trailing.equalToSuperview().inset(5)
+            $0.bottom.equalToSuperview().inset(5)
+            $0.top.equalTo(sportTitle.snp.bottom).offset(5)
+        }
     }
 }

@@ -74,16 +74,16 @@ final class CloseRoadCallout: Callout {
 extension CloseRoadCallout {
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            alertBackground.topAnchor.constraint(equalTo: stackViewContent.topAnchor, constant: -15),
-            alertBackground.bottomAnchor.constraint(equalTo: stackViewContent.bottomAnchor, constant: 15),
-            alertBackground.widthAnchor.constraint(equalToConstant: 280),
-            
-            stackViewContent.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackViewContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackViewContent.leadingAnchor.constraint(equalTo: alertBackground.leadingAnchor, constant: 15),
-            stackViewContent.trailingAnchor.constraint(equalTo: alertBackground.trailingAnchor, constant: -15),
-        ])
+        alertBackground.snp.makeConstraints {
+            $0.width.equalTo(200)
+            $0.top.bottom.equalTo(stackViewContent).inset(-15)
+        }
+        
+        stackViewContent.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.leading.trailing.equalTo(alertBackground).inset(15)
+        }
+        
     }
     
 }

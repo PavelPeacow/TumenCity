@@ -137,29 +137,30 @@ private extension UIViewControllerMapSegmented {
         mainMapView.translatesAutoresizingMaskIntoConstraints = false
         registryView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            segmentControl.heightAnchor.constraint(equalToConstant: 25),
-            segmentControl.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            segmentControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            segmentControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            
-            mainMapView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            mainMapView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            registryView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            registryView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            scrollView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 5),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.safeAreaInsets.bottom + 10),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-        ])
+        segmentControl.snp.makeConstraints {
+            $0.height.equalTo(25)
+            $0.width.equalToSuperview().multipliedBy(0.8)
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        mainMapView.snp.makeConstraints {
+            $0.size.equalTo(scrollView)
+        }
+        
+        registryView.snp.makeConstraints {
+            $0.size.equalTo(scrollView)
+        }
+        
+        scrollView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(segmentControl.snp.bottom).offset(5)
+            $0.bottom.equalToSuperview()
+        }
     }
     
 }
