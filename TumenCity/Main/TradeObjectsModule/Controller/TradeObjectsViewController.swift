@@ -74,7 +74,8 @@ class TradeObjectsViewController: UIViewController {
 private extension TradeObjectsViewController {
     
     @objc func didTapFilterIcon() {
-        
+        let bottomSheet = TradeObjectsFilterBottomSheet()
+        present(bottomSheet, animated: true)
     }
     
     @objc func didTapFreeFilter(_ sender: UITapGestureRecognizer) {

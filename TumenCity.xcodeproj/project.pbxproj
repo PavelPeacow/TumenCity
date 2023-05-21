@@ -17,6 +17,11 @@
 		B50D32462A18D55B0034B860 /* TradeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32452A18D55B0034B860 /* TradeObject.swift */; };
 		B50D324A2A18DEFA0034B860 /* TradeObjectCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */; };
 		B50D324C2A1907DB0034B860 /* TradeObjectsTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D324B2A1907DB0034B860 /* TradeObjectsTypeView.swift */; };
+		B50D324E2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D324D2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift */; };
+		B50D32502A191ED20034B860 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D324F2A191ED20034B860 /* MainButton.swift */; };
+		B50D32522A1920430034B860 /* CheckBoxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32512A1920430034B860 /* CheckBoxButton.swift */; };
+		B50D32542A1921D50034B860 /* CheckBoxWithTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32532A1921D50034B860 /* CheckBoxWithTitle.swift */; };
+		B50D32562A19F9840034B860 /* ScrollableCheckBoxesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32552A19F9840034B860 /* ScrollableCheckBoxesList.swift */; };
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
 		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
 		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
@@ -99,6 +104,11 @@
 		B50D32452A18D55B0034B860 /* TradeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObject.swift; sourceTree = "<group>"; };
 		B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectCallout.swift; sourceTree = "<group>"; };
 		B50D324B2A1907DB0034B860 /* TradeObjectsTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsTypeView.swift; sourceTree = "<group>"; };
+		B50D324D2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsFilterBottomSheet.swift; sourceTree = "<group>"; };
+		B50D324F2A191ED20034B860 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
+		B50D32512A1920430034B860 /* CheckBoxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxButton.swift; sourceTree = "<group>"; };
+		B50D32532A1921D50034B860 /* CheckBoxWithTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxWithTitle.swift; sourceTree = "<group>"; };
+		B50D32552A19F9840034B860 /* ScrollableCheckBoxesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableCheckBoxesList.swift; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
 		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
 		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
@@ -279,6 +289,9 @@
 				B52896482A091005006A85D9 /* UIViewControllerMapSegmented.swift */,
 				B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */,
 				B5EF44E32A10DD3600AFAFEF /* FilterView.swift */,
+				B50D324F2A191ED20034B860 /* MainButton.swift */,
+				B50D32512A1920430034B860 /* CheckBoxButton.swift */,
+				B50D32532A1921D50034B860 /* CheckBoxWithTitle.swift */,
 			);
 			path = Subclass;
 			sourceTree = "<group>";
@@ -334,6 +347,7 @@
 				B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */,
 				B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */,
 				B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */,
+				B50D324D2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -410,6 +424,7 @@
 				B50D324B2A1907DB0034B860 /* TradeObjectsTypeView.swift */,
 				B5EF44FA2A11273B00AFAFEF /* BikePathsInfoItemView.swift */,
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
+				B50D32552A19F9840034B860 /* ScrollableCheckBoxesList.swift */,
 				B52896672A0F93B5006A85D9 /* Modal */,
 				B52896432A07BB25006A85D9 /* SportModule */,
 				B53D665F2A06286D0010F846 /* Callout */,
@@ -790,6 +805,8 @@
 				B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */,
 				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
 				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
+				B50D32522A1920430034B860 /* CheckBoxButton.swift in Sources */,
+				B50D324E2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift in Sources */,
 				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,
 				B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */,
 				B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */,
@@ -815,6 +832,7 @@
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B52896312A063447006A85D9 /* Sport.swift in Sources */,
 				B50D323F2A18C9C80034B860 /* TradeObjects.swift in Sources */,
+				B50D32502A191ED20034B860 /* MainButton.swift in Sources */,
 				B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */,
 				B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
@@ -824,8 +842,10 @@
 				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
 				B528965D2A0A1E82006A85D9 /* DigWork.swift in Sources */,
 				B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */,
+				B50D32562A19F9840034B860 /* ScrollableCheckBoxesList.swift in Sources */,
 				B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
+				B50D32542A1921D50034B860 /* CheckBoxWithTitle.swift in Sources */,
 				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
 				B5F7A888299DFFC10001ED69 /* APIEndpoint.swift in Sources */,

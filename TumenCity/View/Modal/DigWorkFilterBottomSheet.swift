@@ -98,26 +98,16 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         return picker
     }()
     
-    lazy var submitFilterBtn: UIButton = {
-        let btn = UIButton()
-        btn.layer.cornerRadius = 12
-        btn.layer.borderColor = UIColor.gray.cgColor
-        btn.layer.borderWidth = 1
+    lazy var submitFilterBtn: MainButton = {
+        let btn = MainButton(title: Strings.ButtonTitle.submitFilterBtnStrings)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle(Strings.DigWorkFilterBottomSheet.submitFilterBtnStrings, for: .normal)
-        btn.setTitleColor(.label, for: .normal)
         btn.addTarget(self, action: #selector(didTapSubmitBtn), for: .touchUpInside)
         return btn
     }()
     
-    lazy var clearFilterBtn: UIButton = {
-        let btn = UIButton()
-        btn.layer.cornerRadius = 12
-        btn.layer.borderColor = UIColor.gray.cgColor
-        btn.layer.borderWidth = 1
+    lazy var clearFilterBtn: MainButton = {
+        let btn = MainButton(title: Strings.ButtonTitle.clearFilterBtn)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle(Strings.DigWorkFilterBottomSheet.clearFilterBtn, for: .normal)
-        btn.setTitleColor(.label, for: .normal)
         btn.addTarget(self, action: #selector(didTapClearBtn), for: .touchUpInside)
         return btn
     }()

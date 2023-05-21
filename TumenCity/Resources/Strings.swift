@@ -7,22 +7,23 @@
 
 import Foundation
 
-struct Strings {
+enum Strings {
     
-    private init() { }
+    enum ButtonTitle {
+        static let submitFilterBtnStrings = "Применить"
+        static let clearFilterBtn = "Очистить"
+    }
     
-    struct DigWorkFilterBottomSheet {
-        
-        private init() { }
+    enum DigWorkFilterBottomSheet {
         
         static let zones = ["Все", "ВАО", "ЦАО", "ЛАО", "КАО"]
         
         static let typeOfWork = ["Все", "Реконструкция, перенос, переустройство, ремонт ИК", "Аварии, инцидента на ИК",
-                            "Технологическое присоединение к сетям ИТ", "Установка/эксплуатация рекламных конструкций"]
+                                 "Технологическое присоединение к сетям ИТ", "Установка/эксплуатация рекламных конструкций"]
         
         static let status = ["Все", "Подано уведомление", "Зарегистрировано", "Отказано", "Ожидание работы",
-                            "В работе", "Восстановление", "Гарантийный период", "Завершенная работа", "Экспертиза",
-                            "Ожидание восстановления в летнем варианте", "Ошибка"]
+                             "В работе", "Восстановление", "Гарантийный период", "Завершенная работа", "Экспертиза",
+                             "Ожидание восстановления в летнем варианте", "Ошибка"]
         
         static let personFilterString = "Заинтересованное лицо"
         static let zoneFilterString = "Район"
@@ -30,25 +31,22 @@ struct Strings {
         static let statusFilterString = "Статус"
         static let dateAfterFilterString = "Период осуществляемых работ после:"
         static let dateBeforeFilterString = "Период осуществляемых работ до:"
-        
-        static let submitFilterBtnStrings = "Применить"
-        static let clearFilterBtn = "Очистить"
     }
     
-    #warning("Continue add strings, for separation")
-    struct RegistryCardTableViewCell {
+#warning("Continue add strings, for separation")
+    enum RegistryCardTableViewCell {
         
     }
     
-    struct ModulesTitles {
+    enum ModulesTitles {
         
     }
     
-    struct MainMenuViewController {
+    enum MainMenuViewController {
         
     }
     
-    struct TradeObjectsModule {
+    enum TradeObjectsModule {
         static let filterActiveTitle = "НТО с действующими договорами: "
         static let filterFreeTitle = "Свободные места: "
         
@@ -65,5 +63,21 @@ struct Strings {
         static let areaSquare = "Площадь, кв.м: "
         static let floors = "Количество этажей: "
         static let height = "Высота, м: "
+        
+        enum BottomSheet {
+            static let address = "Адрес местоположения"
+            static let purpose = "Целевое назначение"
+            static let objectType = "Тип объекта"
+            static let period = "Период функционирования"
+            
+            static let checkBoxTypes = ["Павильон", "Киоск", "Ролл-бар", "Холодильное оборудование",
+                                        "Лотки", "Пресс-стенд", "Палатка, лотки, холодильное оборудование, передвижное сооружение",
+                                        "Вендинговый автомат", "Елочный базар"]
+            
+            static let checkBoxPeriod = ["Круглогодичный", "Весенне-летний период (с 01 мая до 01 октября)",
+                                         "Период проведения массового мероприятия",
+                                         "Осенне-зимний период (с 10 октября до 20 апреля)",
+                                         "Зимний период (с 10 декабря по 10 января)"]
+        }
     }
 }
