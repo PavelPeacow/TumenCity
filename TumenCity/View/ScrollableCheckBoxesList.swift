@@ -114,7 +114,7 @@ extension ScrollableCheckBoxesList {
     
     @objc func didTapSelectAllObjectTypeCheckboxesBtn() {
         checkBoxes.forEach {
-            $0.checkBox.isChecked = true
+            $0.selectCheckBox()
         }
         
         delegate?.didTapSelectAllCheckBoxesBtn(with: listType)
@@ -122,7 +122,7 @@ extension ScrollableCheckBoxesList {
     
     @objc func didTapUnSelectAllObjectTypeCheckboxesBtn() {
         checkBoxes.forEach {
-            $0.checkBox.isChecked = false
+            $0.unSelectCheckBox()
         }
         
         delegate?.didTapUnSelectAllCheckBoxesBtn(with: listType)

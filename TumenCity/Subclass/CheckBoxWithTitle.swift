@@ -9,6 +9,10 @@ import UIKit
 
 final class CheckBoxWithTitle: UIView {
     
+    var checkBoxFilterId: String!
+    
+    var didTapCheckBoxCallback: ((_ id: String, _ isChecked: Bool) -> ())?
+    
     lazy var contentStacKView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [checkBox, checkBoxTitle])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -20,6 +24,7 @@ final class CheckBoxWithTitle: UIView {
     
     lazy var checkBox: CheckBoxButton = {
         let checkBox = CheckBoxButton()
+        checkBox.addTarget(self, action: #selector(didTapCheckBox), for: .touchUpInside)
         return checkBox
     }()
     
@@ -29,10 +34,11 @@ final class CheckBoxWithTitle: UIView {
         return label
     }()
     
-    init(title: String) {
+    init(title: String, checkBoxFilterId: String) {
         super.init(frame: .zero)
         
         checkBoxTitle.text = title
+        self.checkBoxFilterId = checkBoxFilterId
         
         addSubview(contentStacKView)
         
@@ -49,6 +55,23 @@ final class CheckBoxWithTitle: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func selectCheckBox() {
+        checkBox.isChecked = true
+        didTapCheckBoxCallback?(checkBoxFilterId, true)
+    }
     
+    func unSelectCheckBox() {
+        checkBox.isChecked = false
+        didTapCheckBoxCallback?(checkBoxFilterId, false)
+    }
+    
+}
+
+extension CheckBoxWithTitle {
+    
+    @objc func didTapCheckBox() {
+        checkBox.isChecked.toggle()
+        didTapCheckBoxCallback?(checkBoxFilterId, checkBox.isChecked)
+    }
     
 }

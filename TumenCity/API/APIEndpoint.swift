@@ -14,6 +14,9 @@ enum APIEndpoint {
     
     case tradeObjects
     case tradeObjectBy(id: String)
+    case tradeObjectsGetType
+    case tradeObjectsGetPeriod
+    case tradeObjectsSearch(search: TradeObjectsSearch)
     
     var url: URL? {
         
@@ -33,6 +36,15 @@ enum APIEndpoint {
             
         case .tradeObjectBy:
             return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/selectById/json")
+            
+        case .tradeObjectsGetType:
+            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/getTypeObject/json")
+            
+        case .tradeObjectsGetPeriod:
+            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/getPeriod/json")
+        
+        case .tradeObjectsSearch:
+            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/searchByCategory/json")
         }
         
     }
@@ -53,7 +65,7 @@ enum APIEndpoint {
             
         case .communalServices:
             break
-        case .closeRoads:
+        case .closeRoads, .tradeObjects, .tradeObjectsGetType, .tradeObjectsGetPeriod:
             request.httpMethod = "POST"
             
             let formData = "token=\(createToken())"
@@ -62,14 +74,7 @@ enum APIEndpoint {
             
         case .sport:
             break
-            
-        case .tradeObjects:
-            request.httpMethod = "POST"
-            
-            let formData = "token=\(createToken())"
-            request.httpBody = formData.data(using: .utf8)
-            print(createToken())
-            
+
         case .tradeObjectBy(let id):
             request.httpMethod = "POST"
             
@@ -81,6 +86,28 @@ enum APIEndpoint {
             request.httpBody = formData.data(using: .utf8)
             print(createToken())
             
+        case .tradeObjectsSearch(let search):
+            request.httpMethod = "POST"
+            
+            let periodOperation = search.periodOperation!.isEmpty ? "periodOperation" : "periodOperation[]"
+            let objectType = search.objectType!.isEmpty ? "objectType" : "objectType[]"
+            
+            print(search.periodOperation)
+            print(periodOperation)
+            dump(search)
+            
+            let formData = [
+                "token" : createToken(),
+                periodOperation: search.periodOperation ?? "",
+                objectType: search.objectType ?? "",
+                "locationAddress": search.locationAddress,
+                "numberObjectScheme": search.numberObjectScheme,
+                "intendedPurpose": search.intendedPurpose
+            ].map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+            
+            print(formData)
+            
+            request.httpBody = formData.data(using: .utf8)
         }
 
         print("url \(request.url)")

@@ -17,12 +17,26 @@ class TradeObjectsViewController: UIViewController {
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     lazy var tradeObjectsFilterTypeStackView: UIStackView = {
-        let stackView = UIStackView()
+        let stackView = UIStackView(arrangedSubviews: [filterViewFree, filterViewActive])
         stackView.axis = .vertical
         stackView.spacing = 8
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+    
+    lazy var filterViewFree: TradeObjectsTypeView = {
+        let filter = TradeObjectsTypeView(icon: .init(named: "filterFree") ?? .add, filterTitle: Strings.TradeObjectsModule.filterFreeTitle)
+        let filterFreeGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFreeFilter))
+        filter.addGestureRecognizer(filterFreeGesture)
+        return filter
+    }()
+    
+    lazy var filterViewActive: TradeObjectsTypeView = {
+        let filter = TradeObjectsTypeView(icon: .init(named: "filterActive") ?? .add, filterTitle: Strings.TradeObjectsModule.filterActiveTitle)
+        let filterFreeGesture = UITapGestureRecognizer(target: self, action: #selector(didTapActiveFilter))
+        filter.addGestureRecognizer(filterFreeGesture)
+        return filter
     }()
     
     lazy var map = YandexMapMaker.makeYandexMap()
@@ -50,23 +64,13 @@ class TradeObjectsViewController: UIViewController {
         }
     }
     
-    private func addTradeObjectsFilterViews() {
-        let count = viewModel.tradeObjectsAnnotations.map({ $0.type })
-        let activeCount = count.filter({ $0 == .activeTrade }).count
+    private func setTradeObjectsCount(from annotations: [MKTradeObjectAnnotation]) {
+        let count = annotations.map({ $0.type })
         let freeCount = count.filter({ $0 == .freeTrade }).count
+        let activeCount = count.filter({ $0 == .activeTrade }).count
         
-        let filterViewFree = TradeObjectsTypeView(icon: .init(named: "filterFree") ?? .add,
-                                                  count: String(freeCount), filterTitle: Strings.TradeObjectsModule.filterFreeTitle)
-        let filterFreeGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFreeFilter))
-        filterViewFree.addGestureRecognizer(filterFreeGesture)
-        
-        let filterViewActive = TradeObjectsTypeView(icon: .init(named: "filterActive") ?? .add,
-                                                    count: String(activeCount), filterTitle: Strings.TradeObjectsModule.filterActiveTitle)
-        let filterActiveGesture = UITapGestureRecognizer(target: self, action: #selector(didTapActiveFilter))
-        filterViewActive.addGestureRecognizer(filterActiveGesture)
-        
-        tradeObjectsFilterTypeStackView.addArrangedSubview(filterViewFree)
-        tradeObjectsFilterTypeStackView.addArrangedSubview(filterViewActive)
+        filterViewFree.changeFilterCount(freeCount)
+        filterViewActive.changeFilterCount(activeCount)
     }
 
 }
@@ -75,6 +79,12 @@ private extension TradeObjectsViewController {
     
     @objc func didTapFilterIcon() {
         let bottomSheet = TradeObjectsFilterBottomSheet()
+        bottomSheet.delegate = self
+        
+        let tradeObjectsType = viewModel.tradeObjectsType
+        let tradeObjectsPeriod = viewModel.tradeObjectsPeriod
+        
+        bottomSheet.configureFilters(tradeObjectsType: tradeObjectsType, tradeObjectsPeriod: tradeObjectsPeriod)
         present(bottomSheet, animated: true)
     }
     
@@ -109,7 +119,7 @@ private extension TradeObjectsViewController {
         currentTappedFilter = nil
         
         collection.clear()
-        map.addAnnotations(viewModel.tradeObjectsAnnotations, cluster: collection)
+        map.addAnnotations(viewModel.currentVisibleTradeObjectsAnnotations, cluster: collection)
     }
     
     func selectFilter(_ filter: TradeObjectsTypeView) {
@@ -121,13 +131,36 @@ private extension TradeObjectsViewController {
     
 }
 
+extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
+    
+    func didTapSubmitBtn(_ searchFilter: TradeObjectsSearch) {
+        Task {
+            if let result = await viewModel.getFilteredTradeObjectByFilter(searchFilter) {
+                collection.clear()
+                let annotations = viewModel.addAnnotations(tradeObjects: result)
+                viewModel.currentVisibleTradeObjectsAnnotations = annotations
+                map.addAnnotations(annotations, cluster: collection)
+                setTradeObjectsCount(from: annotations)
+            }
+        }
+    }
+    
+    func didTapClearBtn() {
+        collection.clear()
+        let annotations = viewModel.tradeObjectsAnnotations
+        map.addAnnotations(annotations, cluster: collection)
+        setTradeObjectsCount(from: annotations)
+    }
+
+}
+
 extension TradeObjectsViewController: TradeObjectsViewModelDelegate {
     
     func didFinishAddingAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation]) {
         map.addAnnotations(tradeAnnotations, cluster: collection)
         map.mapWindow.map.mapObjects.addTapListener(with: self)
         
-        addTradeObjectsFilterViews()
+        setTradeObjectsCount(from: tradeAnnotations)
     }
     
     func didFilterAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation]) {

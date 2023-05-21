@@ -23,21 +23,14 @@ final class CheckBoxButton: UIButton {
         layer.borderColor = UIColor.systemGray6.cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 5
-        
-        addTarget(self, action: #selector(checkBoxTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setState() {
+    private func setState() {
         let image = isChecked ? checkedImage : nil
         setImage(image, for: .normal)
     }
-    
-    @objc private func checkBoxTapped() {
-        isChecked.toggle()
-    }
-    
 }

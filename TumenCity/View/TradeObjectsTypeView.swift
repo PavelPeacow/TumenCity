@@ -47,12 +47,11 @@ class TradeObjectsTypeView: UIView {
         return label
     }()
     
-    init(icon: UIImage, count: String, filterTitle: String) {
+    init(icon: UIImage, filterTitle: String) {
         super.init(frame: .zero)
         
         tradeObjectIcon.image = icon
         filterTitleLabel.text = filterTitle
-        countLabel.text = count
         
         backgroundColor = .systemGray6
         
@@ -72,6 +71,10 @@ class TradeObjectsTypeView: UIView {
     
     func tapFilterView() {
         isTappedFilterView.toggle()
+    }
+    
+    func changeFilterCount(_ count: Int) {
+        countLabel.text = String(count)
     }
     
 }

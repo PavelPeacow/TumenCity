@@ -15,29 +15,38 @@ protocol TradeObjectsViewModelDelegate: AnyObject {
 @MainActor
 final class TradeObjectsViewModel {
     
+    var currentVisibleTradeObjectsAnnotations = [MKTradeObjectAnnotation]()
+    
     var tradeObjects = [TradeObjectsRow]()
     var tradeObjectsAnnotations = [MKTradeObjectAnnotation]()
     
-    var activeTradeObjectsAnnotations = [MKTradeObjectAnnotation]()
-    var freeTradeObjectsAnnotations = [MKTradeObjectAnnotation]()
+    var tradeObjectsType = [TradeObjectTypeRow]()
+    var tradeObjectsPeriod = [TradeObjectPeriodRow]()
     
     weak var delegate: TradeObjectsViewModelDelegate?
     
     init() {
         Task {
             await getTradeObjects()
-            addAnnotations()
+            await getTradeObjectsType()
+            await getTradeObjectsPeriod()
+            
+            tradeObjectsAnnotations = addAnnotations(tradeObjects: tradeObjects)
+            currentVisibleTradeObjectsAnnotations = tradeObjectsAnnotations
+            
             print(createToken())
-            delegate?.didFinishAddingAnnotations(tradeObjectsAnnotations)
+            delegate?.didFinishAddingAnnotations(currentVisibleTradeObjectsAnnotations)
         }
     }
     
     func filterAnnotationsByType(_ type: MKTradeObjectAnnotation.AnnotationType) {
         switch type {
         case .activeTrade:
-            delegate?.didFilterAnnotations(activeTradeObjectsAnnotations)
+            let filteredAnnotations = currentVisibleTradeObjectsAnnotations.filter { $0.type == .activeTrade }
+            delegate?.didFilterAnnotations(filteredAnnotations)
         case .freeTrade:
-            delegate?.didFilterAnnotations(freeTradeObjectsAnnotations)
+            let filteredAnnotations = currentVisibleTradeObjectsAnnotations.filter { $0.type == .freeTrade }
+            delegate?.didFilterAnnotations(filteredAnnotations)
         }
     }
     
@@ -63,7 +72,34 @@ final class TradeObjectsViewModel {
         } catch {
             print(error)
         }
-        
+    }
+    
+    func getTradeObjectsType() async {
+        do {
+            let result = try await APIManager().getAPIContent(type: TradeObjectType.self, endpoint: .tradeObjectsGetType)
+            tradeObjectsType = result.row
+        } catch {
+            print(error)
+        }
+    }
+    
+    func getTradeObjectsPeriod() async {
+        do {
+            let result = try await APIManager().getAPIContent(type: TradeObjectPeriod.self, endpoint: .tradeObjectsGetPeriod)
+            tradeObjectsPeriod = result.row
+        } catch {
+            print(error)
+        }
+    }
+    
+    func getFilteredTradeObjectByFilter(_ searchFilter: TradeObjectsSearch) async -> [TradeObjectsRow]? {
+        do {
+            let result = try await APIManager().getAPIContent(type: TradeObjects.self, endpoint: .tradeObjectsSearch(search: searchFilter))
+            return result.row
+        } catch {
+            print(error)
+            return nil
+        }
     }
     
     func getTradeObjectById(_ id: String) async -> TradeObject? {
@@ -76,7 +112,9 @@ final class TradeObjectsViewModel {
         }
     }
     
-    func addAnnotations() {
+    func addAnnotations(tradeObjects: [TradeObjectsRow]) -> [MKTradeObjectAnnotation] {
+        var annotations = [MKTradeObjectAnnotation]()
+        
         tradeObjects.forEach { object in
             var stringCoordinates = object.fields.mark
             stringCoordinates.removeFirst()
@@ -90,11 +128,10 @@ final class TradeObjectsViewModel {
             
             let annotation = MKTradeObjectAnnotation(id: object.id, coordinates: .init(latitude: lat, longitude: long), tradeType: tradeType)
             
-            tradeObjectsAnnotations.append(annotation)
+            annotations.append(annotation)
         }
-        
-        activeTradeObjectsAnnotations = tradeObjectsAnnotations.filter { $0.type == .activeTrade }
-        freeTradeObjectsAnnotations = tradeObjectsAnnotations.filter { $0.type == .freeTrade }
+                
+        return annotations
     }
     
 }
