@@ -54,9 +54,9 @@ enum Strings {
         static let numDoc = "Номер договора: "
         static let dateDoc = "Срок действия договора: "
         static let area = "Округ: "
-        static let typeObject = "Тип объекта: "
+        static let typeObject = "Тип объекта"
         static let purpose = "Целевое назначение: "
-        static let period = "Период функционирования: "
+        static let period = "Период функционирования"
         
         static let parametersTitle = "Параметры и характеристики нестационарного торгового объекта"
         

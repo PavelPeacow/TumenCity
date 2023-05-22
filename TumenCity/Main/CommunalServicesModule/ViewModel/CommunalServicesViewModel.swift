@@ -85,7 +85,7 @@ final class CommunalServicesViewModel {
     private func formatData() {
         communalServices?.card.forEach { card in
             #warning("Check for date, but it unnesessary")
-//            guard isDateToday(formatDateString(card.datStart)) else { print("future date"); print(card.datStart); return }
+            guard isDateToday(formatDateString(card.datStart)) else { print("future date"); print(card.datStart); return }
             let cardID = card.numCard
             let workType = card.vidWork
             let dateStart = card.datStart
