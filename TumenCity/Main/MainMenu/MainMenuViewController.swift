@@ -105,6 +105,8 @@ extension MainMenuViewController: UICollectionViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
             return
         case .urbanImprovements:
+            let vc = UrbanImprovementsViewController()
+            navigationController?.pushViewController(vc, animated: true)
             return
         case .communalServices:
             let vc = CommunalServicesViewController(serviceMap: CommunalServicesView(), serviceRegistry: RegistryView(), serviceSearch: RegistySearchResultViewController())

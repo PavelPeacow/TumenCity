@@ -1,0 +1,26 @@
+<svg width="36" height="44" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_32_3394)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.3155 43.5065C18.5619 44.1645 17.4381 44.1645 16.6845 43.5065C5.62262 33.8474 0 25.4135 0 18C0 7.50133 8.19411 0 18 0C27.8059 0 36 7.50133 36 18C36 25.4135 30.3774 33.8474 19.3155 43.5065Z" fill="#9B51E0"/>
+<g clip-path="url(#clip1_32_3394)">
+<path d="M12 30V9" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M16 13.2031V30.0636" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M12 8.5L7 13.1094V14H29V13L12 8.5Z" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M16 24H12" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M16 18.8232H12" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M9 30H19" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M19 21H29" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M19 25H29" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M26 21V25" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M22 25V21" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+<path d="M24 14V21" stroke="white" stroke-width="1.8" stroke-miterlimit="10"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_32_3394">
+<rect width="36" height="44" rx="18" fill="white"/>
+</clipPath>
+<clipPath id="clip1_32_3394">
+<rect width="24" height="24" fill="white" transform="translate(6 7)"/>
+</clipPath>
+</defs>
+</svg>

@@ -18,6 +18,8 @@ enum APIEndpoint {
     case tradeObjectsGetPeriod
     case tradeObjectsSearch(search: TradeObjectsSearch)
     
+    case urbanImprovements
+    
     var url: URL? {
         
         switch self {
@@ -45,6 +47,9 @@ enum APIEndpoint {
         
         case .tradeObjectsSearch:
             return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/searchByCategory/json")
+            
+        case .urbanImprovements:
+            return urlComponents(host: "info.agt72.ru", path: "/api/informer/blagoustroystvo/select/json")
         }
         
     }
@@ -108,6 +113,9 @@ enum APIEndpoint {
             print(formData)
             
             request.httpBody = formData.data(using: .utf8)
+            
+        case .urbanImprovements:
+            request.httpMethod = "POST"
         }
 
         print("url \(request.url)")

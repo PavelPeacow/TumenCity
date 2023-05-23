@@ -25,6 +25,10 @@
 		B50D32582A1A00A20034B860 /* TradeObjectsType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32572A1A00A20034B860 /* TradeObjectsType.swift */; };
 		B50D325A2A1A00B10034B860 /* TradeObjectsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32592A1A00B10034B860 /* TradeObjectsPeriod.swift */; };
 		B50D325C2A1A0F050034B860 /* TradeObjectsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D325B2A1A0F050034B860 /* TradeObjectsSearch.swift */; };
+		B50D32612A1C98D80034B860 /* UrbanImprovementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32602A1C98D80034B860 /* UrbanImprovementsViewController.swift */; };
+		B50D32642A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32632A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift */; };
+		B50D32672A1C9EF60034B860 /* UrbanImprovements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */; };
+		B50D326A2A1CA14C0034B860 /* UrbanImprovementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */; };
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
 		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
 		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
@@ -56,6 +60,8 @@
 		B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */; };
 		B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D665B2A06211A0010F846 /* CommunalServiceCallout.swift */; };
 		B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */; };
+		B5464CA52A1CB324000147F8 /* urbanMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B5464CA42A1CB324000147F8 /* urbanMock.json */; };
+		B5464CA72A1CB970000147F8 /* Cluster+UrbanPieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
@@ -67,6 +73,7 @@
 		B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */; };
 		B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A329A63FF4003698C8 /* RegistryView.swift */; };
 		B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */; };
+		B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */; };
 		B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */; };
 		B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */; };
 		B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */; };
@@ -115,6 +122,10 @@
 		B50D32572A1A00A20034B860 /* TradeObjectsType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsType.swift; sourceTree = "<group>"; };
 		B50D32592A1A00B10034B860 /* TradeObjectsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsPeriod.swift; sourceTree = "<group>"; };
 		B50D325B2A1A0F050034B860 /* TradeObjectsSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsSearch.swift; sourceTree = "<group>"; };
+		B50D32602A1C98D80034B860 /* UrbanImprovementsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsViewController.swift; sourceTree = "<group>"; };
+		B50D32632A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsFilterBottomSheet.swift; sourceTree = "<group>"; };
+		B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovements.swift; sourceTree = "<group>"; };
+		B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsViewModel.swift; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
 		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
 		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
@@ -145,6 +156,8 @@
 		B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddAnnotations.swift"; sourceTree = "<group>"; };
 		B53D665B2A06211A0010F846 /* CommunalServiceCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServiceCallout.swift; sourceTree = "<group>"; };
 		B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadCallout.swift; sourceTree = "<group>"; };
+		B5464CA42A1CB324000147F8 /* urbanMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = urbanMock.json; sourceTree = "<group>"; };
+		B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+UrbanPieChart.swift"; sourceTree = "<group>"; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
@@ -156,6 +169,7 @@
 		B57108A129A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		B57108A329A63FF4003698C8 /* RegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryView.swift; sourceTree = "<group>"; };
 		B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryCardTableViewCell.swift; sourceTree = "<group>"; };
+		B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKUrbanAnnotation.swift; sourceTree = "<group>"; };
 		B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientBorder.swift"; sourceTree = "<group>"; };
 		B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Encrypt.swift; sourceTree = "<group>"; };
 		B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkFilterBottomSheet.swift; sourceTree = "<group>"; };
@@ -245,6 +259,41 @@
 				B50D325B2A1A0F050034B860 /* TradeObjectsSearch.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B50D32622A1C98DD0034B860 /* UrbanImprovementsModule */ = {
+			isa = PBXGroup;
+			children = (
+				B50D32682A1C9EF90034B860 /* Model */,
+				B50D32652A1C9EE50034B860 /* Controller */,
+				B50D326B2A1CA14E0034B860 /* ViewModel */,
+			);
+			path = UrbanImprovementsModule;
+			sourceTree = "<group>";
+		};
+		B50D32652A1C9EE50034B860 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B50D32602A1C98D80034B860 /* UrbanImprovementsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B50D32682A1C9EF90034B860 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */,
+				B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B50D326B2A1CA14E0034B860 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B528962F2A06342D006A85D9 /* SportModule */ = {
@@ -357,6 +406,7 @@
 				B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */,
 				B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */,
 				B50D324D2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift */,
+				B50D32632A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -410,6 +460,7 @@
 			children = (
 				B53A680229F54564005DE734 /* Cluster+PieChart.swift */,
 				B53D66552A02CF690010F846 /* Cluster+StaticStyle.swift */,
+				B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */,
 			);
 			path = Cluster;
 			sourceTree = "<group>";
@@ -618,6 +669,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
+				B50D32622A1C98DD0034B860 /* UrbanImprovementsModule */,
 				B50D32392A18C7230034B860 /* TradeObjectsModule */,
 				B5EF44EC2A10E41200AFAFEF /* BikePathsModule */,
 				B52896572A0A1CF5006A85D9 /* DigWorkModule */,
@@ -648,6 +700,7 @@
 				B528963F2A078AAC006A85D9 /* sportMock.json */,
 				B528965F2A0A1F0C006A85D9 /* digWorkMock.json */,
 				B5EF45002A112A8800AFAFEF /* bikePathInfoLegend.json */,
+				B5464CA42A1CB324000147F8 /* urbanMock.json */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -731,6 +784,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5464CA52A1CB324000147F8 /* urbanMock.json in Resources */,
 				B5EF45012A112A8800AFAFEF /* bikePathInfoLegend.json in Resources */,
 				B5EF44F72A110D0C00AFAFEF /* bikePathMock.json in Resources */,
 				B50D32422A18CA1E0034B860 /* tradeObjectsMock.json in Resources */,
@@ -819,19 +873,23 @@
 				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,
 				B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */,
 				B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */,
+				B5464CA72A1CB970000147F8 /* Cluster+UrbanPieChart.swift in Sources */,
 				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
 				B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B50D324C2A1907DB0034B860 /* TradeObjectsTypeView.swift in Sources */,
+				B50D326A2A1CA14C0034B860 /* UrbanImprovementsViewModel.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B5EF44F42A10E45800AFAFEF /* BikePaths.swift in Sources */,
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,
 				B53D66502A029A270010F846 /* CloseRoadsViewModel.swift in Sources */,
 				B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
+				B50D32612A1C98D80034B860 /* UrbanImprovementsViewController.swift in Sources */,
 				B5EF44FB2A11273B00AFAFEF /* BikePathsInfoItemView.swift in Sources */,
 				B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */,
+				B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */,
 				B50D325A2A1A00B10034B860 /* TradeObjectsPeriod.swift in Sources */,
 				B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */,
 				B528965A2A0A1D12006A85D9 /* DigWorkViewModel.swift in Sources */,
@@ -840,6 +898,7 @@
 				B52896562A0A1CF2006A85D9 /* DigWorkViewController.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
+				B50D32642A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift in Sources */,
 				B52896312A063447006A85D9 /* Sport.swift in Sources */,
 				B50D323F2A18C9C80034B860 /* TradeObjects.swift in Sources */,
 				B50D32582A1A00A20034B860 /* TradeObjectsType.swift in Sources */,
@@ -857,6 +916,7 @@
 				B50D32562A19F9840034B860 /* ScrollableCheckBoxesList.swift in Sources */,
 				B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
+				B50D32672A1C9EF60034B860 /* UrbanImprovements.swift in Sources */,
 				B50D32542A1921D50034B860 /* CheckBoxWithTitle.swift in Sources */,
 				B571089929A374BD003698C8 /* YandexMK+Utilities.swift in Sources */,
 				B5F7A88A299E02620001ED69 /* CommunalServices.swift in Sources */,
