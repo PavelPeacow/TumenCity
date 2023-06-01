@@ -40,6 +40,7 @@ final class MKUrbanAnnotation: YMKPoint {
         }
     }
     
+    var title: String
     var filterTypeID: Int
     var id: Int
     var coordinates: CLLocationCoordinate2D
@@ -54,7 +55,8 @@ final class MKUrbanAnnotation: YMKPoint {
         coordinates.latitude.magnitude
     }
     
-    init(id: Int, filterTypeID: Int, coordinates: CLLocationCoordinate2D, type: AnnotationType) {
+    init(title: String, id: Int, filterTypeID: Int, coordinates: CLLocationCoordinate2D, type: AnnotationType) {
+        self.title = title
         self.id = id
         self.filterTypeID = filterTypeID
         self.coordinates = coordinates

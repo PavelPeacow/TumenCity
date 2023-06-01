@@ -12,7 +12,7 @@ class UrbanImprovementsViewController: UIViewController {
 
     let viewModel = UrbanImprovementsViewModel()
     
-    var isFilterActive = false
+    var currentActiveFilterID: Int?
     
     lazy var map = YandexMapMaker.makeYandexMap()
     
@@ -44,7 +44,7 @@ extension UrbanImprovementsViewController {
     
     @objc func didTapFilterBtn() {
         let bottomSheet = UrbanImprovementsFilterBottomSheet()
-        bottomSheet.configure(filters: viewModel.filterItems, isFilterActive: isFilterActive)
+        bottomSheet.configure(filters: viewModel.filterItems, currentActiveFilterID: currentActiveFilterID)
         bottomSheet.delegate = self
         present(bottomSheet, animated: true)
     }
@@ -65,7 +65,7 @@ extension UrbanImprovementsViewController: UrbanImprovementsFilterBottomSheetDel
             map.addPolygon(polygon.0, polygonData: polygon.1, tapListener: self)
         }
         
-        isFilterActive = true
+        currentActiveFilterID = filterID
     }
     
     func didTapDiscardFilterBtn() {
@@ -80,7 +80,7 @@ extension UrbanImprovementsViewController: UrbanImprovementsFilterBottomSheetDel
             map.addPolygon(polygon.0, polygonData: polygon.1, tapListener: self)
         }
         
-        isFilterActive = false
+        currentActiveFilterID = nil
     }
     
 }
@@ -102,6 +102,22 @@ extension UrbanImprovementsViewController: YMKClusterListener {
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKUrbanAnnotation }
         cluster.appearance.setPieChart(clusterAnnotations: annotations)
+        cluster.addClusterTapListener(with: self)
+    }
+    
+}
+
+extension UrbanImprovementsViewController: YMKClusterTapListener {
+    
+    func onClusterTap(with cluster: YMKCluster) -> Bool {
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKUrbanAnnotation }
+        guard viewModel.isClusterWithTheSameCoordinates(annotations: annotations) else { return false }
+        
+        let bottomSheet = UrbanImprovementsBottomSheet()
+        bottomSheet.configureModal(annotations: annotations)
+        present(bottomSheet, animated: true)
+        
+        return true
     }
     
 }
@@ -112,6 +128,12 @@ extension UrbanImprovementsViewController: YMKMapObjectTapListener {
         if let polygon = mapObject as? YMKPolygonMapObject {
             guard let polygonData = polygon.userData as? UrbanPolygon else { return false }
             print(polygonData.filterTypeID)
+            return true
+        }
+        
+        if let point = mapObject as? YMKPlacemarkMapObject {
+            guard let annotation = point.userData as? MKUrbanAnnotation else { return false }
+            
             return true
         }
         

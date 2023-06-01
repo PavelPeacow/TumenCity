@@ -22,7 +22,8 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
     lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [filterIcon, filterTitle])
         stackView.spacing = 8
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fill
+        stackView.alignment = .center
         stackView.axis = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -47,7 +48,7 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
         containerView.addSubview(contentStackView)
 
         containerView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().inset(0)
             $0.leading.trailing.equalToSuperview().inset(10)
             $0.bottom.equalToSuperview().inset(25)
         }
@@ -55,16 +56,20 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
         contentStackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(10)
         }
+        
+        filterIcon.snp.makeConstraints {
+            $0.size.equalTo(35)
+        }
+        
+        selectionStyle = .none
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
-        filterTitle.text = nil
-        filterIcon.image = nil
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        containerView.backgroundColor = .systemGray6
     }
     
     func configureCell(icon: UIImage?, title: String) {
@@ -84,6 +89,8 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
     var filters = [UrbanFilter]()
     
     weak var delegate: UrbanImprovementsFilterBottomSheetDelegate?
+    
+    var currentActiveFilterID: Int?
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [discardFilterBtn, tableView])
@@ -106,6 +113,7 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         tableView.register(UrbanImprovementsFilterCell.self, forCellReuseIdentifier: UrbanImprovementsFilterCell.identifier)
         return tableView
     }()
@@ -127,11 +135,12 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
         
     }
     
-    func configure(filters: [UrbanFilter], isFilterActive: Bool) {
+    func configure(filters: [UrbanFilter], currentActiveFilterID: Int?) {
         self.filters = filters
         
-        if isFilterActive {
+        if let currentActiveFilterID {
             discardFilterBtn.isHidden = false
+            self.currentActiveFilterID = currentActiveFilterID
         }
     }
     
@@ -154,7 +163,11 @@ extension UrbanImprovementsFilterBottomSheet: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UrbanImprovementsFilterCell.identifier, for: indexPath) as! UrbanImprovementsFilterCell
-        print("chw")
+        
+        if filters[indexPath.row].filterID == currentActiveFilterID ?? -1 {
+            cell.containerView.backgroundColor = .systemBlue
+        }
+        
         cell.configureCell(icon: filters[indexPath.row].image, title: filters[indexPath.row].title)
         
         return cell

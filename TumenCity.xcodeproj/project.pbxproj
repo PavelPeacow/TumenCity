@@ -65,6 +65,7 @@
 		B5464CA92A1D143C000147F8 /* UrbanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CA82A1D143C000147F8 /* UrbanFilter.swift */; };
 		B5464CAF2A28920E000147F8 /* UrbanPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */; };
 		B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */; };
+		B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
@@ -164,6 +165,7 @@
 		B5464CA82A1D143C000147F8 /* UrbanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanFilter.swift; sourceTree = "<group>"; };
 		B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanPolygon.swift; sourceTree = "<group>"; };
 		B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddPolygon.swift"; sourceTree = "<group>"; };
+		B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsBottomSheet.swift; sourceTree = "<group>"; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */,
 				B50D324D2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift */,
 				B50D32632A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift */,
+				B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -870,6 +873,7 @@
 				B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */,
 				B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
+				B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */,
 				B5EF44FF2A112A0100AFAFEF /* BikePathInfoLegend.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
