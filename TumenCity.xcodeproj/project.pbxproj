@@ -63,6 +63,8 @@
 		B5464CA52A1CB324000147F8 /* urbanMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B5464CA42A1CB324000147F8 /* urbanMock.json */; };
 		B5464CA72A1CB970000147F8 /* Cluster+UrbanPieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */; };
 		B5464CA92A1D143C000147F8 /* UrbanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CA82A1D143C000147F8 /* UrbanFilter.swift */; };
+		B5464CAF2A28920E000147F8 /* UrbanPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */; };
+		B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
@@ -160,6 +162,8 @@
 		B5464CA42A1CB324000147F8 /* urbanMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = urbanMock.json; sourceTree = "<group>"; };
 		B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+UrbanPieChart.swift"; sourceTree = "<group>"; };
 		B5464CA82A1D143C000147F8 /* UrbanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanFilter.swift; sourceTree = "<group>"; };
+		B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanPolygon.swift; sourceTree = "<group>"; };
+		B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddPolygon.swift"; sourceTree = "<group>"; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
@@ -286,6 +290,7 @@
 			children = (
 				B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */,
 				B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */,
+				B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */,
 				B5464CA82A1D143C000147F8 /* UrbanFilter.swift */,
 			);
 			path = Model;
@@ -454,6 +459,7 @@
 			children = (
 				B571089829A374BD003698C8 /* YandexMK+Utilities.swift */,
 				B53D66592A061B7A0010F846 /* YandexMK+AddAnnotations.swift */,
+				B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -856,6 +862,7 @@
 				B50D32462A18D55B0034B860 /* TradeObject.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
 				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
+				B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */,
 				B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */,
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
 				B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */,
@@ -907,6 +914,7 @@
 				B50D32582A1A00A20034B860 /* TradeObjectsType.swift in Sources */,
 				B50D32502A191ED20034B860 /* MainButton.swift in Sources */,
 				B571089D29A4DD86003698C8 /* MenuCollectionViewCell.swift in Sources */,
+				B5464CAF2A28920E000147F8 /* UrbanPolygon.swift in Sources */,
 				B53D665A2A061B7A0010F846 /* YandexMK+AddAnnotations.swift in Sources */,
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
 				B50D32442A18CCE50034B860 /* MKTradeObjectAnnotation.swift in Sources */,

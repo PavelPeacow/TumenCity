@@ -9,7 +9,7 @@ import Foundation
 import YandexMapsMobile
 
 protocol UrbanImprovementsViewModelDelegate: AnyObject {
-    func didFinishAddingMapObjects(_ pointsAnnotations: [MKUrbanAnnotation], _ polygons: [YMKPolygon])
+    func didFinishAddingMapObjects(_ pointsAnnotations: [MKUrbanAnnotation], _ polygons: [(YMKPolygon, UrbanPolygon)])
 }
 
 @MainActor
@@ -22,7 +22,7 @@ final class UrbanImprovementsViewModel {
     var polygonsFeature = [PolygonsFeature]()
     
     var urbanAnnotations = [MKUrbanAnnotation]()
-    var polygonsFormatted = [YMKPolygon]()
+    var polygonsFormatted = [(YMKPolygon, UrbanPolygon)]()
     
     weak var delegate: UrbanImprovementsViewModelDelegate?
     
@@ -39,6 +39,10 @@ final class UrbanImprovementsViewModel {
     
     func filterAnnotationsByFilterID(_ filterID: Int) -> [MKUrbanAnnotation] {
         urbanAnnotations.filter { $0.filterTypeID == filterID }
+    }
+    
+    func filterPolygonsByFilterID(_ filterID: Int) -> [(YMKPolygon, UrbanPolygon)] {
+        polygonsFormatted.filter { $0.1.filterTypeID == filterID }
     }
     
     func getUrbanImprovements() async {
@@ -84,6 +88,28 @@ final class UrbanImprovementsViewModel {
         }
     }
     
+    func getColorById(_ id: Int) -> UIColor? {
+        switch id {
+            
+        case 9:
+            return UIColor(named: "purple")
+        case 10:
+            return UIColor(named: "yellow")
+        case 11:
+            return UIColor(named: "blue")
+        case 12:
+            return UIColor(named: "green")
+        case 62:
+            return UIColor(named: "black")
+        case 63:
+            return UIColor(named: "cyan")
+        case 15:
+            return UIColor(named: "red")
+        default:
+            return nil
+        }
+    }
+    
     func createPoints() {
         pointsFeature.forEach { point in
             var type: MKUrbanAnnotation.AnnotationType
@@ -100,7 +126,7 @@ final class UrbanImprovementsViewModel {
             case .islandsLightBlueCircleDotIconWithCaption:
                 type = .cyan
             case .islandsNightCircleDotIconWithCaption:
-                type = .blue
+                type = .black
             case .islandsOrangeCircleDotIconWithCaption:
                 type = .yellow
             case .islandsRedCircleDotIconWithCaption:
@@ -119,6 +145,9 @@ final class UrbanImprovementsViewModel {
     func createPolygons() {
         polygonsFeature.forEach { polygon in
             
+            let filterID = polygon.properties.id
+            let color = getColorById(filterID) ?? .clear
+            
             polygon.geometry.coordinates.forEach { doubleCoordinate in
                 var points = [YMKPoint]()
                 
@@ -130,7 +159,8 @@ final class UrbanImprovementsViewModel {
                 }
                 
                 let polygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
-                polygonsFormatted.append(polygon)
+                let polygonModel = UrbanPolygon(filterTypeID: filterID, polygonColor: color)
+                polygonsFormatted.append((polygon, polygonModel))
             }
             
             

@@ -76,6 +76,7 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
 
 protocol UrbanImprovementsFilterBottomSheetDelegate: AnyObject {
     func didSelectFilter(_ filterID: Int)
+    func didTapDiscardFilterBtn()
 }
 
 final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
@@ -83,6 +84,21 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
     var filters = [UrbanFilter]()
     
     weak var delegate: UrbanImprovementsFilterBottomSheetDelegate?
+    
+    lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [discardFilterBtn, tableView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    lazy var discardFilterBtn: MainButton = {
+        let btn = MainButton(title: "Отменить фильтр", cornerRadius: 12)
+        btn.isHidden = true
+        btn.addTarget(self, action: #selector(didTapDiscardBtn), for: .touchUpInside)
+        return btn
+    }()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -97,23 +113,35 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(tableView)
+        view.addSubview(stackView)
         
         view.backgroundColor = .systemBackground
         
-        tableView.snp.makeConstraints {
+        stackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(25)
             $0.top.equalToSuperview().inset(topInset)
             $0.height.equalToSuperview().inset(topInset)
         }
         
-
         preferredContentSize = CGSize(width: view.bounds.width, height: view.bounds.height / 2)
         
     }
     
-    func configure(filters: [UrbanFilter]) {
+    func configure(filters: [UrbanFilter], isFilterActive: Bool) {
         self.filters = filters
+        
+        if isFilterActive {
+            discardFilterBtn.isHidden = false
+        }
+    }
+    
+}
+
+extension UrbanImprovementsFilterBottomSheet {
+    
+    @objc func didTapDiscardBtn() {
+        delegate?.didTapDiscardFilterBtn()
+        dismiss(animated: true)
     }
     
 }
