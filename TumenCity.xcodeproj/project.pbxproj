@@ -62,6 +62,7 @@
 		B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */; };
 		B5464CA52A1CB324000147F8 /* urbanMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B5464CA42A1CB324000147F8 /* urbanMock.json */; };
 		B5464CA72A1CB970000147F8 /* Cluster+UrbanPieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */; };
+		B5464CA92A1D143C000147F8 /* UrbanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CA82A1D143C000147F8 /* UrbanFilter.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
@@ -158,6 +159,7 @@
 		B53D665D2A06225B0010F846 /* CloseRoadCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadCallout.swift; sourceTree = "<group>"; };
 		B5464CA42A1CB324000147F8 /* urbanMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = urbanMock.json; sourceTree = "<group>"; };
 		B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+UrbanPieChart.swift"; sourceTree = "<group>"; };
+		B5464CA82A1D143C000147F8 /* UrbanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanFilter.swift; sourceTree = "<group>"; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 			children = (
 				B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */,
 				B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */,
+				B5464CA82A1D143C000147F8 /* UrbanFilter.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -924,6 +927,7 @@
 				B50D324A2A18DEFA0034B860 /* TradeObjectCallout.swift in Sources */,
 				B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */,
 				B5EF44FD2A11288000AFAFEF /* BikePathInfoBottomSheet.swift in Sources */,
+				B5464CA92A1D143C000147F8 /* UrbanFilter.swift in Sources */,
 				B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

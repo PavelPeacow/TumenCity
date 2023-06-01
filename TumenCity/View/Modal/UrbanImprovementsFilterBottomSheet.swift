@@ -15,6 +15,7 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .systemGray6
+        view.layer.cornerRadius = 12
         return view
     }()
     
@@ -35,19 +36,31 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
     
     lazy var filterTitle: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.addSubview(contentStackView)
+        contentView.addSubview(containerView)
+        containerView.addSubview(contentStackView)
+
+        containerView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.bottom.equalToSuperview().inset(25)
+        }
         
         contentStackView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(5)
-            $0.top.equalToSuperview().inset(5)
-            $0.bottom.equalToSuperview().inset(5)
+            $0.edges.equalToSuperview().inset(10)
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        filterTitle.text = nil
+        filterIcon.image = nil
     }
     
     required init?(coder: NSCoder) {
@@ -61,7 +74,15 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
     
 }
 
+protocol UrbanImprovementsFilterBottomSheetDelegate: AnyObject {
+    func didSelectFilter(_ filterID: Int)
+}
+
 final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
+    
+    var filters = [UrbanFilter]()
+    
+    weak var delegate: UrbanImprovementsFilterBottomSheetDelegate?
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -83,11 +104,16 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
         tableView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(25)
             $0.top.equalToSuperview().inset(topInset)
+            $0.height.equalToSuperview().inset(topInset)
         }
         
-        let size = tableView.contentSize.height + topInset * 2
+
+        preferredContentSize = CGSize(width: view.bounds.width, height: view.bounds.height / 2)
         
-        preferredContentSize = CGSize(width: view.bounds.width, height: size)
+    }
+    
+    func configure(filters: [UrbanFilter]) {
+        self.filters = filters
     }
     
 }
@@ -95,17 +121,29 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
 extension UrbanImprovementsFilterBottomSheet: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        filters.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UrbanImprovementsFilterCell.identifier, for: indexPath) as! UrbanImprovementsFilterCell
-        
-        cell.configureCell(icon: UIImage(systemName: "person"), title: "Looool")
+        print("chw")
+        cell.configureCell(icon: filters[indexPath.row].image, title: filters[indexPath.row].title)
         
         return cell
     }
     
 }
 
-extension UrbanImprovementsFilterBottomSheet: UITableViewDelegate { }
+extension UrbanImprovementsFilterBottomSheet: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let filterID = filters[indexPath.row].filterID
+        
+        delegate?.didSelectFilter(filterID)
+        
+        dismiss(animated: true)
+    }
+    
+}

@@ -37,7 +37,20 @@ extension UrbanImprovementsViewController {
     
     @objc func didTapFilterBtn() {
         let bottomSheet = UrbanImprovementsFilterBottomSheet()
+        bottomSheet.configure(filters: viewModel.filterItems)
+        bottomSheet.delegate = self
         present(bottomSheet, animated: true)
+    }
+    
+}
+
+extension UrbanImprovementsViewController: UrbanImprovementsFilterBottomSheetDelegate {
+    
+    func didSelectFilter(_ filterID: Int) {
+        let filteredAnnotations = viewModel.filterAnnotationsByFilterID(filterID)
+        
+        collection.clear()
+        map.addAnnotations(filteredAnnotations, cluster: collection)
     }
     
 }

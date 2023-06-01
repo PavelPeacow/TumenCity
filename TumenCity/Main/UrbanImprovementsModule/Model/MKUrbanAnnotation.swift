@@ -40,6 +40,7 @@ final class MKUrbanAnnotation: YMKPoint {
         }
     }
     
+    var filterTypeID: Int
     var id: Int
     var coordinates: CLLocationCoordinate2D
     var icon: UIImage? { type.image }
@@ -53,8 +54,9 @@ final class MKUrbanAnnotation: YMKPoint {
         coordinates.latitude.magnitude
     }
     
-    init(id: Int, coordinates: CLLocationCoordinate2D, type: AnnotationType) {
+    init(id: Int, filterTypeID: Int, coordinates: CLLocationCoordinate2D, type: AnnotationType) {
         self.id = id
+        self.filterTypeID = filterTypeID
         self.coordinates = coordinates
         self.type = type
     }

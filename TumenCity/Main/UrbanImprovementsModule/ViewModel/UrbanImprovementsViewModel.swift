@@ -16,11 +16,12 @@ protocol UrbanImprovementsViewModelDelegate: AnyObject {
 final class UrbanImprovementsViewModel {
     
     var filters = [Filter]()
+    var filterItems = [UrbanFilter]()
     
     var pointsFeature = [PointsFeature]()
     var polygonsFeature = [PolygonsFeature]()
     
-    var pointsAnnotations = [MKUrbanAnnotation]()
+    var urbanAnnotations = [MKUrbanAnnotation]()
     var polygonsFormatted = [YMKPolygon]()
     
     weak var delegate: UrbanImprovementsViewModelDelegate?
@@ -30,8 +31,14 @@ final class UrbanImprovementsViewModel {
             await getUrbanImprovements()
             createPoints()
             createPolygons()
-            delegate?.didFinishAddingMapObjects(pointsAnnotations, polygonsFormatted)
+            formatFilter()
+            
+            delegate?.didFinishAddingMapObjects(urbanAnnotations, polygonsFormatted)
         }
+    }
+    
+    func filterAnnotationsByFilterID(_ filterID: Int) -> [MKUrbanAnnotation] {
+        urbanAnnotations.filter { $0.filterTypeID == filterID }
     }
     
     func getUrbanImprovements() async {
@@ -44,6 +51,37 @@ final class UrbanImprovementsViewModel {
             print(error)
         }
         
+    }
+    
+    func formatFilter() {
+        filters.first?.item.forEach { filter in
+            let filterImage = getImageFilterById(filter.id) ?? .add
+            
+            let filterItem = UrbanFilter(image: filterImage, title: filter.item, filterID: filter.id)
+            filterItems.append(filterItem)
+        }
+    }
+    
+    func getImageFilterById(_ id: Int) -> UIImage? {
+        switch id {
+            
+        case 9:
+            return .init(named: "purpleMark")
+        case 10:
+            return .init(named: "yellowMark")
+        case 11:
+            return .init(named: "blueMark")
+        case 12:
+            return .init(named: "greenMark")
+        case 62:
+            return .init(named: "blackMark")
+        case 63:
+            return .init(named: "cyanMark")
+        case 15:
+            return .init(named: "redMark")
+        default:
+            return nil
+        }
     }
     
     func createPoints() {
@@ -71,10 +109,10 @@ final class UrbanImprovementsViewModel {
                 type = .purple
             }
             
-            let annotation = MKUrbanAnnotation(id: point.id, coordinates: .init(latitude: lat, longitude: long), type: type)
+            let annotation = MKUrbanAnnotation(id: point.id, filterTypeID: point.properties.id, coordinates: .init(latitude: lat, longitude: long), type: type)
             print(lat)
             print(long)
-            pointsAnnotations.append(annotation)
+            urbanAnnotations.append(annotation)
         }
     }
     
