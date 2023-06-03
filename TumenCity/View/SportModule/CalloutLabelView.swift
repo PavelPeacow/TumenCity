@@ -8,12 +8,11 @@
 import UIKit
 import SnapKit
 
-final class SportLabelView: UIView {
+final class CalloutLabelView: UIView {
     
     lazy var sportLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = .systemGreen
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

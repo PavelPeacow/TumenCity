@@ -11,6 +11,8 @@ class Callout: UIViewController {
     
     private weak var targetViewController: UIViewController!
     
+    var calloutTapGesture: UITapGestureRecognizer!
+    
     lazy var alertBackground: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -34,8 +36,8 @@ class Callout: UIViewController {
         view.addSubview(alertBackground)
         view.backgroundColor = .black.withAlphaComponent(0.75)
         
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
-        view.addGestureRecognizer(gesture)
+        calloutTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        view.addGestureRecognizer(calloutTapGesture)
     }
     
     @objc func didTapView() {

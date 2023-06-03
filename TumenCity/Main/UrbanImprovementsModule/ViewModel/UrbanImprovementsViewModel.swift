@@ -59,7 +59,15 @@ final class UrbanImprovementsViewModel {
         } catch {
             print(error)
         }
-        
+    }
+    
+    func getUrbanImprovementsDetailInfoByID(_ id: Int) async -> UrbanImprovementsDetailInfo? {
+        do {
+            return try await APIManager().getAPIContent(type: UrbanImprovementsDetailInfo.self, endpoint: .urbanImprovementsInfo(id: id))
+        } catch {
+            print(error)
+            return nil
+        }
     }
     
     func formatFilter() {

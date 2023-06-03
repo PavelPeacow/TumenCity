@@ -19,6 +19,7 @@ enum APIEndpoint {
     case tradeObjectsSearch(search: TradeObjectsSearch)
     
     case urbanImprovements
+    case urbanImprovementsInfo(id: Int)
     
     var url: URL? {
         
@@ -50,6 +51,11 @@ enum APIEndpoint {
             
         case .urbanImprovements:
             return urlComponents(host: "info.agt72.ru", path: "/api/informer/blagoustroystvo/select/json")
+            
+        case .urbanImprovementsInfo(let id):
+            let query = [URLQueryItem(name: "id", value: String(id))]
+            
+            return urlComponents(host: "info.agt72.ru", path: "/api/informer/main/get_record_id/json", queryItems: query)
         }
         
     }
@@ -114,7 +120,7 @@ enum APIEndpoint {
             
             request.httpBody = formData.data(using: .utf8)
             
-        case .urbanImprovements:
+        case .urbanImprovements, .urbanImprovementsInfo:
             request.httpMethod = "POST"
         }
 

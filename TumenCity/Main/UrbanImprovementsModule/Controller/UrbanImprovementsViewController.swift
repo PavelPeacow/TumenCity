@@ -89,6 +89,7 @@ extension UrbanImprovementsViewController: UrbanImprovementsViewModelDelegate {
     
     func didFinishAddingMapObjects(_ pointsAnnotations: [MKUrbanAnnotation], _ polygons: [(YMKPolygon, UrbanPolygon)]) {
         map.addAnnotations(pointsAnnotations, cluster: collection)
+        collection.addTapListener(with: self)
         
         polygons.forEach { polygon in
             map.addPolygon(polygon.0, polygonData: polygon.1, tapListener: self)
@@ -127,14 +128,25 @@ extension UrbanImprovementsViewController: YMKMapObjectTapListener {
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         if let polygon = mapObject as? YMKPolygonMapObject {
             guard let polygonData = polygon.userData as? UrbanPolygon else { return false }
+            
             print(polygonData.filterTypeID)
             return true
         }
         
         if let point = mapObject as? YMKPlacemarkMapObject {
             guard let annotation = point.userData as? MKUrbanAnnotation else { return false }
+            print(annotation)
             
-            return true
+            Task {
+                if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) {
+                    let callout = UrbanImprovementsCallout()
+                    callout.configure(urbanDetailInfo: detailInfo)
+                    callout.showAlert(in: self)
+                    return true
+                }
+                return false
+            }
+           
         }
         
         return false

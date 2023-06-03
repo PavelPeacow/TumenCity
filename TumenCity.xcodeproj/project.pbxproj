@@ -38,7 +38,7 @@
 		B528963E2A077D68006A85D9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B528963D2A077D68006A85D9 /* SnapKit */; };
 		B52896402A078AAC006A85D9 /* sportMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B528963F2A078AAC006A85D9 /* sportMock.json */; };
 		B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896412A07B34C006A85D9 /* SportContactView.swift */; };
-		B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896442A07BB3D006A85D9 /* SportLabelView.swift */; };
+		B52896452A07BB3D006A85D9 /* CalloutLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896442A07BB3D006A85D9 /* CalloutLabelView.swift */; };
 		B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896482A091005006A85D9 /* UIViewControllerMapSegmented.swift */; };
 		B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528964E2A091440006A85D9 /* SportRegistrySearchViewController.swift */; };
 		B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896512A091464006A85D9 /* SportRegistryView.swift */; };
@@ -66,6 +66,8 @@
 		B5464CAF2A28920E000147F8 /* UrbanPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */; };
 		B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */; };
 		B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */; };
+		B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */; };
+		B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
@@ -138,7 +140,7 @@
 		B528963A2A06B359006A85D9 /* SportCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCallout.swift; sourceTree = "<group>"; };
 		B528963F2A078AAC006A85D9 /* sportMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sportMock.json; sourceTree = "<group>"; };
 		B52896412A07B34C006A85D9 /* SportContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportContactView.swift; sourceTree = "<group>"; };
-		B52896442A07BB3D006A85D9 /* SportLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportLabelView.swift; sourceTree = "<group>"; };
+		B52896442A07BB3D006A85D9 /* CalloutLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutLabelView.swift; sourceTree = "<group>"; };
 		B52896482A091005006A85D9 /* UIViewControllerMapSegmented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerMapSegmented.swift; sourceTree = "<group>"; };
 		B528964E2A091440006A85D9 /* SportRegistrySearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistrySearchViewController.swift; sourceTree = "<group>"; };
 		B52896512A091464006A85D9 /* SportRegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportRegistryView.swift; sourceTree = "<group>"; };
@@ -166,6 +168,8 @@
 		B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanPolygon.swift; sourceTree = "<group>"; };
 		B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddPolygon.swift"; sourceTree = "<group>"; };
 		B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsBottomSheet.swift; sourceTree = "<group>"; };
+		B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsDetailInfo.swift; sourceTree = "<group>"; };
+		B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsCallout.swift; sourceTree = "<group>"; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
@@ -292,6 +296,7 @@
 			children = (
 				B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */,
 				B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */,
+				B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */,
 				B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */,
 				B5464CA82A1D143C000147F8 /* UrbanFilter.swift */,
 			);
@@ -346,7 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				B52896412A07B34C006A85D9 /* SportContactView.swift */,
-				B52896442A07BB3D006A85D9 /* SportLabelView.swift */,
+				B52896442A07BB3D006A85D9 /* CalloutLabelView.swift */,
 			);
 			path = SportModule;
 			sourceTree = "<group>";
@@ -486,6 +491,7 @@
 				B528963A2A06B359006A85D9 /* SportCallout.swift */,
 				B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */,
 				B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */,
+				B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */,
 			);
 			path = Callout;
 			sourceTree = "<group>";
@@ -882,6 +888,7 @@
 				B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */,
 				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
 				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
+				B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */,
 				B50D32522A1920430034B860 /* CheckBoxButton.swift in Sources */,
 				B50D324E2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift in Sources */,
 				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,
@@ -902,10 +909,11 @@
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
 				B50D32612A1C98D80034B860 /* UrbanImprovementsViewController.swift in Sources */,
 				B5EF44FB2A11273B00AFAFEF /* BikePathsInfoItemView.swift in Sources */,
-				B52896452A07BB3D006A85D9 /* SportLabelView.swift in Sources */,
+				B52896452A07BB3D006A85D9 /* CalloutLabelView.swift in Sources */,
 				B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */,
 				B50D325A2A1A00B10034B860 /* TradeObjectsPeriod.swift in Sources */,
 				B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */,
+				B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */,
 				B528965A2A0A1D12006A85D9 /* DigWorkViewModel.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B52896622A0A2067006A85D9 /* MKDigWorkAnnotation.swift in Sources */,

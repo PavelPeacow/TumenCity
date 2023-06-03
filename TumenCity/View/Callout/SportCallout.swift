@@ -153,12 +153,12 @@ final class SportCallout: Callout {
         }
         
         if let email = annotation.contacts.emails?.first {
-            let emailLabel = SportLabelView(label: email.email)
+            let emailLabel = CalloutLabelView(label: email.email)
             stackViewEmail.addArrangedSubview(emailLabel)
         }
     
         annotation.addresses.forEach { address in
-            let addressLabel = SportLabelView(label: address.title)
+            let addressLabel = CalloutLabelView(label: address.title)
             stackViewAddresses.addArrangedSubview(addressLabel)
         }
         
