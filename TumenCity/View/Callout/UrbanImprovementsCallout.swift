@@ -167,6 +167,10 @@ extension UrbanImprovementsCallout: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let imageURL = imageURLs[indexPath.item]
+        
+        let fullscreenImageView = FullscreenViewController()
+        fullscreenImageView.url = "https://info.agt72.ru" + imageURL.url
+        present(fullscreenImageView, animated: true)
         print(imageURL)
     }
     
@@ -188,4 +192,63 @@ extension UrbanImprovementsCallout {
         }
     }
     
+}
+
+
+class FullscreenViewController: UIViewController, UIScrollViewDelegate {
+    var url: String!
+    
+    private var scrollView: UIScrollView!
+    private var imageView: UIImageView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        scrollView = UIScrollView(frame: view.bounds)
+        scrollView.delegate = self
+        scrollView.minimumZoomScale = 1.0
+        scrollView.maximumZoomScale = 5.0
+        view.addSubview(scrollView)
+        
+        imageView = UIImageView(frame: scrollView.bounds)
+        imageView.contentMode = .scaleAspectFit
+        imageView.sd_setImage(with: URL(string: url))
+        scrollView.addSubview(imageView)
+        
+        view.backgroundColor = .systemBackground.withAlphaComponent(0.95)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreen))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func dismissFullscreen() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if scrollView.zoomScale > 1 {
+            if let image = imageView.image {
+                let ratioW = imageView.frame.width / image.size.width
+                let ratioH = imageView.frame.height / image.size.height
+                
+                let ratio = ratioW < ratioH ? ratioW : ratioH
+                let newWidth = image.size.width * ratio
+                let newHeight = image.size.height * ratio
+                let conditionLeft = newWidth*scrollView.zoomScale > imageView.frame.width
+                let left = 0.5 * (conditionLeft ? newWidth - imageView.frame.width : (scrollView.frame.width - scrollView.contentSize.width))
+                let conditioTop = newHeight*scrollView.zoomScale > imageView.frame.height
+                
+                let top = 0.5 * (conditioTop ? newHeight - imageView.frame.height : (scrollView.frame.height - scrollView.contentSize.height))
+                
+                scrollView.contentInset = UIEdgeInsets(top: top, left: left, bottom: top, right: left)
+                
+            }
+        } else {
+            scrollView.contentInset = .zero
+        }
+    }
 }
