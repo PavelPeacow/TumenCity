@@ -116,9 +116,24 @@ extension UrbanImprovementsViewController: YMKClusterTapListener {
         
         let bottomSheet = UrbanImprovementsBottomSheet()
         bottomSheet.configureModal(annotations: annotations)
+        bottomSheet.delegate = self
         present(bottomSheet, animated: true)
         
         return true
+    }
+    
+}
+
+extension UrbanImprovementsViewController: UrbanImprovementsBottomSheetDelegate {
+    
+    func didTapAddress(_ annotation: MKUrbanAnnotation) {
+        Task {
+            if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) {
+                let callout = UrbanImprovementsCallout()
+                callout.configure(urbanDetailInfo: detailInfo)
+                callout.showAlert(in: self)
+            }
+        }
     }
     
 }
@@ -128,8 +143,18 @@ extension UrbanImprovementsViewController: YMKMapObjectTapListener {
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         if let polygon = mapObject as? YMKPolygonMapObject {
             guard let polygonData = polygon.userData as? UrbanPolygon else { return false }
-            
             print(polygonData.filterTypeID)
+            
+            Task {
+                if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(polygonData.id) {
+                    let callout = UrbanImprovementsCallout()
+                    callout.configure(urbanDetailInfo: detailInfo)
+                    callout.showAlert(in: self)
+                    return true
+                }
+                return false
+            }
+            
             return true
         }
         

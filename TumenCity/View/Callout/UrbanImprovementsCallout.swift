@@ -98,6 +98,14 @@ final class UrbanImprovementsCallout: Callout {
         return collectionView
     }()
     
+    lazy var videoViewTitle: UILabel = {
+        let label = UILabel()
+        label.font = . systemFont(ofSize: 17, weight: .bold)
+        label.numberOfLines = 0
+        label.text = "Видео: "
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -124,6 +132,19 @@ final class UrbanImprovementsCallout: Callout {
             collectionView.snp.makeConstraints {
                 $0.height.equalTo(150)
             }
+        }
+        
+        if let videoURL = urbanDetailInfo.fields.video?.first?.url, let url = URL(string: videoURL + "?playsinline=1") {
+            let videoWebView = YoutubePlayerWebView()
+            
+            stackViewContent.addArrangedSubview(videoViewTitle)
+            stackViewContent.addArrangedSubview(videoWebView)
+            
+            videoWebView.snp.makeConstraints {
+                $0.height.equalTo(200)
+            }
+            
+            videoWebView.loadVideo(url)
         }
         
     }
@@ -182,7 +203,7 @@ extension UrbanImprovementsCallout {
         alertBackground.snp.makeConstraints {
             $0.topMargin.greaterThanOrEqualToSuperview().inset(10)
             $0.bottomMargin.lessThanOrEqualToSuperview().inset(10)
-            $0.width.equalToSuperview().inset(25)
+            $0.width.equalToSuperview().inset(10)
             $0.center.equalToSuperview()
         }
         

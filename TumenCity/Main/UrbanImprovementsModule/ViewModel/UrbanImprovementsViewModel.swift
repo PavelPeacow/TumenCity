@@ -171,8 +171,9 @@ final class UrbanImprovementsViewModel {
                     points.append(point)
                 }
                 
+                let polygonID = polygon.id
                 let polygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
-                let polygonModel = UrbanPolygon(filterTypeID: filterID, polygonColor: color)
+                let polygonModel = UrbanPolygon(filterTypeID: filterID, polygonColor: color, id: polygonID)
                 polygonsFormatted.append((polygon, polygonModel))
             }
             

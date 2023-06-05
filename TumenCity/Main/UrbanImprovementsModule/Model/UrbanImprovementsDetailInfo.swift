@@ -19,9 +19,10 @@ struct UrbanImprovementsDetailInfoFields: Codable {
     let stageWork: StageWork?
     let dateStart, vidWork: String?
     let img: [UrbanImprovementsImg]?
+    let video: [UrbanImprovementsVideo]?
 
     enum CodingKeys: String, CodingKey {
-        case title, img, category
+        case title, img, category, video
         case stageWork = "stage_work"
         case dateStart = "date_start"
         case vidWork = "vid_work"
@@ -36,4 +37,8 @@ struct UrbanImprovementsImg: Codable {
 struct StageWork: Codable {
     let id: Int
     let value: String
+}
+
+struct UrbanImprovementsVideo: Codable {
+    let url: String
 }

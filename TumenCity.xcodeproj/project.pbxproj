@@ -68,6 +68,7 @@
 		B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */; };
 		B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */; };
 		B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */; };
+		B5608A7C2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
@@ -170,6 +171,8 @@
 		B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsBottomSheet.swift; sourceTree = "<group>"; };
 		B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsDetailInfo.swift; sourceTree = "<group>"; };
 		B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsCallout.swift; sourceTree = "<group>"; };
+		B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlayerWebView.swift; sourceTree = "<group>"; };
+		B5608A7D2A2DF65000A69B9C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
@@ -229,6 +232,7 @@
 		0A83802B707C7346E4762647 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5608A7D2A2DF65000A69B9C /* WebKit.framework */,
 				BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */,
 			);
 			name = Frameworks;
@@ -365,6 +369,7 @@
 				B50D324F2A191ED20034B860 /* MainButton.swift */,
 				B50D32512A1920430034B860 /* CheckBoxButton.swift */,
 				B50D32532A1921D50034B860 /* CheckBoxWithTitle.swift */,
+				B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */,
 			);
 			path = Subclass;
 			sourceTree = "<group>";
@@ -918,6 +923,7 @@
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B52896622A0A2067006A85D9 /* MKDigWorkAnnotation.swift in Sources */,
 				B52896562A0A1CF2006A85D9 /* DigWorkViewController.swift in Sources */,
+				B5608A7C2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B50D32642A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift in Sources */,
