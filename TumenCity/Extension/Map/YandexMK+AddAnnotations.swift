@@ -63,4 +63,13 @@ extension YMKMapView {
         cluster.clusterPlacemarks(withClusterRadius: 60, minZoom: 25)
     }
     
+    func addAnnotations(_ annotations: [MKCityCleaningAnnotation], cluster: YMKClusterizedPlacemarkCollection) {
+        annotations.forEach { annotation in
+            let placemark = cluster.addPlacemark(with: annotation, image: annotation.icon ?? .add)
+            placemark.userData = annotation
+            
+        }
+        cluster.clusterPlacemarks(withClusterRadius: 60, minZoom: 25)
+    }
+    
 }

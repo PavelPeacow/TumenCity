@@ -30,6 +30,8 @@
 		B50D32672A1C9EF60034B860 /* UrbanImprovements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */; };
 		B50D326A2A1CA14C0034B860 /* UrbanImprovementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */; };
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
+		B51FACF22A3B095600BB6D81 /* cityCleaningMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */; };
+		B51FACF42A3B5AFE00BB6D81 /* CityCleaningCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */; };
 		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
 		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
 		B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896342A063FCD006A85D9 /* SportViewModel.swift */; };
@@ -96,6 +98,10 @@
 		B5EF45012A112A8800AFAFEF /* bikePathInfoLegend.json in Resources */ = {isa = PBXBuildFile; fileRef = B5EF45002A112A8800AFAFEF /* bikePathInfoLegend.json */; };
 		B5EF45042A112BC100AFAFEF /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B5EF45032A112BC100AFAFEF /* SDWebImage */; };
 		B5EF45072A11328000AFAFEF /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = B5EF45062A11328000AFAFEF /* SDWebImageSVGCoder */; };
+		B5F249542A3AFA3E00B35F74 /* CityCleaningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F249532A3AFA3E00B35F74 /* CityCleaningViewController.swift */; };
+		B5F249562A3AFA4F00B35F74 /* CityCleaningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F249552A3AFA4F00B35F74 /* CityCleaningViewModel.swift */; };
+		B5F249582A3AFD3A00B35F74 /* CityCleaning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F249572A3AFD3A00B35F74 /* CityCleaning.swift */; };
+		B5F2495D2A3B026600B35F74 /* MKCityCleaningAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F2495C2A3B026600B35F74 /* MKCityCleaningAnnotation.swift */; };
 		B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A86E299D33060001ED69 /* AppDelegate.swift */; };
 		B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A870299D33060001ED69 /* SceneDelegate.swift */; };
 		B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7A872299D33060001ED69 /* CommunalServicesViewController.swift */; };
@@ -134,6 +140,8 @@
 		B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovements.swift; sourceTree = "<group>"; };
 		B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsViewModel.swift; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
+		B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cityCleaningMock.json; sourceTree = "<group>"; };
+		B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningCallout.swift; sourceTree = "<group>"; };
 		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
 		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
 		B52896342A063FCD006A85D9 /* SportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewModel.swift; sourceTree = "<group>"; };
@@ -198,6 +206,10 @@
 		B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathInfoBottomSheet.swift; sourceTree = "<group>"; };
 		B5EF44FE2A112A0100AFAFEF /* BikePathInfoLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathInfoLegend.swift; sourceTree = "<group>"; };
 		B5EF45002A112A8800AFAFEF /* bikePathInfoLegend.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bikePathInfoLegend.json; sourceTree = "<group>"; };
+		B5F249532A3AFA3E00B35F74 /* CityCleaningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningViewController.swift; sourceTree = "<group>"; };
+		B5F249552A3AFA4F00B35F74 /* CityCleaningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningViewModel.swift; sourceTree = "<group>"; };
+		B5F249572A3AFD3A00B35F74 /* CityCleaning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaning.swift; sourceTree = "<group>"; };
+		B5F2495C2A3B026600B35F74 /* MKCityCleaningAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKCityCleaningAnnotation.swift; sourceTree = "<group>"; };
 		B5F7A86B299D33060001ED69 /* TumenCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TumenCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F7A86E299D33060001ED69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5F7A870299D33060001ED69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -497,6 +509,7 @@
 				B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */,
 				B50D32492A18DEFA0034B860 /* TradeObjectCallout.swift */,
 				B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */,
+				B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */,
 			);
 			path = Callout;
 			sourceTree = "<group>";
@@ -635,6 +648,41 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		B5F249522A3AFA1D00B35F74 /* CityCleaningModule */ = {
+			isa = PBXGroup;
+			children = (
+				B5F249592A3B022A00B35F74 /* Model */,
+				B5F2495B2A3B023700B35F74 /* Controller */,
+				B5F2495A2A3B023100B35F74 /* ViewModel */,
+			);
+			path = CityCleaningModule;
+			sourceTree = "<group>";
+		};
+		B5F249592A3B022A00B35F74 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B5F249572A3AFD3A00B35F74 /* CityCleaning.swift */,
+				B5F2495C2A3B026600B35F74 /* MKCityCleaningAnnotation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B5F2495A2A3B023100B35F74 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B5F249552A3AFA4F00B35F74 /* CityCleaningViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B5F2495B2A3B023700B35F74 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B5F249532A3AFA3E00B35F74 /* CityCleaningViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		B5F7A862299D33060001ED69 = {
 			isa = PBXGroup;
 			children = (
@@ -692,6 +740,7 @@
 			isa = PBXGroup;
 			children = (
 				B571088929A215D6003698C8 /* MainMenu */,
+				B5F249522A3AFA1D00B35F74 /* CityCleaningModule */,
 				B50D32622A1C98DD0034B860 /* UrbanImprovementsModule */,
 				B50D32392A18C7230034B860 /* TradeObjectsModule */,
 				B5EF44EC2A10E41200AFAFEF /* BikePathsModule */,
@@ -724,6 +773,7 @@
 				B528965F2A0A1F0C006A85D9 /* digWorkMock.json */,
 				B5EF45002A112A8800AFAFEF /* bikePathInfoLegend.json */,
 				B5464CA42A1CB324000147F8 /* urbanMock.json */,
+				B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -815,6 +865,7 @@
 				B52896602A0A1F0C006A85D9 /* digWorkMock.json in Resources */,
 				B5F7A878299D33070001ED69 /* Assets.xcassets in Resources */,
 				B52896402A078AAC006A85D9 /* sportMock.json in Resources */,
+				B51FACF22A3B095600BB6D81 /* cityCleaningMock.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,8 +925,10 @@
 				B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */,
 				B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */,
 				B50D32462A18D55B0034B860 /* TradeObject.swift in Sources */,
+				B5F249582A3AFD3A00B35F74 /* CityCleaning.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,
 				B53D66562A02CF690010F846 /* Cluster+StaticStyle.swift in Sources */,
+				B5F249542A3AFA3E00B35F74 /* CityCleaningViewController.swift in Sources */,
 				B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */,
 				B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */,
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
@@ -887,6 +940,7 @@
 				B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */,
 				B5EF44FF2A112A0100AFAFEF /* BikePathInfoLegend.swift in Sources */,
 				B5F7A886299DFFB50001ED69 /* APIManager.swift in Sources */,
+				B5F2495D2A3B026600B35F74 /* MKCityCleaningAnnotation.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
 				B50D32352A17CD750034B860 /* YandexMapMaker.swift in Sources */,
 				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
@@ -901,11 +955,13 @@
 				B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */,
 				B5464CA72A1CB970000147F8 /* Cluster+UrbanPieChart.swift in Sources */,
 				B5F7A873299D33060001ED69 /* CommunalServicesViewController.swift in Sources */,
+				B51FACF42A3B5AFE00BB6D81 /* CityCleaningCallout.swift in Sources */,
 				B57108A229A51AA1003698C8 /* MenuHeaderCollectionReusableView.swift in Sources */,
 				B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B50D324C2A1907DB0034B860 /* TradeObjectsTypeView.swift in Sources */,
 				B50D326A2A1CA14C0034B860 /* UrbanImprovementsViewModel.swift in Sources */,
+				B5F249562A3AFA4F00B35F74 /* CityCleaningViewModel.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,
 				B5EF44F42A10E45800AFAFEF /* BikePaths.swift in Sources */,
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,

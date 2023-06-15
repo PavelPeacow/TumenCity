@@ -21,6 +21,8 @@ enum APIEndpoint {
     case urbanImprovements
     case urbanImprovementsInfo(id: Int)
     
+    case cityCleaning
+    
     var url: URL? {
         
         switch self {
@@ -56,6 +58,9 @@ enum APIEndpoint {
             let query = [URLQueryItem(name: "id", value: String(id))]
             
             return urlComponents(host: "info.agt72.ru", path: "/api/informer/main/get_record_id/json", queryItems: query)
+
+        case .cityCleaning:
+            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/select/json")
         }
         
     }
@@ -120,7 +125,7 @@ enum APIEndpoint {
             
             request.httpBody = formData.data(using: .utf8)
             
-        case .urbanImprovements, .urbanImprovementsInfo:
+        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning:
             request.httpMethod = "POST"
         }
 
