@@ -8,8 +8,34 @@
 import YandexMapsMobile
 import MapKit
 
-final class MKUrbanAnnotation: YMKPoint {
+final class MKUrbanAnnotation: YMKPoint, YMKAnnotation {
+        
+    let title: String
+    let filterTypeID: Int
+    let id: Int
+    let coordinates: CLLocationCoordinate2D
+    var icon: UIImage { type.image ?? .actions }
+    var type: AnnotationType
     
+    override var longitude: Double {
+        coordinates.longitude.magnitude
+    }
+    
+    override var latitude: Double {
+        coordinates.latitude.magnitude
+    }
+    
+    init(title: String, id: Int, filterTypeID: Int, coordinates: CLLocationCoordinate2D, type: AnnotationType) {
+        self.title = title
+        self.id = id
+        self.filterTypeID = filterTypeID
+        self.coordinates = coordinates
+        self.type = type
+    }
+    
+}
+
+extension MKUrbanAnnotation {
     enum AnnotationType {
         case purple
         case yellow
@@ -39,28 +65,4 @@ final class MKUrbanAnnotation: YMKPoint {
             }
         }
     }
-    
-    var title: String
-    var filterTypeID: Int
-    var id: Int
-    var coordinates: CLLocationCoordinate2D
-    var icon: UIImage? { type.image }
-    var type: AnnotationType
-    
-    override var longitude: Double {
-        coordinates.longitude.magnitude
-    }
-    
-    override var latitude: Double {
-        coordinates.latitude.magnitude
-    }
-    
-    init(title: String, id: Int, filterTypeID: Int, coordinates: CLLocationCoordinate2D, type: AnnotationType) {
-        self.title = title
-        self.id = id
-        self.filterTypeID = filterTypeID
-        self.coordinates = coordinates
-        self.type = type
-    }
-    
 }

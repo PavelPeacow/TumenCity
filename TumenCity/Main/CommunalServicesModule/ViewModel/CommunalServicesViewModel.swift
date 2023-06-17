@@ -40,7 +40,7 @@ final class CommunalServicesViewModel {
     }
     
     func filterCommunalServices(with filterID: Int) {
-        filteredAnnotations = annotations.filter { $0.markDescription.accidentID == filterID }
+        filteredAnnotations = annotations.filter { $0.markDescription.accidentID.rawValue == filterID }
         delegate?.didUpdateAnnotations(filteredAnnotations)
     }
     
@@ -54,7 +54,7 @@ final class CommunalServicesViewModel {
     }
     
     func isClusterWithTheSameCoordinates(annotations: [MKItemAnnotation]) -> Bool {
-        return annotations.dropFirst().allSatisfy( { $0.coordinate.latitude == annotations.first?.coordinate.latitude } )
+        return annotations.dropFirst().allSatisfy( { $0.coordinates.latitude == annotations.first?.coordinates.latitude } )
     }
     
     //MARK: - API Call
@@ -101,7 +101,7 @@ final class CommunalServicesViewModel {
                 if mark.properties.listCard == form.cardID {
                     
                     let coordinates = Coordinates(latitude: mark.geometry.coordinates.first ?? 0, lontitude: mark.geometry.coordinates.last ?? 0)
-                    var mapMark = MarkDescription(accident: "", accidentID: mark.properties.accident.id, address: mark.properties.address, coordinates: coordinates)
+                    var mapMark = MarkDescription(accident: "", accidentID: MarkType(rawValue: mark.properties.accident.id) ?? .none, address: mark.properties.address, coordinates: coordinates)
                     
                     communalServices?.info.forEach { info in
                         if info.id == mark.properties.accident.id {
@@ -118,16 +118,36 @@ final class CommunalServicesViewModel {
         
     }
     
+    func getCommunalImageAndColor(by intEnum: MarkType) -> (UIImage?, UIColor) {
+        switch intEnum {
+            
+        case .cold:
+            return (UIImage(named: "filter-1"), .blue)
+        case .hot:
+            return (UIImage(named: "filter-2"), .red)
+        case .otop:
+            return (UIImage(named: "filter-4"), .green)
+        case .electro:
+            return (UIImage(named: "filter-5"), .orange)
+        case .gaz:
+            return (UIImage(named: "filter-6"), .cyan)
+        case .none:
+            return (UIImage(systemName: "circle.fill"), .white)
+        }
+    }
+    
     //MARK: - Add annotations
     
     private func addAnnotations() {
         communalServicesFormatted.forEach { card in
             
             card.mark.forEach { mark in
+                let annotationIconAndColor = getCommunalImageAndColor(by: mark.accidentID)
+                
                 let coordinate = CLLocationCoordinate2D(latitude: mark.coordinates.latitude, longitude: mark.coordinates.lontitude)
-                let annotation = MKItemAnnotation(coordinate: coordinate, workType: card.workType,
+                let annotation = MKItemAnnotation(coordinates: coordinate, workType: card.workType,
                                                   dateStart: card.dateStart, dateFinish: card.dateFinish,
-                                                  orgTitle: card.orgTitle, markDescription: mark, markType: mark.accidentID)
+                                                  orgTitle: card.orgTitle, markDescription: mark, markIcon: annotationIconAndColor.0 ?? .actions, markColor: annotationIconAndColor.1, index: mark.accidentID.rawValue)
                 annotations.append(annotation)
             }
             

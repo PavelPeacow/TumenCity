@@ -41,9 +41,21 @@ final class CloseRoadsViewModel {
         }
     }
     
+    func getImageForRoad(by intEnum: RoadCloseIcon) -> UIImage? {
+        switch intEnum {
+        case .close:
+            return .init(named: "close")
+        case .work:
+            return .init(named: "work")
+        case .noSign:
+            return .init()
+        }
+    }
+    
     func addCloseRoadToMap() {
         closeRoads.forEach { object in
             let geoCoordinates = object.geomJSON.coordinates
+            let icon = getImageForRoad(by: object.sign) ?? .actions
             
             if case .double(let pointArray) = geoCoordinates {
                 let lat = pointArray.last ?? 0
@@ -52,7 +64,7 @@ final class CloseRoadsViewModel {
                 let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 let annotation = MKCloseRoadAnnotation(title: object.name, itemDescription: object.comment,
                                                        dateStart: object.start, dateEnd: object.end,
-                                                       coordinate: coordinate, color: .red, type: object.sign)
+                                                       coordinates: coordinate, color: .red, icon: icon)
                 roadAnnotations.append(annotation)
             }
             

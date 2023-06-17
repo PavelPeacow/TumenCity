@@ -199,7 +199,7 @@ final class RegistryCardTableViewCell: UITableViewCell {
         
         showAddresses.text = "Отключено адресов: \(addresses.count)"
         
-        let accidentsID = Set(communalService.mark.map { $0.accidentID }).sorted()
+        let accidentsID = Set(communalService.mark.map { $0.accidentID.rawValue }).sorted()
 
         for id in accidentsID {
             print(communalService.cardID)

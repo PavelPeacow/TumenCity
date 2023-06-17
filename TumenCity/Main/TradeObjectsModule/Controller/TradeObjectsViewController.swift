@@ -189,7 +189,7 @@ extension TradeObjectsViewController: YMKMapObjectTapListener {
             guard let item = tradeObject.row.first else { return }
             print(tradeObject.row.first)
             let modal = TradeObjectCallout()
-            modal.configure(tradeObject: item, image: annotation.image ?? .add, type: annotation.type)
+            modal.configure(tradeObject: item, image: annotation.icon ?? .add, type: annotation.type)
             modal.showAlert(in: self)
         }
         

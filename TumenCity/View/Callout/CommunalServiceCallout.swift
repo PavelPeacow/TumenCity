@@ -76,7 +76,7 @@ final class CommunalServiceCallout: Callout {
         
         for annotation in annotations.sorted(by: { $0.index > $1.index }) {
             
-            let image = annotation.image
+            let image = annotation.icon
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFit
             

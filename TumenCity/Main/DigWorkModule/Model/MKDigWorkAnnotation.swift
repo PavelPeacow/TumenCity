@@ -8,7 +8,7 @@
 import MapKit
 import YandexMapsMobile
 
-final class MKDigWorkAnnotation: YMKPoint {
+final class MKDigWorkAnnotation: YMKPoint, YMKAnnotation {
     
     var title: String
     var contentDescription: String

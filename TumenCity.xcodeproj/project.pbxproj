@@ -33,6 +33,7 @@
 		B51FACF22A3B095600BB6D81 /* cityCleaningMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */; };
 		B51FACF42A3B5AFE00BB6D81 /* CityCleaningCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */; };
 		B51FACF62A3DA75200BB6D81 /* CalloutIconWithTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */; };
+		B51FACF92A3DCC8D00BB6D81 /* YMKAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF82A3DCC8D00BB6D81 /* YMKAnnotation.swift */; };
 		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
 		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
 		B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896342A063FCD006A85D9 /* SportViewModel.swift */; };
@@ -144,6 +145,7 @@
 		B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cityCleaningMock.json; sourceTree = "<group>"; };
 		B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningCallout.swift; sourceTree = "<group>"; };
 		B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutIconWithTitleView.swift; sourceTree = "<group>"; };
+		B51FACF82A3DCC8D00BB6D81 /* YMKAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YMKAnnotation.swift; sourceTree = "<group>"; };
 		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
 		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
 		B52896342A063FCD006A85D9 /* SportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewModel.swift; sourceTree = "<group>"; };
@@ -327,6 +329,14 @@
 				B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B51FACF72A3DCC5900BB6D81 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B51FACF82A3DCC8D00BB6D81 /* YMKAnnotation.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		B528962F2A06342D006A85D9 /* SportModule */ = {
@@ -711,6 +721,7 @@
 				B5F7A890299E149C0001ED69 /* API */,
 				B5B06B652A000E0F00614772 /* Helper */,
 				B571088E29A216F8003698C8 /* Extension */,
+				B51FACF72A3DCC5900BB6D81 /* Protocols */,
 				B528964A2A09101B006A85D9 /* Subclass */,
 				B571088529A0F1FB003698C8 /* View */,
 				B5F7A884299DFD3E0001ED69 /* Main */,
@@ -977,6 +988,7 @@
 				B52896452A07BB3D006A85D9 /* CalloutLabelView.swift in Sources */,
 				B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */,
 				B50D325A2A1A00B10034B860 /* TradeObjectsPeriod.swift in Sources */,
+				B51FACF92A3DCC8D00BB6D81 /* YMKAnnotation.swift in Sources */,
 				B528963B2A06B359006A85D9 /* SportCallout.swift in Sources */,
 				B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */,
 				B528965A2A0A1D12006A85D9 /* DigWorkViewModel.swift in Sources */,

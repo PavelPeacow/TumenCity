@@ -16,7 +16,7 @@ struct RoadCloseResponse: Codable {
 // MARK: - Object
 struct RoadCloseObject: Codable {
     let comment, end, name: String
-    let sign: Int
+    let sign: RoadCloseIcon
     let geomJSON: GeomJSON
     let start: String
     let id: Int
@@ -32,6 +32,12 @@ struct RoadCloseObject: Codable {
 struct GeomJSON: Codable {
     let type: TypeEnum
     let coordinates: Coordinate
+}
+
+enum RoadCloseIcon: Int, Codable {
+    case close = 1
+    case work = 2
+    case noSign = 3
 }
 
 enum Coordinate: Codable {

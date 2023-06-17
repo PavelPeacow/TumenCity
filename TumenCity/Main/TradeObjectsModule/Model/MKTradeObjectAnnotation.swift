@@ -8,27 +8,12 @@
 import MapKit
 import YandexMapsMobile
 
-final class MKTradeObjectAnnotation: YMKPoint {
-    
-    enum AnnotationType {
-        case activeTrade
-        case freeTrade
-        
-        var image: UIImage? {
-            switch self {
-                
-            case .activeTrade:
-                return .init(named: "pin-active")
-            case .freeTrade:
-                return .init(named: "pin-free")
-            }
-        }
-    }
-    
-    var coordinates: CLLocationCoordinate2D
-    var image: UIImage? { type.image }
-    var type: AnnotationType
-    var id: String
+final class MKTradeObjectAnnotation: YMKPoint, YMKAnnotation {
+
+    let coordinates: CLLocationCoordinate2D
+    var icon: UIImage { type.image ?? .actions }
+    let type: AnnotationType
+    let id: String
     
     override var longitude: Double {
         coordinates.longitude.magnitude
@@ -44,4 +29,21 @@ final class MKTradeObjectAnnotation: YMKPoint {
         self.type = tradeType ? .activeTrade : .freeTrade
     }
     
+}
+
+extension MKTradeObjectAnnotation {
+    enum AnnotationType {
+        case activeTrade
+        case freeTrade
+        
+        var image: UIImage? {
+            switch self {
+                
+            case .activeTrade:
+                return .init(named: "pin-active")
+            case .freeTrade:
+                return .init(named: "pin-free")
+            }
+        }
+    }
 }
