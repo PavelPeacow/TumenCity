@@ -10,30 +10,38 @@ import SnapKit
 
 final class CalloutLabelView: UIView {
     
-    lazy var sportLabel: UILabel = {
+    lazy var calloutLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    init(label: String) {
+    init(label: String?) {
         super.init(frame: .zero)
         
-        sportLabel.text = label
+        calloutLabel.text = label
         
-        addSubview(sportLabel)
+        addSubview(calloutLabel)
         
         backgroundColor = .systemGray5
         layer.cornerRadius = 6
         
-        sportLabel.snp.makeConstraints {
+        calloutLabel.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(5)
         }
     }
     
+    convenience init() {
+        self.init(label: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setLabelWithDescription(_ description: String, label: String) {
+        calloutLabel.text = "\(description) \(label)"
     }
     
 }

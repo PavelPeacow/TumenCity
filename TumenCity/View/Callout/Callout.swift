@@ -30,10 +30,43 @@ class Callout: UIViewController {
         return view
     }()
     
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.flashScrollIndicators()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(alertBackground)
+        alertBackground.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        alertBackground.snp.makeConstraints {
+            $0.topMargin.greaterThanOrEqualToSuperview().inset(10)
+            $0.bottomMargin.lessThanOrEqualToSuperview().inset(10)
+            $0.width.equalToSuperview().inset(10)
+            $0.center.equalToSuperview()
+        }
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.height.equalToSuperview().priority(.low)
+            $0.width.equalToSuperview()
+        }
+        
         view.backgroundColor = .black.withAlphaComponent(0.75)
         
         calloutTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))

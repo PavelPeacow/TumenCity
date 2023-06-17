@@ -10,37 +10,19 @@ import UIKit
 final class TradeObjectCallout: Callout {
     
     lazy var mainContentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleStackView, contentStackView, contentParemetresStackView])
+        let stackView = UIStackView(arrangedSubviews: [titleView, contentStackView, contentParemetresStackView])
         stackView.axis = .vertical
         stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    lazy var titleStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [tradeObjectIcon, titleLabel])
-        stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    lazy var tradeObjectIcon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 17, weight: .bold)
-        label.numberOfLines = 0
-        return label
+    lazy var titleView: CalloutIconWithTitleView = {
+        return CalloutIconWithTitleView()
     }()
     
     lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [tradeObjectIcon, titleLabel])
+        let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,14 +49,13 @@ final class TradeObjectCallout: Callout {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        alertBackground.addSubview(mainContentStackView)
+        contentView.addSubview(mainContentStackView)
         
         setConstaints()
     }
     
     func configure(tradeObject: TradeObjectRow, image: UIImage, type: MKTradeObjectAnnotation.AnnotationType) {
-        tradeObjectIcon.image = image
-        titleLabel.text = tradeObject.fields.address
+        titleView.setTitle(with: tradeObject.fields.address ?? "", icon: image)
         
         switch type {
         case .activeTrade:
@@ -83,16 +64,20 @@ final class TradeObjectCallout: Callout {
             alertBackground.layer.borderColor = UIColor.blue.cgColor
         }
         
-        createDescriptionLabel(descriptionText: Strings.TradeObjectsModule.urName, text: tradeObject.fields.urName)
-        createDescriptionLabel(descriptionText: Strings.TradeObjectsModule.numDoc, text: tradeObject.fields.numDoc)
-        createDescriptionLabel(descriptionText: Strings.TradeObjectsModule.dateDoc, text: tradeObject.fields.date)
-        createDescriptionLabel(descriptionText: Strings.TradeObjectsModule.area, text: tradeObject.fields.okr)
-        createDescriptionLabel(descriptionText: Strings.TradeObjectsModule.purpose, text: tradeObject.fields.object)
-        createDescriptionLabel(descriptionText: Strings.TradeObjectsModule.period, text: tradeObject.fields.spurpose)
+        [(tradeObject.fields.urName, Strings.TradeObjectsModule.urName),
+         (tradeObject.fields.numDoc, Strings.TradeObjectsModule.numDoc),
+         (tradeObject.fields.date, Strings.TradeObjectsModule.dateDoc),
+         (tradeObject.fields.okr, Strings.TradeObjectsModule.area),
+         (tradeObject.fields.object, Strings.TradeObjectsModule.purpose),
+         (tradeObject.fields.spurpose, Strings.TradeObjectsModule.period)].forEach { (text, description) in
+            createDescriptionLabel(descriptionText: description, text: text)
+        }
         
-        createParameterLabel(descriptionText: Strings.TradeObjectsModule.areaSquare, text: tradeObject.fields.area)
-        createParameterLabel(descriptionText: Strings.TradeObjectsModule.floors, text: tradeObject.fields.floors)
-        createParameterLabel(descriptionText: Strings.TradeObjectsModule.height, text: tradeObject.fields.height)
+        [(tradeObject.fields.area, Strings.TradeObjectsModule.areaSquare),
+         (tradeObject.fields.floors, Strings.TradeObjectsModule.floors),
+         (tradeObject.fields.height, Strings.TradeObjectsModule.height)].forEach { (text, description) in
+            createParameterLabel(descriptionText: description, text: text)
+        }
     }
     
     private func createDescriptionLabel(descriptionText: String, text: String?) {
@@ -128,16 +113,10 @@ final class TradeObjectCallout: Callout {
 extension TradeObjectCallout {
     
     func setConstaints() {
-        alertBackground.snp.makeConstraints {
-            $0.topMargin.greaterThanOrEqualToSuperview().inset(10)
-            $0.bottomMargin.lessThanOrEqualToSuperview().inset(10)
-            $0.width.equalToSuperview().inset(25)
-            $0.center.equalToSuperview()
-        }
-        
         mainContentStackView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(15)
-            $0.leading.trailing.equalToSuperview().inset(15)
+            $0.top.equalTo(contentView).inset(15)
+            $0.horizontalEdges.equalTo(alertBackground).inset(15)
+            $0.bottom.equalTo(contentView).inset(15)
         }
     }
     

@@ -32,6 +32,7 @@
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
 		B51FACF22A3B095600BB6D81 /* cityCleaningMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */; };
 		B51FACF42A3B5AFE00BB6D81 /* CityCleaningCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */; };
+		B51FACF62A3DA75200BB6D81 /* CalloutIconWithTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */; };
 		B528962E2A0633FE006A85D9 /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528962D2A0633FE006A85D9 /* SportViewController.swift */; };
 		B52896312A063447006A85D9 /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896302A063447006A85D9 /* Sport.swift */; };
 		B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896342A063FCD006A85D9 /* SportViewModel.swift */; };
@@ -142,6 +143,7 @@
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
 		B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cityCleaningMock.json; sourceTree = "<group>"; };
 		B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningCallout.swift; sourceTree = "<group>"; };
+		B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutIconWithTitleView.swift; sourceTree = "<group>"; };
 		B528962D2A0633FE006A85D9 /* SportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewController.swift; sourceTree = "<group>"; };
 		B52896302A063447006A85D9 /* Sport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
 		B52896342A063FCD006A85D9 /* SportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportViewModel.swift; sourceTree = "<group>"; };
@@ -367,7 +369,6 @@
 			isa = PBXGroup;
 			children = (
 				B52896412A07B34C006A85D9 /* SportContactView.swift */,
-				B52896442A07BB3D006A85D9 /* CalloutLabelView.swift */,
 			);
 			path = SportModule;
 			sourceTree = "<group>";
@@ -517,6 +518,8 @@
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */,
+				B52896442A07BB3D006A85D9 /* CalloutLabelView.swift */,
 				B50D324B2A1907DB0034B860 /* TradeObjectsTypeView.swift */,
 				B5EF44FA2A11273B00AFAFEF /* BikePathsInfoItemView.swift */,
 				B571088329A0EC3F003698C8 /* ServiceInfoView.swift */,
@@ -969,6 +972,7 @@
 				B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
 				B50D32612A1C98D80034B860 /* UrbanImprovementsViewController.swift in Sources */,
+				B51FACF62A3DA75200BB6D81 /* CalloutIconWithTitleView.swift in Sources */,
 				B5EF44FB2A11273B00AFAFEF /* BikePathsInfoItemView.swift in Sources */,
 				B52896452A07BB3D006A85D9 /* CalloutLabelView.swift in Sources */,
 				B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */,

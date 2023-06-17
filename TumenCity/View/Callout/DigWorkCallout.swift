@@ -10,21 +10,8 @@ import SnapKit
 
 final class DigWorkCallout: Callout {
     
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.flashScrollIndicators()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
-    lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     lazy var stackViewContent: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [stackViewTitle, calloutBody])
+        let stackView = UIStackView(arrangedSubviews: [titleView, calloutBody])
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .vertical
@@ -33,27 +20,8 @@ final class DigWorkCallout: Callout {
         return stackView
     }()
     
-    lazy var stackViewTitle: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [calloutIcon, calloutTitle])
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        return stackView
-    }()
-    
-    lazy var calloutIcon: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "digWorkPin")
-        image.contentMode = .scaleAspectFit
-        return image
-    }()
-    
-    lazy var calloutTitle: UILabel = {
-        let label = UILabel()
-        label.font = . systemFont(ofSize: 17, weight: .bold)
-        label.numberOfLines = 0
-        return label
+    lazy var titleView: CalloutIconWithTitleView = {
+        return CalloutIconWithTitleView()
     }()
     
     lazy var calloutBody: UILabel = {
@@ -68,17 +36,14 @@ final class DigWorkCallout: Callout {
         
         alertBackground.layer.borderColor = UIColor.green.cgColor
         
-        alertBackground.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        
         contentView.addSubview(stackViewContent)
         
         setConstraints()
     }
     
     func configure(annotation: MKDigWorkAnnotation) {
-        calloutTitle.text = annotation.title
-        
+        titleView.setTitle(with: annotation.title, icon: UIImage(named: "digWorkPin") ?? .add)
+
         let modifiedHtmlString = annotation.contentDescription.replacingOccurrences(of: "<p>", with: "<p style=\"margin: 0; padding: 0;\">")
         
         if let htmlData = modifiedHtmlString.data(using: .unicode) {
@@ -96,23 +61,6 @@ final class DigWorkCallout: Callout {
 extension DigWorkCallout {
     
     func setConstraints() {
-        alertBackground.snp.makeConstraints {
-            $0.topMargin.greaterThanOrEqualToSuperview().inset(10)
-            $0.bottomMargin.lessThanOrEqualToSuperview().inset(10)
-            $0.width.equalToSuperview().inset(25)
-            $0.center.equalToSuperview()
-        }
-        
-        scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.height.equalToSuperview().priority(.low)
-            $0.width.equalToSuperview()
-        }
-        
         stackViewContent.snp.makeConstraints {
             $0.top.equalTo(contentView).inset(15)
             $0.horizontalEdges.equalTo(alertBackground).inset(15)
