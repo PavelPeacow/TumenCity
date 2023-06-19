@@ -8,40 +8,54 @@
 import Foundation
 import YandexMapsMobile
 import MapKit
-
-protocol CloseRoadsViewModelDelegate: AnyObject {
-    func didAddObjectToMap(roadAnnotations: [MKCloseRoadAnnotation], roadPolygons: [YMKPolygon])
-}
+import RxSwift
+import RxRelay
 
 @MainActor
 final class CloseRoadsViewModel {
     
-    var closeRoads = [RoadCloseObject]()
+    private var closeRoads = PublishSubject<[RoadCloseObject]>()
+    private var roadPolygons = PublishSubject<[YMKPolygon]>()
+    private var roadAnnotations = PublishSubject<[MKCloseRoadAnnotation]>()
     
-    weak var delegate: CloseRoadsViewModelDelegate?
+    private var isLoading = BehaviorRelay<Bool>(value: false)
     
-    var roadPolygons = [YMKPolygon]()
-    var roadAnnotations = [MKCloseRoadAnnotation]()
+    var closeRoadsObserable: Observable<[RoadCloseObject]> {
+        closeRoads.asObservable()
+    }
+    var roadPolygonsObserable: Observable<[YMKPolygon]> {
+        roadPolygons.asObservable()
+    }
+    var roadAnnotationsObserable: Observable<[MKCloseRoadAnnotation]> {
+        roadAnnotations.asObservable()
+    }
+    
+    var isLoadingObserable: Observable<Bool> {
+        isLoading.asObservable()
+    }
     
     init() {
         Task {
+            isLoading.accept(true)
             await getCloseRoads()
-            addCloseRoadToMap()
-            delegate?.didAddObjectToMap(roadAnnotations: roadAnnotations, roadPolygons: roadPolygons)
+            isLoading.accept(false)
         }
     }
     
-    func getCloseRoads() async {
+    private func getCloseRoads() async {
         do {
             let result = try await APIManager().getAPIContent(type: RoadCloseResponse.self, endpoint: .closeRoads)
-            closeRoads = result.objects
+            closeRoads
+                .onNext(result.objects)
             print(result.objects)
         } catch {
+            closeRoads
+                .onError(error)
             print(error)
         }
     }
     
-    func getImageForRoad(by intEnum: RoadCloseIcon) -> UIImage? {
+    private func getImageForRoad(by intEnum: RoadCloseIcon) -> UIImage? {
         switch intEnum {
         case .close:
             return .init(named: "close")
@@ -52,41 +66,39 @@ final class CloseRoadsViewModel {
         }
     }
     
-    func addCloseRoadToMap() {
-        closeRoads.forEach { object in
-            let geoCoordinates = object.geomJSON.coordinates
+    func createCloseRoadAnnotation(object: RoadCloseObject) {
+        let geoCoordinates = object.geomJSON.coordinates
+        
+        if case .double(let pointArray) = geoCoordinates {
+            let lat = pointArray.last ?? 0
+            let long = pointArray.first ?? 0
             let icon = getImageForRoad(by: object.sign) ?? .actions
             
-            if case .double(let pointArray) = geoCoordinates {
-                let lat = pointArray.last ?? 0
-                let long = pointArray.first ?? 0
-                
-                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                let annotation = MKCloseRoadAnnotation(title: object.name, itemDescription: object.comment,
-                                                       dateStart: object.start, dateEnd: object.end,
-                                                       coordinates: coordinate, color: .red, icon: icon)
-                roadAnnotations.append(annotation)
-            }
-            
-            if case .doubleArrayArray(let polygonArray) = geoCoordinates {
-                var points = [YMKPoint]()
-                
-                polygonArray.forEach { collection in
-                    
-                    collection.forEach {  pointCoordinate in
-                        let lat = pointCoordinate.last ?? 0
-                        let long = pointCoordinate.first ?? 0
-                        let point = YMKPoint(latitude: lat, longitude: long)
-                        points.append(point)
-                    }
-                    
-                    let polygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
-                    roadPolygons.append(polygon)
-                }
-                
-            }
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            let annotation = MKCloseRoadAnnotation(title: object.name, itemDescription: object.comment,
+                                                   dateStart: object.start, dateEnd: object.end,
+                                                   coordinates: coordinate, color: .red, icon: icon)
+            roadAnnotations
+                .onNext([annotation])
         }
         
+        if case .doubleArrayArray(let polygonArray) = geoCoordinates {
+            var points = [YMKPoint]()
+            
+            polygonArray.forEach { collection in
+                
+                collection.forEach {  pointCoordinate in
+                    let lat = pointCoordinate.last ?? 0
+                    let long = pointCoordinate.first ?? 0
+                    let point = YMKPoint(latitude: lat, longitude: long)
+                    points.append(point)
+                }
+                
+                let polygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
+                roadPolygons
+                    .onNext([polygon])
+            }
+            
+        }
     }
-    
 }

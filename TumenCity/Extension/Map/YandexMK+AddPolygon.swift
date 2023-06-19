@@ -9,12 +9,15 @@ import YandexMapsMobile
 
 extension YMKMapView {
     
-    func addPolygon(_ polygon: YMKPolygon, polygonData: UrbanPolygon, tapListener: YMKMapObjectTapListener) {
+    func addPolygon(_ polygon: YMKPolygon, polygonData: Any? = nil, color: UIColor,
+                    stroreWidth: Float = 3, tapListener: YMKMapObjectTapListener? = nil) {
         let polygon = mapWindow.map.mapObjects.addPolygon(with: polygon)
-        polygon.fillColor = polygonData.polygonColor.withAlphaComponent(0.5)
-        polygon.strokeWidth = 1
+        polygon.fillColor = color
+        polygon.strokeWidth = stroreWidth
         polygon.userData = polygonData
-        polygon.addTapListener(with: tapListener)
+        if let tapListener {
+            polygon.addTapListener(with: tapListener)
+        }
     }
     
 }

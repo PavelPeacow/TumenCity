@@ -11,11 +11,24 @@ enum APIConstant {
     static let shaKey = "M0b!1e@pp!nf0!ntegr@t!0ne_crm2O23"
 }
 
-enum APIError: Error {
+enum APIError: LocalizedError {
     case badURL
     case cannotCreateRequest
     case cannotGet
     case cannotDecode
+    
+    var errorDescription: String? {
+        switch self {
+        case .badURL:
+            return "Не удалость установить соединение с адресом!"
+        case .cannotCreateRequest:
+            return "Не удалось создать запрос к серверу!"
+        case .cannotGet:
+            return "Не удалось получить данные с сервера!"
+        case .cannotDecode:
+            return "Не удалость декодировать полученные данные с сервера!"
+        }
+    }
 }
 
 final class APIManager {

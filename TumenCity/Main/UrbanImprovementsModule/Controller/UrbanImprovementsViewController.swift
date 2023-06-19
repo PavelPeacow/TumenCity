@@ -62,7 +62,7 @@ extension UrbanImprovementsViewController: UrbanImprovementsFilterBottomSheetDel
         map.addAnnotations(filteredAnnotations, cluster: collection)
         
         filteredPolygons.forEach { polygon in
-            map.addPolygon(polygon.0, polygonData: polygon.1, tapListener: self)
+            map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
         }
         
         currentActiveFilterID = filterID
@@ -77,7 +77,7 @@ extension UrbanImprovementsViewController: UrbanImprovementsFilterBottomSheetDel
         map.addAnnotations(annotations, cluster: collection)
         
         polygons.forEach { polygon in
-            map.addPolygon(polygon.0, polygonData: polygon.1, tapListener: self)
+            map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
         }
         
         currentActiveFilterID = nil
@@ -92,7 +92,7 @@ extension UrbanImprovementsViewController: UrbanImprovementsViewModelDelegate {
         collection.addTapListener(with: self)
         
         polygons.forEach { polygon in
-            map.addPolygon(polygon.0, polygonData: polygon.1, tapListener: self)
+            map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
         }
     }
     
