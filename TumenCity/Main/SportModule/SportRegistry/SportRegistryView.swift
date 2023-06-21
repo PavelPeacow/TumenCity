@@ -45,6 +45,10 @@ final class SportRegistryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(sportElements: [SportElement]) {
+        self.sportElements = sportElements
+    }
+    
 }
 
 extension SportRegistryView: SportRegistryTableViewCellDelegate {

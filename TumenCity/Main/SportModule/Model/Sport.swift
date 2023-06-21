@@ -18,7 +18,7 @@ struct Address: Codable {
     let id: Int
     let title: String
     let latitude, longitude: Itude
-    let numberPeople: Int
+    let numberPeople: Number
 
     enum CodingKeys: String, CodingKey {
         case id, title, latitude, longitude

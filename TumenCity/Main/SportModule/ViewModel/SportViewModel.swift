@@ -7,46 +7,63 @@
 
 import UIKit
 import MapKit
-
-protocol SportViewModelDelegate: AnyObject {
-    func didFinishAddingAnnotations(_ annotations: [MKSportAnnotation])
-}
+import RxSwift
+import RxRelay
 
 @MainActor
-class SportViewModel {
+final class SportViewModel {
     
-    var sportElements = [SportElement]()
-    var sportAnnotations = [MKSportAnnotation]()
+    private var sportElements = PublishSubject<[SportElement]>()
+    private var sportAnnotations = BehaviorSubject<[MKSportAnnotation]>(value: [])
+    private var isLoading = BehaviorRelay<Bool>(value: false)
+    var searchQuery = PublishSubject<String>()
     
-    weak var delegate: SportViewModelDelegate?
+    var sportElementsObservable: Observable<[SportElement]> {
+        sportElements.asObservable()
+    }
+    var sportAnnotationsObservable: Observable<[MKSportAnnotation]> {
+        sportAnnotations.asObservable()
+    }
+    var isLoadingObservable: Observable<Bool> {
+        isLoading.asObservable()
+    }
     
     init() {
         Task {
+            isLoading.accept(true)
             await getSportElements()
-            addSportAnnotations()
-            
-            delegate?.didFinishAddingAnnotations(sportAnnotations)
+            isLoading.accept(false)
         }
     }
     
-    func searchAnnotationByName(_ name: String) -> MKSportAnnotation? {
-        sportAnnotations.first(where: { $0.title.lowercased().contains(name.lowercased()) })
+    func searchAnnotationByName(_ name: String) -> Observable<MKSportAnnotation?> {
+        sportAnnotations
+            .map { annotations in
+                let filteredAnnotations = annotations.filter { annotation in
+                    let annotationTitle = annotation.title.lowercased()
+                    let searchKeyword = name.lowercased()
+                    return annotationTitle.contains(searchKeyword)
+                }
+                return filteredAnnotations.first
+            }
     }
     
     func getSportElements() async {
-//        do {
-//            let result = try await APIManager().getAPIContent(type: [SportElement].self, endpoint: .sport)
-//            sportElements = result
-//        } catch {
-//            print(error)
-//        }
-        sportElements = await APIManager().decodeMock(type: [SportElement].self, forResourse: "sportMock")
-        
+        do {
+            let result = try await APIManager().getAPIContent(type: [SportElement].self, endpoint: .sport)
+            sportElements
+                .onNext(result)
+            sportElements
+                .onCompleted()
+        } catch {
+            print(error)
+        }
     }
     
-    func addSportAnnotations() {
-        print("che")
-        sportElements.forEach { element in
+    func addSportAnnotations(objects: [SportElement]) {
+        var annotations = [MKSportAnnotation]()
+        
+        objects.forEach { element in
             
             let title = element.title
             let contacts = element.contacts
@@ -78,19 +95,20 @@ class SportViewModel {
                 
                 if let longStr = longFormatted as? String, let latStr = latFormatted as? String {
                     let annotation = MKSportAnnotation(icon: UIImage(named: "sportPin") ?? .add, title: title, coordinates: CLLocationCoordinate2D(latitude: Double(latStr) ?? 0, longitude: Double(longStr) ?? 0), contacts: contacts, addresses: addresses)
-                    sportAnnotations.append(annotation)
+                    annotations.append(annotation)
                 }
                 
                 if let longDouble = longFormatted as? Double, let latDouble = latFormatted as? Double {
                     let annotation = MKSportAnnotation(icon: UIImage(named: "sportPin") ?? .add, title: title, coordinates: CLLocationCoordinate2D(latitude: latDouble, longitude: longDouble), contacts: contacts, addresses: addresses)
-                    sportAnnotations.append(annotation)
+                    annotations.append(annotation)
                 }
                 
                 
             }
-
-            
         }
+        
+        sportAnnotations
+            .onNext(annotations)
     }
     
 }

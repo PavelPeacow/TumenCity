@@ -7,6 +7,7 @@
 
 import UIKit
 import YandexMapsMobile
+import RxSwift
 
 class SportViewController: UIViewControllerMapSegmented {
     
@@ -16,16 +17,20 @@ class SportViewController: UIViewControllerMapSegmented {
     private var timer: Timer?
     
     private let viewModel = SportViewModel()
+    private let bag = DisposeBag()
     
     private let map: YMKMapView = YandexMapMaker.makeYandexMap()
     
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    
+    private lazy var loadingView = LoadingView(frame: view.bounds)
     
     init(sportRegistryView: SportRegistryView, sportRegistrySearchResult: SportRegistrySearchViewController) {
         self.sportRegistryView = sportRegistryView
         self.sportRegistrySearchResult = sportRegistrySearchResult
         
         super.init(mainMapView: map, registryView: sportRegistryView, registrySearchResult: sportRegistrySearchResult)
+        view.addSubview(loadingView)
         super.addItemsToSegmentControll(["Карта", "Реестр"])
     }
     
@@ -35,48 +40,67 @@ class SportViewController: UIViewControllerMapSegmented {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setUpView()
+        bindSearchController()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         title = "Спорт"
-        
         view.backgroundColor = .systemBackground
-        
-        viewModel.delegate = self
         sportRegistryView.delegate = self
         sportRegistrySearchResult.delegate = self
-        
     }
     
-    override func updateSearchResults(for searchController: UISearchController) {
-        timer?.invalidate()
+    private func bindSearchController() {
+        searchController.searchBar.rx.text
+            .orEmpty
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .bind(to: viewModel.searchQuery)
+            .disposed(by: bag)
+    }
+    
+    private func setUpBindings() {
+        viewModel
+            .isLoadingObservable
+            .bind(to: loadingView.isLoadingSubject)
+            .disposed(by: bag)
         
-        guard let searchText = searchController.searchBar.text else { return map.setDefaultRegion() }
-        guard !searchText.isEmpty else { return map.setDefaultRegion() }
+        viewModel
+            .sportElementsObservable
+            .subscribe(
+                onNext: { [unowned self] objects in
+                    viewModel.addSportAnnotations(objects: objects)
+                    sportRegistryView.sportElements = objects
+                    sportRegistrySearchResult.configure(sportElements: objects)
+                    sportRegistryView.tableView.reloadData()
+                },
+                onCompleted: { [unowned self] in
+                    map.mapWindow.map.mapObjects.addTapListener(with: self)
+                })
+            .disposed(by: bag)
         
-        if segmentedIndex == 1 {
-            sportRegistrySearchResult.filterSearch(with: searchText)
-            return
-        }
+        viewModel
+            .sportAnnotationsObservable
+            .subscribe(onNext: { [unowned self] annotations in
+                map.addAnnotations(annotations, cluster: collection)
+            })
+            .disposed(by: bag)
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
-            if let annotation = self?.viewModel.searchAnnotationByName(searchText) {
-                self?.map.moveCameraToAnnotation(annotation)
-            } else {
-                self?.map.setDefaultRegion()
+        viewModel
+            .searchQuery
+            .flatMap { [unowned self] query in
+                viewModel.searchAnnotationByName(query)
             }
-        })
-    }
-    
-}
-
-extension SportViewController: SportViewModelDelegate {
-    
-    func didFinishAddingAnnotations(_ annotations: [MKSportAnnotation]) {
-        map.addAnnotations(annotations, cluster: collection)
-        map.mapWindow.map.mapObjects.addTapListener(with: self)
-        
-        sportRegistryView.sportElements = viewModel.sportElements
-        sportRegistrySearchResult.configure(sportElements: viewModel.sportElements)
-        sportRegistryView.tableView.reloadData()
+            .subscribe(onNext: { [unowned self] annotation in
+                if let annotation{
+                    map.moveCameraToAnnotation(annotation)
+                } else {
+                    map.setDefaultRegion()
+                }
+            })
+            .disposed(by: bag)
     }
     
 }
@@ -99,9 +123,15 @@ extension SportViewController: SportRegistrySearchViewControllerDelegate {
     func didTapSearchResult(_ result: SportElement) {
         resetSegmentedControlAfterRegistryView()
         
-        if let annotation = viewModel.sportAnnotations.first(where: { $0.title == result.title }) {
-            map.moveCameraToAnnotation(annotation)
-        }
+        viewModel.searchAnnotationByName(result.title)
+            .subscribe(onNext: { [unowned self] annotation in
+                if let annotation{
+                    map.moveCameraToAnnotation(annotation)
+                } else {
+                    map.setDefaultRegion()
+                }
+            })
+            .disposed(by: bag)
     }
     
 }

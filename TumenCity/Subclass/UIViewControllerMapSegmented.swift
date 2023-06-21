@@ -17,7 +17,7 @@ class UIViewControllerMapSegmented: UIViewController {
         segmentControl.selectedSegmentIndex
     }
     
-    private lazy var searchController: UISearchController = {
+    lazy var searchController: UISearchController = {
         let search = UISearchController()
         search.searchResultsUpdater = self
         search.hidesNavigationBarDuringPresentation = false
@@ -43,7 +43,7 @@ class UIViewControllerMapSegmented: UIViewController {
         return stackView
     }()
     
-    private lazy var segmentControl: UISegmentedControl = {
+    lazy var segmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
         segment.translatesAutoresizingMaskIntoConstraints = false
         return segment
