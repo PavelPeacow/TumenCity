@@ -91,6 +91,7 @@
 		B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */; };
 		B5D92ACB2A40ABEA00BAA7F5 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACA2A40ABEA00BAA7F5 /* LoadingView.swift */; };
 		B5D92ACD2A40AF9900BAA7F5 /* ShowErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */; };
+		B5D92ACF2A42EE5B00BAA7F5 /* Observable+FlipBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */; };
 		B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */; };
 		B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E32A10DD3600AFAFEF /* FilterView.swift */; };
 		B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E72A10DE5B00AFAFEF /* Strings.swift */; };
@@ -205,6 +206,7 @@
 		B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Encrypt.swift; sourceTree = "<group>"; };
 		B5D92ACA2A40ABEA00BAA7F5 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowErrorAlert.swift; sourceTree = "<group>"; };
+		B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+FlipBool.swift"; sourceTree = "<group>"; };
 		B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkFilterBottomSheet.swift; sourceTree = "<group>"; };
 		B5EF44E32A10DD3600AFAFEF /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		B5EF44E72A10DE5B00AFAFEF /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -574,6 +576,7 @@
 		B571088E29A216F8003698C8 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */,
 				B571088C29A216F6003698C8 /* UIButton+Blur.swift */,
 				B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */,
 				B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */,
@@ -952,6 +955,7 @@
 				B52896352A063FCD006A85D9 /* SportViewModel.swift in Sources */,
 				B5D92ACB2A40ABEA00BAA7F5 /* LoadingView.swift in Sources */,
 				B52896422A07B34C006A85D9 /* SportContactView.swift in Sources */,
+				B5D92ACF2A42EE5B00BAA7F5 /* Observable+FlipBool.swift in Sources */,
 				B50D32462A18D55B0034B860 /* TradeObject.swift in Sources */,
 				B5F249582A3AFD3A00B35F74 /* CityCleaning.swift in Sources */,
 				B53D665E2A06225B0010F846 /* CloseRoadCallout.swift in Sources */,

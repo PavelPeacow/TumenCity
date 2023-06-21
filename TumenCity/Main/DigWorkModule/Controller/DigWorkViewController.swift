@@ -8,14 +8,16 @@
 import UIKit
 import YandexMapsMobile
 import SnapKit
+import RxSwift
 
-class DigWorkViewController: UIViewController {
+final class DigWorkViewController: UIViewController {
     
     private let viewModel = DigWorkViewModel()
+    private let bag = DisposeBag()
     
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    lazy var searchController: UISearchController = {
+    private lazy var searchController: UISearchController = {
         let search = UISearchController()
         search.searchResultsUpdater = self
         search.searchBar.placeholder = "Введите адрес..."
@@ -23,21 +25,67 @@ class DigWorkViewController: UIViewController {
         return search
     }()
     
-    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private lazy var loadingView = LoadingView(frame: view.bounds)
+    
+    private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        viewModel.delegate = self
-        
-        map.setDefaultRegion()
-        
+        setUpView()
+        setUpNavigationBar()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         view.backgroundColor = .systemBackground
-        navigationItem.searchController = searchController
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterIcon))
         view.addSubview(map)
-        
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
+        view.addSubview(loadingView)
+    }
+    
+    private func setUpNavigationBar() {
+        navigationItem.searchController = searchController
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "filterIcon"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(didTapFilterIcon))
+    }
+    
+    private func setUpBindings() {
+        viewModel
+            .isLoadingObservable
+            .observe(on: MainScheduler.instance)
+            .bind(to: loadingView.isLoadingSubject)
+            .disposed(by: bag)
+        
+        viewModel
+            .isLoadingObservable
+            .debug()
+            .observe(on: MainScheduler.instance)
+            .flip()
+            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
+            .disposed(by: bag)
+        
+        viewModel
+            .digWorkAnnotationsObservable
+            .subscribe(
+                onNext: { [unowned self] annotations in
+                    map.addAnnotations(annotations, cluster: collection)
+                },
+                onCompleted: { [unowned self] in
+                    self.map.mapWindow.map.mapObjects.addTapListener(with: self)
+                })
+            .disposed(by: bag)
+    }
+    
+    private func configureModalSubscription(for modal: DigWorkBottomSheet, with annotations: [MKDigWorkAnnotation]) {
+        modal.selectedAddressObservable
+            .subscribe(onNext: { [unowned self] annotation in
+                let callout = DigWorkCallout()
+                callout.configure(annotation: annotation)
+                callout.showAlert(in: self)
+            })
+            .disposed(by: bag)
     }
     
 }
@@ -59,25 +107,6 @@ extension DigWorkViewController: UISearchResultsUpdating {
     
 }
 
-extension DigWorkViewController: DigWorkViewModelDelegate {
-    
-    func didFinishAddingAnnotations(_ annotations: [MKDigWorkAnnotation]) {
-        map.addAnnotations(annotations, cluster: collection)
-        map.mapWindow.map.mapObjects.addTapListener(with: self)
-    }
-    
-}
-
-extension DigWorkViewController: DigWorkBottomSheetDelegate {
-    
-    func didTapAddress(_ annotation: MKDigWorkAnnotation) {
-        let callout = DigWorkCallout()
-        callout.configure(annotation: annotation)
-        callout.showAlert(in: self)
-    }
-    
-}
-
 extension DigWorkViewController: YMKClusterListener {
     
     func onClusterAdded(with cluster: YMKCluster) {
@@ -91,13 +120,13 @@ extension DigWorkViewController: YMKClusterTapListener {
     
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKDigWorkAnnotation }
-
+        
         annotations.forEach { print($0.coordinates) }
         annotations.forEach { print($0.title) }
         
         if viewModel.isClusterWithTheSameCoordinates(annotations: annotations) {
             let modal = DigWorkBottomSheet()
-            modal.delegate = self
+            configureModalSubscription(for: modal, with: annotations)
             modal.configureModal(annotations: annotations)
             present(modal, animated: true)
         }

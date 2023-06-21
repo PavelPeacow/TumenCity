@@ -6,16 +6,16 @@
 //
 
 import UIKit
-
-protocol DigWorkBottomSheetDelegate: AnyObject {
-    func didTapAddress(_ annotation: MKDigWorkAnnotation)
-}
+import RxSwift
 
 final class DigWorkBottomSheet: CustomBottomSheet {
-        
-    var annotations = [MKDigWorkAnnotation]()
     
-    weak var delegate: DigWorkBottomSheetDelegate?
+    private var annotations = [MKDigWorkAnnotation]()
+    private var selectedAddress = PublishSubject<MKDigWorkAnnotation>()
+    
+    var selectedAddressObservable: Observable<MKDigWorkAnnotation> {
+        selectedAddress
+    }
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -29,39 +29,44 @@ final class DigWorkBottomSheet: CustomBottomSheet {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setUpView()
+        setConstraints()
+        setContentSize()
+    }
+    
+    private func setUpView() {
         view.addSubview(tableView)
-        
         view.backgroundColor = .systemBackground
-        
-        tableView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(25)
-            $0.top.equalToSuperview().inset(topInset)
-            $0.height.equalToSuperview().inset(topInset)
-        }
-                
+    }
+    
+    private func setContentSize() {
         tableView.layoutIfNeeded()
-        print(tableView.contentSize)
         
         var prefferedSize = tableView.contentSize.height + topInset * 2
-        
         if prefferedSize > view.bounds.height / 2 {
             prefferedSize = view.bounds.height / 2 + topInset * 2
         }
         
         preferredContentSize = CGSize(width: view.bounds.width,
                                       height: prefferedSize)
-        print(preferredContentSize)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
     }
     
     func configureModal(annotations: [MKDigWorkAnnotation]) {
         self.annotations = annotations
     }
-        
+    
+}
+
+private extension DigWorkBottomSheet {
+    
+    func setConstraints() {
+        tableView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(25)
+            $0.top.equalToSuperview().inset(topInset)
+            $0.height.equalToSuperview().inset(topInset)
+        }
+    }
+    
 }
 
 extension DigWorkBottomSheet: UITableViewDataSource {
@@ -84,7 +89,8 @@ extension DigWorkBottomSheet: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let annotation = annotations[indexPath.row]
-        delegate?.didTapAddress(annotation)
+        selectedAddress
+            .onNext(annotation)
         dismiss(animated: true)
     }
     

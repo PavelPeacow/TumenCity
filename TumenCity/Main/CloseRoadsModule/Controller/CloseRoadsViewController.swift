@@ -10,7 +10,7 @@ import YandexMapsMobile
 import RxSwift
 import RxCocoa
 
-class CloseRoadsViewController: UIViewController {
+final class CloseRoadsViewController: UIViewController {
     
     private let viewModel = CloseRoadsViewModel()
     private let bag = DisposeBag()
@@ -23,14 +23,15 @@ class CloseRoadsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         view.backgroundColor = .systemBackground
-        
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
         view.addSubview(loadingView)
-        
-        setUpBindings()
     }
     
     private func setUpBindings() {
@@ -43,12 +44,10 @@ class CloseRoadsViewController: UIViewController {
         viewModel
             .closeRoadsObserable
             .subscribe(
-                onNext: {
-                    $0.forEach { object in
-                        self.viewModel.createCloseRoadAnnotation(object: object)
-                    }
+                onNext: { [unowned self] objects in
+                    self.viewModel.createCloseRoadAnnotation(objects: objects)
                 },
-                onError: {
+                onError: { [unowned self] in
                     self.showErrorAlert(title: "Ошибка", description: $0.localizedDescription)
                 }
             )
@@ -56,17 +55,18 @@ class CloseRoadsViewController: UIViewController {
         
         viewModel
             .roadAnnotationsObserable
-            .subscribe(onNext: { [weak self] roadAnnotations in
-                guard let self = self else { return }
+            .subscribe(
+                onNext: { [unowned self] roadAnnotations in
                 self.map.addAnnotations(roadAnnotations, cluster: self.collection)
+            },
+            onCompleted: { [unowned self] in
                 self.map.mapWindow.map.mapObjects.addTapListener(with: self)
             })
             .disposed(by: bag)
         
         viewModel
             .roadPolygonsObserable
-            .subscribe(onNext: { [weak self] roadPolygons in
-                guard let self = self else { return }
+            .subscribe(onNext: { [unowned self] roadPolygons in
                 roadPolygons.forEach { polygon in
                     self.map.addPolygon(polygon, color: .red.withAlphaComponent(0.15))
                 }
@@ -78,6 +78,7 @@ class CloseRoadsViewController: UIViewController {
 
 extension CloseRoadsViewController: YMKClusterListener {
     
+#warning("Probably contains annotaions with the same coordinates")
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKCloseRoadAnnotation }
         cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .red)

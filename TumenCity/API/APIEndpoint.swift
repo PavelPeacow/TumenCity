@@ -11,6 +11,7 @@ enum APIEndpoint {
     case communalServices
     case closeRoads
     case sport
+    case digWork
     
     case tradeObjects
     case tradeObjectBy(id: String)
@@ -35,6 +36,9 @@ enum APIEndpoint {
             
         case .sport:
             return urlComponents(host: "info.agt72.ru", path: "/api/sport/main/institutions/json")
+
+        case .digWork:
+            return urlComponents(host: "info.agt72.ru", path: "/api/dig/main/dig/json")
             
         case .tradeObjects:
             return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/select/json")
@@ -125,7 +129,7 @@ enum APIEndpoint {
             
             request.httpBody = formData.data(using: .utf8)
             
-        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning:
+        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning, .digWork:
             request.httpMethod = "POST"
         }
 

@@ -47,6 +47,8 @@ final class CloseRoadsViewModel {
             let result = try await APIManager().getAPIContent(type: RoadCloseResponse.self, endpoint: .closeRoads)
             closeRoads
                 .onNext(result.objects)
+            closeRoads
+                .onCompleted()
             print(result.objects)
         } catch {
             closeRoads
@@ -66,39 +68,51 @@ final class CloseRoadsViewModel {
         }
     }
     
-    func createCloseRoadAnnotation(object: RoadCloseObject) {
-        let geoCoordinates = object.geomJSON.coordinates
+    func createCloseRoadAnnotation(objects: [RoadCloseObject]) {
+        var annotations = [MKCloseRoadAnnotation]()
+        var polygons = [YMKPolygon]()
         
-        if case .double(let pointArray) = geoCoordinates {
-            let lat = pointArray.last ?? 0
-            let long = pointArray.first ?? 0
-            let icon = getImageForRoad(by: object.sign) ?? .actions
+        objects.forEach { object in
+            let geoCoordinates = object.geomJSON.coordinates
             
-            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            let annotation = MKCloseRoadAnnotation(title: object.name, itemDescription: object.comment,
-                                                   dateStart: object.start, dateEnd: object.end,
-                                                   coordinates: coordinate, color: .red, icon: icon)
-            roadAnnotations
-                .onNext([annotation])
-        }
-        
-        if case .doubleArrayArray(let polygonArray) = geoCoordinates {
-            var points = [YMKPoint]()
-            
-            polygonArray.forEach { collection in
+            if case .double(let pointArray) = geoCoordinates {
+                let lat = pointArray.last ?? 0
+                let long = pointArray.first ?? 0
+                let icon = getImageForRoad(by: object.sign) ?? .actions
                 
-                collection.forEach {  pointCoordinate in
-                    let lat = pointCoordinate.last ?? 0
-                    let long = pointCoordinate.first ?? 0
-                    let point = YMKPoint(latitude: lat, longitude: long)
-                    points.append(point)
-                }
-                
-                let polygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
-                roadPolygons
-                    .onNext([polygon])
+                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                let annotation = MKCloseRoadAnnotation(title: object.name, itemDescription: object.comment,
+                                                       dateStart: object.start, dateEnd: object.end,
+                                                       coordinates: coordinate, color: .red, icon: icon)
+                annotations.append(annotation)
             }
             
+            if case .doubleArrayArray(let polygonArray) = geoCoordinates {
+                var points = [YMKPoint]()
+                
+                polygonArray.forEach { collection in
+                    
+                    collection.forEach {  pointCoordinate in
+                        let lat = pointCoordinate.last ?? 0
+                        let long = pointCoordinate.first ?? 0
+                        let point = YMKPoint(latitude: lat, longitude: long)
+                        points.append(point)
+                    }
+                    
+                    let polygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
+                    polygons.append(polygon)
+                }
+            }
         }
+        
+        roadAnnotations
+            .onNext(annotations)
+        roadAnnotations
+            .onCompleted()
+        
+        roadPolygons
+            .onNext(polygons)
+        roadPolygons
+            .onCompleted()
     }
 }
