@@ -48,8 +48,41 @@ class SportViewController: UIViewControllerMapSegmented {
     private func setUpView() {
         title = "Спорт"
         view.backgroundColor = .systemBackground
-        sportRegistryView.delegate = self
-        sportRegistrySearchResult.delegate = self
+        
+        sportRegistryView
+            .selectedSportAddressObservable
+            .subscribe(onNext: { [unowned self] address in
+                resetSegmentedControlAfterRegistryView()
+                
+                guard case .double(let lat) = address.latitude else { return }
+                guard case .double(let long) = address.longitude else { return }
+                
+                map.moveCameraToAnnotation(latitude: lat, longitude: long)
+            })
+            .disposed(by: bag)
+        
+        sportRegistrySearchResult
+            .selectedSportElementObservable
+            .flatMap { [unowned self] sportElement in
+                resetSegmentedControlAfterRegistryView()
+                return viewModel.searchAnnotationByName(sportElement.title)
+            }
+            .subscribe(onNext: { [unowned self] annotation in
+                if let annotation{
+                    map.moveCameraToAnnotation(annotation)
+                } else {
+                    map.setDefaultRegion()
+                }
+            })
+            .disposed(by: bag)
+        
+        didChangeSearchController
+            .subscribe(onNext: { [unowned self] _ in
+                searchController.searchBar.rx.text.onCompleted()
+                bindSearchController()
+                print("che")
+            })
+            .disposed(by: bag)
     }
     
     private func bindSearchController() {
@@ -57,7 +90,9 @@ class SportViewController: UIViewControllerMapSegmented {
             .orEmpty
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .bind(to: viewModel.searchQuery)
+            .subscribe(onNext: { [unowned self] str in
+                viewModel.searchQuery.onNext(str)
+            })
             .disposed(by: bag)
     }
     
@@ -90,6 +125,7 @@ class SportViewController: UIViewControllerMapSegmented {
         
         viewModel
             .searchQuery
+            .filter { [unowned self] _ in segmentedIndex == 0 }
             .flatMap { [unowned self] query in
                 viewModel.searchAnnotationByName(query)
             }
@@ -101,35 +137,12 @@ class SportViewController: UIViewControllerMapSegmented {
                 }
             })
             .disposed(by: bag)
-    }
-    
-}
-
-extension SportViewController: SportRegistryViewDelegate {
-    
-    func didGetAddress(_ address: Address) {
-        resetSegmentedControlAfterRegistryView()
         
-        guard case .double(let lat) = address.latitude else { return }
-        guard case .double(let long) = address.longitude else { return }
-        
-        map.moveCameraToAnnotation(latitude: lat, longitude: long)
-    }
-    
-}
-
-extension SportViewController: SportRegistrySearchViewControllerDelegate {
-    
-    func didTapSearchResult(_ result: SportElement) {
-        resetSegmentedControlAfterRegistryView()
-        
-        viewModel.searchAnnotationByName(result.title)
-            .subscribe(onNext: { [unowned self] annotation in
-                if let annotation{
-                    map.moveCameraToAnnotation(annotation)
-                } else {
-                    map.setDefaultRegion()
-                }
+        viewModel
+            .searchQuery
+            .filter { [unowned self] _ in segmentedIndex == 1 }
+            .subscribe(onNext: { [unowned self] query in
+                sportRegistrySearchResult.filterSearch(with: query)
             })
             .disposed(by: bag)
     }

@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import RxSwift
 
 class UIViewControllerMapSegmented: UIViewController {
         
     private var mainMapView: UIView
     private var registryView: UIView
     private var registrySearchResult: UITableViewController
+    
+    var didChangeSearchController = PublishSubject<Void>()
     
     var segmentedIndex: Int {
         segmentControl.selectedSegmentIndex
@@ -87,6 +90,8 @@ class UIViewControllerMapSegmented: UIViewController {
         definesPresentationContext = true
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Введите адрес..."
+        didChangeSearchController
+            .onNext(())
     }
     
     private func addTarget() {
