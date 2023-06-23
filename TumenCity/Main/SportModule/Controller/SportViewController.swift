@@ -23,14 +23,13 @@ class SportViewController: UIViewControllerMapSegmented {
     
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    private lazy var loadingView = LoadingView(frame: view.bounds)
+    private lazy var loadingViewController = LoadingViewController()
     
     init(sportRegistryView: SportRegistryView, sportRegistrySearchResult: SportRegistrySearchViewController) {
         self.sportRegistryView = sportRegistryView
         self.sportRegistrySearchResult = sportRegistrySearchResult
         
         super.init(mainMapView: map, registryView: sportRegistryView, registrySearchResult: sportRegistrySearchResult)
-        view.addSubview(loadingView)
         super.addItemsToSegmentControll(["Карта", "Реестр"])
     }
     
@@ -99,7 +98,17 @@ class SportViewController: UIViewControllerMapSegmented {
     private func setUpBindings() {
         viewModel
             .isLoadingObservable
-            .bind(to: loadingView.isLoadingSubject)
+            .subscribe(onNext: { [unowned self] in
+                if $0 {
+                    loadingViewController.showLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = true
+                    }
+                } else {
+                    loadingViewController.removeLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = false
+                    }
+                }
+            })
             .disposed(by: bag)
         
         viewModel

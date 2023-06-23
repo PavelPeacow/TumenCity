@@ -19,7 +19,7 @@ final class CloseRoadsViewController: UIViewController {
     
     private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
     
-    private lazy var loadingView = LoadingView(frame: view.bounds)
+    private lazy var loadingView = LoadingViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,14 +31,23 @@ final class CloseRoadsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
-        view.addSubview(loadingView)
     }
     
     private func setUpBindings() {
         viewModel
             .isLoadingObserable
             .observe(on: MainScheduler.instance)
-            .bind(to: loadingView.isLoadingSubject)
+            .subscribe(onNext: { [unowned self] in
+                if $0 {
+                    loadingView.showLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = true
+                    }
+                } else {
+                    loadingView.removeLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = true
+                    }
+                }
+            })
             .disposed(by: bag)
         
         viewModel

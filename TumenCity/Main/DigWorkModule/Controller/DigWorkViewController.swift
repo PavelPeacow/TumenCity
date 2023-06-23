@@ -25,7 +25,7 @@ final class DigWorkViewController: UIViewController {
         return search
     }()
     
-    private lazy var loadingView = LoadingView(frame: view.bounds)
+    private lazy var loadingViewController = LoadingViewController()
     
     private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
     
@@ -40,7 +40,6 @@ final class DigWorkViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
-        view.addSubview(loadingView)
     }
     
     private func setUpNavigationBar() {
@@ -55,7 +54,19 @@ final class DigWorkViewController: UIViewController {
         viewModel
             .isLoadingObservable
             .observe(on: MainScheduler.instance)
-            .bind(to: loadingView.isLoadingSubject)
+            .subscribe(onNext: { [unowned self] in
+                if $0 {
+                    loadingViewController.showLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = true
+                        navigationItem.leftBarButtonItem?.isEnabled = true
+                    }
+                } else {
+                    loadingViewController.removeLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = false
+                        navigationItem.leftBarButtonItem?.isEnabled = false
+                    }
+                }
+            })
             .disposed(by: bag)
         
         viewModel
