@@ -7,17 +7,21 @@
 
 import UIKit
 import YandexMapsMobile
+import RxSwift
 
 final class CommunalServicesViewController: UIViewControllerMapSegmented {
     
     private lazy var collection = serviceMap.map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     private let viewModel = CommunalServicesViewModel()
+    private let bag = DisposeBag()
     private var timer: Timer?
     
     private let serviceMap: CommunalServicesView
     private let serviceRegistry: RegistryView
     private let serviceSearch: RegistySearchResultViewController
+    
+    private lazy var loadingController = LoadingViewController()
     
     init(serviceMap: CommunalServicesView, serviceRegistry: RegistryView, serviceSearch: RegistySearchResultViewController) {
         self.serviceMap = serviceMap
@@ -32,41 +36,168 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        serviceMap.map.setDefaultRegion()
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         addItemsToSegmentControll()
         view.backgroundColor = .systemBackground
-        
         title = "Отключение ЖКУ"
+
+        serviceRegistry
+            .selectedAddressObservable
+            .flatMap { [unowned self] address in
+                viewModel.resetFilterCommunalServices()
+                serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+                resetSegmentedControlAfterRegistryView()
+                
+                return viewModel.findAnnotationByAddressName(address.address)
+            }
+            .subscribe(onNext: { [unowned self] annotation in
+                serviceMap.infoTitle.isHidden = true
+                if let annotation {
+                    serviceMap.map.moveCameraToAnnotation(annotation)
+                } else {
+                    serviceMap.map.setDefaultRegion()
+                }
+            })
+            .disposed(by: bag)
         
-        setDelegates()
+        serviceSearch
+            .selectedAddressesElementObservable
+            .flatMap { [unowned self] address in
+                resetSegmentedControlAfterRegistryView()
+                return viewModel.findAnnotationByAddressName(address.address)
+            }
+            .subscribe(onNext: { [unowned self] annotation in
+                serviceMap.infoTitle.isHidden = true
+                if let annotation{
+                    serviceMap.map.moveCameraToAnnotation(annotation)
+                } else {
+                    serviceMap.map.setDefaultRegion()
+                }
+            })
+            .disposed(by: bag)
+        
+        didChangeSearchController
+            .subscribe(onNext: { [unowned self] _ in
+                searchController.searchBar.rx.text.onCompleted()
+                bindSearchController()
+                print("che")
+            })
+            .disposed(by: bag)
     }
     
-    override func updateSearchResults(for searchController: UISearchController) {
-        timer?.invalidate()
-
-        guard let searchText = searchController.searchBar.text else { return serviceMap.map.setDefaultRegion() }
-        guard !searchText.isEmpty else { return serviceMap.map.setDefaultRegion() }
-
-        if segmentedIndex == 1 {
-            serviceSearch.filterSearch(with: searchText)
+    private func bindSearchController() {
+        searchController.searchBar.rx.text
+            .orEmpty
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [unowned self] str in
+                viewModel.searchQuery.onNext(str)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func setUpBindings() {
+        viewModel
+            .isLoadingObservable
+            .subscribe(onNext: { [unowned self] in
+                if $0 {
+                    loadingController.showLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = true
+                    }
+                } else {
+                    loadingController.removeLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = false
+                    }
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .communalAnnotationsObservable
+            .subscribe(
+                onNext: { [unowned self] annotations in
+                    serviceMap.map.addAnnotations(annotations, cluster: collection)
+                    
+                    addServicesInfo()
+                    serviceRegistry.cards = viewModel.communalServicesFormatted
+                    serviceRegistry.tableView.reloadData()
+                    
+                    serviceSearch.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
+                },
+                onCompleted: { [unowned self] in
+                    serviceMap.map.mapWindow.map.mapObjects.addTapListener(with: self)
+                })
+            .disposed(by: bag)
+        
+        viewModel
+            .searchQuery
+            .filter { [unowned self] _ in segmentedIndex == 0 }
+            .flatMap { [unowned self] query in
+                viewModel.findAnnotationByAddressName(query)
+            }
+            .subscribe(onNext: { [unowned self] annotation in
+                if let annotation{
+                    serviceMap.map.moveCameraToAnnotation(annotation)
+                } else {
+                    serviceMap.map.setDefaultRegion()
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .searchQuery
+            .filter { [unowned self] _ in segmentedIndex == 1 }
+            .subscribe(onNext: { [unowned self] query in
+                serviceSearch.filterSearch(with: query)
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .filteredAnnotationsObservable
+            .skip(1)
+            .subscribe(onNext: { [unowned self] annotations in
+                collection.clear()
+                serviceMap.map.addAnnotations(annotations, cluster: collection)
+                serviceMap.map.setDefaultRegion()
+            })
+            .disposed(by: bag)
+    }
+    
+    private func addBingingForService(_ service: ServiceInfoView) {
+        service
+            .tappedServiceInfoObservable
+            .subscribe(onNext: { [unowned self] serviceType, view in
+                checkTappedService(serviceType: serviceType, view: view)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func checkTappedService(serviceType: Int, view: ServiceInfoView) {
+        guard !view.isTapAlready else {
+            serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+            viewModel.resetFilterCommunalServices()
+            
+            UIView.animate(withDuration: 0.15) { [weak self] in
+                self?.serviceMap.infoTitle.isHidden = true
+            }
             return
         }
+        
+        serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
+        
+        viewModel.filterCommunalServices(with: serviceType)
 
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
-            if let annotation = self?.viewModel.findAnnotationByAddressName(searchText) {
-                self?.serviceMap.map.moveCameraToAnnotation(annotation)
-            } else {
-                self?.serviceMap.map.setDefaultRegion()
-            }
-        })
-    }
-    
-    
-    private func setDelegates() {
-        viewModel.delegate = self
-        serviceRegistry.delegate = self
-        serviceSearch.delegate = self
+        UIView.animate(withDuration: 0.15) { [weak self] in
+            self?.serviceMap.infoTitle.isHidden = false
+            self?.serviceMap.infoTitle.text = view.serviceTitle
+            self?.serviceMap.servicesInfoStackViewWithTitle.layoutIfNeeded()
+        }
+        
+        view.isTapAlready = true
     }
     
     private func addServicesInfo() {
@@ -78,99 +209,14 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             let count = String(serviceInfo.count)
             
             let serviceInfoView = ServiceInfoView(icon: icon, title: title, count: count, serviceType: serviceInfo.id)
-            serviceInfoView.delegate = self
+            addBingingForService(serviceInfoView)
             
             serviceMap.servicesInfoStackView.addArrangedSubview(serviceInfoView)
         }
     }
 
-    private func showSelectedMark(_ mark: MarkDescription) {
-        viewModel.resetFilterCommunalServices()
-        serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
-        
-        resetSegmentedControlAfterRegistryView()
-        
-        if let annotation = viewModel.annotations.first(where: { $0.markDescription.address == mark.address } ) {
-            serviceMap.map.moveCameraToAnnotation(annotation)
-        }
-    }
-    
-    func addItemsToSegmentControll() {
+    private func addItemsToSegmentControll() {
         super.addItemsToSegmentControll(["Карта", "Реестр"])
-    }
-    
-}
-
-//MARK: - RegistryViewDelegate
-
-extension CommunalServicesViewController: RegistryViewDelegate {
-    
-    func didGetAddress(_ mark: MarkDescription) {
-        serviceMap.infoTitle.isHidden = true
-        showSelectedMark(mark)
-    }
-    
-}
-
-extension CommunalServicesViewController: RegistySearchResultViewControllerDelegate {
-    
-    func didTapResultAddress(_ mark: MarkDescription) {
-        serviceMap.infoTitle.isHidden = true
-        showSelectedMark(mark)
-    }
-    
-}
-
-//MARK: - ServiceInfoViewDelegate
-
-extension CommunalServicesViewController: ServiceInfoViewDelegate {
-    
-    func didTapServiceInfoView(_ serviceType: Int, _ view: ServiceInfoView) {
-        guard !view.isTapAlready else {
-            serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
-            viewModel.resetFilterCommunalServices()
-            
-            UIView.animate(withDuration: 0.15) { [weak self] in
-                self?.serviceMap.infoTitle.isHidden = true
-            }
-           
-            return
-        }
-        
-        serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
-        viewModel.filterCommunalServices(with: serviceType)
-        
-        UIView.animate(withDuration: 0.15) { [weak self] in
-            self?.serviceMap.infoTitle.isHidden = false
-            self?.serviceMap.infoTitle.text = view.serviceTitle
-            self?.serviceMap.servicesInfoStackViewWithTitle.layoutIfNeeded()
-        }
-        
-        view.isTapAlready = true
-    }
-    
-}
-
-//MARK: - ViewModelDelegate
-
-extension CommunalServicesViewController: CommunalServicesViewModelDelegate {
-    
-    func didUpdateAnnotations(_ annotations: [MKItemAnnotation]) {
-        collection.clear()
-
-        serviceMap.map.addAnnotations(annotations, cluster: collection)
-        serviceMap.map.setDefaultRegion()
-    }
-    
-    func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation]) {
-        serviceMap.map.mapWindow.map.mapObjects.addTapListener(with: self)
-        serviceMap.map.addAnnotations(annotations, cluster: collection)
-        
-        addServicesInfo()
-        serviceRegistry.cards = viewModel.communalServicesFormatted
-        serviceRegistry.tableView.reloadData()
-        
-        serviceSearch.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
     }
     
 }

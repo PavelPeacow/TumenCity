@@ -8,24 +8,63 @@
 import UIKit
 import YandexMapsMobile
 import SnapKit
+import RxSwift
 
 class BikePathsViewController: UIViewController {
     
-    let viewModel = BikePathsViewModel()
+    private let viewModel = BikePathsViewModel()
+    private let bag = DisposeBag()
     
-    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private lazy var loadingController = LoadingViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        viewModel.delegate = self
-        
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         view.addSubview(map)
         view.backgroundColor = .systemBackground
-        
-        navigationItem.rightBarButtonItem = .init(image: UIImage(systemName: "info.square"), style: .done, target: self, action: #selector(didTapBikeStatInfo))
-        
+        navigationItem.rightBarButtonItem = .init(image: UIImage(systemName: "info.square"),
+                                                  style: .done, target: self, action: #selector(didTapBikeStatInfo))
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
+    }
+    
+    private func setUpBindings() {
+        viewModel
+            .isLoadingObservable
+            .subscribe(onNext: { [unowned self] isLoading in
+                if isLoading {
+                    loadingController.showLoadingViewControllerIn(self) {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = false
+                    }
+                } else {
+                    loadingController.removeLoadingViewControllerIn(self) {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    }
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .mapObjectsObservable
+            .subscribe(onNext: { [unowned self] (polygons, polylines) in
+                polygons.forEach { polygon in
+                    let polygonCreated = map.mapWindow.map.mapObjects.addPolygon(with: polygon)
+                    polygonCreated.strokeWidth = 1
+                    polygonCreated.strokeColor = .systemGray
+                    polygonCreated.fillColor = .clear
+                }
+                
+                polylines.forEach { polyline in
+                    let polylineCreated = map.mapWindow.map.mapObjects.addPolyline(with: polyline.key)
+                    polylineCreated.strokeWidth = 2.5
+                    polylineCreated.setStrokeColorWith(polyline.value)
+                }
+            })
+            .disposed(by: bag)
     }
     
 }
@@ -37,25 +76,6 @@ extension BikePathsViewController {
         let bikeInfo = viewModel.bikeInfoLegendItems
         bikeLegendInfo.configure(bikeInfoItems: bikeInfo)
         present(bikeLegendInfo, animated: true)
-    }
-    
-}
-
-extension BikePathsViewController: BikePathsViewModelDelegate {
-    
-    func finishAddingMapObjects(_ polygons: [YMKPolygon], _ polilines: [YMKPolyline : UIColor]) {
-        polygons.forEach { polygon in
-            let polygonCreated = map.mapWindow.map.mapObjects.addPolygon(with: polygon)
-            polygonCreated.strokeWidth = 1
-            polygonCreated.strokeColor = .systemGray
-            polygonCreated.fillColor = .clear
-        }
-        
-        polilines.forEach { polyline in
-            let polylineCreated = map.mapWindow.map.mapObjects.addPolyline(with: polyline.key)
-            polylineCreated.strokeWidth = 2.5
-            polylineCreated.setStrokeColorWith(polyline.value)
-        }
     }
     
 }

@@ -6,38 +6,43 @@
 //
 
 import UIKit
-
-protocol CityCleaningViewModelDelegate: AnyObject {
-    func didFinishAddingMapObjects(_ annotations: [MKCityCleaningAnnotation])
-}
+import RxSwift
+import RxRelay
 
 @MainActor
 final class CityCleaningViewModel {
     
-    var cityCleaningAnnotations = [MKCityCleaningAnnotation]()
-    var cityCleaningItems = [CityCleaningItemInfo]()
+    private var cityCleaningAnnotations = PublishSubject<[MKCityCleaningAnnotation]>()
+    private var cityCleaningItems = [CityCleaningItemInfo]()
+    private var isLoading = BehaviorRelay<Bool>(value: false)
     
-    weak var delegate: CityCleaningViewModelDelegate?
+    var cityCleaningAnnotationsObservable: Observable<[MKCityCleaningAnnotation]> {
+        cityCleaningAnnotations.asObservable()
+    }
+    var isLoadingObservable: Observable<Bool> {
+        isLoading.asObservable()
+    }
     
     init() {
         Task {
+            isLoading.accept(true)
             await getCityCleaningItems()
             createAnnotations()
-            delegate?.didFinishAddingMapObjects(cityCleaningAnnotations)
+            isLoading.accept(false)
             print(cityCleaningItems)
         }
     }
     
-    func getCityCleaningItems() async {
+    private func getCityCleaningItems() async {
         do {
-            let result = try await APIManager().decodeMock(type: CityCleaning.self, forResourse: "cityCleaningMock")
+            let result = try await APIManager().getAPIContent(type: CityCleaning.self, endpoint: .cityCleaning)
             cityCleaningItems = result.info
         } catch {
             print(error)
         }
     }
     
-    func getAnnotationTypeByIcon(_ icon: CityCleaningItemIcon) -> UIImage? {
+    private func getAnnotationTypeByIcon(_ icon: CityCleaningItemIcon) -> UIImage? {
         switch icon {
         case .modulesGraderNewImgTypesType11SVG:
             return .init(named: "pin-11")
@@ -58,7 +63,7 @@ final class CityCleaningViewModel {
         }
     }
  
-    func createAnnotations() {
+    private func createAnnotations() {
         var annotations = [MKCityCleaningAnnotation]()
         
         cityCleaningItems.forEach { item in
@@ -73,7 +78,8 @@ final class CityCleaningViewModel {
             annotations.append(annotation)
         }
         
-        cityCleaningAnnotations = annotations
+        cityCleaningAnnotations
+            .onNext(annotations)
     }
     
 }

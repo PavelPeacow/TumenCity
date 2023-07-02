@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
 
 protocol TradeObjectsViewModelDelegate: AnyObject {
     func didFinishAddingAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation])

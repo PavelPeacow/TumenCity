@@ -6,16 +6,17 @@
 //
 
 import UIKit
-
-protocol RegistryViewDelegate {
-    func didGetAddress(_ mark: MarkDescription)
-}
+import RxSwift
 
 final class RegistryView: UIView {
     
     var cards = [CommunalServicesFormatted]()
     
-    var delegate: RegistryViewDelegate?
+    private let bag = DisposeBag()
+    private let selectedAddress = PublishSubject<MarkDescription>()
+    var selectedAddressObservable: Observable<MarkDescription> {
+        selectedAddress.asObservable()
+    }
     
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -45,21 +46,6 @@ final class RegistryView: UIView {
     
 }
 
-extension RegistryView: RegistryCardTableViewCellDelegate {
-    
-    func didTapAddress(_ mark: MarkDescription) {
-        delegate?.didGetAddress(mark)
-    }
-    
-    func updateTableWhenShowAddresses() {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.tableView.beginUpdates()
-            self?.tableView.endUpdates()
-        }
-    }
-    
-}
-
 extension RegistryView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,7 +57,24 @@ extension RegistryView: UITableViewDataSource {
         
         let card = cards[indexPath.row]
         cell.configure(communalService: card)
-        cell.delegate = self
+        
+        cell
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] address in
+                selectedAddress
+                    .onNext(address)
+            })
+            .disposed(by: bag)
+        
+        cell
+            .updateTableWhenShowAddressesObservable
+            .subscribe(onNext: {
+                UIView.animate(withDuration: 0.25) {
+                    tableView.beginUpdates()
+                    tableView.endUpdates()
+                }
+            })
+            .disposed(by: bag)
         
         return cell
     }

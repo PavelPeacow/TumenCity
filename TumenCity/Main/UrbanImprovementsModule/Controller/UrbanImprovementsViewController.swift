@@ -7,30 +7,112 @@
 
 import UIKit
 import YandexMapsMobile
+import RxSwift
 
 class UrbanImprovementsViewController: UIViewController {
 
-    let viewModel = UrbanImprovementsViewModel()
-    
-    var currentActiveFilterID: Int?
-    
-    lazy var map = YandexMapMaker.makeYandexMap()
-    
+    private let viewModel = UrbanImprovementsViewModel()
+    private let bag = DisposeBag()
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private var currentActiveFilterID: Int?
+    
+    private lazy var map = YandexMapMaker.makeYandexMap()
+    private lazy var loadingController = LoadingViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        viewModel.delegate = self
-        
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         title = "Благоустройство"
-        
+        view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: view)
-        
-        view.backgroundColor = .systemBackground
-
         navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterBtn))
+    }
+    
+    private func setUpBindings() {
+        viewModel
+            .isLoadingObservable
+            .subscribe(onNext: { [unowned self] isLoading in
+                if isLoading {
+                    loadingController.showLoadingViewControllerIn(self) {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = false
+                    }
+                } else {
+                    loadingController.removeLoadingViewControllerIn(self) {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    }
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .mapObjectsObservable
+            .subscribe(onNext: { [unowned self] pointsAnnotations, polygons in
+                map.addAnnotations(pointsAnnotations, cluster: collection)
+                collection.addTapListener(with: self)
+                
+                polygons.forEach { polygon in
+                    map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func setUpBindingsForUrbanImprovementsFilterBottomSheet(for modal: UrbanImprovementsFilterBottomSheet) {
+        modal
+            .selectedFilterObservable
+            .subscribe(onNext: { [unowned self] selectedFilterIndex in
+                resetMap()
+                
+                let filteredAnnotations = viewModel.filterAnnotationsByFilterID(selectedFilterIndex)
+                let filteredPolygons = viewModel.filterPolygonsByFilterID(selectedFilterIndex)
+                
+                map.addAnnotations(filteredAnnotations, cluster: collection)
+                
+                filteredPolygons.forEach { polygon in
+                    map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                }
+                
+                currentActiveFilterID = selectedFilterIndex
+            })
+            .disposed(by: bag)
+        
+        modal
+            .didDiscardFilterObservable
+            .subscribe(onNext: { [unowned self] in
+                resetMap()
+                
+                let annotations = viewModel.urbanAnnotations
+                let polygons = viewModel.polygonsFormatted
+                
+                map.addAnnotations(annotations, cluster: collection)
+                
+                polygons.forEach { polygon in
+                    map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                }
+                
+                currentActiveFilterID = nil
+            })
+            .disposed(by: bag)
+    }
+    
+    private func setUpBindingsForUrbanImprovementsBottomSheet(for modal: UrbanImprovementsBottomSheet) {
+        modal
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] annotation in
+                Task {
+                    if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) {
+                        let callout = UrbanImprovementsCallout()
+                        callout.configure(urbanDetailInfo: detailInfo)
+                        callout.showAlert(in: self)
+                    }
+                }
+            })
+            .disposed(by: bag)
     }
     
     private func resetMap() {
@@ -45,55 +127,8 @@ extension UrbanImprovementsViewController {
     @objc func didTapFilterBtn() {
         let bottomSheet = UrbanImprovementsFilterBottomSheet()
         bottomSheet.configure(filters: viewModel.filterItems, currentActiveFilterID: currentActiveFilterID)
-        bottomSheet.delegate = self
+        setUpBindingsForUrbanImprovementsFilterBottomSheet(for: bottomSheet)
         present(bottomSheet, animated: true)
-    }
-    
-}
-
-extension UrbanImprovementsViewController: UrbanImprovementsFilterBottomSheetDelegate {
-    
-    func didSelectFilter(_ filterID: Int) {
-        resetMap()
-        
-        let filteredAnnotations = viewModel.filterAnnotationsByFilterID(filterID)
-        let filteredPolygons = viewModel.filterPolygonsByFilterID(filterID)
-        
-        map.addAnnotations(filteredAnnotations, cluster: collection)
-        
-        filteredPolygons.forEach { polygon in
-            map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
-        }
-        
-        currentActiveFilterID = filterID
-    }
-    
-    func didTapDiscardFilterBtn() {
-        resetMap()
-        
-        let annotations = viewModel.urbanAnnotations
-        let polygons = viewModel.polygonsFormatted
-        
-        map.addAnnotations(annotations, cluster: collection)
-        
-        polygons.forEach { polygon in
-            map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
-        }
-        
-        currentActiveFilterID = nil
-    }
-    
-}
-
-extension UrbanImprovementsViewController: UrbanImprovementsViewModelDelegate {
-    
-    func didFinishAddingMapObjects(_ pointsAnnotations: [MKUrbanAnnotation], _ polygons: [(YMKPolygon, UrbanPolygon)]) {
-        map.addAnnotations(pointsAnnotations, cluster: collection)
-        collection.addTapListener(with: self)
-        
-        polygons.forEach { polygon in
-            map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
-        }
     }
     
 }
@@ -116,24 +151,10 @@ extension UrbanImprovementsViewController: YMKClusterTapListener {
         
         let bottomSheet = UrbanImprovementsBottomSheet()
         bottomSheet.configureModal(annotations: annotations)
-        bottomSheet.delegate = self
+        setUpBindingsForUrbanImprovementsBottomSheet(for: bottomSheet)
         present(bottomSheet, animated: true)
         
         return true
-    }
-    
-}
-
-extension UrbanImprovementsViewController: UrbanImprovementsBottomSheetDelegate {
-    
-    func didTapAddress(_ annotation: MKUrbanAnnotation) {
-        Task {
-            if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) {
-                let callout = UrbanImprovementsCallout()
-                callout.configure(urbanDetailInfo: detailInfo)
-                callout.showAlert(in: self)
-            }
-        }
     }
     
 }

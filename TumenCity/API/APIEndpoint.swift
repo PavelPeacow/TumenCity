@@ -24,6 +24,9 @@ enum APIEndpoint {
     
     case cityCleaning
     
+    case bikePath
+    case bikeLegend
+    
     var url: URL? {
         
         switch self {
@@ -65,6 +68,12 @@ enum APIEndpoint {
 
         case .cityCleaning:
             return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/select/json")
+            
+        case .bikePath:
+            return urlComponents(host: "info.agt72.ru", path: "/api/informer/MobileAppInfo/select/json")
+            
+        case .bikeLegend:
+            return urlComponents(host: "info.agt72.ru", path: "api/informer/MobileAppInfo/getLegenda/json ")
         }
         
     }
@@ -129,7 +138,7 @@ enum APIEndpoint {
             
             request.httpBody = formData.data(using: .utf8)
             
-        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning, .digWork:
+        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning, .digWork, .bikeLegend, .bikePath:
             request.httpMethod = "POST"
         }
 

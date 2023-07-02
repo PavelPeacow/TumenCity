@@ -6,16 +6,16 @@
 //
 
 import UIKit
-
-protocol UrbanImprovementsBottomSheetDelegate: AnyObject {
-    func didTapAddress(_ annotation: MKUrbanAnnotation)
-}
+import RxSwift
 
 final class UrbanImprovementsBottomSheet: CustomBottomSheet {
         
     var annotations = [MKUrbanAnnotation]()
     
-    weak var delegate: UrbanImprovementsBottomSheetDelegate?
+    private let selectedAddress = PublishSubject<MKUrbanAnnotation>()
+    var selectedAddressObservable: Observable<MKUrbanAnnotation> {
+        selectedAddress.asObservable()
+    }
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -85,7 +85,10 @@ extension UrbanImprovementsBottomSheet: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let annotation = annotations[indexPath.row]
-        delegate?.didTapAddress(annotation)
+        
+        selectedAddress
+            .onNext(annotation)
+        
         dismiss(animated: true)
     }
     

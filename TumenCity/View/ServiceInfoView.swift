@@ -6,10 +6,7 @@
 //
 
 import UIKit
-
-protocol ServiceInfoViewDelegate {
-    func didTapServiceInfoView(_ serviceType: Int, _ view: ServiceInfoView)
-}
+import RxSwift
 
 fileprivate enum ServiceInfoBackgroundColor {
     case whenTappedState
@@ -26,8 +23,12 @@ fileprivate enum ServiceInfoBackgroundColor {
 }
 
 final class ServiceInfoView: UIView {
+    typealias ServiceTappedTypealias = (serviceType: Int, view: ServiceInfoView)
     
-    var delegate: ServiceInfoViewDelegate?
+    private let tappedServiceInfo = PublishSubject<ServiceTappedTypealias>()
+    var tappedServiceInfoObservable: Observable<ServiceTappedTypealias> {
+        tappedServiceInfo.asObservable()
+    }
     
     var serviceType = 0
     
@@ -96,7 +97,8 @@ final class ServiceInfoView: UIView {
 extension ServiceInfoView {
     
     @objc func didTapInfoView() {
-        delegate?.didTapServiceInfoView(serviceType, self)
+        tappedServiceInfo
+            .onNext((serviceType, self))
     }
     
 }

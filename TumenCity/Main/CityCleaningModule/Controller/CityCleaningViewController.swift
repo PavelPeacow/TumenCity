@@ -7,36 +7,51 @@
 
 import UIKit
 import YandexMapsMobile
+import RxSwift
 
 class CityCleaningViewController: UIViewController {
     
-    let viewModel = CityCleaningViewModel()
-
-    lazy var map = YandexMapMaker.makeYandexMap()
-    
+    private let viewModel = CityCleaningViewModel()
+    private let bag = DisposeBag()
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    
+    private lazy var loadingController = LoadingViewController()
+    private lazy var map = YandexMapMaker.makeYandexMap()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         print(createToken())
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         view.backgroundColor = .systemBackground
         view.addSubview(map)
-        viewModel.delegate = self
         YandexMapMaker.setYandexMapLayout(map: map, in: view)
     }
     
-
-
-}
-
-extension CityCleaningViewController: CityCleaningViewModelDelegate {
-    
-    func didFinishAddingMapObjects(_ annotations: [MKCityCleaningAnnotation]) {
-        map.addAnnotations(annotations, cluster: collection)
-        collection.addTapListener(with: self)
+    private func setUpBindings() {
+        viewModel
+            .cityCleaningAnnotationsObservable
+            .subscribe(onNext: { [unowned self] annotations in
+                map.addAnnotations(annotations, cluster: collection)
+                collection.addTapListener(with: self)
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .isLoadingObservable
+            .subscribe(onNext: { [unowned self] isLoading in
+                if isLoading {
+                    loadingController.showLoadingViewControllerIn(self)
+                } else {
+                    loadingController.removeLoadingViewControllerIn(self)
+                }
+            })
+            .disposed(by: bag)
     }
-    
+
 }
 
 extension CityCleaningViewController: YMKMapObjectTapListener {

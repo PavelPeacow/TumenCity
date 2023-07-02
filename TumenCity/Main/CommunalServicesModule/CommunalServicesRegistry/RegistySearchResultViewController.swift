@@ -6,67 +6,69 @@
 //
 
 import UIKit
-
-protocol RegistySearchResultViewControllerDelegate {
-    func didTapResultAddress(_ mark: MarkDescription)
-}
+import RxSwift
 
 class RegistySearchResultViewController: UITableViewController {
     
-    var addresses = [MarkDescription]()
-    var filteredAdresses = [MarkDescription]()
-    
-    var delegate: RegistySearchResultViewControllerDelegate?
+    private var addresses = BehaviorSubject<[MarkDescription]>(value: [])
+    private var filteredAdresses = BehaviorSubject<[MarkDescription]>(value: [])
+    private let bag = DisposeBag()
+
+    private var selectedAddressElement = PublishSubject<MarkDescription>()
+    var selectedAddressesElementObservable: Observable<MarkDescription> {
+        selectedAddressElement.asObservable()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         tableView.estimatedRowHeight = UITableView.automaticDimension
-        tableView.dataSource = self
         tableView.isHidden = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.delegate = nil
+        tableView.dataSource = nil
+    }
 
+    private func setUpBindings() {
+        Observable.combineLatest(filteredAdresses, addresses)
+            .map { filteredElements, allElements in
+                filteredElements.isEmpty ? allElements : filteredElements
+            }
+            .bind(to: tableView.rx.items(cellIdentifier: "cell")) { (row, element, cell) in
+                cell.textLabel?.text = element.address
+            }
+            .disposed(by: bag)
+        
+        tableView.rx.modelSelected(MarkDescription.self)
+            .subscribe(onNext: { [unowned self] addressElement in
+                selectedAddressElement
+                    .onNext(addressElement)
+            })
+            .disposed(by: bag)
     }
     
     func configure(communalServicesFormatted: [CommunalServicesFormatted]) {
+        var formAddresses = [MarkDescription]()
         communalServicesFormatted.forEach {
-            addresses.append(contentsOf: $0.mark)
+            formAddresses.append(contentsOf: $0.mark)
         }
-        addresses = addresses.uniques(by: \.address)
-        filteredAdresses = addresses
+        formAddresses = formAddresses.uniques(by: \.address)
+        addresses
+            .onNext(formAddresses)
+        filteredAdresses
+            .onNext(formAddresses)
     }
     
     func filterSearch(with searchText: String) {
-        if filteredAdresses.isEmpty {
-            filteredAdresses = addresses
-        }
-        filteredAdresses = addresses.filter { $0.address.lowercased().contains(searchText.lowercased()) }
-        tableView.reloadData()
+        addresses
+            .map { elements in
+                elements.filter { $0.address.lowercased().contains(searchText.lowercased()) }
+            }
+            .bind(to: filteredAdresses)
+            .disposed(by: bag)
     }
-    
-}
-
-extension RegistySearchResultViewController {
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        filteredAdresses.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-        cell.textLabel?.text = filteredAdresses[indexPath.row].address
-        
-        return cell
-    }
-    
-}
-
-extension RegistySearchResultViewController {
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.didTapResultAddress(filteredAdresses[indexPath.row])
-    }
-    
 }
