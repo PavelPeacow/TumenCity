@@ -64,12 +64,15 @@ final class TradeObjectCallout: Callout {
             alertBackground.layer.borderColor = UIColor.blue.cgColor
         }
         
-        [(tradeObject.fields.urName, Strings.TradeObjectsModule.urName),
+        [
+         (tradeObject.fields.urName, Strings.TradeObjectsModule.urName),
          (tradeObject.fields.numDoc, Strings.TradeObjectsModule.numDoc),
          (tradeObject.fields.date, Strings.TradeObjectsModule.dateDoc),
          (tradeObject.fields.okr, Strings.TradeObjectsModule.area),
-         (tradeObject.fields.object, Strings.TradeObjectsModule.purpose),
-         (tradeObject.fields.spurpose, Strings.TradeObjectsModule.period)].forEach { (text, description) in
+         (tradeObject.fields.object, Strings.TradeObjectsModule.typeObject),
+         (tradeObject.fields.spurpose, Strings.TradeObjectsModule.purpose),
+         (tradeObject.fields.period, Strings.TradeObjectsModule.period)
+        ].forEach { (text, description) in
             createDescriptionLabel(descriptionText: description, text: text)
         }
         

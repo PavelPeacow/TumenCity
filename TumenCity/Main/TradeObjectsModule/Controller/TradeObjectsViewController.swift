@@ -7,12 +7,15 @@
 
 import UIKit
 import YandexMapsMobile
+import RxSwift
 
 class TradeObjectsViewController: UIViewController {
     
     let viewModel = TradeObjectsViewModel()
     
     var currentTappedFilter: TradeObjectsTypeView?
+    
+    let bag = DisposeBag()
     
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
@@ -39,13 +42,18 @@ class TradeObjectsViewController: UIViewController {
         return filter
     }()
     
+    lazy var loadingController = LoadingViewController()
+    lazy var loadingControllerForModal = LoadingViewController(type: .secondaryLoading)
+    
     lazy var map = YandexMapMaker.makeYandexMap()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        viewModel.delegate = self
-        
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         view.backgroundColor = .systemBackground
         
         view.addSubview(tradeObjectsFilterTypeStackView)
@@ -63,6 +71,45 @@ class TradeObjectsViewController: UIViewController {
             $0.top.equalTo(self.tradeObjectsFilterTypeStackView.snp.bottom).offset(5)
         }
     }
+#warning("Refactore rxswift code")
+    private func setUpBindings() {
+        viewModel
+            .isLoadingObservable
+            .subscribe(onNext: { [unowned self] isLoading in
+                if isLoading {
+                    loadingController.showLoadingViewControllerIn(self) {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = false
+                    }
+                } else {
+                    loadingController.removeLoadingViewControllerIn(self) {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    }
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .currentVisibleTradeObjectsAnnotationsObservable
+            .skip(1)
+            .subscribe(onNext: { [unowned self] annotations in
+                collection.clear()
+                map.addAnnotations(annotations, cluster: collection)
+                setTradeObjectsCount(from: annotations)
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .tradeObjectsAnnotationsObservable
+            .subscribe(
+                onNext: { [unowned self] annotations in
+                    map.addAnnotations(annotations, cluster: collection)
+                    setTradeObjectsCount(from: annotations)
+                },
+                onCompleted: { [unowned self] in
+                    map.mapWindow.map.mapObjects.addTapListener(with: self)
+                })
+            .disposed(by: bag)
+    }
     
     private func setTradeObjectsCount(from annotations: [MKTradeObjectAnnotation]) {
         let count = annotations.map({ $0.type })
@@ -72,7 +119,22 @@ class TradeObjectsViewController: UIViewController {
         filterViewFree.changeFilterCount(freeCount)
         filterViewActive.changeFilterCount(activeCount)
     }
-
+    
+    private func setUpBindingsForTradeObjectsBottomSheet(for modal: TradeObjectsBottomSheet) {
+        modal
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] annotation in
+                Task {
+                    if let detailInfo = await viewModel.getTradeObjectById(annotation.id), let object = detailInfo.row.first {
+                        let callout = TradeObjectCallout()
+                        callout.configure(tradeObject: object, image: annotation.icon, type: annotation.type)
+                        callout.showAlert(in: self)
+                    }
+                }
+            })
+            .disposed(by: bag)
+    }
+    
 }
 
 private extension TradeObjectsViewController {
@@ -94,7 +156,9 @@ private extension TradeObjectsViewController {
         if isAlreadyTapped(on: freeFilterView) { return }
         selectFilter(freeFilterView)
         
-        viewModel.filterAnnotationsByType(.freeTrade)
+        let annotation = viewModel.filterAnnotationsByType(.freeTrade)
+        collection.clear()
+        map.addAnnotations(annotation, cluster: collection)
     }
     
     @objc func didTapActiveFilter(_ sender: UITapGestureRecognizer) {
@@ -103,7 +167,9 @@ private extension TradeObjectsViewController {
         if isAlreadyTapped(on: activeFilterView) { return }
         selectFilter(activeFilterView)
         
-        viewModel.filterAnnotationsByType(.activeTrade)
+        let annotation = viewModel.filterAnnotationsByType(.activeTrade)
+        collection.clear()
+        map.addAnnotations(annotation, cluster: collection)
     }
     
     func isAlreadyTapped(on view: TradeObjectsTypeView) -> Bool {
@@ -119,7 +185,8 @@ private extension TradeObjectsViewController {
         currentTappedFilter = nil
         
         collection.clear()
-        map.addAnnotations(viewModel.currentVisibleTradeObjectsAnnotations, cluster: collection)
+        let current = viewModel.getCurrentVisibleTradeAnnotations()
+        map.addAnnotations(current, cluster: collection)
     }
     
     func selectFilter(_ filter: TradeObjectsTypeView) {
@@ -135,38 +202,26 @@ extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
     
     func didTapSubmitBtn(_ searchFilter: TradeObjectsSearch) {
         Task {
+            loadingControllerForModal.showLoadingViewControllerIn(self) { [unowned self] in
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+            }
             if let result = await viewModel.getFilteredTradeObjectByFilter(searchFilter) {
                 collection.clear()
                 let annotations = viewModel.addAnnotations(tradeObjects: result)
-                viewModel.currentVisibleTradeObjectsAnnotations = annotations
-                map.addAnnotations(annotations, cluster: collection)
-                setTradeObjectsCount(from: annotations)
+                viewModel.currentVisibleTradeObjectsAnnotations
+                    .onNext(annotations)
+            }
+            loadingControllerForModal.removeLoadingViewControllerIn(self) { [unowned self] in
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
             }
         }
     }
     
     func didTapClearBtn() {
         collection.clear()
-        let annotations = viewModel.tradeObjectsAnnotations
-        map.addAnnotations(annotations, cluster: collection)
-        setTradeObjectsCount(from: annotations)
-    }
-
-}
-
-extension TradeObjectsViewController: TradeObjectsViewModelDelegate {
-    
-    func didFinishAddingAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation]) {
-        map.addAnnotations(tradeAnnotations, cluster: collection)
-        map.mapWindow.map.mapObjects.addTapListener(with: self)
-        
-        setTradeObjectsCount(from: tradeAnnotations)
-    }
-    
-    func didFilterAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation]) {
-        collection.clear()
-        
-        map.addAnnotations(tradeAnnotations, cluster: collection)
+        let defaultAnnotations = viewModel.getDefualtTradeAnnotations()
+        viewModel.currentVisibleTradeObjectsAnnotations
+            .onNext(defaultAnnotations)
     }
     
 }
@@ -175,6 +230,25 @@ extension TradeObjectsViewController: YMKClusterListener {
     
     func onClusterAdded(with cluster: YMKCluster) {
         cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .blue)
+        cluster.addClusterTapListener(with: self)
+    }
+    
+}
+
+extension TradeObjectsViewController: YMKClusterTapListener {
+    
+    func onClusterTap(with cluster: YMKCluster) -> Bool {
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKTradeObjectAnnotation }
+        #warning("4 annotations wrong coordinates")
+        if viewModel.isClusterWithTheSameCoordinates(annotations: annotations) {
+            let bottomSheet = TradeObjectsBottomSheet()
+            bottomSheet.configureModal(annotations: annotations)
+            setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
+            present(bottomSheet, animated: true)
+            return true
+        }
+        
+        return false
     }
     
 }
@@ -183,14 +257,15 @@ extension TradeObjectsViewController: YMKMapObjectTapListener {
     
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         guard let annotation = mapObject.userData as? MKTradeObjectAnnotation else { return false }
-        
+        loadingControllerForModal.showLoadingViewControllerIn(self)
         Task {
             guard let tradeObject = await viewModel.getTradeObjectById(annotation.id) else { return }
             guard let item = tradeObject.row.first else { return }
-            print(tradeObject.row.first)
+            
             let modal = TradeObjectCallout()
-            modal.configure(tradeObject: item, image: annotation.icon ?? .add, type: annotation.type)
+            modal.configure(tradeObject: item, image: annotation.icon, type: annotation.type)
             modal.showAlert(in: self)
+            loadingControllerForModal.removeLoadingViewControllerIn(self)
         }
         
         return true

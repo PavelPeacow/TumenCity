@@ -9,15 +9,33 @@ import UIKit
 import RxSwift
 import RxRelay
 
+enum LoadingViewType {
+    case secondaryLoading
+}
+
 final class LoadingViewController: UIViewController {
+    
+    let type: LoadingViewType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
     }
     
+    init(type: LoadingViewType? = nil) {
+        self.type = type
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setUpView() {
         view.backgroundColor = .systemBackground
+        if let type {
+            view.backgroundColor = .systemBackground.withAlphaComponent(0.5)
+        }
         
         let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.color = .label
@@ -27,11 +45,10 @@ final class LoadingViewController: UIViewController {
     }
     
     func showLoadingViewControllerIn(_ viewController: UIViewController, then: (() -> Void)? = nil) {
-        let loadingVC = LoadingViewController()
-        viewController.addChild(loadingVC)
-        loadingVC.view.frame = viewController.view.bounds
-        viewController.view.addSubview(loadingVC.view)
-        loadingVC.didMove(toParent: viewController)
+        viewController.addChild(self)
+        self.view.frame = viewController.view.bounds
+        viewController.view.addSubview(self.view)
+        self.didMove(toParent: viewController)
         then?()
     }
     
