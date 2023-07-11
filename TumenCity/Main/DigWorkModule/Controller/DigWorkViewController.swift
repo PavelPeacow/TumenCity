@@ -40,6 +40,7 @@ final class DigWorkViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
+        map.mapWindow.map.mapObjects.addTapListener(with: self)
     }
     
     private func setUpNavigationBar() {
@@ -50,7 +51,20 @@ final class DigWorkViewController: UIViewController {
                                                             action: #selector(didTapFilterIcon))
     }
     
+    private func bindSearchController() {
+        searchController.searchBar.rx.text
+            .orEmpty
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [unowned self] str in
+                viewModel.searchQuery.onNext(str)
+            })
+            .disposed(by: bag)
+    }
+    
     private func setUpBindings() {
+        bindSearchController()
+        
         viewModel
             .isLoadingObservable
             .observe(on: MainScheduler.instance)
@@ -58,33 +72,37 @@ final class DigWorkViewController: UIViewController {
                 if $0 {
                     loadingViewController.showLoadingViewControllerIn(self) { [unowned self] in
                         navigationItem.searchController?.searchBar.isHidden = true
-                        navigationItem.leftBarButtonItem?.isEnabled = true
+                        navigationItem.rightBarButtonItem?.isEnabled = false
                     }
                 } else {
                     loadingViewController.removeLoadingViewControllerIn(self) { [unowned self] in
                         navigationItem.searchController?.searchBar.isHidden = false
-                        navigationItem.leftBarButtonItem?.isEnabled = false
+                        navigationItem.rightBarButtonItem?.isEnabled = true
                     }
                 }
             })
             .disposed(by: bag)
         
         viewModel
-            .isLoadingObservable
-            .debug()
-            .observe(on: MainScheduler.instance)
-            .flip()
-            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
+            .searchQuery
+            .flatMap { [unowned self] query in
+                return viewModel.findAnnotationByAddressName(query)
+            }
+            .subscribe(onNext: { [unowned self] annotation in
+                if let annotation{
+                    map.moveCameraToAnnotation(annotation)
+                } else {
+                    map.setDefaultRegion()
+                }
+            })
             .disposed(by: bag)
         
         viewModel
             .digWorkAnnotationsObservable
             .subscribe(
                 onNext: { [unowned self] annotations in
+                    collection.clear()
                     map.addAnnotations(annotations, cluster: collection)
-                },
-                onCompleted: { [unowned self] in
-                    self.map.mapWindow.map.mapObjects.addTapListener(with: self)
                 })
             .disposed(by: bag)
     }
@@ -105,6 +123,24 @@ extension DigWorkViewController {
     
     @objc func didTapFilterIcon() {
         let vc = DigWorkFilterBottomSheet()
+        
+        vc
+            .selectedFilterObservable
+            .subscribe(onNext: { [unowned self] filter in
+                Task {
+                    await viewModel.getDigWorkElements(filter: filter)
+                }
+            })
+            .disposed(by: bag)
+        
+        vc
+            .didDismissedObservable
+            .subscribe(onNext: { [unowned self] in
+                Task {
+                    await viewModel.getDigWorkElements()
+                }
+            })
+            .disposed(by: bag)
         present(vc, animated: true)
     }
     

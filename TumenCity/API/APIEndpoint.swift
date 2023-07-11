@@ -11,7 +11,7 @@ enum APIEndpoint {
     case communalServices
     case closeRoads
     case sport
-    case digWork
+    case digWork(filter: DigWorkFilter? = nil)
     
     case tradeObjects
     case tradeObjectBy(id: String)
@@ -138,8 +138,24 @@ enum APIEndpoint {
             
             request.httpBody = formData.data(using: .utf8)
             
-        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning, .digWork, .bikeLegend, .bikePath:
+        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning, .bikeLegend, .bikePath:
             request.httpMethod = "POST"
+            
+        case .digWork(let filter):
+            request.httpMethod = "POST"
+            
+            if let filter {
+                let formData = [
+                    "person" : filter.person,
+                    "zone": filter.zone,
+                    "missionType": filter.missionType,
+                    "state": filter.state,
+                    "startWorkTime": filter.startWorkTime,
+                    "endWorkTime": filter.endWorkTime
+                ].map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+                request.httpBody = formData.data(using: .utf8)
+            }
+            print(filter)
         }
 
         print("url \(request.url)")

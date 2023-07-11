@@ -31,6 +31,7 @@
 		B50D32672A1C9EF60034B860 /* UrbanImprovements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */; };
 		B50D326A2A1CA14C0034B860 /* UrbanImprovementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */; };
 		B51698A329F55DB80094E3B0 /* Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51698A229F55DB80094E3B0 /* Callout.swift */; };
+		B51C33C02A5DAC7D00BC8A8E /* DigWorkFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33BF2A5DAC7D00BC8A8E /* DigWorkFilter.swift */; };
 		B51FACF22A3B095600BB6D81 /* cityCleaningMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */; };
 		B51FACF42A3B5AFE00BB6D81 /* CityCleaningCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */; };
 		B51FACF62A3DA75200BB6D81 /* CalloutIconWithTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */; };
@@ -149,6 +150,7 @@
 		B50D32662A1C9EF60034B860 /* UrbanImprovements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovements.swift; sourceTree = "<group>"; };
 		B50D32692A1CA14C0034B860 /* UrbanImprovementsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsViewModel.swift; sourceTree = "<group>"; };
 		B51698A229F55DB80094E3B0 /* Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callout.swift; sourceTree = "<group>"; };
+		B51C33BF2A5DAC7D00BC8A8E /* DigWorkFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkFilter.swift; sourceTree = "<group>"; };
 		B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cityCleaningMock.json; sourceTree = "<group>"; };
 		B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningCallout.swift; sourceTree = "<group>"; };
 		B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutIconWithTitleView.swift; sourceTree = "<group>"; };
@@ -449,6 +451,7 @@
 			isa = PBXGroup;
 			children = (
 				B52896612A0A2067006A85D9 /* MKDigWorkAnnotation.swift */,
+				B51C33BF2A5DAC7D00BC8A8E /* DigWorkFilter.swift */,
 				B528965C2A0A1E82006A85D9 /* DigWork.swift */,
 			);
 			path = Model;
@@ -1038,6 +1041,7 @@
 				B528965D2A0A1E82006A85D9 /* DigWork.swift in Sources */,
 				B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */,
 				B50D32562A19F9840034B860 /* ScrollableCheckBoxesList.swift in Sources */,
+				B51C33C02A5DAC7D00BC8A8E /* DigWorkFilter.swift in Sources */,
 				B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,
 				B50D32672A1C9EF60034B860 /* UrbanImprovements.swift in Sources */,

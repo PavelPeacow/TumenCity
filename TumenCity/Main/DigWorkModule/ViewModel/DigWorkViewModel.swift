@@ -13,7 +13,8 @@ import RxRelay
 final class DigWorkViewModel {
     
     private var digWorkElements = [DigWorkElement]()
-    private var digWorkAnnotations = PublishSubject<[MKDigWorkAnnotation]>()
+    private var digWorkAnnotations = BehaviorSubject<[MKDigWorkAnnotation]>(value: [])
+    var searchQuery = PublishSubject<String>()
     private var isLoading = BehaviorRelay(value: false)
     
     var digWorkAnnotationsObservable: Observable<[MKDigWorkAnnotation]> {
@@ -25,11 +26,15 @@ final class DigWorkViewModel {
     
     init() {
         Task {
-            isLoading.accept(true)
             await getDigWorkElements()
-            isLoading.accept(false)
-            addDigWorkAnnotations()
         }
+    }
+    
+    func findAnnotationByAddressName(_ address: String) -> Observable<MKDigWorkAnnotation?> {
+        digWorkAnnotations
+            .map { annotations in
+                annotations.first(where: { $0.address.lowercased().contains(address.lowercased()) } )
+            }
     }
     
     func isClusterWithTheSameCoordinates(annotations: [MKDigWorkAnnotation]) -> Bool {
@@ -47,13 +52,16 @@ final class DigWorkViewModel {
         return hasSameTitles || hasSameLatitude
     }
     
-    private func getDigWorkElements() async {
+    func getDigWorkElements(filter: DigWorkFilter? = nil) async {
+        isLoading.accept(true)
         do {
-            let result = try await APIManager().decodeMock(type: DigWork.self, forResourse: "digWorkMock")
+            let result = try await APIManager().getAPIContent(type: DigWork.self, endpoint: .digWork(filter: filter))
             digWorkElements = result.features
+            addDigWorkAnnotations()
         } catch {
             print(error)
         }
+        isLoading.accept(false)
     }
     
     func addDigWorkAnnotations() {
@@ -61,15 +69,14 @@ final class DigWorkViewModel {
             let lat = element.geometry.coordinates.first ?? 0
             let long = element.geometry.coordinates.last ?? 0
             
-            return MKDigWorkAnnotation(title: element.info.balloonContentHeader,
+            return MKDigWorkAnnotation(title: element.info.balloonContentHeader, address: element.options.address ?? "",
                                        contentDescription: element.info.balloonContentBody,
                                        icon: UIImage(named: "digWorkPin") ?? .add,
                                        coordinates: CLLocationCoordinate2D(latitude: lat, longitude: long))
         }
+        
         digWorkAnnotations
             .onNext(annotations)
-        digWorkAnnotations
-            .onCompleted()
     }
     
 }
