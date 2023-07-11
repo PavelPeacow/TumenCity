@@ -49,7 +49,7 @@ final class DigWorkViewModel {
     
     private func getDigWorkElements() async {
         do {
-            let result = try await APIManager().getAPIContent(type: DigWork.self, endpoint: .digWork)
+            let result = try await APIManager().decodeMock(type: DigWork.self, forResourse: "digWorkMock")
             digWorkElements = result.features
         } catch {
             print(error)

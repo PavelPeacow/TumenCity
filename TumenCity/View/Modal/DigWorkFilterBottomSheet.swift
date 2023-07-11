@@ -17,7 +17,6 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.keyboardDismissMode = .onDrag
         return scrollView
     }()
     
@@ -32,6 +31,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
                                                        statusFilter, dateAfterFilter, dateBeforeFilter,
                                                        submitFilterBtn, clearFilterBtn])
         stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -73,14 +73,14 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     lazy var dateAfterFilter: FilterView = {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateAfterFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
-        filter.textField.inputView = filterDatePickerView
+        filter.textField.inputView = filterDatePickerViewAfter
         return filter
     }()
     
     lazy var dateBeforeFilter: FilterView = {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateBeforeFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
-        filter.textField.inputView = filterDatePickerView
+        filter.textField.inputView = filterDatePickerViewBefore
         return filter
     }()
     
@@ -91,10 +91,31 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         return picker
     }()
     
-    lazy var filterDatePickerView: UIDatePicker = {
-        let picker = UIDatePicker()
+    lazy var filterDatePickerViewAfter: UIDatePicker = {
+        let screenWidth = UIScreen.main.bounds.width
+        let picker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
         picker.addTarget(self, action: #selector(didSelectDate), for: .valueChanged)
         picker.datePickerMode = .date
+        picker.calendar = .current
+        picker.maximumDate = Date()
+        if #available(iOS 14, *) {
+            picker.preferredDatePickerStyle = .wheels
+            picker.sizeToFit()
+        }
+        return picker
+    }()
+    
+    lazy var filterDatePickerViewBefore: UIDatePicker = {
+        let screenWidth = UIScreen.main.bounds.width
+        let picker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
+        picker.addTarget(self, action: #selector(didSelectDate), for: .valueChanged)
+        picker.datePickerMode = .date
+        picker.calendar = .current
+        picker.minimumDate = Date()
+        if #available(iOS 14, *) {
+            picker.preferredDatePickerStyle = .wheels
+            picker.sizeToFit()
+        }
         return picker
     }()
     
@@ -139,24 +160,26 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         }
         
         contentStackView.layoutIfNeeded()
-        var preferredSize = CGSize(width: view.bounds.width,
-                                   height: contentStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height + topInset * 2)
-        
-        if preferredSize.height > UIScreen().bounds.height / 2 {
-            preferredSize = CGSize(width: view.bounds.width, height: view.bounds.height / 2)
-        }
-        
-        preferredContentSize = preferredSize
-        print(preferredContentSize)
+        setViewsForCalculatingPrefferedSize(scrollView: scrollView, fittingView: contentStackView)
+        setPrefferdSize()
     }
     
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yyyy"
+        return dateFormatter.string(from: date)
+    }
 }
 
 #warning("Do filter logic")
 extension DigWorkFilterBottomSheet {
     
     @objc func didSelectDate(_ datePicker: UIDatePicker) {
-        
+        if dateAfterFilter.textField.inputView == datePicker {
+            dateAfterFilter.textField.text = formatDate(datePicker.date)
+        } else if dateBeforeFilter.textField.inputView == datePicker {
+            dateBeforeFilter.textField.text = formatDate(datePicker.date)
+        }
     }
     
     @objc func didTapSubmitBtn() {
@@ -174,6 +197,11 @@ extension DigWorkFilterBottomSheet: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         filterTypePickerView.reloadAllComponents()
         filterTypePickerView.selectRow(0, inComponent: 0, animated: false)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }
