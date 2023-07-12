@@ -29,6 +29,8 @@ class CityCleaningViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: view)
+        navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"),
+                                                  style: .done, target: self, action: #selector(didTapFilter))
     }
     
     private func setUpBindings() {
@@ -44,14 +46,27 @@ class CityCleaningViewController: UIViewController {
             .isLoadingObservable
             .subscribe(onNext: { [unowned self] isLoading in
                 if isLoading {
-                    loadingController.showLoadingViewControllerIn(self)
+                    loadingController.showLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.rightBarButtonItem?.isEnabled = false
+                    }
                 } else {
-                    loadingController.removeLoadingViewControllerIn(self)
+                    loadingController.removeLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.rightBarButtonItem?.isEnabled = true
+                    }
                 }
             })
             .disposed(by: bag)
     }
 
+}
+
+extension CityCleaningViewController {
+    
+    @objc func didTapFilter() {
+        let vc = CityCleaningFilterViewController()
+        present(vc, animated: true)
+    }
+    
 }
 
 extension CityCleaningViewController: YMKMapObjectTapListener {
