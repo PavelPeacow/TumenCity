@@ -7,10 +7,26 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 
 class CityCleaningMachineTypeViewCell: UICollectionViewCell {
+    typealias SelectedMachineType = (typeTitle: String, isSelected: Bool)
     
     static let identifier = "CityCleaningMachineTypeViewCell"
+    
+    var isTypeMachineSelected = true {
+        willSet {
+            switcher.isOn = newValue
+        }
+    }
+    var bag = DisposeBag()
+    
+    var machineType = ""
+    
+    private var typeAndIsSelected = PublishSubject<(SelectedMachineType)>()
+    var typeAndIsSelectedObservable: Observable<SelectedMachineType> {
+        typeAndIsSelected.asObservable()
+    }
     
     lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [typeImage, typeTitle])
@@ -22,6 +38,8 @@ class CityCleaningMachineTypeViewCell: UICollectionViewCell {
     
     lazy var switcher: UISwitch = {
         let switcher = UISwitch()
+        switcher.isOn = true
+        switcher.addTarget(self, action: #selector(didSwitch), for: .valueChanged)
         switcher.translatesAutoresizingMaskIntoConstraints = false
         return switcher
     }()
@@ -47,9 +65,16 @@ class CityCleaningMachineTypeViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        machineType = ""
+        bag = DisposeBag()
+    }
+    
     func configure(typeImage: UIImage, typeTitle: String) {
         self.typeImage.image = typeImage
         self.typeTitle.text = typeTitle
+        machineType = typeTitle
     }
     
     private func setUpCell() {
@@ -74,6 +99,16 @@ class CityCleaningMachineTypeViewCell: UICollectionViewCell {
         typeImage.snp.makeConstraints {
             $0.size.equalTo(44)
         }
+    }
+    
+}
+
+extension CityCleaningMachineTypeViewCell {
+    
+    @objc func didSwitch(_ sender: UISwitch) {
+        isTypeMachineSelected = sender.isOn
+        typeAndIsSelected
+            .onNext((machineType, isTypeMachineSelected))
     }
     
 }

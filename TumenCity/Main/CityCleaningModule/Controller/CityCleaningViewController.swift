@@ -31,14 +31,15 @@ class CityCleaningViewController: UIViewController {
         YandexMapMaker.setYandexMapLayout(map: map, in: view)
         navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"),
                                                   style: .done, target: self, action: #selector(didTapFilter))
+        collection.addTapListener(with: self)
     }
     
     private func setUpBindings() {
         viewModel
             .cityCleaningAnnotationsObservable
             .subscribe(onNext: { [unowned self] annotations in
+                collection.clear()
                 map.addAnnotations(annotations, cluster: collection)
-                collection.addTapListener(with: self)
             })
             .disposed(by: bag)
         
@@ -64,6 +65,14 @@ extension CityCleaningViewController {
     
     @objc func didTapFilter() {
         let vc = CityCleaningFilterViewController()
+        
+        vc
+            .selectedMachineTypesObservable
+            .subscribe(onNext: { [unowned self] selectedMachineTypes in
+                viewModel.filterAnnotationsByMachineType(type: selectedMachineTypes)
+            })
+            .disposed(by: bag)
+        
         present(vc, animated: true)
     }
     

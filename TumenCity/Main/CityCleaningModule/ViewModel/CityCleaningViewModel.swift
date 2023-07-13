@@ -13,6 +13,7 @@ import RxRelay
 final class CityCleaningViewModel {
     
     private var cityCleaningAnnotations = PublishSubject<[MKCityCleaningAnnotation]>()
+    private var cityCleaningAnnotationsDefault = [MKCityCleaningAnnotation]()
     private var cityCleaningItems = [CityCleaningItemInfo]()
     private var isLoading = BehaviorRelay<Bool>(value: false)
     
@@ -31,6 +32,11 @@ final class CityCleaningViewModel {
             isLoading.accept(false)
             print(cityCleaningItems)
         }
+    }
+    
+    func filterAnnotationsByMachineType(type: Set<String>) {
+        cityCleaningAnnotations
+            .onNext(cityCleaningAnnotationsDefault.filter { type.contains($0.carType) })
     }
     
     private func getCityCleaningItems() async {
@@ -80,6 +86,7 @@ final class CityCleaningViewModel {
         
         cityCleaningAnnotations
             .onNext(annotations)
+        cityCleaningAnnotationsDefault = annotations
     }
     
 }

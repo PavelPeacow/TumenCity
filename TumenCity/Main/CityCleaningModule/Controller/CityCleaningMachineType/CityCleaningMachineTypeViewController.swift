@@ -7,10 +7,43 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxRelay
 
 final class CityCleaningMachineTypeViewController: UIViewController {
     
-    var machineTypes = [CityCleaningTypeElement]()
+    private var machineTypes = [CityCleaningTypeElement]()
+    private var selectedMachineTypes = BehaviorRelay<Set<String>>(value: [])
+    
+    var selectedMachineTypesObservable: Observable<Set<String>> {
+        selectedMachineTypes.asObservable()
+    }
+    
+    lazy var allTypesStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [typesSwitcherTitle, allTypesSwitcher, allTypesSwitcherTitle])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 6
+        return stackView
+    }()
+    
+    lazy var typesSwitcherTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Виды техники: "
+        return label
+    }()
+    
+    lazy var allTypesSwitcher: UISwitch = {
+        let switcher = UISwitch()
+        switcher.isOn = true
+        switcher.addTarget(self, action: #selector(didSwitchToAllTypes), for: .valueChanged)
+        return switcher
+    }()
+    
+    lazy var allTypesSwitcherTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Все"
+        return label
+    }()
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { _, _ in
@@ -39,16 +72,44 @@ final class CityCleaningMachineTypeViewController: UIViewController {
         setUpView()
     }
     
+    
     private func setUpView() {
+        view.addSubview(allTypesStackView)
         view.addSubview(collectionView)
         view.backgroundColor = .systemBackground
-        collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        
+        allTypesStackView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(15)
         }
+        
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(allTypesStackView.snp.bottom).offset(5)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setSelectedAllMachineTypes() {
+        selectedMachineTypes.accept(Set(machineTypes.map { $0.type } ))
     }
     
     func configure(dataSource: [CityCleaningTypeElement]) {
         self.machineTypes = dataSource
+        setSelectedAllMachineTypes()
+        collectionView.reloadData()
+    }
+    
+}
+
+extension CityCleaningMachineTypeViewController {
+    
+    @objc func didSwitchToAllTypes(_ sender: UISwitch) {
+        if sender.isOn {
+            setSelectedAllMachineTypes()
+        } else {
+            selectedMachineTypes.accept([])
+        }
         collectionView.reloadData()
     }
     
@@ -64,7 +125,25 @@ extension CityCleaningMachineTypeViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityCleaningMachineTypeViewCell.identifier, for: indexPath) as! CityCleaningMachineTypeViewCell
         let image = UIImage(named: "type-\(machineTypes[indexPath.item].id)") ?? .actions
         let title = machineTypes[indexPath.item].type
+        
         cell.configure(typeImage: image, typeTitle: title)
+        
+        cell.isTypeMachineSelected = selectedMachineTypes.value.contains(cell.machineType)
+        
+        
+        cell
+            .typeAndIsSelectedObservable
+            .subscribe { [unowned self] (typeTitle: String, isSelected: Bool) in
+                var updatedSet = selectedMachineTypes.value
+                if isSelected {
+                    updatedSet.insert(typeTitle)
+                } else {
+                    updatedSet.remove(typeTitle)
+                }
+                selectedMachineTypes.accept(updatedSet)
+            }
+            .disposed(by: cell.bag)
+        
         return cell
     }
     

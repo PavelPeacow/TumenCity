@@ -21,6 +21,12 @@ final class CityCleaningFilterViewController: UIViewController {
     let viewModel = CityCleaningFilterViewModel()
     let bag = DisposeBag()
     
+    var selectedMachineTypes = Set<String>()
+    private var selectedMachineTypesSubject = PublishSubject<Set<String>>()
+    var selectedMachineTypesObservable: Observable<Set<String>> {
+        selectedMachineTypesSubject.asObservable()
+    }
+    
     lazy var selectFilterStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [selectFilterTypeTitle, indicatorBtn])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -95,7 +101,14 @@ final class CityCleaningFilterViewController: UIViewController {
         super.viewDidLoad()
         setUpView()
         setUpBindings()
+        setUpBindingsForFilterViewControllers()
         setUpConstaints()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        selectedMachineTypesSubject.onNext(selectedMachineTypes)
+        
     }
     
     private func setUpView() {
@@ -111,6 +124,16 @@ final class CityCleaningFilterViewController: UIViewController {
                 if !isLoading {
                     typeMachineFilterViewController.configure(dataSource: viewModel.filterItems)
                 }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func setUpBindingsForFilterViewControllers() {
+        typeMachineFilterViewController
+            .selectedMachineTypesObservable
+            .subscribe(onNext: { [unowned self] machineTypes in
+                selectedMachineTypes = machineTypes
+                print(machineTypes)
             })
             .disposed(by: bag)
     }
