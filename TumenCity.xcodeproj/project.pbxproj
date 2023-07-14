@@ -43,6 +43,9 @@
 		B51C33D32A5E849D00BC8A8E /* CityCleaningEnvControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33D22A5E849D00BC8A8E /* CityCleaningEnvControlViewController.swift */; };
 		B51C33D92A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33D82A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift */; };
 		B51C33DB2A5E92E900BC8A8E /* UIViewController+Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33DA2A5E92E900BC8A8E /* UIViewController+Child.swift */; };
+		B51C33DD2A6183B900BC8A8E /* SwitchWithTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */; };
+		B51C33DF2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33DE2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift */; };
+		B51C33E12A618F8700BC8A8E /* CityCleaningContractorsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33E02A618F8700BC8A8E /* CityCleaningContractorsHeader.swift */; };
 		B51FACF22A3B095600BB6D81 /* cityCleaningMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */; };
 		B51FACF42A3B5AFE00BB6D81 /* CityCleaningCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */; };
 		B51FACF62A3DA75200BB6D81 /* CalloutIconWithTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */; };
@@ -173,6 +176,9 @@
 		B51C33D22A5E849D00BC8A8E /* CityCleaningEnvControlViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningEnvControlViewController.swift; sourceTree = "<group>"; };
 		B51C33D82A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningFilterViewModel.swift; sourceTree = "<group>"; };
 		B51C33DA2A5E92E900BC8A8E /* UIViewController+Child.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Child.swift"; sourceTree = "<group>"; };
+		B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchWithTitle.swift; sourceTree = "<group>"; };
+		B51C33DE2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningContractorsCell.swift; sourceTree = "<group>"; };
+		B51C33E02A618F8700BC8A8E /* CityCleaningContractorsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningContractorsHeader.swift; sourceTree = "<group>"; };
 		B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cityCleaningMock.json; sourceTree = "<group>"; };
 		B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningCallout.swift; sourceTree = "<group>"; };
 		B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutIconWithTitleView.swift; sourceTree = "<group>"; };
@@ -380,6 +386,8 @@
 			isa = PBXGroup;
 			children = (
 				B51C33CE2A5E846B00BC8A8E /* CityCleaningContractorsViewController.swift */,
+				B51C33E02A618F8700BC8A8E /* CityCleaningContractorsHeader.swift */,
+				B51C33DE2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift */,
 			);
 			path = CityCleaningContractors;
 			sourceTree = "<group>";
@@ -398,6 +406,19 @@
 				B51C33D22A5E849D00BC8A8E /* CityCleaningEnvControlViewController.swift */,
 			);
 			path = CityCleaningEnvControl;
+			sourceTree = "<group>";
+		};
+		B51C33E22A619CF000BC8A8E /* CityCleaningFilter */ = {
+			isa = PBXGroup;
+			children = (
+				B51C33C12A5E58B900BC8A8E /* CityCleaningFilterViewController.swift */,
+				B51C33D82A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift */,
+				B51C33C92A5E83AF00BC8A8E /* CityCleaningMachineType */,
+				B51C33D52A5E84C200BC8A8E /* CityCleaningContractors */,
+				B51C33D62A5E84C400BC8A8E /* CityCleaningIndicators */,
+				B51C33D72A5E84C600BC8A8E /* CityCleaningEnvControl */,
+			);
+			path = CityCleaningFilter;
 			sourceTree = "<group>";
 		};
 		B51FACF72A3DCC5900BB6D81 /* Protocols */ = {
@@ -599,6 +620,7 @@
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */,
 				B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */,
 				B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */,
 				B52896442A07BB3D006A85D9 /* CalloutLabelView.swift */,
@@ -770,12 +792,7 @@
 			isa = PBXGroup;
 			children = (
 				B5F249532A3AFA3E00B35F74 /* CityCleaningViewController.swift */,
-				B51C33C12A5E58B900BC8A8E /* CityCleaningFilterViewController.swift */,
-				B51C33D82A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift */,
-				B51C33C92A5E83AF00BC8A8E /* CityCleaningMachineType */,
-				B51C33D52A5E84C200BC8A8E /* CityCleaningContractors */,
-				B51C33D62A5E84C400BC8A8E /* CityCleaningIndicators */,
-				B51C33D72A5E84C600BC8A8E /* CityCleaningEnvControl */,
+				B51C33E22A619CF000BC8A8E /* CityCleaningFilter */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1056,6 +1073,7 @@
 				B50D32522A1920430034B860 /* CheckBoxButton.swift in Sources */,
 				B50D324E2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift in Sources */,
 				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,
+				B51C33DD2A6183B900BC8A8E /* SwitchWithTitle.swift in Sources */,
 				B5D92ACD2A40AF9900BAA7F5 /* ShowErrorAlert.swift in Sources */,
 				B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */,
 				B528964F2A091440006A85D9 /* SportRegistrySearchViewController.swift in Sources */,
@@ -1089,9 +1107,11 @@
 				B528965A2A0A1D12006A85D9 /* DigWorkViewModel.swift in Sources */,
 				B5F7A88F299E10D10001ED69 /* CommunalServiceFormatted.swift in Sources */,
 				B52896622A0A2067006A85D9 /* MKDigWorkAnnotation.swift in Sources */,
+				B51C33DF2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift in Sources */,
 				B52896562A0A1CF2006A85D9 /* DigWorkViewController.swift in Sources */,
 				B5608A7C2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
+				B51C33E12A618F8700BC8A8E /* CityCleaningContractorsHeader.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B50D32642A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift in Sources */,
 				B52896312A063447006A85D9 /* Sport.swift in Sources */,

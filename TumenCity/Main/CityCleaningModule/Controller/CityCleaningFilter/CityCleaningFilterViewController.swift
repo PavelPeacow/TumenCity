@@ -57,7 +57,7 @@ final class CityCleaningFilterViewController: UIViewController {
         btn.imageEdgeInsets = .init(top: -10, left: -10, bottom: -10, right: -10)
         btn.imageView?.contentMode = .scaleAspectFit
         btn.layer.cornerRadius = 12
-        btn.backgroundColor = .systemGroupedBackground
+        btn.backgroundColor = .secondarySystemBackground
         btn.addTarget(self, action: #selector(showContextMenu), for: .touchUpInside)
         let menu = createFilterMenuForBtn()
         if #available(iOS 14.0, *) {
@@ -97,6 +97,8 @@ final class CityCleaningFilterViewController: UIViewController {
         return view
     }()
     
+    lazy var loadingController = LoadingViewController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
@@ -121,8 +123,12 @@ final class CityCleaningFilterViewController: UIViewController {
         viewModel
             .isLoadingObservable
             .subscribe(onNext: { [unowned self] isLoading in
-                if !isLoading {
+                if isLoading {
+                    loadingController.showLoadingViewControllerIn(self)
+                } else {
+                    loadingController.removeLoadingViewControllerIn(self)
                     typeMachineFilterViewController.configure(dataSource: viewModel.filterItems)
+                    contractorsFilterViewController.configure(dataSource: viewModel.contractorsItems)
                 }
             })
             .disposed(by: bag)
@@ -139,19 +145,23 @@ final class CityCleaningFilterViewController: UIViewController {
     }
     
     private func createFilterMenuForBtn() -> UIMenu {
-        let controlEnvMenuItem = UIAction(title: "Контроль среды") { [unowned self] _ in
+        let controlEnvMenuItem = UIAction(title: "Контроль среды",
+                                          image: .init(named: "envControl")) { [unowned self] _ in
             changeSelectedFilter(filterType: .controlEnvMenuItem)
         }
         
-        let indicatorsMenuItem = UIAction(title: "Индикаторы") { [unowned self] _ in
+        let indicatorsMenuItem = UIAction(title: "Индикаторы",
+                                          image: .init(named: "indicators")) { [unowned self] _ in
             changeSelectedFilter(filterType: .indicatorsMenuItem)
         }
         
-        let contractorsMenuItem = UIAction(title: "Подрядчики") { [unowned self] _ in
+        let contractorsMenuItem = UIAction(title: "Подрядчики",
+                                           image: .init(named: "contractors")) { [unowned self] _ in
             changeSelectedFilter(filterType: .contractorsMenuItem)
         }
         
-        let typeMenuItem = UIAction(title: "Тип техники") { [unowned self] _ in
+        let typeMenuItem = UIAction(title: "Тип техники",
+                                    image: .init(named: "machineType")) { [unowned self] _ in
             changeSelectedFilter(filterType: .typeMenuItem)
         }
         

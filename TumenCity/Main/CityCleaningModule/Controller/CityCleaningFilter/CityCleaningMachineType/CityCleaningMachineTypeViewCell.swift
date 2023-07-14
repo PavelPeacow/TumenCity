@@ -39,6 +39,7 @@ class CityCleaningMachineTypeViewCell: UICollectionViewCell {
     lazy var switcher: UISwitch = {
         let switcher = UISwitch()
         switcher.isOn = true
+        switcher.onTintColor = .systemOrange
         switcher.addTarget(self, action: #selector(didSwitch), for: .valueChanged)
         switcher.translatesAutoresizingMaskIntoConstraints = false
         return switcher
@@ -80,7 +81,7 @@ class CityCleaningMachineTypeViewCell: UICollectionViewCell {
     private func setUpCell() {
         contentView.addSubview(contentStackView)
         contentView.addSubview(switcher)
-        contentView.backgroundColor = .systemGray6
+        contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 15
         
         contentStackView.snp.makeConstraints {

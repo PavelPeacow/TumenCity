@@ -19,8 +19,16 @@ final class CityCleaningMachineTypeViewController: UIViewController {
         selectedMachineTypes.asObservable()
     }
     
+    lazy var allTypesViewBackground: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .secondarySystemBackground
+        view.layer.cornerRadius = 15
+        return view
+    }()
+    
     lazy var allTypesStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [typesSwitcherTitle, allTypesSwitcher, allTypesSwitcherTitle])
+        let stackView = UIStackView(arrangedSubviews: [typesSwitcherTitle, allTypesSwitcher])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 6
         return stackView
@@ -32,17 +40,10 @@ final class CityCleaningMachineTypeViewController: UIViewController {
         return label
     }()
     
-    lazy var allTypesSwitcher: UISwitch = {
-        let switcher = UISwitch()
-        switcher.isOn = true
-        switcher.addTarget(self, action: #selector(didSwitchToAllTypes), for: .valueChanged)
+    lazy var allTypesSwitcher: SwitchWithTitle = {
+        let switcher = SwitchWithTitle(switchTitle: "Все", isOn: true, onTintColor: .systemOrange, backgroundColor: .secondarySystemBackground)
+        switcher.switcher.addTarget(self, action: #selector(didSwitchToAllTypes), for: .valueChanged)
         return switcher
-    }()
-    
-    lazy var allTypesSwitcherTitle: UILabel = {
-        let label = UILabel()
-        label.text = "Все"
-        return label
     }()
     
     lazy var collectionView: UICollectionView = {
@@ -74,9 +75,16 @@ final class CityCleaningMachineTypeViewController: UIViewController {
     
     
     private func setUpView() {
-        view.addSubview(allTypesStackView)
+        view.addSubview(allTypesViewBackground)
+        allTypesViewBackground.addSubview(allTypesStackView)
         view.addSubview(collectionView)
         view.backgroundColor = .systemBackground
+        
+        allTypesViewBackground.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(15)
+            $0.bottom.equalTo(allTypesStackView.snp.bottom)
+        }
         
         allTypesStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
@@ -85,7 +93,7 @@ final class CityCleaningMachineTypeViewController: UIViewController {
         
         collectionView.snp.makeConstraints {
             $0.top.equalTo(allTypesStackView.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(15)
             $0.bottom.equalToSuperview()
         }
     }

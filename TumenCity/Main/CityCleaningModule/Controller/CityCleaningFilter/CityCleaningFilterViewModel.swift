@@ -12,6 +12,7 @@ import RxRelay
 final class CityCleaningFilterViewModel {
     
     var filterItems = [CityCleaningTypeElement]()
+    var contractorsItems = [CityCleaningContractorElement]()
     private var isLoading = BehaviorRelay(value: false)
     var isLoadingObservable: Observable<Bool> {
         isLoading.asObservable()
@@ -21,6 +22,7 @@ final class CityCleaningFilterViewModel {
         Task {
             isLoading.accept(true)
             await getFilterItems()
+            await getContractorsItems()
             isLoading.accept(false)
         }
     }
@@ -29,6 +31,15 @@ final class CityCleaningFilterViewModel {
         do {
             let res = try await APIManager().getAPIContent(type: [CityCleaningTypeElement].self, endpoint: .cityCleaningType)
             filterItems = res
+        } catch {
+            print(error)
+        }
+    }
+    
+    func getContractorsItems() async {
+        do {
+            let res = try await APIManager().getAPIContent(type: [CityCleaningContractorElement].self, endpoint: .cityCleaningContractor)
+            contractorsItems = res
         } catch {
             print(error)
         }
