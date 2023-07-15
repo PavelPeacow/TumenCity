@@ -73,6 +73,13 @@ extension CityCleaningViewController {
             })
             .disposed(by: bag)
         
+        vc
+            .selectedContractorsObservable
+            .subscribe(onNext: { [unowned self] selectedContractors in
+                viewModel.filterAnnotationsByContractors(contractors: selectedContractors)
+            })
+            .disposed(by: bag)
+        
         present(vc, animated: true)
     }
     

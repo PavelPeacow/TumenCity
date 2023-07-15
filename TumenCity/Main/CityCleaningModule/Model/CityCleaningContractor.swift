@@ -18,3 +18,9 @@ struct Contractor: Codable {
     let id: Int
     let contractor: String
 }
+
+extension CityCleaningContractorElement {
+    var councilFormatted: String {
+        council.count <= 3 ? "У" + council : council
+    }
+}

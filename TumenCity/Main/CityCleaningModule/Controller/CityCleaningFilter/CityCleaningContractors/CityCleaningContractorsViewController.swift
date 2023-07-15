@@ -7,10 +7,17 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class CityCleaningContractorsViewController: UIViewController {
+    typealias SelectedContractors = [String : Set<String>]
     
-    var contractors = [CityCleaningContractorElement]()
+    private var contractors = [CityCleaningContractorElement]()
+    private var selectedContractors = BehaviorRelay<SelectedContractors>(value: [:])
+    
+    var selectedContractorsObservable: Observable<SelectedContractors> {
+        selectedContractors.asObservable()
+    }
     
     lazy var mainContractorsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [mainContractorsTitle, mainContractorsScrollView])
@@ -84,18 +91,85 @@ class CityCleaningContractorsViewController: UIViewController {
     
     private func createMainContractorsSwitches() {
         contractors.forEach {
-            let switcherView = SwitchWithTitle(switchTitle: $0.council, isOn: true,
-                                               onTintColor: .black, backgroundColor: .secondarySystemBackground)
+            let switcherView = SwitchWithTitleCouncil(switchTitle: $0.councilFormatted, isOn: true,
+                                                      onTintColor: .black,
+                                                      backgroundColor: .secondarySystemBackground,
+                                                      type: .init(rawValue: $0.councilFormatted) ?? .ddit)
+            switcherView.switcher.addTarget(self,
+                                            action: #selector(didTapMainContractorsSwitcher),
+                                            for: .valueChanged)
             scrollViewStackView.addArrangedSubview(switcherView)
         }
     }
     
+    private func setSelectedAllContractors() {
+        var councilsAndContractors = [String : Set<String>]()
+        
+        let councilsTitles = contractors.map { $0.councilFormatted }
+        let allContractorsByCouncil = contractors.map { $0.contractor }
+        
+        councilsTitles.enumerated().forEach { index, title in
+            councilsAndContractors[title] = Set(allContractorsByCouncil[index].map { $0.contractor })
+        }
+        selectedContractors.accept(councilsAndContractors)
+    }
+    
+    private func setSelectedAllConctractorsByCouncil(_ council: SwitchWithTitleCouncilType) {
+        var dic = selectedContractors.value
+        var updated = selectedContractors.value[council.rawValue] ?? Set()
+        let councilsTitles = contractors.map { $0.councilFormatted }
+        let allContractorsByCouncil = contractors.map { $0.contractor }
+        
+        councilsTitles.enumerated().forEach { index, title in
+            if title == council.rawValue {
+                let contractors = allContractorsByCouncil[index].map { $0.contractor }
+                contractors.forEach { updated.insert($0) }
+            }
+        }
+        dic[council.rawValue] = updated
+        selectedContractors.accept(dic)
+    }
+    
+    private func setUnselectedAllConctractorsByCouncil(_ council: SwitchWithTitleCouncilType) {
+        var dic = selectedContractors.value
+        var updated = selectedContractors.value[council.rawValue] ?? Set()
+        updated = Set()
+        dic[council.rawValue] = updated
+        selectedContractors.accept(dic)
+    }
+    
+    private func reactToMainContractorsSwitchStateChanges(isOn: Bool, council: SwitchWithTitleCouncilType) {
+        isOn ? setSelectedAllConctractorsByCouncil(council) : setUnselectedAllConctractorsByCouncil(council)
+        contractorsCollectionView.reloadData()
+    }
+    
     func configure(dataSource: [CityCleaningContractorElement]) {
         contractors = dataSource
+        setSelectedAllContractors()
         contractorsCollectionView.reloadData()
         createMainContractorsSwitches()
     }
     
+}
+
+extension CityCleaningContractorsViewController {
+    @objc func didTapMainContractorsSwitcher(_ sender: UISwitch) {
+        guard let switchView = sender.superview?.superview as? SwitchWithTitleCouncil else { return }
+        let councilType = switchView.type
+        
+        switch councilType {
+        case .ddit:
+            reactToMainContractorsSwitchStateChanges(isOn: sender.isOn, council: .ddit)
+        case .vao:
+            reactToMainContractorsSwitchStateChanges(isOn: sender.isOn, council: .vao)
+        case .cao:
+            reactToMainContractorsSwitchStateChanges(isOn: sender.isOn, council: .cao)
+        case .lao:
+            reactToMainContractorsSwitchStateChanges(isOn: sender.isOn, council: .lao)
+        case .kao:
+            reactToMainContractorsSwitchStateChanges(isOn: sender.isOn, council: .kao)
+        }
+    }
 }
 
 extension CityCleaningContractorsViewController {
@@ -138,7 +212,28 @@ extension CityCleaningContractorsViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CityCleaningContractorsCell.identifier, for: indexPath) as! CityCleaningContractorsCell
         
         let title = contractors[indexPath.section].contractor[indexPath.item].contractor
-        cell.configure(typeTitle: title)
+        let council = contractors[indexPath.section].councilFormatted
+        cell.configure(typeTitle: title, council: council)
+        print(council)
+        print(title)
+        print(selectedContractors.value[council])
+        cell.isTypeContractorSelected = selectedContractors.value[council]?.contains(title) ?? false
+        
+        cell
+            .typeAndIsSelectedObservable
+            .subscribe(onNext: { [unowned self] (contractorTitle, council, isSelected) in
+                var dic = selectedContractors.value
+                var updated = selectedContractors.value[council] ?? []
+                if isSelected {
+                    updated.insert(contractorTitle)
+                } else {
+                    updated.remove(contractorTitle)
+                }
+                dic[council] = updated
+                print(dic)
+                selectedContractors.accept(dic)
+            })
+            .disposed(by: cell.bag)
         
         return cell
     }

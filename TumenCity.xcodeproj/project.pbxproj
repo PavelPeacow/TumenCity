@@ -46,6 +46,7 @@
 		B51C33DD2A6183B900BC8A8E /* SwitchWithTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */; };
 		B51C33DF2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33DE2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift */; };
 		B51C33E12A618F8700BC8A8E /* CityCleaningContractorsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33E02A618F8700BC8A8E /* CityCleaningContractorsHeader.swift */; };
+		B51C33E42A62746300BC8A8E /* SwitchWithTitleCouncil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C33E32A62746300BC8A8E /* SwitchWithTitleCouncil.swift */; };
 		B51FACF22A3B095600BB6D81 /* cityCleaningMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */; };
 		B51FACF42A3B5AFE00BB6D81 /* CityCleaningCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */; };
 		B51FACF62A3DA75200BB6D81 /* CalloutIconWithTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */; };
@@ -179,6 +180,7 @@
 		B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchWithTitle.swift; sourceTree = "<group>"; };
 		B51C33DE2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningContractorsCell.swift; sourceTree = "<group>"; };
 		B51C33E02A618F8700BC8A8E /* CityCleaningContractorsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningContractorsHeader.swift; sourceTree = "<group>"; };
+		B51C33E32A62746300BC8A8E /* SwitchWithTitleCouncil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchWithTitleCouncil.swift; sourceTree = "<group>"; };
 		B51FACF12A3B095600BB6D81 /* cityCleaningMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cityCleaningMock.json; sourceTree = "<group>"; };
 		B51FACF32A3B5AFE00BB6D81 /* CityCleaningCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningCallout.swift; sourceTree = "<group>"; };
 		B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutIconWithTitleView.swift; sourceTree = "<group>"; };
@@ -621,6 +623,7 @@
 			isa = PBXGroup;
 			children = (
 				B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */,
+				B51C33E32A62746300BC8A8E /* SwitchWithTitleCouncil.swift */,
 				B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */,
 				B51FACF52A3DA75200BB6D81 /* CalloutIconWithTitleView.swift */,
 				B52896442A07BB3D006A85D9 /* CalloutLabelView.swift */,
@@ -1071,6 +1074,7 @@
 				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
 				B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */,
 				B50D32522A1920430034B860 /* CheckBoxButton.swift in Sources */,
+				B51C33E42A62746300BC8A8E /* SwitchWithTitleCouncil.swift in Sources */,
 				B50D324E2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift in Sources */,
 				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,
 				B51C33DD2A6183B900BC8A8E /* SwitchWithTitle.swift in Sources */,

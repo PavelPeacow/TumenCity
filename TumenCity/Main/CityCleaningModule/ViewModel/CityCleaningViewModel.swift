@@ -12,7 +12,7 @@ import RxRelay
 @MainActor
 final class CityCleaningViewModel {
     
-    private var cityCleaningAnnotations = PublishSubject<[MKCityCleaningAnnotation]>()
+    private var cityCleaningAnnotations = BehaviorRelay<[MKCityCleaningAnnotation]>(value: [])
     private var cityCleaningAnnotationsDefault = [MKCityCleaningAnnotation]()
     private var cityCleaningItems = [CityCleaningItemInfo]()
     private var isLoading = BehaviorRelay<Bool>(value: false)
@@ -35,8 +35,19 @@ final class CityCleaningViewModel {
     }
     
     func filterAnnotationsByMachineType(type: Set<String>) {
-        cityCleaningAnnotations
-            .onNext(cityCleaningAnnotationsDefault.filter { type.contains($0.carType) })
+        cityCleaningAnnotations.accept(cityCleaningAnnotationsDefault)
+        let filterd = cityCleaningAnnotations.value.filter { type.contains($0.carType) }
+        cityCleaningAnnotations.accept(filterd)
+    }
+    
+    func filterAnnotationsByContractors(contractors: [String : Set<String>]) {
+        let filtered = cityCleaningAnnotations.value.filter {
+            if let contractorSet = contractors[$0.council] {
+                return contractorSet.contains($0.contractor)
+            }
+            return false
+        }
+        cityCleaningAnnotations.accept(filtered)
     }
     
     private func getCityCleaningItems() async {
@@ -79,13 +90,12 @@ final class CityCleaningViewModel {
             
             let annotation = MKCityCleaningAnnotation(coordinates: .init(latitude: lat, longitude: long), contractor: item.contractor,
                                                       number: item.number, carType: item.type, icon: annotationIcon,
-                                                      speed: item.speed, date: item.dtime, council: item.council)
+                                                      speed: item.speed, date: item.dtime, council: item.councilFormatted)
             
             annotations.append(annotation)
         }
         
-        cityCleaningAnnotations
-            .onNext(annotations)
+        cityCleaningAnnotations.accept(annotations)
         cityCleaningAnnotationsDefault = annotations
     }
     

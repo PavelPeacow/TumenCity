@@ -17,6 +17,7 @@ enum CityCleaningFilterSelectedType {
 }
 
 final class CityCleaningFilterViewController: UIViewController {
+    typealias SelectedContractors = [String : Set<String>]
     
     let viewModel = CityCleaningFilterViewModel()
     let bag = DisposeBag()
@@ -25,6 +26,12 @@ final class CityCleaningFilterViewController: UIViewController {
     private var selectedMachineTypesSubject = PublishSubject<Set<String>>()
     var selectedMachineTypesObservable: Observable<Set<String>> {
         selectedMachineTypesSubject.asObservable()
+    }
+    
+    var selectedContractors = SelectedContractors()
+    private var selectedContractorsSubject = PublishSubject<SelectedContractors>()
+    var selectedContractorsObservable: Observable<SelectedContractors> {
+        selectedContractorsSubject.asObservable()
     }
     
     lazy var selectFilterStackView: UIStackView = {
@@ -110,7 +117,7 @@ final class CityCleaningFilterViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         selectedMachineTypesSubject.onNext(selectedMachineTypes)
-        
+        selectedContractorsSubject.onNext(selectedContractors)
     }
     
     private func setUpView() {
@@ -140,6 +147,14 @@ final class CityCleaningFilterViewController: UIViewController {
             .subscribe(onNext: { [unowned self] machineTypes in
                 selectedMachineTypes = machineTypes
                 print(machineTypes)
+            })
+            .disposed(by: bag)
+        
+        contractorsFilterViewController
+            .selectedContractorsObservable
+            .subscribe(onNext: { [unowned self] contractors in
+                selectedContractors = contractors
+                print(contractors)
             })
             .disposed(by: bag)
     }
@@ -213,6 +228,15 @@ extension CityCleaningFilterViewController {
 extension CityCleaningFilterViewController {
     
     func setUpConstaints() {
+        func setUpConstraintsForChildFilter(_ child: UIViewController) {
+            child.view.snp.makeConstraints {
+                $0.top.equalTo(selectFilterStackView.snp.bottom).offset(5)
+                $0.leading.trailing.equalToSuperview()
+                $0.bottomMargin.equalToSuperview()
+            }
+        }
+        
+        
         selectFilterStackView.snp.makeConstraints {
             $0.topMargin.equalToSuperview().inset(5)
             $0.centerX.equalToSuperview()
@@ -222,29 +246,13 @@ extension CityCleaningFilterViewController {
             $0.height.equalTo(44)
         }
 
-        typeMachineFilterViewController.view.snp.makeConstraints {
-            $0.top.equalTo(selectFilterStackView.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottomMargin.equalToSuperview()
-        }
+        setUpConstraintsForChildFilter(typeMachineFilterViewController)
         
-        indicatorsFilterViewController.view.snp.makeConstraints {
-            $0.top.equalTo(selectFilterStackView.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottomMargin.equalToSuperview()
-        }
+        setUpConstraintsForChildFilter(indicatorsFilterViewController)
         
-        contractorsFilterViewController.view.snp.makeConstraints {
-            $0.top.equalTo(selectFilterStackView.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottomMargin.equalToSuperview()
-        }
+        setUpConstraintsForChildFilter(contractorsFilterViewController)
         
-        envControlFilterViewController.view.snp.makeConstraints {
-            $0.top.equalTo(selectFilterStackView.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottomMargin.equalToSuperview()
-        }
+        setUpConstraintsForChildFilter(envControlFilterViewController)
     }
     
 }

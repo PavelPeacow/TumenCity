@@ -62,6 +62,12 @@ struct CityCleaningItemInfo: Codable {
     }
 }
 
+extension CityCleaningItemInfo {
+    var councilFormatted: String {
+        council.count <= 3 ? "У" + council : council
+    }
+}
+
 enum CityCleaningItemIcon: String, Codable {
     case modulesGraderNewImgTypesType11SVG = "/modules/grader_new/img/types/type-11.svg"
     case modulesGraderNewImgTypesType12SVG = "/modules/grader_new/img/types/type-12.svg"

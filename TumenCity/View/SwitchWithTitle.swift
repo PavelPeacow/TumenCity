@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SwitchWithTitle: UIView {
+class SwitchWithTitle: UIView {
     
     lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [switcher, switchTitle])

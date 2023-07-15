@@ -9,11 +9,11 @@ import UIKit
 import RxSwift
 
 final class CityCleaningContractorsCell: UICollectionViewCell {
-    typealias SelectedContractor = (contractorTitle: String, isSelected: Bool)
+    typealias SelectedContractor = (contractorTitle: String, council: String, isSelected: Bool)
     
     static let identifier = "CityCleaningContractorsCell"
     
-    var isTypeMachineSelected = true {
+    var isTypeContractorSelected = true {
         willSet {
             switcher.switcher.isOn = newValue
         }
@@ -21,6 +21,7 @@ final class CityCleaningContractorsCell: UICollectionViewCell {
     var bag = DisposeBag()
     
     lazy var cellTitle = ""
+    lazy var council = ""
     
     private var typeAndIsSelected = PublishSubject<(SelectedContractor)>()
     var typeAndIsSelectedObservable: Observable<SelectedContractor> {
@@ -54,12 +55,14 @@ final class CityCleaningContractorsCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         cellTitle = ""
+        council = ""
         bag = DisposeBag()
     }
     
-    func configure(typeTitle: String) {
+    func configure(typeTitle: String, council: String) {
         self.switcher.switchTitle.text = typeTitle
         cellTitle = typeTitle
+        self.council = council
     }
     
     private func setUpCell() {
@@ -79,9 +82,9 @@ final class CityCleaningContractorsCell: UICollectionViewCell {
 extension CityCleaningContractorsCell {
     
     @objc func didSwitch(_ sender: UISwitch) {
-        isTypeMachineSelected = sender.isOn
+        isTypeContractorSelected = sender.isOn
         typeAndIsSelected
-            .onNext((cellTitle, isTypeMachineSelected))
+            .onNext((cellTitle, council, isTypeContractorSelected))
     }
     
 }
