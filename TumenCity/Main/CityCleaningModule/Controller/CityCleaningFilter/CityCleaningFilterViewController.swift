@@ -165,7 +165,7 @@ final class CityCleaningFilterViewController: UIViewController {
             changeSelectedFilter(filterType: .controlEnvMenuItem)
         }
         
-        let indicatorsMenuItem = UIAction(title: "Индикаторы",
+        let indicatorsMenuItem = UIAction(title: "Показатели",
                                           image: .init(named: "indicators")) { [unowned self] _ in
             changeSelectedFilter(filterType: .indicatorsMenuItem)
         }

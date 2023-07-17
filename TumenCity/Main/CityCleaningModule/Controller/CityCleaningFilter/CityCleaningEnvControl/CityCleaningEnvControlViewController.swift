@@ -11,8 +11,9 @@ class CityCleaningEnvControlViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .red
+        let loadingController = LoadingViewController()
+        loadingController.showLoadingViewControllerIn(self)
+        view.backgroundColor = .systemBackground
     }
     
 
