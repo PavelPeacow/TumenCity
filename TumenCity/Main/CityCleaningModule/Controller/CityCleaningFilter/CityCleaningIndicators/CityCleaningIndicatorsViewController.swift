@@ -33,7 +33,7 @@ struct CityCleaningIndicatorItem: Hashable {
 
     let id = UUID()
     let idCouncil: Int?
-    let council: String?
+    let council: String
     let timelinessData, activeDuringDay, countContractor, sumMorning: Int
     let sumNight: Int
     let detal: [Detal]?
@@ -83,11 +83,15 @@ class CityCleaningIndicatorsViewController: UIViewController {
     }
     
     private func didSelectItemCellDetail(model: CityCleaningIndicatorItem) {
-        print("itemCell", model.council)
+        let callout = CityCleaningIndicatorCallout()
+        callout.configureItem(model: model)
+        callout.showAlert(in: self.parent ?? self)
     }
     
     private func didSelectSubitemCellDetail(model: Detal) {
-        print("subItemCell", model.contractor)
+        let callout = CityCleaningIndicatorCallout()
+        callout.configureSubitem(model: model)
+        callout.showAlert(in: self.parent ?? self)
     }
 }
 
@@ -95,7 +99,7 @@ extension CityCleaningIndicatorsViewController {
     
     private func makeDatasource() {
         let itemCell = UICollectionView.CellRegistration<IndicatorCollectionViewListCell, CityCleaningIndicatorItem> { cell, indexPath, model in
-            cell.configureCell(title: model.council ?? "",
+            cell.configureCell(title: model.council,
                                textStyle: .preferredFont(forTextStyle: .headline),
                                cellIndex: indexPath.row, isSubitem: false,
                                detailAction: UIAction() { [weak self] _ in
@@ -164,7 +168,7 @@ extension CityCleaningIndicatorsViewController: UICollectionViewDelegate {
         case .item:
             break
         case .subitem(it: let it):
-            print(it)
+            didSelectSubitemCellDetail(model: it)
         }
         
     }
