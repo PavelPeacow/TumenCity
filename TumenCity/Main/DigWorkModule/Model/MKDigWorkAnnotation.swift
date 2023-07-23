@@ -8,9 +8,10 @@
 import MapKit
 import YandexMapsMobile
 
-final class MKDigWorkAnnotation: YMKPoint {
+final class MKDigWorkAnnotation: YMKPoint, YMKAnnotation {
     
     var title: String
+    var address: String
     var contentDescription: String
     var icon: UIImage
     var coordinates: CLLocationCoordinate2D
@@ -23,8 +24,9 @@ final class MKDigWorkAnnotation: YMKPoint {
         coordinates.longitude.magnitude
     }
     
-    init(title: String, contentDescription: String, icon: UIImage, coordinates: CLLocationCoordinate2D) {
+    init(title: String, address: String, contentDescription: String, icon: UIImage, coordinates: CLLocationCoordinate2D) {
         self.title = title
+        self.address = address
         self.contentDescription = contentDescription
         self.icon = icon
         self.coordinates = coordinates

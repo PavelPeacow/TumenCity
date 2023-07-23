@@ -11,6 +11,7 @@ enum APIEndpoint {
     case communalServices
     case closeRoads
     case sport
+    case digWork(filter: DigWorkFilter? = nil)
     
     case tradeObjects
     case tradeObjectBy(id: String)
@@ -22,6 +23,12 @@ enum APIEndpoint {
     case urbanImprovementsInfo(id: Int)
     
     case cityCleaning
+    case cityCleaningType
+    case cityCleaningContractor
+    case cityCleaningIndicator
+    
+    case bikePath
+    case bikeLegend
     
     var url: URL? {
         
@@ -35,6 +42,9 @@ enum APIEndpoint {
             
         case .sport:
             return urlComponents(host: "info.agt72.ru", path: "/api/sport/main/institutions/json")
+
+        case .digWork:
+            return urlComponents(host: "info.agt72.ru", path: "/api/dig/main/dig/json")
             
         case .tradeObjects:
             return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/select/json")
@@ -61,6 +71,21 @@ enum APIEndpoint {
 
         case .cityCleaning:
             return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/select/json")
+            
+        case .cityCleaningType:
+            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/type/json")
+        
+        case .cityCleaningContractor:
+            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/contractor/json")
+            
+        case .cityCleaningIndicator:
+            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/indicators/json")
+            
+        case .bikePath:
+            return urlComponents(host: "info.agt72.ru", path: "/api/informer/MobileAppInfo/select/json")
+            
+        case .bikeLegend:
+            return urlComponents(host: "info.agt72.ru", path: "api/informer/MobileAppInfo/getLegenda/json ")
         }
         
     }
@@ -88,9 +113,6 @@ enum APIEndpoint {
             request.httpBody = formData.data(using: .utf8)
             print(createToken())
             
-        case .sport:
-            break
-
         case .tradeObjectBy(let id):
             request.httpMethod = "POST"
             
@@ -125,8 +147,25 @@ enum APIEndpoint {
             
             request.httpBody = formData.data(using: .utf8)
             
-        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning:
+        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning, .bikeLegend,
+                .bikePath, .sport, .cityCleaningType, .cityCleaningContractor, .cityCleaningIndicator:
             request.httpMethod = "POST"
+            
+        case .digWork(let filter):
+            request.httpMethod = "POST"
+            
+            if let filter {
+                let formData = [
+                    "person" : filter.person,
+                    "zone": filter.zone,
+                    "missionType": filter.missionType,
+                    "state": filter.state,
+                    "startWorkTime": filter.startWorkTime,
+                    "endWorkTime": filter.endWorkTime
+                ].map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+                request.httpBody = formData.data(using: .utf8)
+            }
+            print(filter)
         }
 
         print("url \(request.url)")

@@ -7,59 +7,72 @@
 
 import MapKit
 import YandexMapsMobile
+import RxSwift
+import RxRelay
 
-protocol CommunalServicesViewModelDelegate: AnyObject {
-    func didFinishAddingAnnotations(_ annotations: [MKItemAnnotation])
-    func didUpdateAnnotations(_ annotations: [MKItemAnnotation])
-}
-
+@MainActor
 final class CommunalServicesViewModel {
     
     //MARK: - Properties
+    private let communalAnnotations = BehaviorSubject<[MKItemAnnotation]>(value: [])
+    private let filteredAnnotations = BehaviorSubject<[MKItemAnnotation]>(value: [])
     
-    var annotations = [MKItemAnnotation]()
-    var filteredAnnotations = [MKItemAnnotation]()
+    var communalAnnotationsObservable: Observable<[MKItemAnnotation]> {
+        communalAnnotations.asObservable()
+    }
+    var filteredAnnotationsObservable: Observable<[MKItemAnnotation]> {
+        filteredAnnotations.asObservable()
+    }
+    
+    private var isLoading = BehaviorRelay<Bool>(value: false)
+    var searchQuery = PublishSubject<String>()
+    
+    var isLoadingObservable: Observable<Bool> {
+        isLoading.asObservable()
+    }
     
     var communalServices: CommunalServices?
     var communalServicesFormatted = [CommunalServicesFormatted]()
     
-    weak var delegate: CommunalServicesViewModelDelegate?
-    
     init() {
         Task {
+            isLoading.accept(true)
             await getCommunalServices()
             formatData()
             addAnnotations()
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.didFinishAddingAnnotations(self.annotations)
-            }
-            
+            isLoading.accept(false)
         }
     }
     
     func filterCommunalServices(with filterID: Int) {
-        filteredAnnotations = annotations.filter { $0.markDescription.accidentID == filterID }
-        delegate?.didUpdateAnnotations(filteredAnnotations)
+        if let communalValue = try? communalAnnotations.value() {
+            let filtered = communalValue.filter { $0.markDescription.accidentID.rawValue == filterID }
+            filteredAnnotations
+                .onNext(filtered)
+        }
     }
     
     func resetFilterCommunalServices() {
-        filteredAnnotations = annotations
-        delegate?.didUpdateAnnotations(annotations)
+        if let communalValue = try? communalAnnotations.value() {
+            filteredAnnotations
+                .onNext(communalValue)
+        }
     }
     
-    func findAnnotationByAddressName(_ address: String) -> MKItemAnnotation? {
-        return filteredAnnotations.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
+    func findAnnotationByAddressName(_ address: String) -> Observable<MKItemAnnotation?> {
+        filteredAnnotations
+            .map { annotations in
+                annotations.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
+            }
     }
     
     func isClusterWithTheSameCoordinates(annotations: [MKItemAnnotation]) -> Bool {
-        return annotations.dropFirst().allSatisfy( { $0.coordinate.latitude == annotations.first?.coordinate.latitude } )
+        return annotations.dropFirst().allSatisfy( { $0.coordinates.latitude == annotations.first?.coordinates.latitude } )
     }
     
     //MARK: - API Call
     
-    func getCommunalServices() async {
+    private func getCommunalServices() async {
         do {
             let result = try await APIManager().getAPIContent(type: CommunalServices.self, endpoint: .communalServices)
             communalServices = result
@@ -84,7 +97,7 @@ final class CommunalServicesViewModel {
     
     private func formatData() {
         communalServices?.card.forEach { card in
-            #warning("Check for date, but it unnesessary")
+#warning("Check for date, but it unnesessary")
             guard isDateToday(formatDateString(card.datStart)) else { print("future date"); print(card.datStart); return }
             let cardID = card.numCard
             let workType = card.vidWork
@@ -101,7 +114,7 @@ final class CommunalServicesViewModel {
                 if mark.properties.listCard == form.cardID {
                     
                     let coordinates = Coordinates(latitude: mark.geometry.coordinates.first ?? 0, lontitude: mark.geometry.coordinates.last ?? 0)
-                    var mapMark = MarkDescription(accident: "", accidentID: mark.properties.accident.id, address: mark.properties.address, coordinates: coordinates)
+                    var mapMark = MarkDescription(accident: "", accidentID: MarkType(rawValue: mark.properties.accident.id) ?? .none, address: mark.properties.address, coordinates: coordinates)
                     
                     communalServices?.info.forEach { info in
                         if info.id == mark.properties.accident.id {
@@ -118,23 +131,47 @@ final class CommunalServicesViewModel {
         
     }
     
+    private func getCommunalImageAndColor(by intEnum: MarkType) -> (UIImage?, UIColor) {
+        switch intEnum {
+            
+        case .cold:
+            return (UIImage(named: "filter-1"), .blue)
+        case .hot:
+            return (UIImage(named: "filter-2"), .red)
+        case .otop:
+            return (UIImage(named: "filter-4"), .green)
+        case .electro:
+            return (UIImage(named: "filter-5"), .orange)
+        case .gaz:
+            return (UIImage(named: "filter-6"), .cyan)
+        case .none:
+            return (UIImage(systemName: "circle.fill"), .white)
+        }
+    }
+    
     //MARK: - Add annotations
     
     private func addAnnotations() {
+        var createdAnnotations = [MKItemAnnotation]()
+        
         communalServicesFormatted.forEach { card in
-            
             card.mark.forEach { mark in
+                let annotationIconAndColor = getCommunalImageAndColor(by: mark.accidentID)
+                
                 let coordinate = CLLocationCoordinate2D(latitude: mark.coordinates.latitude, longitude: mark.coordinates.lontitude)
-                let annotation = MKItemAnnotation(coordinate: coordinate, workType: card.workType,
+                let annotation = MKItemAnnotation(coordinates: coordinate, workType: card.workType,
                                                   dateStart: card.dateStart, dateFinish: card.dateFinish,
-                                                  orgTitle: card.orgTitle, markDescription: mark, markType: mark.accidentID)
-                annotations.append(annotation)
+                                                  orgTitle: card.orgTitle, markDescription: mark, markIcon: annotationIconAndColor.0 ?? .actions, markColor: annotationIconAndColor.1, index: mark.accidentID.rawValue)
+                createdAnnotations.append(annotation)
             }
-            
         }
         
-        filteredAnnotations = annotations
-        
+        communalAnnotations
+            .onNext(createdAnnotations)
+        communalAnnotations
+            .onCompleted()
+        filteredAnnotations
+            .onNext(createdAnnotations)
     }
     
 }

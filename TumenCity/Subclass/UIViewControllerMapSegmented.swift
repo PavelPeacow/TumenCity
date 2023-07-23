@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class UIViewControllerMapSegmented: UIViewController {
         
@@ -13,11 +14,13 @@ class UIViewControllerMapSegmented: UIViewController {
     private var registryView: UIView
     private var registrySearchResult: UITableViewController
     
+    var didChangeSearchController = PublishSubject<Void>()
+    
     var segmentedIndex: Int {
         segmentControl.selectedSegmentIndex
     }
     
-    private lazy var searchController: UISearchController = {
+    lazy var searchController: UISearchController = {
         let search = UISearchController()
         search.searchResultsUpdater = self
         search.hidesNavigationBarDuringPresentation = false
@@ -43,7 +46,7 @@ class UIViewControllerMapSegmented: UIViewController {
         return stackView
     }()
     
-    private lazy var segmentControl: UISegmentedControl = {
+    lazy var segmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
         segment.translatesAutoresizingMaskIntoConstraints = false
         return segment
@@ -87,6 +90,8 @@ class UIViewControllerMapSegmented: UIViewController {
         definesPresentationContext = true
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Введите адрес..."
+        didChangeSearchController
+            .onNext(())
     }
     
     private func addTarget() {

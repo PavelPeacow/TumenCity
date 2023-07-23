@@ -10,21 +10,8 @@ import SnapKit
 
 final class SportCallout: Callout {
     
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.flashScrollIndicators()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
-    lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     lazy var stackViewContent: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [stackViewTitle, stackViewContacts, stackViewEmail, stackViewAddresses])
+        let stackView = UIStackView(arrangedSubviews: [titleView, stackViewContacts, stackViewEmail, stackViewAddresses])
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .vertical
@@ -33,26 +20,8 @@ final class SportCallout: Callout {
         return stackView
     }()
     
-    lazy var stackViewTitle: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [calloutIcon, calloutTitle])
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        return stackView
-    }()
-    
-    lazy var calloutIcon: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFit
-        return image
-    }()
-    
-    lazy var calloutTitle: UILabel = {
-        let label = UILabel()
-        label.font = . systemFont(ofSize: 17, weight: .bold)
-        label.numberOfLines = 0
-        return label
+    lazy var titleView: CalloutIconWithTitleView = {
+        return CalloutIconWithTitleView()
     }()
     
     lazy var stackViewContacts: UIStackView = {
@@ -73,7 +42,7 @@ final class SportCallout: Callout {
     
     lazy var calloutContacts: UILabel = {
         let label = UILabel()
-        label.text = "Контакты:"
+        label.text = Strings.SportModule.SportCallout.contacts
         label.font = . systemFont(ofSize: 17, weight: .bold)
         return label
     }()
@@ -90,7 +59,7 @@ final class SportCallout: Callout {
     
     lazy var calloutEmail: UILabel = {
         let label = UILabel()
-        label.text = "Электронная почта:"
+        label.text = Strings.SportModule.SportCallout.email
         label.font = . systemFont(ofSize: 17, weight: .bold)
         return label
     }()
@@ -119,7 +88,7 @@ final class SportCallout: Callout {
     
     lazy var calloutAddresses: UILabel = {
         let label = UILabel()
-        label.text = "Адреса:"
+        label.text = Strings.SportModule.SportCallout.addresses
         label.font = . systemFont(ofSize: 17, weight: .bold)
         return label
     }()
@@ -127,8 +96,6 @@ final class SportCallout: Callout {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        alertBackground.addSubview(scrollView)
-        scrollView.addSubview(contentView)
         contentView.addSubview(stackViewContent)
         
         alertBackground.layer.borderColor = UIColor.green.cgColor
@@ -137,9 +104,8 @@ final class SportCallout: Callout {
     }
     
     func configure(annotation: MKSportAnnotation) {
-        calloutTitle.text = annotation.title
-        calloutIcon.image = UIImage(named: "sportIcon") ?? .add
-        
+        titleView.setTitle(with: annotation.title, icon: UIImage(named: "sportIcon") ?? .add)
+
         annotation.contacts.phones.forEach { contact in
            
             //Validation for empty contacts
@@ -168,24 +134,7 @@ final class SportCallout: Callout {
 
 extension SportCallout {
     
-    func setConstraints() {
-        alertBackground.snp.makeConstraints {
-            $0.width.equalToSuperview().inset(25)
-            $0.center.equalToSuperview()
-            $0.topMargin.greaterThanOrEqualTo(view).inset(10)
-            $0.bottomMargin.lessThanOrEqualTo(view).inset(10)
-        }
-        
-        scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.height.equalToSuperview().priority(.low)
-            $0.width.equalToSuperview()
-        }
-        
+    func setConstraints() {   
         stackViewContent.snp.makeConstraints {
             $0.top.equalTo(contentView).inset(15)
             $0.horizontalEdges.equalTo(alertBackground).inset(15)

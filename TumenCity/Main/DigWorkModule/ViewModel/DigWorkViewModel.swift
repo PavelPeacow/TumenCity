@@ -6,46 +6,77 @@
 //
 
 import MapKit
-
-protocol DigWorkViewModelDelegate: AnyObject {
-    func didFinishAddingAnnotations(_ annotations: [MKDigWorkAnnotation])
-}
+import RxSwift
+import RxRelay
 
 @MainActor
-class DigWorkViewModel {
+final class DigWorkViewModel {
     
-    var digWorkElements = [DigWorkElement]()
-    var digWorkAnnotations = [MKDigWorkAnnotation]()
+    private var digWorkElements = [DigWorkElement]()
+    private var digWorkAnnotations = BehaviorSubject<[MKDigWorkAnnotation]>(value: [])
+    var searchQuery = PublishSubject<String>()
+    private var isLoading = BehaviorRelay(value: false)
     
-    weak var delegate: DigWorkViewModelDelegate?
+    var digWorkAnnotationsObservable: Observable<[MKDigWorkAnnotation]> {
+        digWorkAnnotations.asObservable()
+    }
+    var isLoadingObservable: Observable<Bool> {
+        isLoading.asObservable()
+    }
     
     init() {
         Task {
             await getDigWorkElements()
-            addDigWorkAnnotations()
-            
-            delegate?.didFinishAddingAnnotations(digWorkAnnotations)
         }
+    }
+    
+    func findAnnotationByAddressName(_ address: String) -> Observable<MKDigWorkAnnotation?> {
+        digWorkAnnotations
+            .map { annotations in
+                annotations.first(where: { $0.address.lowercased().contains(address.lowercased()) } )
+            }
     }
     
     func isClusterWithTheSameCoordinates(annotations: [MKDigWorkAnnotation]) -> Bool {
-        annotations.dropFirst().allSatisfy( { $0.title == annotations.first?.title } ) ||
-        annotations.dropFirst().allSatisfy( { String(format: "%.4f", $0.coordinates.latitude) == String(format: "%.4f", annotations.first!.coordinates.latitude) } )
+        guard let firstAnnotation = annotations.first else {
+            return false
+        }
+        
+        let remainingAnnotations = annotations.dropFirst()
+        
+        let hasSameTitles = remainingAnnotations.allSatisfy { $0.title == firstAnnotation.title }
+        let hasSameLatitude = remainingAnnotations.allSatisfy {
+            abs($0.coordinates.latitude - firstAnnotation.coordinates.latitude) < 0.0001
+        }
+        
+        return hasSameTitles || hasSameLatitude
     }
     
-    func getDigWorkElements() async {
-        let result = await APIManager().decodeMock(type: DigWork.self, forResourse: "digWorkMock")
-        digWorkElements = result.features
+    func getDigWorkElements(filter: DigWorkFilter? = nil) async {
+        isLoading.accept(true)
+        do {
+            let result = try await APIManager().getAPIContent(type: DigWork.self, endpoint: .digWork(filter: filter))
+            digWorkElements = result.features
+            addDigWorkAnnotations()
+        } catch {
+            print(error)
+        }
+        isLoading.accept(false)
     }
     
     func addDigWorkAnnotations() {
-        digWorkElements.forEach { element in
+        let annotations = digWorkElements.map { element in
             let lat = element.geometry.coordinates.first ?? 0
             let long = element.geometry.coordinates.last ?? 0
             
-            let annotation = MKDigWorkAnnotation(title: element.info.balloonContentHeader, contentDescription: element.info.balloonContentBody, icon: UIImage(named: "digWorkPin") ?? .add, coordinates: CLLocationCoordinate2D(latitude: lat, longitude: long))
-            digWorkAnnotations.append(annotation)
+            return MKDigWorkAnnotation(title: element.info.balloonContentHeader, address: element.options.address ?? "",
+                                       contentDescription: element.info.balloonContentBody,
+                                       icon: UIImage(named: "digWorkPin") ?? .add,
+                                       coordinates: CLLocationCoordinate2D(latitude: lat, longitude: long))
         }
+        
+        digWorkAnnotations
+            .onNext(annotations)
     }
     
 }

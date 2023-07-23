@@ -14,6 +14,55 @@ enum Strings {
         static let clearFilterBtn = "Очистить"
     }
     
+    enum CommunalServicesModule {
+        
+        enum CommunalServiceCallout {
+            static let adress = "Адрес:"
+            static let organization = "Устраняющая организация:"
+            static let dateStart = "Дата начала работ:"
+            static let dateFinish = "Дата окончания работ:"
+        }
+    }
+    
+    enum CloseRoadModule {
+        
+        enum CloseRoadCallout {
+            static let description = "Описание:"
+            static let datePeriod = "Период:"
+        }
+    }
+    
+    enum UrbanImprovementsModule {
+        
+        enum UrbanImprovementsCallout {
+            static let photoTitle = "Фото:"
+            static let videoTitle = "Видео:"
+            static let stageWork = "Стадия работ:"
+            static let dateStart = "Период проведения работ:"
+            static let workType = "Вид работ:"
+        }
+    }
+    
+    enum CityCleaningModule {
+        
+        enum CityCleaningCallout {
+            static let lastTimeUpdated = "Последнее обновление данных произошло в"
+            static let council = "Управляющая организация:"
+            static let contractor = "Подрядчик:"
+            static let carType = "Тип ТС:"
+            static let iAmSpeed = "Скорость:"
+        }
+    }
+    
+    enum SportModule {
+        
+        enum SportCallout {
+            static let email = "Электронная почта:"
+            static let contacts = "Контакты:"
+            static let addresses = "Адреса:"
+        }
+    }
+    
     enum DigWorkFilterBottomSheet {
         
         static let zones = ["Все", "ВАО", "ЦАО", "ЛАО", "КАО"]
@@ -54,9 +103,9 @@ enum Strings {
         static let numDoc = "Номер договора: "
         static let dateDoc = "Срок действия договора: "
         static let area = "Округ: "
-        static let typeObject = "Тип объекта"
+        static let typeObject = "Тип объекта: "
         static let purpose = "Целевое назначение: "
-        static let period = "Период функционирования"
+        static let period = "Период функционирования: "
         
         static let parametersTitle = "Параметры и характеристики нестационарного торгового объекта"
         

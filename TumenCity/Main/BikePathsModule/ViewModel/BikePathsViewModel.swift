@@ -7,43 +7,59 @@
 
 import Foundation
 import YandexMapsMobile
-
-protocol BikePathsViewModelDelegate: AnyObject {
-    func finishAddingMapObjects(_ polygons: [YMKPolygon], _ polilines: [YMKPolyline : UIColor])
-}
+import RxSwift
+import RxRelay
 
 @MainActor
 final class BikePathsViewModel {
+    typealias MapObjectsTypealias = (polygons: [YMKPolygon], polilines: [YMKPolyline : UIColor])
     
-    var objects = [Object]()
-    var lines = [Line]()
+    private var objects = [Object]()
+    private var lines = [Line]()
     
-    var bikePoligons = [YMKPolygon]()
-    var bikePoliline = [YMKPolyline : UIColor]()
-    
+    private var bikePoligons = [YMKPolygon]()
+    private var bikePoliline = [YMKPolyline : UIColor]()
     var bikeInfoLegendItems = [BikePathInfoLegend]()
     
-    weak var delegate: BikePathsViewModelDelegate?
+    private let mapObjects = PublishSubject<MapObjectsTypealias>()
+    private let isLoading = BehaviorRelay<Bool>(value: false)
+    
+    var mapObjectsObservable: Observable<MapObjectsTypealias> {
+        mapObjects.asObservable()
+    }
+    var isLoadingObservable: Observable<Bool> {
+        isLoading.asObservable()
+    }
     
     init() {
         Task {
-            
+            isLoading.accept(true)
             await getBikePathsElements()
             await getBikeInfoLegendItems()
             formatBikeLine()
-            delegate?.finishAddingMapObjects(bikePoligons, bikePoliline)
+            isLoading.accept(false)
+            mapObjects
+                .onNext((bikePoligons, bikePoliline))
         }
     }
     
     func getBikePathsElements() async {
-        let result = await APIManager().decodeMock(type: BikePaths.self, forResourse: "bikePathMock")
-        objects = result.row.object
-        lines = result.row.line
+        do {
+            let result = try await APIManager().getAPIContent(type: BikePaths.self, endpoint: .bikePath)
+            objects = result.row.object
+            lines = result.row.line
+        } catch {
+            print(error)
+        }
     }
     
     func getBikeInfoLegendItems() async {
-        let result = await APIManager().decodeMock(type: [BikePathInfoLegend].self, forResourse: "bikePathInfoLegend")
-        bikeInfoLegendItems = result
+        do {
+            let result = try await APIManager().getAPIContent(type: [BikePathInfoLegend].self, endpoint: .bikeLegend)
+            bikeInfoLegendItems = result
+        } catch {
+            print(error)
+        }
     }
     
     func formatBikeLine() {

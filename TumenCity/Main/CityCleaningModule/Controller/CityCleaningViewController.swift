@@ -7,34 +7,80 @@
 
 import UIKit
 import YandexMapsMobile
+import RxSwift
 
 class CityCleaningViewController: UIViewController {
     
-    let viewModel = CityCleaningViewModel()
-
-    lazy var map = YandexMapMaker.makeYandexMap()
-    
+    private let viewModel = CityCleaningViewModel()
+    private let bag = DisposeBag()
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    
+    private lazy var loadingController = LoadingViewController()
+    private lazy var map = YandexMapMaker.makeYandexMap()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         print(createToken())
-        view.backgroundColor = .systemBackground
-        view.addSubview(map)
-        viewModel.delegate = self
-        YandexMapMaker.setYandexMapLayout(map: map, in: view)
+        setUpView()
+        setUpBindings()
     }
     
-
+    private func setUpView() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(map)
+        YandexMapMaker.setYandexMapLayout(map: map, in: view)
+        navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"),
+                                                  style: .done, target: self, action: #selector(didTapFilter))
+        collection.addTapListener(with: self)
+    }
+    
+    private func setUpBindings() {
+        viewModel
+            .cityCleaningAnnotationsObservable
+            .subscribe(onNext: { [unowned self] annotations in
+                collection.clear()
+                map.addAnnotations(annotations, cluster: collection)
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .isLoadingObservable
+            .subscribe(onNext: { [unowned self] isLoading in
+                if isLoading {
+                    loadingController.showLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.rightBarButtonItem?.isEnabled = false
+                    }
+                } else {
+                    loadingController.removeLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.rightBarButtonItem?.isEnabled = true
+                    }
+                }
+            })
+            .disposed(by: bag)
+    }
 
 }
 
-extension CityCleaningViewController: CityCleaningViewModelDelegate {
+extension CityCleaningViewController {
     
-    func didFinishAddingMapObjects(_ annotations: [MKCityCleaningAnnotation]) {
-        map.addAnnotations(annotations, cluster: collection)
-        collection.addTapListener(with: self)
+    @objc func didTapFilter() {
+        let vc = CityCleaningFilterViewController()
+        
+        vc
+            .selectedMachineTypesObservable
+            .subscribe(onNext: { [unowned self] selectedMachineTypes in
+                viewModel.filterAnnotationsByMachineType(type: selectedMachineTypes)
+            })
+            .disposed(by: bag)
+        
+        vc
+            .selectedContractorsObservable
+            .subscribe(onNext: { [unowned self] selectedContractors in
+                viewModel.filterAnnotationsByContractors(contractors: selectedContractors)
+            })
+            .disposed(by: bag)
+        
+        present(vc, animated: true)
     }
     
 }

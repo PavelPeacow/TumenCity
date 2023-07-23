@@ -9,13 +9,13 @@ import MapKit
 import YandexMapsMobile
 import UIKit
 
-final class MKSportAnnotation: YMKPoint {
+final class MKSportAnnotation: YMKPoint, YMKAnnotation {
     
-    var icon: UIImage
-    var title: String
-    var coordinates: CLLocationCoordinate2D
-    var contacts: Contacts
-    var addresses: [Address]
+    let icon: UIImage
+    let title: String
+    let coordinates: CLLocationCoordinate2D
+    let contacts: Contacts
+    let addresses: [Address]
     
     override var latitude: Double {
         coordinates.latitude.magnitude

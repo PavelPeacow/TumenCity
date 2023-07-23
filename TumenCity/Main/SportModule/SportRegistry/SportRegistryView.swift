@@ -6,16 +6,17 @@
 //
 
 import UIKit
-
-protocol SportRegistryViewDelegate {
-    func didGetAddress(_ address: Address)
-}
+import RxSwift
 
 final class SportRegistryView: UIView {
     
-    var sportElements = [SportElement]()
+    private let bag = DisposeBag()
+    private let selectedSportAddress = PublishSubject<Address>()
+    var selectedSportAddressObservable: Observable<Address> {
+        selectedSportAddress.asObservable()
+    }
     
-    var delegate: SportRegistryViewDelegate?
+    var sportElements = [SportElement]()
     
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -45,16 +46,11 @@ final class SportRegistryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-}
-
-extension SportRegistryView: SportRegistryTableViewCellDelegate {
-    
-    func didTapAddress(_ address: Address) {
-        delegate?.didGetAddress(address)
+    func configure(sportElements: [SportElement]) {
+        self.sportElements = sportElements
     }
     
 }
-
 
 extension SportRegistryView: UITableViewDataSource {
     
@@ -67,7 +63,14 @@ extension SportRegistryView: UITableViewDataSource {
         
         let sportElement = sportElements[indexPath.row]
         cell.configure(sportElement: sportElement)
-        cell.delegate = self
+        
+        cell
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] address in
+                selectedSportAddress
+                    .onNext(address)
+            })
+            .disposed(by: bag)
         
         return cell
     }

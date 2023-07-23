@@ -6,59 +6,84 @@
 //
 
 import Foundation
-
-protocol TradeObjectsViewModelDelegate: AnyObject {
-    func didFinishAddingAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation])
-    func didFilterAnnotations(_ tradeAnnotations: [MKTradeObjectAnnotation])
-}
+import RxSwift
+import RxRelay
 
 @MainActor
 final class TradeObjectsViewModel {
     
-    var currentVisibleTradeObjectsAnnotations = [MKTradeObjectAnnotation]()
+    var currentVisibleTradeObjectsAnnotations = BehaviorSubject<[MKTradeObjectAnnotation]>(value: [])
     
     var tradeObjects = [TradeObjectsRow]()
-    var tradeObjectsAnnotations = [MKTradeObjectAnnotation]()
+    var tradeObjectsAnnotations = BehaviorSubject<[MKTradeObjectAnnotation]>(value: [])
     
     var tradeObjectsType = [TradeObjectTypeRow]()
     var tradeObjectsPeriod = [TradeObjectPeriodRow]()
     
-    weak var delegate: TradeObjectsViewModelDelegate?
+    private var isLoading = BehaviorRelay(value: false)
+    var isLoadingObservable: Observable<Bool> {
+        isLoading.asObservable()
+    }
+    
+    var currentVisibleTradeObjectsAnnotationsObservable: Observable<[MKTradeObjectAnnotation]> {
+        currentVisibleTradeObjectsAnnotations.asObservable()
+    }
+    
+    var tradeObjectsAnnotationsObservable: Observable<[MKTradeObjectAnnotation]> {
+        tradeObjectsAnnotations.asObservable()
+    }
     
     init() {
         Task {
+            isLoading.accept(true)
             await getTradeObjects()
             await getTradeObjectsType()
             await getTradeObjectsPeriod()
             
-            tradeObjectsAnnotations = addAnnotations(tradeObjects: tradeObjects)
-            currentVisibleTradeObjectsAnnotations = tradeObjectsAnnotations
+            let annotations = addAnnotations(tradeObjects: tradeObjects)
             
-            print(createToken())
-            delegate?.didFinishAddingAnnotations(currentVisibleTradeObjectsAnnotations)
+            tradeObjectsAnnotations
+                .onNext(annotations)
+            
+            tradeObjectsAnnotations
+                .onCompleted()
+            
+            currentVisibleTradeObjectsAnnotations
+                .onNext(annotations)
+            isLoading.accept(false)
         }
     }
     
-    func filterAnnotationsByType(_ type: MKTradeObjectAnnotation.AnnotationType) {
-        switch type {
-        case .activeTrade:
-            let filteredAnnotations = currentVisibleTradeObjectsAnnotations.filter { $0.type == .activeTrade }
-            delegate?.didFilterAnnotations(filteredAnnotations)
-        case .freeTrade:
-            let filteredAnnotations = currentVisibleTradeObjectsAnnotations.filter { $0.type == .freeTrade }
-            delegate?.didFilterAnnotations(filteredAnnotations)
-        }
+    func getDefualtTradeAnnotations() -> [MKTradeObjectAnnotation] {
+        guard let values = try? tradeObjectsAnnotations.value() else { return [] }
+        return values
     }
     
-    func isTradeObjectDateGreaterThanToday(_ strDate: String?) -> Bool {
-        guard let strDate else { return false }
+    func getCurrentVisibleTradeAnnotations() -> [MKTradeObjectAnnotation] {
+        guard let values = try? currentVisibleTradeObjectsAnnotations.value() else { return [] }
+        return values
+    }
+    
+    func filterAnnotationsByType(_ type: MKTradeObjectAnnotation.AnnotationType) -> [MKTradeObjectAnnotation] {
+        guard let annotations = try? currentVisibleTradeObjectsAnnotations.value() else {
+            return []
+        }
+        return annotations.filter { $0.type == type }
+    }
+    
+    func isClusterWithTheSameCoordinates(annotations: [MKTradeObjectAnnotation]) -> Bool {
+        return annotations.dropFirst().allSatisfy( { $0.coordinates.latitude == annotations.first?.coordinates.latitude } )
+    }
+    
+    func isTradeObjectDateGreaterThanToday(_ strDate: String?, numberDocument: String?) -> Bool {
+        guard let strDate, let _ = numberDocument else { return false }
         
         let date = DateFormatter()
         date.dateFormat = "dd-MM-yyyy"
         
-        guard let tradeObjectDate = date.date(from: strDate) else { return false}
+        guard let tradeObjectDate = date.date(from: strDate) else { return false }
 
-        if tradeObjectDate >= Date() {
+        if tradeObjectDate > Date() {
             return true
         }
         
@@ -67,7 +92,7 @@ final class TradeObjectsViewModel {
     
     func getTradeObjects() async {
         do {
-            let result = await APIManager().decodeMock(type: TradeObjects.self, forResourse: "tradeObjectsMock")
+            let result = try await APIManager().getAPIContent(type: TradeObjects.self, endpoint: .tradeObjects)
             tradeObjects = result.row
         } catch {
             print(error)
@@ -119,14 +144,15 @@ final class TradeObjectsViewModel {
             var stringCoordinates = object.fields.mark
             stringCoordinates.removeFirst()
             stringCoordinates.removeLast()
-            
+            print(stringCoordinates)
             let coordinates = stringCoordinates.components(separatedBy: ",")
             let lat = Double(coordinates.first ?? "") ?? 0
             let long = Double(coordinates.last ?? "") ?? 0
             
-            let tradeType = isTradeObjectDateGreaterThanToday(object.fields.date)
+            let numDocument = object.fields.numDoc
+            let tradeType = isTradeObjectDateGreaterThanToday(object.fields.date, numberDocument: numDocument)
             
-            let annotation = MKTradeObjectAnnotation(id: object.id, coordinates: .init(latitude: lat, longitude: long), tradeType: tradeType)
+            let annotation = MKTradeObjectAnnotation(id: object.id, address: object.fields.address, coordinates: .init(latitude: lat, longitude: long), tradeType: tradeType)
             
             annotations.append(annotation)
         }

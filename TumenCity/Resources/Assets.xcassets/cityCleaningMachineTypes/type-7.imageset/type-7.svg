@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Слой_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 80 80" style="enable-background:new 0 0 80 80;" xml:space="preserve">
+<g id="автовышка">
+	<ellipse style="fill:#CCCCCC;" cx="42" cy="65" rx="38" ry="2"/>
+	<polygon style="fill:#F59C00;" points="76,24 19,41 19,34 70,20 	"/>
+	<polygon style="fill:#FDCA00;" points="14,26 14,31 70,19 72,13 	"/>
+	<rect x="48" y="30" style="fill:#333333;" width="4" height="19"/>
+	<g>
+		<path d="M66,57c1.1,0,2,0.9,2,2s-0.9,2-2,2c-1.1,0-2-0.9-2-2S64.9,57,66,57 M66,53c-3.3,0-6,2.7-6,6s2.7,6,6,6c3.3,0,6-2.7,6-6
+			S69.3,53,66,53L66,53z"/>
+		<path d="M20,57c1.1,0,2,0.9,2,2s-0.9,2-2,2c-1.1,0-2-0.9-2-2S18.9,57,20,57 M20,53c-3.3,0-6,2.7-6,6s2.7,6,6,6c3.3,0,6-2.7,6-6
+			S23.3,53,20,53L20,53z"/>
+		<path style="fill:#666666;" d="M20,57c1.1,0,2,0.9,2,2s-0.9,2-2,2s-2-0.9-2-2S18.9,57,20,57 M20,55c-2.2,0-4,1.8-4,4s1.8,4,4,4
+			s4-1.8,4-4S22.2,55,20,55L20,55z"/>
+		<path d="M34,57c1.1,0,2,0.9,2,2s-0.9,2-2,2c-1.1,0-2-0.9-2-2S32.9,57,34,57 M34,53c-3.3,0-6,2.7-6,6s2.7,6,6,6c3.3,0,6-2.7,6-6
+			S37.3,53,34,53L34,53z"/>
+		<path style="fill:#666666;" d="M34,57c1.1,0,2,0.9,2,2s-0.9,2-2,2s-2-0.9-2-2S32.9,57,34,57 M34,55c-2.2,0-4,1.8-4,4s1.8,4,4,4
+			s4-1.8,4-4S36.2,55,34,55L34,55z"/>
+		<path style="fill:#666666;" d="M66,57c1.1,0,2,0.9,2,2s-0.9,2-2,2s-2-0.9-2-2S64.9,57,66,57 M66,55c-2.2,0-4,1.8-4,4s1.8,4,4,4
+			s4-1.8,4-4S68.2,55,66,55L66,55z"/>
+	</g>
+	<path style="fill:#333333;" d="M55,61H45c-0.6,0-1-0.4-1-1v-5h12v5C56,60.6,55.6,61,55,61z"/>
+	<path style="fill:#FDCA00;" d="M78,57V43c0-1.1-0.9-2-2-2h0l-4-8v0c0-1.1-0.9-2-2-2h-8h-2c-1.1,0-2,0.9-2,2v2l-2,2v10v8h4l2-2h4h4
+		l2,2l2,2H78z M62,41v-8h8l4,8H62z"/>
+	<path style="fill:#F59C00;" d="M74,55l2,2h-2l-2-2l-2-2h2L74,55z M72,33h-2l4,8h2L72,33z M58,37l2-2v-4h0c-1.1,0-2,0.9-2,2v2l-2,2
+		v10v8h2v-8V37z"/>
+	<path style="fill:#333333;" d="M79,61h-4c-0.6,0-1-0.4-1-1v-3h5c0.6,0,1,0.4,1,1v2C80,60.6,79.6,61,79,61z"/>
+	<rect x="8" y="49" style="fill:#333333;" width="48" height="3"/>
+	<rect x="10" y="52" style="fill:#FDCA00;" width="46" height="3"/>
+	<rect x="62" y="43" style="fill:#333333;" width="4" height="2"/>
+	<polygon style="fill:#333333;" points="70,19 72,13 74,13 77,22 76,24 70,20 	"/>
+	<rect y="30" width="14" height="4"/>
+	<polygon style="fill:#333333;" points="22,39 16,39 14,49 26,49 	"/>
+	<polygon style="fill:#FDCA00;" points="21,41 15,41 14,49 24,49 	"/>
+	<polygon style="fill:#F59C00;" points="13,18 12,18 2,18 0,18 0,30 2,30 2,20 6,20 6,30 8,30 8,20 12,20 12,30 14,30 14,18 	"/>
+</g>
+</svg>

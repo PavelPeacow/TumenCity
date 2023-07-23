@@ -7,17 +7,65 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+
+enum DigWorkZones: String, CaseIterable {
+    case all = "Все"
+    case vao = "ВАО"
+    case cao = "ЦАО"
+    case lao = "ЛАО"
+    case kao = "КАО"
+}
+
+enum DigWorkTypesOfWork: String, CaseIterable {
+    case all = "Все"
+    case reconstruction = "Реконструкция, перенос, переустройство, ремонт ИК"
+    case incidents = "Аварии, инцидента на ИК"
+    case techAdding = "Технологическое присоединение к сетям ИТ"
+    case adsConstructions = "Установка/эксплуатация рекламных конструкций"
+}
+
+enum DigWorkStatus: String, CaseIterable {
+    case all = "Все"
+    case notificationSend = "Подано уведомление"
+    case registered = "Зарегистрировано"
+    case refuse = "Отказано"
+    case awaitWork = "Ожидание работы"
+    case inWork = "В работе"
+    case recovery = "Восстановление"
+    case warranty = "Гарантийный период"
+    case completeWork = "Завершенная работа"
+    case expertise = "Экспертиза"
+    case awaitSummer = "Ожидание восстановления в летнем варианте"
+    case error = "Ошибка"
+}
 
 final class DigWorkFilterBottomSheet: CustomBottomSheet {
     
-    let zones = Strings.DigWorkFilterBottomSheet.zones
-    let typeOfWork = Strings.DigWorkFilterBottomSheet.typeOfWork
-    let status = Strings.DigWorkFilterBottomSheet.status
+    private lazy var zones = DigWorkZones.allCases
+    private lazy var typeOfWork = DigWorkTypesOfWork.allCases
+    private lazy var status = DigWorkStatus.allCases
+    
+//    lazy var selectedPerson = ""
+    private lazy var selectedZone = zones[0]
+    private lazy var selectedTypeOfWork = typeOfWork[0]
+    private lazy var selectedStatus = status[0]
+    private lazy var selectedDateAfter = ""
+    private lazy var selectedDateBefore = ""
+    
+    private let selectedFilter = PublishSubject<DigWorkFilter>()
+    private let didDismissed = PublishSubject<Void>()
+    
+    var selectedFilterObservable: Observable<DigWorkFilter> {
+        selectedFilter.asObservable()
+    }
+    var didDismissedObservable: Observable<Void> {
+        didDismissed.asObservable()
+    }
     
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.keyboardDismissMode = .onDrag
         return scrollView
     }()
     
@@ -32,6 +80,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
                                                        statusFilter, dateAfterFilter, dateBeforeFilter,
                                                        submitFilterBtn, clearFilterBtn])
         stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -46,7 +95,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     lazy var zoneFilter: FilterView = {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.zoneFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
-        filter.textField.text = zones.first
+        filter.textField.text = zones[0].rawValue
         filter.textField.inputView = filterTypePickerView
         filter.textField.delegate = self
         return filter
@@ -56,7 +105,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.typeOfWorkFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterTypePickerView
-        filter.textField.text = typeOfWork.first
+        filter.textField.text = typeOfWork[0].rawValue
         filter.textField.delegate = self
         return filter
     }()
@@ -65,7 +114,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.statusFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterTypePickerView
-        filter.textField.text = status.first
+        filter.textField.text = status[0].rawValue
         filter.textField.delegate = self
         return filter
     }()
@@ -73,14 +122,14 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     lazy var dateAfterFilter: FilterView = {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateAfterFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
-        filter.textField.inputView = filterDatePickerView
+        filter.textField.inputView = filterDatePickerViewAfter
         return filter
     }()
     
     lazy var dateBeforeFilter: FilterView = {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateBeforeFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
-        filter.textField.inputView = filterDatePickerView
+        filter.textField.inputView = filterDatePickerViewBefore
         return filter
     }()
     
@@ -91,10 +140,27 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         return picker
     }()
     
-    lazy var filterDatePickerView: UIDatePicker = {
-        let picker = UIDatePicker()
+    lazy var filterDatePickerViewAfter: UIDatePicker = {
+        let screenWidth = UIScreen.main.bounds.width
+        let picker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
         picker.addTarget(self, action: #selector(didSelectDate), for: .valueChanged)
         picker.datePickerMode = .date
+        picker.calendar = .current
+        picker.maximumDate = Date()
+        picker.preferredDatePickerStyle = .wheels
+        picker.sizeToFit()
+        return picker
+    }()
+    
+    lazy var filterDatePickerViewBefore: UIDatePicker = {
+        let screenWidth = UIScreen.main.bounds.width
+        let picker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
+        picker.addTarget(self, action: #selector(didSelectDate), for: .valueChanged)
+        picker.datePickerMode = .date
+        picker.calendar = .current
+        picker.minimumDate = Date()
+        picker.preferredDatePickerStyle = .wheels
+        picker.sizeToFit()
         return picker
     }()
     
@@ -139,32 +205,115 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         }
         
         contentStackView.layoutIfNeeded()
-        var preferredSize = CGSize(width: view.bounds.width,
-                                   height: contentStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height + topInset * 2)
-        
-        if preferredSize.height > UIScreen().bounds.height / 2 {
-            preferredSize = CGSize(width: view.bounds.width, height: view.bounds.height / 2)
-        }
-        
-        preferredContentSize = preferredSize
-        print(preferredContentSize)
+        setViewsForCalculatingPrefferedSize(scrollView: scrollView, fittingView: contentStackView)
+        setPrefferdSize()
     }
     
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date)
+    }
+    
+    private func formatModel() -> DigWorkFilter {
+        let person = personFilter.textField.text ?? ""
+        let formatedZone = formatZoneModel()
+        let formatedTypeOfWork = formatTypeOfWorkModel()
+        let formatedStatus = formatStatusModel()
+        let startDate = selectedDateAfter
+        let endDate = selectedDateBefore
+        
+        return DigWorkFilter(person: person, zone: formatedZone, missionType: formatedTypeOfWork,
+                             state: formatedStatus, startWorkTime: startDate, endWorkTime: endDate)
+    }
+    
+    private func formatZoneModel() -> String {
+        switch selectedZone {
+            
+        case .all:
+            ""
+        case .vao:
+            "3067f20c-800f-46ca-9316-911a39f716c7"
+        case .cao:
+            "768eac72-1dbd-4cad-9d6d-fccdd0a5809a"
+        case .lao:
+            "c9e821e3-eb5a-4585-83cb-b67661bca8bb"
+        case .kao:
+            "eb21086b-b5fa-462b-9e4a-6a554cf01d5c"
+        }
+    }
+    
+    private func formatTypeOfWorkModel() -> String {
+        switch selectedTypeOfWork {
+
+        case .all:
+            ""
+        case .reconstruction:
+            "RECONSTRUCTION"
+        case .incidents:
+            "LIQUIDATION_ACCIDENT"
+        case .techAdding:
+            "TECHNOLOGICAL_CONNECTION"
+        case .adsConstructions:
+            "ADVERTISING_STRUCTURE"
+        }
+    }
+    
+    private func formatStatusModel() -> String {
+        switch selectedStatus {
+            
+        case .all:
+            ""
+        case .notificationSend:
+            "NOTIFICATION_FILED"
+        case .registered:
+            "REGISTERED"
+        case .refuse:
+            "REFUSAL"
+        case .awaitWork:
+            "WAITING_WORK"
+        case .inWork:
+            "WAITING_WORK"
+        case .recovery:
+            "RECOVERY"
+        case .warranty:
+            "WARRANTY_PERIOD"
+        case .completeWork:
+            "COMPLETED_WORK"
+        case .expertise:
+            "EXPERTISE"
+        case .awaitSummer:
+            "WAITING_SUMMER_TYPE_RECOVERY"
+        case .error:
+            "ERROR"
+        }
+    }
 }
 
 #warning("Do filter logic")
 extension DigWorkFilterBottomSheet {
     
     @objc func didSelectDate(_ datePicker: UIDatePicker) {
-        
+        if dateAfterFilter.textField.inputView == datePicker {
+            dateAfterFilter.textField.text = formatDate(datePicker.date)
+            selectedDateAfter = dateAfterFilter.textField.text ?? ""
+        } else if dateBeforeFilter.textField.inputView == datePicker {
+            dateBeforeFilter.textField.text = formatDate(datePicker.date)
+            selectedDateBefore = dateBeforeFilter.textField.text ?? ""
+        }
     }
     
     @objc func didTapSubmitBtn() {
+        let model = formatModel()
+        selectedFilter
+            .onNext(model)
         dismiss(animated: true)
     }
     
     @objc func didTapClearBtn() {
-        view.endEditing(true)
+        didDismissed
+            .onNext(())
+        dismiss(animated: true)
     }
     
 }
@@ -174,6 +323,11 @@ extension DigWorkFilterBottomSheet: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         filterTypePickerView.reloadAllComponents()
         filterTypePickerView.selectRow(0, inComponent: 0, animated: false)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }
@@ -197,11 +351,11 @@ extension DigWorkFilterBottomSheet: UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if zoneFilter.textField.isFirstResponder {
-            return zones[row]
+            return zones[row].rawValue
         } else if typeOfWorkFilter.textField.isFirstResponder {
-            return typeOfWork[row]
+            return typeOfWork[row].rawValue
         } else if statusFilter.textField.isFirstResponder {
-            return status[row]
+            return status[row].rawValue
         }
         return nil
     }
@@ -212,11 +366,14 @@ extension DigWorkFilterBottomSheet: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if zoneFilter.textField.isFirstResponder {
-            zoneFilter.textField.text = zones[row]
+            zoneFilter.textField.text = zones[row].rawValue
+            selectedZone = zones[row]
         } else if typeOfWorkFilter.textField.isFirstResponder {
-            typeOfWorkFilter.textField.text = typeOfWork[row]
+            typeOfWorkFilter.textField.text = typeOfWork[row].rawValue
+            selectedTypeOfWork = typeOfWork[row]
         } else if statusFilter.textField.isFirstResponder {
-            statusFilter.textField.text = status[row]
+            statusFilter.textField.text = status[row].rawValue
+            selectedStatus = status[row]
         }
         view.endEditing(true)
     }

@@ -7,13 +7,12 @@
 
 import Foundation
 import YandexMapsMobile
-
-protocol UrbanImprovementsViewModelDelegate: AnyObject {
-    func didFinishAddingMapObjects(_ pointsAnnotations: [MKUrbanAnnotation], _ polygons: [(YMKPolygon, UrbanPolygon)])
-}
+import RxSwift
+import RxRelay
 
 @MainActor
 final class UrbanImprovementsViewModel {
+    typealias MapObjectsTypealias = (pointsAnnotations: [MKUrbanAnnotation], polygons: [(YMKPolygon, UrbanPolygon)])
     
     var filters = [Filter]()
     var filterItems = [UrbanFilter]()
@@ -24,16 +23,27 @@ final class UrbanImprovementsViewModel {
     var urbanAnnotations = [MKUrbanAnnotation]()
     var polygonsFormatted = [(YMKPolygon, UrbanPolygon)]()
     
-    weak var delegate: UrbanImprovementsViewModelDelegate?
+    private let isLoading = BehaviorRelay<Bool>(value: false)
+    private let mapObjects = PublishSubject<MapObjectsTypealias>()
+    
+    var isLoadingObservable: Observable<Bool> {
+        isLoading.asObservable()
+    }
+    var mapObjectsObservable: Observable<MapObjectsTypealias> {
+        mapObjects.asObservable()
+    }
     
     init() {
         Task {
+            isLoading.accept(true)
             await getUrbanImprovements()
             createPoints()
             createPolygons()
             formatFilter()
-            
-            delegate?.didFinishAddingMapObjects(urbanAnnotations, polygonsFormatted)
+            isLoading.accept(false)
+
+            mapObjects
+                .onNext((urbanAnnotations, polygonsFormatted))
         }
     }
     
@@ -52,7 +62,7 @@ final class UrbanImprovementsViewModel {
     
     func getUrbanImprovements() async {
         do {
-            let result = try await APIManager().decodeMock(type: UrbanImprovements.self, forResourse: "urbanMock")
+            let result = try await APIManager().getAPIContent(type: UrbanImprovements.self, endpoint: .urbanImprovements)
             filters = result.filter
             pointsFeature = result.geo.points.features
             polygonsFeature = result.geo.polygons.features

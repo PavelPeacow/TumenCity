@@ -38,7 +38,6 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     lazy var scrollViewMain: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.keyboardDismissMode = .onDrag
         return scrollView
     }()
     
@@ -67,6 +66,7 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [addressFilter, purposeFilter, objectTypeFilterBtn, objectTypeCheckBoxesScrollable, periodFilterBtn, periodCheckBoxesScrollable, clearFilterBtn, submitFilterBtn, clearFilterBtn])
         stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
         stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -120,7 +120,6 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
         super.viewDidLoad()
         
         setCallbacks()
-        registerKeyboardNotification()
         
         view.backgroundColor = .systemBackground
         
@@ -147,15 +146,15 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
         }
         
         objectTypeCheckBoxesScrollable.snp.makeConstraints {
-            $0.height.equalTo(100)
+            $0.height.equalTo(150)
         }
         
         periodCheckBoxesScrollable.snp.makeConstraints {
-            $0.height.equalTo(100)
+            $0.height.equalTo(150)
         }
         
-        preferredContentSize = CGSize(width: view.bounds.width,
-                                      height: view.bounds.height / 1.5)
+        setViewsForCalculatingPrefferedSize(scrollView: scrollViewMain, fittingView: contentStackView)
+        setPrefferdSize()
     }
     
     private func setCheckBoxes() {
@@ -172,6 +171,7 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     
     private func hideScrollableCheckBoxList(_ checkBoxList: ScrollableCheckBoxesList, isHidden: Bool) {
         isHidden ? checkBoxList.hideScrollableCheckBoxesList(true) : checkBoxList.hideScrollableCheckBoxesList(false)
+        isHidden ? changeBottomSheetToDefaultHeight() : changeBottomSheetToCoverAllScreen()
     }
     
     private func setCallbacks() {
@@ -271,33 +271,6 @@ extension TradeObjectsFilterBottomSheet {
     
 }
 
-//MARK: - NotificationCenter
-
-extension TradeObjectsFilterBottomSheet {
-    
-    private func registerKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        let keyboardHeight = keyboardSize.height
-        
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
-        scrollViewMain.contentInset = contentInsets
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollViewMain.contentInset = contentInsets
-    }
-    
-}
-
 extension TradeObjectsFilterBottomSheet: ScrollableCheckBoxesListDelegate {
     
     func didTapSelectAllCheckBoxesBtn(with type: ScrollableCheckBoxesListType) {
@@ -311,5 +284,10 @@ extension TradeObjectsFilterBottomSheet: ScrollableCheckBoxesListDelegate {
 }
 
 extension TradeObjectsFilterBottomSheet: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     
 }

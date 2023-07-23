@@ -10,7 +10,7 @@ import UIKit
 final class CloseRoadCallout: Callout {
     
     lazy var stackViewContent: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [stackViewTitle, calloutDescription, calloutDate])
+        let stackView = UIStackView(arrangedSubviews: [titleView, calloutDescription, calloutDate])
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .vertical
@@ -19,54 +19,34 @@ final class CloseRoadCallout: Callout {
         return stackView
     }()
     
-    lazy var stackViewTitle: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [calloutIcon, calloutTitle])
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        return stackView
+    lazy var titleView: CalloutIconWithTitleView = {
+        return CalloutIconWithTitleView()
     }()
     
-    lazy var calloutIcon: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFit
-        return image
+    lazy var calloutDescription: CalloutLabelView = {
+        return CalloutLabelView()
     }()
     
-    lazy var calloutTitle: UILabel = {
-        let label = UILabel()
-        label.font = . systemFont(ofSize: 17, weight: .bold)
-        return label
-    }()
-    
-    lazy var calloutDescription: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    lazy var calloutDate: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
+    lazy var calloutDate: CalloutLabelView = {
+        return CalloutLabelView()
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(stackViewContent)
+        contentView.addSubview(stackViewContent)
         alertBackground.layer.borderColor = UIColor.red.cgColor
         
         setConstraints()
     }
     
     func configure(annotation: MKCloseRoadAnnotation) {
-        calloutIcon.image = annotation.icon ?? .add
-        calloutTitle.text = annotation.title
+        titleView.setTitle(with: annotation.title, icon: annotation.icon ?? .add)
         
-        calloutDescription.text = "Описание:\n\(annotation.itemDescription)"
-        calloutDate.text = "Период:\nc \(annotation.dateStart) по \(annotation.dateEnd)"
+        calloutDescription.setLabelWithDescription(Strings.CloseRoadModule.CloseRoadCallout.description,
+                                                   label: annotation.itemDescription)
+        calloutDate.setLabelWithDescription(Strings.CloseRoadModule.CloseRoadCallout.datePeriod,
+                                            label: annotation.dateEnd)
     }
     
 }
@@ -74,16 +54,11 @@ final class CloseRoadCallout: Callout {
 extension CloseRoadCallout {
     
     func setConstraints() {
-        alertBackground.snp.makeConstraints {
-            $0.width.equalTo(200)
-            $0.top.bottom.equalTo(stackViewContent).inset(-15)
-        }
-        
         stackViewContent.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.leading.trailing.equalTo(alertBackground).inset(15)
+            $0.top.equalTo(contentView).inset(15)
+            $0.horizontalEdges.equalTo(alertBackground).inset(15)
+            $0.bottom.equalTo(contentView).inset(15)
         }
-        
     }
     
 }

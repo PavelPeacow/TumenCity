@@ -44,7 +44,7 @@ final class UrbanImprovementsCallout: Callout {
     var imageURLs = [UrbanImprovementsImg]()
     
     lazy var stackViewContent: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [stackViewTitle])
+        let stackView = UIStackView(arrangedSubviews: [titleView])
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .vertical
@@ -53,26 +53,8 @@ final class UrbanImprovementsCallout: Callout {
         return stackView
     }()
     
-    lazy var stackViewTitle: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [calloutIcon, calloutTitle])
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        return stackView
-    }()
-    
-    lazy var calloutIcon: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFit
-        return image
-    }()
-    
-    lazy var calloutTitle: UILabel = {
-        let label = UILabel()
-        label.font = . systemFont(ofSize: 17, weight: .bold)
-        label.numberOfLines = 0
-        return label
+    lazy var titleView: CalloutIconWithTitleView = {
+        return CalloutIconWithTitleView()
     }()
     
     lazy var collectionViewTitle: UILabel = {
@@ -109,7 +91,7 @@ final class UrbanImprovementsCallout: Callout {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        alertBackground.addSubview(stackViewContent)
+        contentView.addSubview(stackViewContent)
         
         calloutTapGesture.delegate = self
         
@@ -117,12 +99,17 @@ final class UrbanImprovementsCallout: Callout {
     }
     
     func configure(urbanDetailInfo: UrbanImprovementsDetailInfo) {
-        calloutIcon.image = UIImage(named: "blackIcon")
-        calloutTitle.text = urbanDetailInfo.fields.title
+        titleView.setTitle(with: urbanDetailInfo.fields.title ?? "", icon: UIImage(named: "blackIcon") ?? .actions)
         
-        configureSportLabel(with: urbanDetailInfo.fields.stageWork?.value, description: "Стадия работ: ")
-        configureSportLabel(with: urbanDetailInfo.fields.dateStart, description: "Период проведения работ: ")
-        configureSportLabel(with: urbanDetailInfo.fields.vidWork, description: "Вид работ: ")
+        [(urbanDetailInfo.fields.stageWork?.value, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.stageWork),
+         (urbanDetailInfo.fields.dateStart, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.dateStart),
+         (urbanDetailInfo.fields.vidWork, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.workType)].forEach { (text, description) in
+            if let text {
+                let label = CalloutLabelView()
+                label.setLabelWithDescription(description, label: text)
+                stackViewContent.addArrangedSubview(label)
+            }
+        }
         
         if let imgURLs = urbanDetailInfo.fields.img {
             imageURLs = imgURLs
@@ -148,14 +135,6 @@ final class UrbanImprovementsCallout: Callout {
         }
         
     }
-    
-    private func configureSportLabel(with text: String?, description: String) {
-        if let text = text {
-            let label = CalloutLabelView(label: description + text)
-            stackViewContent.addArrangedSubview(label)
-        }
-    }
-    
 }
 
 extension UrbanImprovementsCallout: UIGestureRecognizerDelegate {
@@ -200,16 +179,10 @@ extension UrbanImprovementsCallout: UICollectionViewDelegate {
 extension UrbanImprovementsCallout {
     
     func setConstaints() {
-        alertBackground.snp.makeConstraints {
-            $0.topMargin.greaterThanOrEqualToSuperview().inset(10)
-            $0.bottomMargin.lessThanOrEqualToSuperview().inset(10)
-            $0.width.equalToSuperview().inset(10)
-            $0.center.equalToSuperview()
-        }
-        
         stackViewContent.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(15)
-            $0.leading.trailing.equalToSuperview().inset(15)
+            $0.top.equalTo(contentView).inset(15)
+            $0.horizontalEdges.equalTo(alertBackground).inset(15)
+            $0.bottom.equalTo(contentView).inset(15)
         }
     }
     

@@ -7,51 +7,87 @@
 
 import UIKit
 import YandexMapsMobile
+import RxSwift
+import RxCocoa
 
-class CloseRoadsViewController: UIViewController {
+final class CloseRoadsViewController: UIViewController {
     
-    let viewModel = CloseRoadsViewModel()
+    private let viewModel = CloseRoadsViewModel()
+    private let bag = DisposeBag()
     
-    lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    
+    private lazy var loadingView = LoadingViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setUpView()
+        setUpBindings()
+    }
+    
+    private func setUpView() {
         view.backgroundColor = .systemBackground
-        
         view.addSubview(map)
-
-        setDelegates()
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
     }
     
-    func setDelegates() {
-        viewModel.delegate = self
-    }
-    
-}
-
-extension CloseRoadsViewController: CloseRoadsViewModelDelegate {
-    
-    func didAddObjectToMap(roadAnnotations: [MKCloseRoadAnnotation], roadPolygons: [YMKPolygon]) {
-        roadPolygons.forEach { polygon in
-            let polygonMapObject = map.mapWindow.map.mapObjects.addPolygon(with: polygon)
-            polygonMapObject.fillColor = UIColor.red.withAlphaComponent(0.16)
-            polygonMapObject.strokeWidth = 3.0
-            polygonMapObject.strokeColor = .red
-        }
+    private func setUpBindings() {
+        viewModel
+            .isLoadingObserable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] in
+                if $0 {
+                    loadingView.showLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = true
+                    }
+                } else {
+                    loadingView.removeLoadingViewControllerIn(self) { [unowned self] in
+                        navigationItem.searchController?.searchBar.isHidden = true
+                    }
+                }
+            })
+            .disposed(by: bag)
         
-        map.addAnnotations(roadAnnotations, cluster: collection)
-        map.mapWindow.map.mapObjects.addTapListener(with: self)
+        viewModel
+            .closeRoadsObserable
+            .subscribe(
+                onNext: { [unowned self] objects in
+                    self.viewModel.createCloseRoadAnnotation(objects: objects)
+                },
+                onError: { [unowned self] in
+                    self.showErrorAlert(title: "Ошибка", description: $0.localizedDescription)
+                }
+            )
+            .disposed(by: bag)
+        
+        viewModel
+            .roadAnnotationsObserable
+            .subscribe(
+                onNext: { [unowned self] roadAnnotations in
+                self.map.addAnnotations(roadAnnotations, cluster: self.collection)
+            },
+            onCompleted: { [unowned self] in
+                self.map.mapWindow.map.mapObjects.addTapListener(with: self)
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .roadPolygonsObserable
+            .subscribe(onNext: { [unowned self] roadPolygons in
+                roadPolygons.forEach { polygon in
+                    self.map.addPolygon(polygon, color: .red.withAlphaComponent(0.15))
+                }
+            })
+            .disposed(by: bag)
     }
-    
     
 }
 
 extension CloseRoadsViewController: YMKClusterListener {
     
+#warning("Probably contains annotaions with the same coordinates")
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKCloseRoadAnnotation }
         cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .red)

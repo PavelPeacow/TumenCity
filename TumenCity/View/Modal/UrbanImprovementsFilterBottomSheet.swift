@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class UrbanImprovementsFilterCell: UITableViewCell {
     
@@ -79,18 +80,20 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
     
 }
 
-protocol UrbanImprovementsFilterBottomSheetDelegate: AnyObject {
-    func didSelectFilter(_ filterID: Int)
-    func didTapDiscardFilterBtn()
-}
-
 final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
     
-    var filters = [UrbanFilter]()
+    private var filters = [UrbanFilter]()
+    private var currentActiveFilterID: Int?
     
-    weak var delegate: UrbanImprovementsFilterBottomSheetDelegate?
+    private let selectedFilter = PublishSubject<Int>()
+    private let didDiscardFilter = PublishSubject<Void>()
     
-    var currentActiveFilterID: Int?
+    var selectedFilterObservable: Observable<Int> {
+        selectedFilter.asObservable()
+    }
+    var didDiscardFilterObservable: Observable<Void> {
+        didDiscardFilter.asObservable()
+    }
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [discardFilterBtn, tableView])
@@ -120,19 +123,14 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setUpView()
+        setUpConstaints()
+    }
+    
+    private func setUpView() {
         view.addSubview(stackView)
-        
         view.backgroundColor = .systemBackground
-        
-        stackView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(25)
-            $0.top.equalToSuperview().inset(topInset)
-            $0.height.equalToSuperview().inset(topInset)
-        }
-        
         preferredContentSize = CGSize(width: view.bounds.width, height: view.bounds.height / 2)
-        
     }
     
     func configure(filters: [UrbanFilter], currentActiveFilterID: Int?) {
@@ -146,10 +144,23 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
     
 }
 
+private extension UrbanImprovementsFilterBottomSheet {
+    
+    func setUpConstaints() {
+        stackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(25)
+            $0.top.equalToSuperview().inset(topInset)
+            $0.height.equalToSuperview().inset(topInset)
+        }
+    }
+    
+}
+
 extension UrbanImprovementsFilterBottomSheet {
     
     @objc func didTapDiscardBtn() {
-        delegate?.didTapDiscardFilterBtn()
+        didDiscardFilter
+            .onNext(())
         dismiss(animated: true)
     }
     
@@ -181,8 +192,8 @@ extension UrbanImprovementsFilterBottomSheet: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let filterID = filters[indexPath.row].filterID
-        
-        delegate?.didSelectFilter(filterID)
+        selectedFilter
+            .onNext(filterID)
         
         dismiss(animated: true)
     }

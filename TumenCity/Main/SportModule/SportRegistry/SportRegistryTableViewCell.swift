@@ -6,20 +6,18 @@
 //
 
 import UIKit
-
-import UIKit
-
-protocol SportRegistryTableViewCellDelegate {
-    func didTapAddress(_ address: Address)
-}
+import RxSwift
 
 final class SportRegistryTableViewCell: UITableViewCell {
     
     static let identifier = "SportRegistryTableViewCell"
     
-    var delegate: SportRegistryTableViewCellDelegate?
-    
     var addresses = [Address]()
+    
+    private let selectedAddress = PublishSubject<Address>()
+    var selectedAddressObservable: Observable<Address> {
+        selectedAddress
+    }
     
     lazy var containerView: UIView = {
         let view = UIView()
@@ -181,7 +179,8 @@ extension SportRegistryTableViewCell {
         guard let addressTitle = (sender.view as? UILabel)?.text else { return }
         
         if let address = addresses.first(where: { $0.title == addressTitle }) {
-            delegate?.didTapAddress(address)
+            selectedAddress
+                .onNext(address)
         }
     }
     

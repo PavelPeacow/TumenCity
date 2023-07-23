@@ -32,39 +32,30 @@ final class CommunalServiceCallout: Callout {
     lazy var address: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 17, weight: .bold)
         return label
     }()
     
-    lazy var accident: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
+    lazy var accident: CalloutLabelView = {
+        return CalloutLabelView()
     }()
     
-    lazy var organization: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
+    lazy var organization: CalloutLabelView = {
+        return CalloutLabelView()
     }()
     
-    lazy var dateStart: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
+    lazy var dateStart: CalloutLabelView = {
+        return CalloutLabelView()
     }()
     
-    lazy var dateFinish: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
+    lazy var dateFinish: CalloutLabelView = {
+        return CalloutLabelView()
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        view.addSubview(stackView)
-        alertBackground.addSubview(stackView)
+        contentView.addSubview(stackView)
         
         setConstraints()
     }
@@ -72,16 +63,20 @@ final class CommunalServiceCallout: Callout {
     func configure(annotations: [MKItemAnnotation]) {
         guard let annotation = annotations.first else { return }
         
-        address.text = "Адрес: \(annotation.markDescription.address)"
-        organization.text = "Устраняющая организация:\n\(annotation.orgTitle)"
-        dateStart.text = "Дата начала работ:\n\(annotation.dateStart)"
-        dateFinish.text = "Дата окончания работ:\n\(annotation.dateFinish)"
+        address.text = "\(Strings.CommunalServicesModule.CommunalServiceCallout.adress) \(annotation.markDescription.address)"
+        
+        organization.setLabelWithDescription(Strings.CommunalServicesModule.CommunalServiceCallout.organization,
+                                             label: annotation.orgTitle)
+        dateStart.setLabelWithDescription(Strings.CommunalServicesModule.CommunalServiceCallout.dateStart,
+                                          label: annotation.dateStart)
+        dateFinish.setLabelWithDescription(Strings.CommunalServicesModule.CommunalServiceCallout.dateFinish,
+                                           label: annotation.dateFinish)
         
         let colors = annotations.uniques(by: \.color).map { $0.color }
         
         for annotation in annotations.sorted(by: { $0.index > $1.index }) {
             
-            let image = annotation.image
+            let image = annotation.icon
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFit
             
@@ -116,14 +111,10 @@ final class CommunalServiceCallout: Callout {
 extension CommunalServiceCallout {
     
     func setConstraints() {
-        alertBackground.snp.makeConstraints {
-            $0.top.bottom.equalTo(stackView).inset(-15)
-            $0.width.equalTo(280)
-        }
-        
         stackView.snp.makeConstraints {
-            $0.center.equalTo(view)
-            $0.leading.trailing.equalTo(alertBackground).inset(15)
+            $0.top.equalTo(contentView).inset(15)
+            $0.horizontalEdges.equalTo(alertBackground).inset(15)
+            $0.bottom.equalTo(contentView).inset(15)
         }
     }
     

@@ -6,17 +6,23 @@
 //
 
 import UIKit
-
-protocol RegistryCardTableViewCellDelegate {
-    func updateTableWhenShowAddresses()
-    func didTapAddress(_ mark: MarkDescription)
-}
+import RxSwift
 
 final class RegistryCardTableViewCell: UITableViewCell {
     
     static let identifier = "RegistryCardTableViewCell"
     
     var addresses = [MarkDescription]()
+    
+    private let selectedAddress = PublishSubject<MarkDescription>()
+    private let updateTableWhenShowAddresses = PublishSubject<Void>()
+    
+    var selectedAddressObservable: Observable<MarkDescription> {
+        selectedAddress.asObservable()
+    }
+    var updateTableWhenShowAddressesObservable: Observable<Void> {
+        updateTableWhenShowAddresses.asObservable()
+    }
     
     var isTapOnAddresses = false {
         didSet {
@@ -31,8 +37,6 @@ final class RegistryCardTableViewCell: UITableViewCell {
             }
         }
     }
-    
-    var delegate: RegistryCardTableViewCellDelegate?
     
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -199,7 +203,7 @@ final class RegistryCardTableViewCell: UITableViewCell {
         
         showAddresses.text = "Отключено адресов: \(addresses.count)"
         
-        let accidentsID = Set(communalService.mark.map { $0.accidentID }).sorted()
+        let accidentsID = Set(communalService.mark.map { $0.accidentID.rawValue }).sorted()
 
         for id in accidentsID {
             print(communalService.cardID)
@@ -231,7 +235,8 @@ extension RegistryCardTableViewCell {
     @objc func didTapShowAdresses() {
         isTapOnAddresses.toggle()
         
-        delegate?.updateTableWhenShowAddresses()
+        updateTableWhenShowAddresses
+            .onNext(())
     }
     
 }
@@ -258,7 +263,8 @@ extension RegistryCardTableViewCell: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = addresses[indexPath.row]
-        delegate?.didTapAddress(item)
+        selectedAddress
+            .onNext(item)
     }
     
 }

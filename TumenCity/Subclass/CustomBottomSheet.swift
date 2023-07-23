@@ -11,7 +11,10 @@ import SnapKit
 class CustomBottomSheet: UIViewController {
     
     private var hasSetPointOrigin = false
-    private var pointOrigin: CGPoint?
+    var pointOrigin: CGPoint?
+    var scrollViewOfSheet: UIScrollView?
+    var fittingViewOfSheet: UIView?
+    var isKeyboardActive = false
     
     var topInset: CGFloat {
         40
@@ -38,8 +41,13 @@ class CustomBottomSheet: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),
+                                               name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
-              view.addGestureRecognizer(panGesture)
+        view.addGestureRecognizer(panGesture)
         
         view.addSubview(roundedElement)
         
@@ -63,29 +71,95 @@ class CustomBottomSheet: UIViewController {
         transitioningDelegate = self
     }
     
+    func setViewsForCalculatingPrefferedSize(scrollView: UIScrollView? = nil, fittingView: UIView? = nil) {
+        self.scrollViewOfSheet = scrollView
+        self.fittingViewOfSheet = fittingView
+    }
+    
+    func changeBottomSheetToCoverAllScreen() {
+        view.frame = presentationController?.containerView?.bounds ?? .zero
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func changeBottomSheetToDefaultHeight() {
+        guard !isKeyboardActive else { return }
+        setPrefferdSize()
+        view.frame = CGRect(origin: pointOrigin!, size: preferredContentSize)
+    }
+    
+}
+
+extension CustomBottomSheet {
+    
+    func setPrefferdSize() {
+        guard let fittingViewOfSheet else {
+            preferredContentSize = CGSize(width: view.bounds.width,
+                                          height: view.bounds.height / 1.5)
+            return
+        }
+        var preferredSize = CGSize(width: view.bounds.width,
+                                   height: fittingViewOfSheet.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height + topInset * 2)
+        
+        if preferredSize.height > UIScreen().bounds.height / 2 {
+            preferredSize = CGSize(width: view.bounds.width, height: view.bounds.height / 2)
+        }
+        preferredContentSize = preferredSize
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+            return
+        }
+        isKeyboardActive = true
+        view.frame = presentationController?.containerView?.bounds ?? .zero
+        if let scrollViewOfSheet {
+            scrollViewOfSheet.contentInset.bottom = keyboardFrame.height + 10
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        isKeyboardActive = false
+        setPrefferdSize()
+        view.frame = CGRect(origin: pointOrigin!, size: preferredContentSize)
+        if let scrollViewOfSheet {
+            scrollViewOfSheet.contentInset.bottom = 0
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
 }
 
 private extension CustomBottomSheet {
-    
+#warning("currently remove draggin because of keyboard appearing")
     @objc private func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
-        guard let pointOrigin = self.pointOrigin else { return }
-        
-        let translation = sender.translation(in: view)
-        guard translation.y >= 0 else { return }
-        
-        view.frame.origin.y = pointOrigin.y + translation.y
-        
-        if sender.state == .ended {
-            let draggedToDismiss = translation.y > view.bounds.height / 3.0
-            let dragVelocity = sender.velocity(in: view)
-            if draggedToDismiss || dragVelocity.y >= 1300 {
-                dismiss(animated: true, completion: nil)
-            } else {
-                UIView.animate(withDuration: 0.3) {
-                    self.view.frame.origin.y = pointOrigin.y
-                }
-            }
-        }
+//        guard let pointOrigin = self.pointOrigin else { return }
+//        
+//        let translation = sender.translation(in: view)
+//        guard translation.y >= 0 else { return }
+//        
+//        view.frame.origin.y = pointOrigin.y + translation.y
+//        
+//        if sender.state == .ended {
+//            let draggedToDismiss = translation.y > view.bounds.height / 3.0
+//            let dragVelocity = sender.velocity(in: view)
+//            if draggedToDismiss || dragVelocity.y >= 1300 {
+//                dismiss(animated: true, completion: nil)
+//            } else {
+//                UIView.animate(withDuration: 0.3) {
+//                    self.view.frame.origin.y = pointOrigin.y
+//                }
+//            }
+//        }
     }
     
 }

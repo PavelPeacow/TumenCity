@@ -50,7 +50,7 @@ struct CityCleaningItemInfo: Codable {
     let guid: GUID
     let contractor: String
     let number: String?
-    let type: String
+    let type: String?
     let speed: Int?
     let dtime: String
     let course: Int?
@@ -59,6 +59,12 @@ struct CityCleaningItemInfo: Codable {
 
     enum CodingKeys: String, CodingKey {
         case id, gps, guid, contractor, number, type, speed, dtime, course, council, icon
+    }
+}
+
+extension CityCleaningItemInfo {
+    var councilFormatted: String {
+        council.count <= 3 ? "У" + council : council
     }
 }
 
@@ -71,6 +77,7 @@ enum CityCleaningItemIcon: String, Codable {
     case modulesGraderNewImgTypesType4SVG = "/modules/grader_new/img/types/type-4.svg"
     case modulesGraderNewImgTypesType6SVG = "/modules/grader_new/img/types/type-6.svg"
     case modulesGraderNewImgTypesType8SVG = "/modules/grader_new/img/types/type-8.svg"
+    case modulesGraderNewImgTypesTypeSVG = "/modules/grader_new/img/types/type-.svg"
 }
 
 enum GUID: Codable {
