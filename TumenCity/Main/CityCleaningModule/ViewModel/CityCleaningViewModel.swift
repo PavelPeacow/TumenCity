@@ -77,6 +77,8 @@ final class CityCleaningViewModel {
             return .init(named: "pin-6")
         case .modulesGraderNewImgTypesType8SVG:
             return .init(named: "pin-8")
+        case .modulesGraderNewImgTypesTypeSVG:
+            return nil
         }
     }
  
@@ -89,7 +91,7 @@ final class CityCleaningViewModel {
             let annotationIcon = getAnnotationTypeByIcon(item.icon) ?? .add
             
             let annotation = MKCityCleaningAnnotation(coordinates: .init(latitude: lat, longitude: long), contractor: item.contractor,
-                                                      number: item.number, carType: item.type, icon: annotationIcon,
+                                                      number: item.number, carType: item.type ?? "", icon: annotationIcon,
                                                       speed: item.speed, date: item.dtime, council: item.councilFormatted)
             
             annotations.append(annotation)

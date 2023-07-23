@@ -26,7 +26,6 @@ final class MenuCollectionViewCell: UICollectionViewCell {
     lazy var mainMenuIcon: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
-        image.image = UIImage(systemName: "house")?.withTintColor(.black, renderingMode: .alwaysOriginal)
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -40,7 +39,7 @@ final class MenuCollectionViewCell: UICollectionViewCell {
     
     lazy var mainMenuTitle: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .regular)
+        label.font = .preferredFont(forTextStyle: .title2)
         label.textColor = .black
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -65,6 +64,7 @@ final class MenuCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with menuIcon: UIImage, menuTitle: String, type: MenuItemType) {
+        mainMenuIcon.image = menuIcon
         mainMenuTitle.text = menuTitle
         self.type = type
     }

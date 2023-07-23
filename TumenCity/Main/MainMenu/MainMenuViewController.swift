@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import CryptoKit
+import SnapKit
 
 enum MenuItemType: String {
     case sport = "Спорт"
@@ -51,15 +51,17 @@ final class MainMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Меню"
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         
         view.addSubview(collectionView)
+        
+        collectionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.topMargin.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
     }
     
-    override func viewDidLayoutSubviews() {
-        collectionView.frame = view.bounds
-    }
-
 }
 
 extension MainMenuViewController: UICollectionViewDataSource {
@@ -75,7 +77,9 @@ extension MainMenuViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuCollectionViewCell.identifier, for: indexPath) as! MenuCollectionViewCell
         
-        cell.configure(with: .add, menuTitle: menuTitles[indexPath.row], type: menuTypes[indexPath.row])
+        let image = UIImage(named: menuTypes[indexPath.row].rawValue) ?? .add
+        
+        cell.configure(with: image, menuTitle: menuTitles[indexPath.row], type: menuTypes[indexPath.row])
         
         return cell
     }

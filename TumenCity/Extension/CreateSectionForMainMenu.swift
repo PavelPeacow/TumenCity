@@ -19,7 +19,7 @@ extension NSCollectionLayoutSection {
         
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 15
-        section.contentInsets = .init(top: 0, leading: 25, bottom: 0, trailing: 25)
+        section.contentInsets = .init(top: 15, leading: 25, bottom: 15, trailing: 25)
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(100))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
