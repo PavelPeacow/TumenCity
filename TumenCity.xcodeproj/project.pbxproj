@@ -106,6 +106,8 @@
 		B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */; };
 		B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */; };
 		B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */; };
+		B5D4B77C2A6D243900817C42 /* IndicatorCollectionViewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77B2A6D243900817C42 /* IndicatorCollectionViewListCell.swift */; };
+		B5D4B77E2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */; };
 		B5D92ACB2A40ABEA00BAA7F5 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */; };
 		B5D92ACD2A40AF9900BAA7F5 /* ShowErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */; };
 		B5D92ACF2A42EE5B00BAA7F5 /* Observable+FlipBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */; };
@@ -238,6 +240,8 @@
 		B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKUrbanAnnotation.swift; sourceTree = "<group>"; };
 		B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientBorder.swift"; sourceTree = "<group>"; };
 		B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Encrypt.swift; sourceTree = "<group>"; };
+		B5D4B77B2A6D243900817C42 /* IndicatorCollectionViewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorCollectionViewListCell.swift; sourceTree = "<group>"; };
+		B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningIndicatorsViewModel.swift; sourceTree = "<group>"; };
 		B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowErrorAlert.swift; sourceTree = "<group>"; };
 		B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+FlipBool.swift"; sourceTree = "<group>"; };
@@ -397,7 +401,9 @@
 		B51C33D62A5E84C400BC8A8E /* CityCleaningIndicators */ = {
 			isa = PBXGroup;
 			children = (
+				B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */,
 				B51C33D02A5E848100BC8A8E /* CityCleaningIndicatorsViewController.swift */,
+				B5D4B77B2A6D243900817C42 /* IndicatorCollectionViewListCell.swift */,
 			);
 			path = CityCleaningIndicators;
 			sourceTree = "<group>";
@@ -1103,6 +1109,7 @@
 				B51C33D32A5E849D00BC8A8E /* CityCleaningEnvControlViewController.swift in Sources */,
 				B5EF44FB2A11273B00AFAFEF /* BikePathsInfoItemView.swift in Sources */,
 				B52896452A07BB3D006A85D9 /* CalloutLabelView.swift in Sources */,
+				B5D4B77C2A6D243900817C42 /* IndicatorCollectionViewListCell.swift in Sources */,
 				B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */,
 				B50D325A2A1A00B10034B860 /* TradeObjectsPeriod.swift in Sources */,
 				B51FACF92A3DCC8D00BB6D81 /* YMKAnnotation.swift in Sources */,
@@ -1118,6 +1125,7 @@
 				B51C33E12A618F8700BC8A8E /* CityCleaningContractorsHeader.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B50D32642A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift in Sources */,
+				B5D4B77E2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift in Sources */,
 				B52896312A063447006A85D9 /* Sport.swift in Sources */,
 				B50D323F2A18C9C80034B860 /* TradeObjects.swift in Sources */,
 				B50D32582A1A00A20034B860 /* TradeObjectsType.swift in Sources */,
@@ -1221,7 +1229,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1275,7 +1283,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

@@ -67,16 +67,8 @@ final class CityCleaningFilterViewController: UIViewController {
         btn.backgroundColor = .secondarySystemBackground
         btn.addTarget(self, action: #selector(showContextMenu), for: .touchUpInside)
         let menu = createFilterMenuForBtn()
-        if #available(iOS 14.0, *) {
-            btn.showsMenuAsPrimaryAction = true
-        } else {
-            // Fallback on earlier versions
-        }
-        if #available(iOS 14.0, *) {
-            btn.menu = menu
-        } else {
-            // Fallback on earlier versions
-        }
+        btn.showsMenuAsPrimaryAction = true
+        btn.menu = menu
         return btn
     }()
 

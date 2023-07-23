@@ -147,10 +147,8 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         picker.datePickerMode = .date
         picker.calendar = .current
         picker.maximumDate = Date()
-        if #available(iOS 14, *) {
-            picker.preferredDatePickerStyle = .wheels
-            picker.sizeToFit()
-        }
+        picker.preferredDatePickerStyle = .wheels
+        picker.sizeToFit()
         return picker
     }()
     
@@ -161,10 +159,8 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         picker.datePickerMode = .date
         picker.calendar = .current
         picker.minimumDate = Date()
-        if #available(iOS 14, *) {
-            picker.preferredDatePickerStyle = .wheels
-            picker.sizeToFit()
-        }
+        picker.preferredDatePickerStyle = .wheels
+        picker.sizeToFit()
         return picker
     }()
     

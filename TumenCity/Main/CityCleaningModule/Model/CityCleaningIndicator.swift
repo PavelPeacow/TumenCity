@@ -49,7 +49,7 @@ struct Ao: Codable {
 }
 
 // MARK: - Detal
-struct Detal: Codable {
+struct Detal: Codable, Hashable {
     let contractor: String
     let countContractor: Int
     let activeDuringDay, timelinessData: Int
