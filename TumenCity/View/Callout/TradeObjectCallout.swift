@@ -73,34 +73,28 @@ final class TradeObjectCallout: Callout {
          (tradeObject.fields.spurpose, Strings.TradeObjectsModule.purpose),
          (tradeObject.fields.period, Strings.TradeObjectsModule.period)
         ].forEach { (text, description) in
-            createDescriptionLabel(descriptionText: description, text: text)
+            createCalloutLabelView(description: description, text: text)
         }
         
         [(tradeObject.fields.area, Strings.TradeObjectsModule.areaSquare),
          (tradeObject.fields.floors, Strings.TradeObjectsModule.floors),
          (tradeObject.fields.height, Strings.TradeObjectsModule.height)].forEach { (text, description) in
-            createParameterLabel(descriptionText: description, text: text)
+           createCalloutLabelView(description: description, text: text, isParameterForStackView: true)
         }
     }
     
-    private func createDescriptionLabel(descriptionText: String, text: String?) {
+    private func createCalloutLabelView(description: String, text: String?, isParameterForStackView: Bool = false) {
         guard let text else { return }
-        guard let atrString = addAttrString(string: descriptionText + text) else { return }
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.attributedText = atrString
-        contentStackView.addArrangedSubview(label)
+        let calloutLabelView = CalloutLabelView()
+        calloutLabelView.setLabelWithDescription(description, label: text)
+        if isParameterForStackView {
+            contentParemetresStackView.addArrangedSubview(calloutLabelView)
+        } else {
+            contentStackView.addArrangedSubview(calloutLabelView)
+        }
     }
     
-    private func createParameterLabel(descriptionText: String, text: String?) {
-        guard let text else { return }
-        guard let atrString = addAttrString(string: descriptionText + text) else { return }
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.attributedText = atrString
-        contentParemetresStackView.addArrangedSubview(label)
-    }
-    
+    #warning("propably leave it, for future text design")
     private func addAttrString(string: String) -> NSMutableAttributedString? {
         if let colonRange = string.range(of: ":") {
             let startIndex = string.distance(from: string.startIndex, to: colonRange.lowerBound) + 1

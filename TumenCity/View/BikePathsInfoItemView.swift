@@ -34,10 +34,12 @@ final class BikePathsInfoItemView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
     
+        backgroundColor = .secondarySystemBackground
+        layer.cornerRadius = 6
         addSubview(contentStackView)
         
         contentStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().inset(5)
         }
         
         bikePathInfoIcon.snp.makeConstraints {

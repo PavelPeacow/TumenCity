@@ -85,7 +85,7 @@ enum APIEndpoint {
             return urlComponents(host: "info.agt72.ru", path: "/api/informer/MobileAppInfo/select/json")
             
         case .bikeLegend:
-            return urlComponents(host: "info.agt72.ru", path: "api/informer/MobileAppInfo/getLegenda/json ")
+            return urlComponents(host: "info.agt72.ru", path: "/api/informer/MobileAppInfo/getLegenda/json")
         }
         
     }

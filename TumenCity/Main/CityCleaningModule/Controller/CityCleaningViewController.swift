@@ -26,6 +26,7 @@ class CityCleaningViewController: UIViewController {
     }
     
     private func setUpView() {
+        title = "Уборка города"
         view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: view)

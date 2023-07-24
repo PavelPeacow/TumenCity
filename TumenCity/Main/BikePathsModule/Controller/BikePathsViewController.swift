@@ -25,6 +25,7 @@ class BikePathsViewController: UIViewController {
     }
     
     private func setUpView() {
+        title = "Велодорожки"
         view.addSubview(map)
         view.backgroundColor = .systemBackground
         navigationItem.rightBarButtonItem = .init(image: UIImage(systemName: "info.square"),

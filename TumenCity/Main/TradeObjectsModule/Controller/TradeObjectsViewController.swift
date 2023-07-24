@@ -54,6 +54,7 @@ class TradeObjectsViewController: UIViewController {
     }
     
     private func setUpView() {
+        title = "НТО"
         view.backgroundColor = .systemBackground
         
         view.addSubview(tradeObjectsFilterTypeStackView)

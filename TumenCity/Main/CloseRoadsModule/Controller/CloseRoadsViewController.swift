@@ -28,6 +28,7 @@ final class CloseRoadsViewController: UIViewController {
     }
     
     private func setUpView() {
+        title = "Перекрытие дорог"
         view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)

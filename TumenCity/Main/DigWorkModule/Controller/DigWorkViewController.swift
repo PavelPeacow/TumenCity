@@ -37,6 +37,7 @@ final class DigWorkViewController: UIViewController {
     }
     
     private func setUpView() {
+        title = "Землянные работы"
         view.backgroundColor = .systemBackground
         view.addSubview(map)
         YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
