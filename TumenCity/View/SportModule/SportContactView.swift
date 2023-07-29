@@ -35,7 +35,6 @@ final class SportContactView: UIView {
     lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = .systemGreen
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

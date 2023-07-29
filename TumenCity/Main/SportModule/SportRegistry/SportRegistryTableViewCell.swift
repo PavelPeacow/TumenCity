@@ -69,13 +69,12 @@ final class SportRegistryTableViewCell: UITableViewCell {
     lazy var teleIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "teleIcon")
+        imageView.image = UIImage(named: "teleIcon")?.withTintColor(.label)
         return imageView
     }()
     
     lazy var sportTeleNumber: UILabel = {
         let label = UILabel()
-        label.textColor = .systemGreen
         label.numberOfLines = 0
         return label
     }()
@@ -90,13 +89,12 @@ final class SportRegistryTableViewCell: UITableViewCell {
     lazy var emailIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "emailIcon")
+        imageView.image = UIImage(named: "emailIcon")?.withTintColor(.label)
         return imageView
     }()
     
     lazy var sportEmail: UILabel = {
         let label = UILabel()
-        label.textColor = .systemGreen
         label.numberOfLines = 0
         return label
     }()
@@ -151,11 +149,10 @@ final class SportRegistryTableViewCell: UITableViewCell {
         sportElement.addresses.forEach { address in
             let addressIcon = UIImageView()
             addressIcon.contentMode = .scaleAspectFit
-            addressIcon.image = UIImage(named: "addressIcon")
+            addressIcon.image = UIImage(named: "addressIcon")?.withTintColor(.label)
             
             let addressLabel = UILabel()
             addressLabel.text = address.title
-            addressLabel.textColor = .systemGreen
             addressLabel.numberOfLines = 0
             addressLabel.isUserInteractionEnabled = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapAddress))

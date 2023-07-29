@@ -105,24 +105,24 @@ final class SportCallout: Callout {
     
     func configure(annotation: MKSportAnnotation) {
         titleView.setTitle(with: annotation.title, icon: UIImage(named: "sportIcon") ?? .add)
-
+        
         annotation.contacts.phones.forEach { contact in
-           
+            
             //Validation for empty contacts
-            if contact.caption.isEmpty && contact.position.isEmpty && contact.formated.isEmpty {
-               return
-            } else {
-                let contactView = SportContactView(position: contact.position, name: contact.caption, number: contact.formated)
-                stackViewContacts.addArrangedSubview(contactView)
+            guard !contact.caption.isEmpty && !contact.position.isEmpty && !contact.formated.isEmpty else {
+                return
             }
-
+            let contactView = SportContactView(position: contact.position, name: contact.caption, number: contact.formated)
+            stackViewContacts.addArrangedSubview(contactView)
+            
+            
         }
         
         if let email = annotation.contacts.emails?.first {
             let emailLabel = CalloutLabelView(label: email.email)
             stackViewEmail.addArrangedSubview(emailLabel)
         }
-    
+        
         annotation.addresses.forEach { address in
             let addressLabel = CalloutLabelView(label: address.title)
             stackViewAddresses.addArrangedSubview(addressLabel)
@@ -134,7 +134,7 @@ final class SportCallout: Callout {
 
 extension SportCallout {
     
-    func setConstraints() {   
+    func setConstraints() {
         stackViewContent.snp.makeConstraints {
             $0.top.equalTo(contentView).inset(15)
             $0.horizontalEdges.equalTo(alertBackground).inset(15)
