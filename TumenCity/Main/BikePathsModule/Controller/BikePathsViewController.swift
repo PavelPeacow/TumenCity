@@ -53,10 +53,12 @@ class BikePathsViewController: UIViewController {
             .mapObjectsObservable
             .subscribe(onNext: { [unowned self] (polygons, polylines) in
                 polygons.forEach { polygon in
-                    let polygonCreated = map.mapWindow.map.mapObjects.addPolygon(with: polygon)
+                    let polygonCreated = map.mapWindow.map.mapObjects.addPolygon(with: polygon.key)
                     polygonCreated.strokeWidth = 1
                     polygonCreated.strokeColor = .systemGray
                     polygonCreated.fillColor = .clear
+                    
+                    _ = map.mapWindow.map.mapObjects.addPlacemark(with: polygon.value, image: .init(named: "bikeInWork")!)
                 }
                 
                 polylines.forEach { polyline in

@@ -12,12 +12,12 @@ import RxRelay
 
 @MainActor
 final class BikePathsViewModel {
-    typealias MapObjectsTypealias = (polygons: [YMKPolygon], polilines: [YMKPolyline : UIColor])
+    typealias MapObjectsTypealias = (polygons: [YMKPolygon : YMKPoint], polilines: [YMKPolyline : UIColor])
     
     private var objects = [Object]()
     private var lines = [Line]()
     
-    private var bikePoligons = [YMKPolygon]()
+    private var bikePoligons = [YMKPolygon : YMKPoint]()
     private var bikePoliline = [YMKPolyline : UIColor]()
     var bikeInfoLegendItems = [BikePathInfoLegend]()
     
@@ -62,6 +62,22 @@ final class BikePathsViewModel {
         }
     }
     
+    private func getMiddleCoordinate(from coordinates: [[Double]]) -> (lat: Double, long: Double) {
+        guard !coordinates.isEmpty else {
+            return (0,0)
+        }
+        
+        let minLatitude = coordinates.min(by: { $0[0] < $1[0] })![0]
+        let maxLatitude = coordinates.min(by: { $0[0] > $1[0] })![0]
+        let minLongitude = coordinates.min(by: { $0[1] < $1[1] })![1]
+        let maxLongitude = coordinates.min(by: { $0[1] > $1[1] })![1]
+
+        let middleLatitude = (minLatitude + maxLatitude) / 2.0
+        let middleLongitude = (minLongitude + maxLongitude) / 2.0
+
+        return (middleLatitude, middleLongitude)
+    }
+
     func formatBikeLine() {
         objects.forEach { object in
             guard let strPoligonData = object.fields.poligon.data(using: .utf8) else { return }
@@ -80,8 +96,18 @@ final class BikePathsViewModel {
                 }
             }
             
+            let coordinates = points.reduce(into: [[Double]]()) { partialResult, point in
+                let lat = point.latitude
+                let long = point.longitude
+                partialResult.append([lat, long])
+            }
+            
+            let middlePoint = getMiddleCoordinate(from: coordinates)
+            
+            let middleMapPoint = YMKPoint(latitude: middlePoint.lat, longitude: middlePoint.long)
+            
             let mapPolygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
-            bikePoligons.append(mapPolygon)
+            bikePoligons[mapPolygon] = middleMapPoint
         }
         
         lines.forEach { line in
