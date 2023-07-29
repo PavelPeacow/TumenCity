@@ -109,6 +109,7 @@
 		B5D4B77C2A6D243900817C42 /* IndicatorCollectionViewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77B2A6D243900817C42 /* IndicatorCollectionViewListCell.swift */; };
 		B5D4B77E2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */; };
 		B5D4B7802A6D382D00817C42 /* CityCleaningIndicatorCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77F2A6D382D00817C42 /* CityCleaningIndicatorCallout.swift */; };
+		B5D4B7822A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B7812A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift */; };
 		B5D92ACB2A40ABEA00BAA7F5 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */; };
 		B5D92ACD2A40AF9900BAA7F5 /* ShowErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */; };
 		B5D92ACF2A42EE5B00BAA7F5 /* Observable+FlipBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */; };
@@ -244,6 +245,7 @@
 		B5D4B77B2A6D243900817C42 /* IndicatorCollectionViewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorCollectionViewListCell.swift; sourceTree = "<group>"; };
 		B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningIndicatorsViewModel.swift; sourceTree = "<group>"; };
 		B5D4B77F2A6D382D00817C42 /* CityCleaningIndicatorCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningIndicatorCallout.swift; sourceTree = "<group>"; };
+		B5D4B7812A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+TradeObjectsPieChart.swift"; sourceTree = "<group>"; };
 		B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowErrorAlert.swift; sourceTree = "<group>"; };
 		B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+FlipBool.swift"; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 				B53A680229F54564005DE734 /* Cluster+PieChart.swift */,
 				B53D66552A02CF690010F846 /* Cluster+StaticStyle.swift */,
 				B5464CA62A1CB970000147F8 /* Cluster+UrbanPieChart.swift */,
+				B5D4B7812A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift */,
 			);
 			path = Cluster;
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */,
 				B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */,
 				B50D32522A1920430034B860 /* CheckBoxButton.swift in Sources */,
+				B5D4B7822A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift in Sources */,
 				B51C33E42A62746300BC8A8E /* SwitchWithTitleCouncil.swift in Sources */,
 				B50D324E2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift in Sources */,
 				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,

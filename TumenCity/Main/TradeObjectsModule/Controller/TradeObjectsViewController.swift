@@ -230,7 +230,8 @@ extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
 extension TradeObjectsViewController: YMKClusterListener {
     
     func onClusterAdded(with cluster: YMKCluster) {
-        cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .blue)
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKTradeObjectAnnotation }
+        cluster.appearance.setPieChart(clusterAnnotations: annotations)
         cluster.addClusterTapListener(with: self)
     }
     
