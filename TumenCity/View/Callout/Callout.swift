@@ -79,7 +79,7 @@ class Callout: UIViewController {
     
     func showAlert(in viewController: UIViewController) {
         #warning("show only one callout at time fixed")
-        guard viewController.children.count == 0 else { return }
+        guard viewController.children.count == 0 || viewController is CityCleaningFilterViewController else { return }
         targetViewController = viewController
 
         targetViewController.addChild(self)

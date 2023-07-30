@@ -23,14 +23,6 @@ fileprivate enum Item: Hashable {
 }
 
 struct CityCleaningIndicatorItem: Hashable {
-    static func == (lhs: CityCleaningIndicatorItem, rhs: CityCleaningIndicatorItem) -> Bool {
-        lhs.activeDuringDay == rhs.activeDuringDay
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
     let id = UUID()
     let idCouncil: Int?
     let council: String
