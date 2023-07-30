@@ -78,6 +78,8 @@ class Callout: UIViewController {
     }
     
     func showAlert(in viewController: UIViewController) {
+        #warning("show only one callout at time fixed")
+        guard viewController.children.count == 0 else { return }
         targetViewController = viewController
 
         targetViewController.addChild(self)
@@ -105,6 +107,7 @@ class Callout: UIViewController {
             self.view.alpha = 0.0
         }) { _ in
             self.targetViewController.navigationController?.navigationBar.isUserInteractionEnabled = true
+            self.removeFromParent()
             self.view.removeFromSuperview()
         }
     }
