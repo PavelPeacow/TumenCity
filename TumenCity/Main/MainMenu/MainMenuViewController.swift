@@ -96,6 +96,7 @@ extension MainMenuViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let tappedItem = collectionView.cellForItem(at: indexPath) as? MenuCollectionViewCell else { return }
         let type = tappedItem.type
+        tappedItem.tapAnimation()
         
         switch type {
         case .sport:

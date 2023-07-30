@@ -110,6 +110,8 @@
 		B5D4B77E2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */; };
 		B5D4B7802A6D382D00817C42 /* CityCleaningIndicatorCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77F2A6D382D00817C42 /* CityCleaningIndicatorCallout.swift */; };
 		B5D4B7822A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B7812A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift */; };
+		B5D4B7842A76B2A900817C42 /* UIButton+TapAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B7832A76B2A900817C42 /* UIButton+TapAnimation.swift */; };
+		B5D4B7862A76B58300817C42 /* UICollectionViewCell+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B7852A76B58300817C42 /* UICollectionViewCell+Animation.swift */; };
 		B5D92ACB2A40ABEA00BAA7F5 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */; };
 		B5D92ACD2A40AF9900BAA7F5 /* ShowErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */; };
 		B5D92ACF2A42EE5B00BAA7F5 /* Observable+FlipBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */; };
@@ -246,6 +248,8 @@
 		B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningIndicatorsViewModel.swift; sourceTree = "<group>"; };
 		B5D4B77F2A6D382D00817C42 /* CityCleaningIndicatorCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningIndicatorCallout.swift; sourceTree = "<group>"; };
 		B5D4B7812A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+TradeObjectsPieChart.swift"; sourceTree = "<group>"; };
+		B5D4B7832A76B2A900817C42 /* UIButton+TapAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+TapAnimation.swift"; sourceTree = "<group>"; };
+		B5D4B7852A76B58300817C42 /* UICollectionViewCell+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Animation.swift"; sourceTree = "<group>"; };
 		B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowErrorAlert.swift; sourceTree = "<group>"; };
 		B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+FlipBool.swift"; sourceTree = "<group>"; };
@@ -676,6 +680,8 @@
 			children = (
 				B51C33DA2A5E92E900BC8A8E /* UIViewController+Child.swift */,
 				B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */,
+				B5D4B7832A76B2A900817C42 /* UIButton+TapAnimation.swift */,
+				B5D4B7852A76B58300817C42 /* UICollectionViewCell+Animation.swift */,
 				B571088C29A216F6003698C8 /* UIButton+Blur.swift */,
 				B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */,
 				B571089E29A519B6003698C8 /* CreateSectionForMainMenu.swift */,
@@ -1128,6 +1134,7 @@
 				B51C33DF2A618F7A00BC8A8E /* CityCleaningContractorsCell.swift in Sources */,
 				B52896562A0A1CF2006A85D9 /* DigWorkViewController.swift in Sources */,
 				B5608A7C2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift in Sources */,
+				B5D4B7862A76B58300817C42 /* UICollectionViewCell+Animation.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B51C33E12A618F8700BC8A8E /* CityCleaningContractorsHeader.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
@@ -1155,6 +1162,7 @@
 				B50D32562A19F9840034B860 /* ScrollableCheckBoxesList.swift in Sources */,
 				B51C33C02A5DAC7D00BC8A8E /* DigWorkFilter.swift in Sources */,
 				B51C33DB2A5E92E900BC8A8E /* UIViewController+Child.swift in Sources */,
+				B5D4B7842A76B2A900817C42 /* UIButton+TapAnimation.swift in Sources */,
 				B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */,
 				B51C33C22A5E58B900BC8A8E /* CityCleaningFilterViewController.swift in Sources */,
 				B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */,

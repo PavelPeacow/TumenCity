@@ -15,6 +15,7 @@ class CustomBottomSheet: UIViewController {
     var scrollViewOfSheet: UIScrollView?
     var fittingViewOfSheet: UIView?
     var isKeyboardActive = false
+    var isFullscreen = false
     
     var topInset: CGFloat {
         40
@@ -77,17 +78,20 @@ class CustomBottomSheet: UIViewController {
     }
     
     func changeBottomSheetToCoverAllScreen() {
-        view.frame = presentationController?.containerView?.bounds ?? .zero
-        
+        isFullscreen = true
         UIView.animate(withDuration: 0.3) {
+            self.view.frame = self.presentationController?.containerView?.bounds ?? .zero
             self.view.layoutIfNeeded()
         }
     }
     
     func changeBottomSheetToDefaultHeight() {
         guard !isKeyboardActive else { return }
-        setPrefferdSize()
-        view.frame = CGRect(origin: pointOrigin!, size: preferredContentSize)
+        isFullscreen = false
+        UIView.animate(withDuration: 0.3) {
+            self.setPrefferdSize()
+            self.view.frame = CGRect(origin: self.pointOrigin!, size: self.preferredContentSize)
+        }
     }
     
 }
@@ -126,6 +130,7 @@ extension CustomBottomSheet {
     
     @objc func keyboardWillHide(_ notification: Notification) {
         isKeyboardActive = false
+        guard !isFullscreen else { return }
         setPrefferdSize()
         view.frame = CGRect(origin: pointOrigin!, size: preferredContentSize)
         if let scrollViewOfSheet {

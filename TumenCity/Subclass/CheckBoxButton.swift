@@ -20,9 +20,10 @@ final class CheckBoxButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.borderColor = UIColor.systemGray6.cgColor
+        layer.borderColor = UIColor.systemGray.cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 5
+        addTapAnimation()
     }
     
     required init?(coder: NSCoder) {

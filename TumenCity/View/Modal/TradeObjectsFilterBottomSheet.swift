@@ -17,13 +17,13 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     var isObjectTypeFilterHidden = true {
         willSet {
             newValue ? objectTypeFilterBtn.setTitleColor(.label, for: .normal)
-            : objectTypeFilterBtn.setTitleColor(.blue, for: .normal)
+            : objectTypeFilterBtn.setTitleColor(.cyan, for: .normal)
         }
     }
     var isPeriodFilterHidden = true {
         willSet {
             newValue ? periodFilterBtn.setTitleColor(.label, for: .normal)
-            : periodFilterBtn.setTitleColor(.blue, for: .normal)
+            : periodFilterBtn.setTitleColor(.cyan, for: .normal)
         }
     }
     
@@ -171,7 +171,11 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     
     private func hideScrollableCheckBoxList(_ checkBoxList: ScrollableCheckBoxesList, isHidden: Bool) {
         isHidden ? checkBoxList.hideScrollableCheckBoxesList(true) : checkBoxList.hideScrollableCheckBoxesList(false)
-        isHidden ? changeBottomSheetToDefaultHeight() : changeBottomSheetToCoverAllScreen()
+        if !isHidden {
+            changeBottomSheetToCoverAllScreen()
+        } else if isHidden && isPeriodFilterHidden && isObjectTypeFilterHidden {
+            changeBottomSheetToDefaultHeight()
+        }
     }
     
     private func setCallbacks() {

@@ -16,6 +16,7 @@ final class MainButton: UIButton {
         layer.borderWidth = 1
         setTitle(title, for: .normal)
         setTitleColor(.label, for: .normal)
+        addTapAnimation()
     }
     
     convenience init(title: String, cornerRadius: CGFloat) {
