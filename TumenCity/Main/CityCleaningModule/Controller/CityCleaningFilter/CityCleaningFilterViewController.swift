@@ -152,10 +152,10 @@ final class CityCleaningFilterViewController: UIViewController {
     }
     
     private func createFilterMenuForBtn() -> UIMenu {
-        let controlEnvMenuItem = UIAction(title: "Контроль среды",
-                                          image: .init(named: "envControl")) { [unowned self] _ in
-            changeSelectedFilter(filterType: .controlEnvMenuItem)
-        }
+//        let controlEnvMenuItem = UIAction(title: "Контроль среды",
+//                                          image: .init(named: "envControl")) { [unowned self] _ in
+//            changeSelectedFilter(filterType: .controlEnvMenuItem)
+//        }
         
         let indicatorsMenuItem = UIAction(title: "Показатели",
                                           image: .init(named: "indicators")) { [unowned self] _ in
@@ -172,8 +172,7 @@ final class CityCleaningFilterViewController: UIViewController {
             changeSelectedFilter(filterType: .typeMenuItem)
         }
         
-        return UIMenu(children: [controlEnvMenuItem, indicatorsMenuItem,
-                                    contractorsMenuItem, typeMenuItem])
+        return UIMenu(children: [indicatorsMenuItem, contractorsMenuItem, typeMenuItem])
     }
     
     private func changeSelectedFilter(filterType: CityCleaningFilterSelectedType) {

@@ -119,6 +119,7 @@ extension UIViewControllerMapSegmented: UISearchResultsUpdating {
 private extension UIViewControllerMapSegmented {
     
     @objc func didSlideSegmentedControl(_ sender: UISegmentedControl) {
+        navigationItem.searchController = nil
         let index = sender.selectedSegmentIndex
         print(index)
         switch index {
