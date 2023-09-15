@@ -107,7 +107,7 @@ class UrbanImprovementsViewController: UIViewController {
                 Task {
                     if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) {
                         let callout = UrbanImprovementsCallout()
-                        callout.configure(urbanDetailInfo: detailInfo)
+                        callout.configure(urbanDetailInfo: detailInfo, calloutImage: annotation.icon)
                         callout.showAlert(in: self)
                     }
                 }
@@ -169,7 +169,7 @@ extension UrbanImprovementsViewController: YMKMapObjectTapListener {
             Task {
                 if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(polygonData.id) {
                     let callout = UrbanImprovementsCallout()
-                    callout.configure(urbanDetailInfo: detailInfo)
+                    callout.configure(urbanDetailInfo: detailInfo, calloutImage: polygonData.icon)
                     callout.showAlert(in: self)
                     return true
                 }
@@ -186,7 +186,7 @@ extension UrbanImprovementsViewController: YMKMapObjectTapListener {
             Task {
                 if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) {
                     let callout = UrbanImprovementsCallout()
-                    callout.configure(urbanDetailInfo: detailInfo)
+                    callout.configure(urbanDetailInfo: detailInfo, calloutImage: annotation.icon)
                     callout.showAlert(in: self)
                     return true
                 }

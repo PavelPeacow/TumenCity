@@ -68,7 +68,7 @@ class UIViewControllerMapSegmented: UIViewController {
         scrollView.addSubview(stackView)
         
         setUpSearchController()
-        registerKeyboardNotification()
+//        registerKeyboardNotification()
         addTarget()
         setConstraints()
     }
@@ -171,30 +171,30 @@ private extension UIViewControllerMapSegmented {
 }
 
 //MARK: - NotificationCenter
-
-extension UIViewControllerMapSegmented {
-    
-    private func registerKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        let keyboardHeight = keyboardSize.height
-        
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.mainMapView.frame.origin.y -= keyboardHeight
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.mainMapView.frame.origin.y = 0
-        }
-    }
-    
-}
+#warning("Old code, but can use for future")
+//extension UIViewControllerMapSegmented {
+//    
+//    private func registerKeyboardNotification() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+//    
+//    @objc func keyboardWillShow(notification: NSNotification) {
+//        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+//            return
+//        }
+//        
+//        let keyboardHeight = keyboardSize.height
+//        
+//        UIView.animate(withDuration: 0.25) { [weak self] in
+//            self?.mainMapView.frame.origin.y -= keyboardHeight
+//        }
+//    }
+//    
+//    @objc func keyboardWillHide(notification: NSNotification) {
+//        UIView.animate(withDuration: 0.25) { [weak self] in
+//            self?.mainMapView.frame.origin.y = 0
+//        }
+//    }
+//    
+//}

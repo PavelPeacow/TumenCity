@@ -138,14 +138,14 @@ enum FluffyType: String, Codable {
 
 // MARK: - FluffyOptions
 struct FluffyOptions: Codable {
-    let strokeColor: Color
+    let strokeColor: UrbanColor
     let strokeWidth, strokeOpacity, fillOpacity: Int
-    let fillColor: Color
+    let fillColor: UrbanColor
     let draggable: Bool
     let id: Int
 }
 
-enum Color: String, Codable {
+enum UrbanColor: String, Codable {
     case ff495F70 = "#FF495F70"
     case the0383E070 = "#0383E070"
     case the0Fb73E70 = "#0FB73E70"

@@ -18,14 +18,14 @@ struct DigWorkElement: Codable {
     let geometry: DigWorkGeometry
     let info: DigWorkInfo
     let options: Options
-    let type: FeatureType
+    let type: FeatureType?
     let id: Int
 }
 
 // MARK: - Geometry
 struct DigWorkGeometry: Codable {
-    let coordinates: [Double]
-    let type: GeometryType
+    let coordinates: [Double]?
+    let type: GeometryType?
 }
 
 enum GeometryType: String, Codable {

@@ -236,6 +236,7 @@ extension CityCleaningFilterViewController {
         
         indicatorBtn.snp.makeConstraints {
             $0.height.equalTo(44)
+            $0.width.equalToSuperview()
         }
 
         setUpConstraintsForChildFilter(typeMachineFilterViewController)

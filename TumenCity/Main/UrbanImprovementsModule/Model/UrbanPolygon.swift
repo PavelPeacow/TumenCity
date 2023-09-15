@@ -12,11 +12,13 @@ final class UrbanPolygon {
     let filterTypeID: Int
     let polygonColor: UIColor
     let id: Int
+    let icon: UIImage
     
-    init(filterTypeID: Int, polygonColor: UIColor, id: Int) {
+    init(filterTypeID: Int, polygonColor: UIColor, id: Int, icon: UIImage) {
         self.filterTypeID = filterTypeID
         self.polygonColor = polygonColor
         self.id = id
+        self.icon = icon
     }
     
 }

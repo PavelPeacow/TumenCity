@@ -66,8 +66,8 @@ final class DigWorkViewModel {
     
     func addDigWorkAnnotations() {
         let annotations = digWorkElements.map { element in
-            let lat = element.geometry.coordinates.first ?? 0
-            let long = element.geometry.coordinates.last ?? 0
+            let lat = element.geometry.coordinates?.first ?? 0
+            let long = element.geometry.coordinates?.last ?? 0
             
             return MKDigWorkAnnotation(title: element.info.balloonContentHeader, address: element.options.address ?? "",
                                        contentDescription: element.info.balloonContentBody,

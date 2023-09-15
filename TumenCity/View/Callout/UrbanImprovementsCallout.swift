@@ -98,8 +98,8 @@ final class UrbanImprovementsCallout: Callout {
         setConstaints()
     }
     
-    func configure(urbanDetailInfo: UrbanImprovementsDetailInfo) {
-        titleView.setTitle(with: urbanDetailInfo.fields.title ?? "", icon: UIImage(named: "blackIcon") ?? .actions)
+    func configure(urbanDetailInfo: UrbanImprovementsDetailInfo, calloutImage: UIImage) {
+        titleView.setTitle(with: urbanDetailInfo.fields.title ?? "", icon: calloutImage)
         
         [(urbanDetailInfo.fields.stageWork?.value, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.stageWork),
          (urbanDetailInfo.fields.dateStart, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.dateStart),

@@ -15,7 +15,7 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
     lazy var containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .systemGray5
         view.layer.cornerRadius = 12
         return view
     }()
@@ -70,7 +70,7 @@ final class UrbanImprovementsFilterCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-        containerView.backgroundColor = .systemGray6
+        containerView.backgroundColor = .systemGray5
     }
     
     func configureCell(icon: UIImage?, title: String) {

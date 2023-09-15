@@ -170,6 +170,7 @@ final class UrbanImprovementsViewModel {
             
             let filterID = polygon.properties.id
             let color = getColorById(filterID) ?? .clear
+            let icon = getImageFilterById(filterID) ?? .actions
             
             polygon.geometry.coordinates.forEach { doubleCoordinate in
                 var points = [YMKPoint]()
@@ -183,7 +184,7 @@ final class UrbanImprovementsViewModel {
                 
                 let polygonID = polygon.id
                 let polygon = YMKPolygon(outerRing: .init(points: points), innerRings: [])
-                let polygonModel = UrbanPolygon(filterTypeID: filterID, polygonColor: color, id: polygonID)
+                let polygonModel = UrbanPolygon(filterTypeID: filterID, polygonColor: color, id: polygonID, icon: icon)
                 polygonsFormatted.append((polygon, polygonModel))
             }
             
