@@ -8,18 +8,18 @@
 import Foundation
 
 // MARK: - TradeObjects
-struct TradeObjects: Decodable {
+struct TradeObjects: Codable {
     let row: [TradeObjectsRow]
 }
 
 // MARK: - Row
-struct TradeObjectsRow: Decodable {
+struct TradeObjectsRow: Codable {
     let id: String
     let fields: Fields
 }
 
 // MARK: - Fields
-struct Fields: Decodable {
+struct Fields: Codable {
     let numDoc: String?
     let address, mark: String
     let object: String

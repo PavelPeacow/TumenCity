@@ -9,6 +9,7 @@ import MapKit
 import YandexMapsMobile
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class CommunalServicesViewModel {
@@ -33,6 +34,8 @@ final class CommunalServicesViewModel {
     
     var communalServices: CommunalServices?
     var communalServicesFormatted = [CommunalServicesFormatted]()
+    
+    var onError: ((AFError) -> ())?
     
     init() {
         Task {
@@ -73,11 +76,13 @@ final class CommunalServicesViewModel {
     //MARK: - API Call
     
     private func getCommunalServices() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: CommunalServices.self, endpoint: .communalServices)
-            communalServices = result
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: CommunalServices.self,
+                                                                    endpoint: .communalServices)
+        switch result {
+        case .success(let success):
+            communalServices = success
+        case .failure(let failure):
+            onError?(failure)
         }
     }
     

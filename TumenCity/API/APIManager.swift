@@ -2,65 +2,43 @@
 //  APIManager.swift
 //  TumenCity
 //
-//  Created by Павел Кай on 16.02.2023.
+//  Created by Павел Кай on 15.09.2023.
 //
 
 import Foundation
+import Alamofire
+import UIKit
 
-enum APIConstant {
-    static let shaKey = "M0b!1e@pp!nf0!ntegr@t!0ne_crm2O23"
+protocol APIManagerProtocol {
+    associatedtype T
+    func fetchDataWithParameters<T: Codable>(type: T.Type,
+                                             endpoint: Endpoint
+    ) async -> Result<T, AFError>
 }
 
-enum APIError: LocalizedError {
-    case badURL
-    case cannotCreateRequest
-    case cannotGet
-    case cannotDecode
+final class APIManager: APIManagerProtocol {
+    typealias T = Codable
     
-    var errorDescription: String? {
-        switch self {
-        case .badURL:
-            return "Не удалость установить соединение с адресом!"
-        case .cannotCreateRequest:
-            return "Не удалось создать запрос к серверу!"
-        case .cannotGet:
-            return "Не удалось получить данные с сервера!"
-        case .cannotDecode:
-            return "Не удалость декодировать полученные данные с сервера!"
-        }
-    }
-}
-
-final class APIManager {
+    private let sessionConfiguration: URLSessionConfiguration
+    private let sessionManager: Session
     
-    private let jsonDecoder: JSONDecoder
-    private let urlSession: URLSession
-    
-    init(jsonDecoder: JSONDecoder = .init(), urlSession: URLSession = .shared) {
-        self.jsonDecoder = jsonDecoder
-        self.urlSession = urlSession
+    init(sessionConfiguration: URLSessionConfiguration = .default) {
+        self.sessionConfiguration = sessionConfiguration
+        self.sessionManager = Session(configuration: sessionConfiguration)
     }
     
-    func getAPIContent<T: Decodable>(type: T.Type, endpoint: APIEndpoint) async throws -> T {
-        guard let url = endpoint.url else { throw APIError.badURL }
-        
-        guard let requst = endpoint.request(url: url) else { throw APIError.cannotCreateRequest }
-        
-        guard let (data, _) = try? await urlSession.data(for: requst) else { throw APIError.cannotGet }
-        
-//        print(String(data: data, encoding: .utf8))Тщ
-            
-        guard let result = try? jsonDecoder.decode(T.self, from: data) else { throw APIError.cannotDecode }
-        
-        return result
+    func fetchDataWithParameters<T: Codable>(type: T.Type,
+                                             endpoint: Endpoint
+    ) async -> Result<T, AFError> {
+        await sessionManager.request(endpoint.url,
+                                     method: endpoint.method,
+                                     parameters: endpoint.parameters,
+                                     encoding: endpoint.encodingType)
+        .validate()
+        .cURLDescription(calling: { debug in
+            print(debug)
+        })
+        .serializingDecodable(T.self)
+        .result
     }
-    
-    func decodeMock<T: Decodable>(type: T.Type, forResourse: String) async -> T {
-        let url = Bundle.main.url(forResource: forResourse, withExtension: "json")!
-        
-        let data = try! Data(contentsOf: url)
-        
-        return try! jsonDecoder.decode(T.self, from: data)
-    }
-    
 }

@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class SportViewModel {
@@ -27,6 +28,8 @@ final class SportViewModel {
     var isLoadingObservable: Observable<Bool> {
         isLoading.asObservable()
     }
+    
+    var onError: ((AFError) -> ())?
     
     init() {
         Task {
@@ -49,14 +52,17 @@ final class SportViewModel {
     }
     
     func getSportElements() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: [SportElement].self, endpoint: .sport)
+        let result = await APIManager().fetchDataWithParameters(type: [SportElement].self,
+                                                                    endpoint: .sport)
+        switch result {
+        case .success(let success):
             sportElements
-                .onNext(result)
+                .onNext(success)
             sportElements
                 .onCompleted()
-        } catch {
-            print(error)
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     

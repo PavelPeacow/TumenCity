@@ -8,6 +8,10 @@
 import Foundation
 import CryptoKit
 
+enum APIConstant {
+    static let shaKey = "M0b!1e@pp!nf0!ntegr@t!0ne_crm2O23"
+}
+
 fileprivate func sha256(string: String) -> String {
     let inputData = Data(string.utf8)
     let hashedData = SHA256.hash(data: inputData)

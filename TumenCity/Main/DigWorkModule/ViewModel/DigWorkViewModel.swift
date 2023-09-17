@@ -8,6 +8,7 @@
 import MapKit
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class DigWorkViewModel {
@@ -23,6 +24,8 @@ final class DigWorkViewModel {
     var isLoadingObservable: Observable<Bool> {
         isLoading.asObservable()
     }
+    
+    var onError: ((AFError) -> ())?
     
     init() {
         Task {
@@ -54,12 +57,15 @@ final class DigWorkViewModel {
     
     func getDigWorkElements(filter: DigWorkFilter? = nil) async {
         isLoading.accept(true)
-        do {
-            let result = try await APIManager().getAPIContent(type: DigWork.self, endpoint: .digWork(filter: filter))
-            digWorkElements = result.features
+        let result = await APIManager().fetchDataWithParameters(type: DigWork.self,
+                                                                    endpoint: .digWork(filter: filter))
+        switch result {
+        case .success(let success):
+            digWorkElements = success.features
             addDigWorkAnnotations()
-        } catch {
-            print(error)
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
         isLoading.accept(false)
     }

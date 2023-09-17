@@ -116,6 +116,12 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             })
             .disposed(by: bag)
         
+        viewModel.onError = { [weak self] error in
+            guard let self else { return }
+            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
+                          andShowOn: self.view)
+        }
+        
         viewModel
             .communalAnnotationsObservable
             .subscribe(

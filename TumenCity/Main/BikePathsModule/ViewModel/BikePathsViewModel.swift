@@ -9,6 +9,7 @@ import Foundation
 import YandexMapsMobile
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class BikePathsViewModel {
@@ -31,6 +32,8 @@ final class BikePathsViewModel {
         isLoading.asObservable()
     }
     
+    var onError: ((AFError) -> ())?
+    
     init() {
         Task {
             isLoading.accept(true)
@@ -44,21 +47,27 @@ final class BikePathsViewModel {
     }
     
     func getBikePathsElements() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: BikePaths.self, endpoint: .bikePath)
-            objects = result.row.object
-            lines = result.row.line
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: BikePaths.self,
+                                                                    endpoint: .bikePath)
+        switch result {
+        case .success(let success):
+            objects = success.row.object
+            lines = success.row.line
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     
     func getBikeInfoLegendItems() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: [BikePathInfoLegend].self, endpoint: .bikeLegend)
-            bikeInfoLegendItems = result
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: [BikePathInfoLegend].self,
+                                                                    endpoint: .bikeLegend)
+        switch result {
+        case .success(let success):
+            bikeInfoLegendItems = success
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     

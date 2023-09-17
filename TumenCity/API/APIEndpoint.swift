@@ -2,12 +2,12 @@
 //  APIEndpoint.swift
 //  TumenCity
 //
-//  Created by Павел Кай on 16.02.2023.
+//  Created by Павел Кай on 17.09.2023.
 //
 
-import Foundation
+import Alamofire
 
-enum APIEndpoint {
+enum Endpoint {
     case communalServices
     case closeRoads
     case sport
@@ -30,130 +30,51 @@ enum APIEndpoint {
     case bikePath
     case bikeLegend
     
-    var url: URL? {
-        
+    var url: String {
         switch self {
-            
-        case .communalServices:
-            return urlComponents(path: "/cron/mkd.t-c.ru.php")
-            
         case .closeRoads:
-            return urlComponents(host: "api.tgt72.ru", path: "/api/v5/roadworks")
-            
-        case .sport:
-            return urlComponents(host: "info.agt72.ru", path: "/api/sport/main/institutions/json")
-
-        case .digWork:
-            return urlComponents(host: "info.agt72.ru", path: "/api/dig/main/dig/json")
-            
-        case .tradeObjects:
-            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/select/json")
-            
-        case .tradeObjectBy:
-            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/selectById/json")
-            
-        case .tradeObjectsGetType:
-            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/getTypeObject/json")
-            
-        case .tradeObjectsGetPeriod:
-            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/getPeriod/json")
-        
-        case .tradeObjectsSearch:
-            return urlComponents(host: "nto.tyumen-city.ru", path: "/api/informer/MobileAppInfo/searchByCategory/json")
-            
-        case .urbanImprovements:
-            return urlComponents(host: "info.agt72.ru", path: "/api/informer/blagoustroystvo/select/json")
-            
-        case .urbanImprovementsInfo(let id):
-            let query = [URLQueryItem(name: "id", value: String(id))]
-            
-            return urlComponents(host: "info.agt72.ru", path: "/api/informer/main/get_record_id/json", queryItems: query)
-
-        case .cityCleaning:
-            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/select/json")
-            
-        case .cityCleaningType:
-            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/type/json")
-        
-        case .cityCleaningContractor:
-            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/contractor/json")
-            
-        case .cityCleaningIndicator:
-            return urlComponents(host: "info.agt72.ru", path: "/api/grader_new/default/indicators/json")
-            
-        case .bikePath:
-            return urlComponents(host: "info.agt72.ru", path: "/api/informer/MobileAppInfo/select/json")
-            
-        case .bikeLegend:
-            return urlComponents(host: "info.agt72.ru", path: "/api/informer/MobileAppInfo/getLegenda/json")
-        }
-        
-    }
-    
-    func urlComponents(scheme: String = "https", host: String = "dom.tyumen-city.ru", path: String, queryItems: [URLQueryItem]? = nil) -> URL? {
-        var components = URLComponents()
-        components.scheme = scheme
-        components.host = host
-        components.path = path
-        components.queryItems = queryItems
-        return components.url
-    }
-    
-    func request(url: URL) -> URLRequest? {
-        var request = URLRequest(url: url)
-        
-        switch self {
-            
+            "https://api.tgt72.ru/api/v5/roadworks"
         case .communalServices:
-            break
+            "https://dom.tyumen-city.ru/cron/mkd.t-c.ru.php"
+        case .sport:
+            "https://info.agt72.ru/api/sport/main/institutions/json"
+        case .digWork:
+            "https://info.agt72.ru/api/dig/main/dig/json"
+        case .tradeObjects:
+            "https://nto.tyumen-city.ru/api/informer/MobileAppInfo/select/json"
+        case .tradeObjectBy:
+            "https://nto.tyumen-city.ru/api/informer/MobileAppInfo/selectById/json"
+        case .tradeObjectsGetType:
+            "https://nto.tyumen-city.ru/api/informer/MobileAppInfo/getTypeObject/json"
+        case .tradeObjectsGetPeriod:
+            "https://nto.tyumen-city.ru/api/informer/MobileAppInfo/getPeriod/json"
+        case .tradeObjectsSearch:
+            "https://nto.tyumen-city.ru/api/informer/MobileAppInfo/searchByCategory/json"
+        case .urbanImprovements:
+            "https://info.agt72.ru/api/informer/blagoustroystvo/select/json"
+        case .urbanImprovementsInfo:
+            "https://info.agt72.ru/api/informer/main/get_record_id/json"
+        case .cityCleaning:
+            "https://info.agt72.ru/api/grader_new/default/select/json"
+        case .cityCleaningType:
+            "https://info.agt72.ru/api/grader_new/default/type/json"
+        case .cityCleaningContractor:
+            "https://info.agt72.ru/api/grader_new/default/contractor/json"
+        case .cityCleaningIndicator:
+            "https://info.agt72.ru/api/grader_new/default/indicators/json"
+        case .bikePath:
+            "https://info.agt72.ru/api/informer/MobileAppInfo/select/json"
+        case .bikeLegend:
+            "https://info.agt72.ru/api/informer/MobileAppInfo/getLegenda/json"
+        }
+    }
+    
+    var parameters: Parameters? {
+        switch self {
         case .closeRoads, .tradeObjects, .tradeObjectsGetType, .tradeObjectsGetPeriod:
-            request.httpMethod = "POST"
+            return ["token": createToken()]
             
-            let formData = "token=\(createToken())"
-            request.httpBody = formData.data(using: .utf8)
-            print(createToken())
-            
-        case .tradeObjectBy(let id):
-            request.httpMethod = "POST"
-            
-            let formData = [
-                "token" : createToken(),
-                "id" : id
-            ].map { "\($0.key)=\($0.value)" }.joined(separator: "&")
-            
-            request.httpBody = formData.data(using: .utf8)
-            print(createToken())
-            
-        case .tradeObjectsSearch(let search):
-            request.httpMethod = "POST"
-            
-            let periodOperation = search.periodOperation!.isEmpty ? "periodOperation" : "periodOperation[]"
-            let objectType = search.objectType!.isEmpty ? "objectType" : "objectType[]"
-            
-            print(search.periodOperation)
-            print(periodOperation)
-            dump(search)
-            
-            let formData = [
-                "token" : createToken(),
-                periodOperation: search.periodOperation ?? "",
-                objectType: search.objectType ?? "",
-                "locationAddress": search.locationAddress,
-                "numberObjectScheme": search.numberObjectScheme,
-                "intendedPurpose": search.intendedPurpose
-            ].map { "\($0.key)=\($0.value)" }.joined(separator: "&")
-            
-            print(formData)
-            
-            request.httpBody = formData.data(using: .utf8)
-            
-        case .urbanImprovements, .urbanImprovementsInfo, .cityCleaning, .bikeLegend,
-                .bikePath, .sport, .cityCleaningType, .cityCleaningContractor, .cityCleaningIndicator:
-            request.httpMethod = "POST"
-            
-        case .digWork(let filter):
-            request.httpMethod = "POST"
-            
+        case .digWork(filter: let filter):
             if let filter {
                 let formData = [
                     "person" : filter.person,
@@ -162,13 +83,57 @@ enum APIEndpoint {
                     "state": filter.state,
                     "startWorkTime": filter.startWorkTime,
                     "endWorkTime": filter.endWorkTime
-                ].map { "\($0.key)=\($0.value)" }.joined(separator: "&")
-                request.httpBody = formData.data(using: .utf8)
+                ]
+                return formData
+            } else {
+                return nil
             }
-            print(filter)
-        }
+            
+        case .tradeObjectBy(id: let id):
+            return ["token" : createToken(), "id" : id]
+            
+        case .tradeObjectsSearch(search: let search):
+            let periodOperation = search.periodOperation!.isEmpty ? "periodOperation" : "periodOperation[]"
+            let objectType = search.objectType!.isEmpty ? "objectType" : "objectType[]"
 
-        print("url \(request.url)")
-        return request
+            let formData = [
+                "token" : createToken(),
+                periodOperation: search.periodOperation ?? "",
+                objectType: search.objectType ?? "",
+                "locationAddress": search.locationAddress,
+                "numberObjectScheme": search.numberObjectScheme,
+                "intendedPurpose": search.intendedPurpose
+            ]
+            return formData
+            
+        case .urbanImprovementsInfo(id: let id):
+            return ["id": id]
+            
+        default:
+            return nil
+        }
+    }
+    
+    var method: HTTPMethod {
+        switch self {
+        case .communalServices:
+            return HTTPMethod.get
+        default:
+            return HTTPMethod.post
+        }
+    }
+    
+    var encodingType: ParameterEncoding {
+        switch self {
+        case .closeRoads, .tradeObjects, .tradeObjectsGetType, .tradeObjectsGetPeriod, .digWork, .tradeObjectBy, .tradeObjectsSearch:
+            return URLEncoding.httpBody
+            
+        case .communalServices, .sport, .cityCleaning, .cityCleaningType,
+                .cityCleaningContractor, .cityCleaningIndicator, .bikePath, .bikeLegend, .urbanImprovements:
+            return URLEncoding.default
+            
+        case .urbanImprovementsInfo:
+            return URLEncoding.queryString
+        }
     }
 }

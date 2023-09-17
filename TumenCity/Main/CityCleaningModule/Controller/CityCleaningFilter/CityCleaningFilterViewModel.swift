@@ -28,21 +28,24 @@ final class CityCleaningFilterViewModel {
     }
     
     func getFilterItems() async {
-        do {
-            let res = try await APIManager().getAPIContent(type: [CityCleaningTypeElement].self, endpoint: .cityCleaningType)
-            filterItems = res
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: [CityCleaningTypeElement].self,
+                                                                    endpoint: .cityCleaningType)
+        switch result {
+        case .success(let success):
+            filterItems = success
+        case .failure(let failure):
+            print(failure)
         }
     }
     
     func getContractorsItems() async {
-        do {
-            let res = try await APIManager().getAPIContent(type: [CityCleaningContractorElement].self, endpoint: .cityCleaningContractor)
-            contractorsItems = res
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: [CityCleaningContractorElement].self,
+                                                                    endpoint: .cityCleaningContractor)
+        switch result {
+        case .success(let success):
+            contractorsItems = success
+        case .failure(let failure):
+            print(failure)
         }
     }
-    
 }

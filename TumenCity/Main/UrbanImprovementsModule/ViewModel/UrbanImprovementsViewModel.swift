@@ -9,6 +9,7 @@ import Foundation
 import YandexMapsMobile
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class UrbanImprovementsViewModel {
@@ -32,6 +33,8 @@ final class UrbanImprovementsViewModel {
     var mapObjectsObservable: Observable<MapObjectsTypealias> {
         mapObjects.asObservable()
     }
+    
+    var onError: ((AFError) -> ())?
     
     init() {
         Task {
@@ -61,21 +64,28 @@ final class UrbanImprovementsViewModel {
     }
     
     func getUrbanImprovements() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: UrbanImprovements.self, endpoint: .urbanImprovements)
-            filters = result.filter
-            pointsFeature = result.geo.points.features
-            polygonsFeature = result.geo.polygons.features
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: UrbanImprovements.self,
+                                                                    endpoint: .urbanImprovements)
+        switch result {
+        case .success(let success):
+            filters = success.filter
+            pointsFeature = success.geo.points.features
+            polygonsFeature = success.geo.polygons.features
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     
     func getUrbanImprovementsDetailInfoByID(_ id: Int) async -> UrbanImprovementsDetailInfo? {
-        do {
-            return try await APIManager().getAPIContent(type: UrbanImprovementsDetailInfo.self, endpoint: .urbanImprovementsInfo(id: id))
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: UrbanImprovementsDetailInfo.self,
+                                                                    endpoint: .urbanImprovementsInfo(id: id))
+        switch result {
+        case .success(let success):
+            return success
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
             return nil
         }
     }

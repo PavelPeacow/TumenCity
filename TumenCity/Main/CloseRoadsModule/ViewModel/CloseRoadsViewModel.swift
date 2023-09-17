@@ -10,6 +10,7 @@ import YandexMapsMobile
 import MapKit
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class CloseRoadsViewModel {
@@ -34,6 +35,8 @@ final class CloseRoadsViewModel {
         isLoading.asObservable()
     }
     
+    var onError: ((AFError) -> ())?
+    
     init() {
         Task {
             isLoading.accept(true)
@@ -43,17 +46,17 @@ final class CloseRoadsViewModel {
     }
     
     private func getCloseRoads() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: RoadCloseResponse.self, endpoint: .closeRoads)
+        let result = await APIManager().fetchDataWithParameters(type: RoadCloseResponse.self,
+                                                                    endpoint: .closeRoads)
+        switch result {
+        case .success(let success):
             closeRoads
-                .onNext(result.objects)
+                .onNext(success.objects)
             closeRoads
                 .onCompleted()
-            print(result.objects)
-        } catch {
-            closeRoads
-                .onError(error)
-            print(error)
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     

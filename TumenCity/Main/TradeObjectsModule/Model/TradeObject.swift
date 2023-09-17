@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct TradeObject: Decodable {
+struct TradeObject: Codable {
     let row: [TradeObjectRow]
 }
 
 // MARK: - Row
-struct TradeObjectRow: Decodable {
+struct TradeObjectRow: Codable {
     let id: String
     let fields: TradeObjectFields
 }
 
 // MARK: - Fields
-struct TradeObjectFields: Decodable {
+struct TradeObjectFields: Codable {
     let numShema: String?
     let numDoc: String?
     let address: String?

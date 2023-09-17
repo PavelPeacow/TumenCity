@@ -21,18 +21,26 @@ final class CityCleaningIndicatorsViewModel {
     func getIndicators() -> Observable<Void> {
         return Observable.create { observer in
             Task { [weak self] in
-                do {
-                    let indicators = try await APIManager().getAPIContent(type: CityCleaningIndicator.self, endpoint: .cityCleaningIndicator)
-                    self?.indicators = indicators
-                    self?.createItems()
-                    observer.onNext(())
-                    observer.onCompleted()
-                } catch {
-                    print(error)
-                }
+                let indicators = await self?.getIndicatorsData()
+                self?.indicators = indicators
+                self?.createItems()
+                observer.onNext(())
+                observer.onCompleted()
             }
             
             return Disposables.create()
+        }
+    }
+    
+    private func getIndicatorsData() async -> CityCleaningIndicator? {
+        let result = await APIManager().fetchDataWithParameters(type: CityCleaningIndicator.self,
+                                                                    endpoint: .cityCleaningIndicator)
+        switch result {
+        case .success(let success):
+            return success
+        case .failure(let failure):
+            print(failure)
+            return nil
         }
     }
     

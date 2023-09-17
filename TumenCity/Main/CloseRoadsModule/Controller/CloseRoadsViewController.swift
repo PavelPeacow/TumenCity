@@ -51,15 +51,17 @@ final class CloseRoadsViewController: UIViewController {
             })
             .disposed(by: bag)
         
+        viewModel.onError = { [weak self] error in
+            guard let self else { return }
+            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
+                          andShowOn: self.view)
+        }
+        
         viewModel
             .closeRoadsObserable
-            .subscribe(
-                onNext: { [unowned self] objects in
-                    self.viewModel.createCloseRoadAnnotation(objects: objects)
-                },
-                onError: { [unowned self] in
-                    self.showErrorAlert(title: "Ошибка", description: $0.localizedDescription)
-                }
+            .subscribe(onNext: { [unowned self] objects in
+                self.viewModel.createCloseRoadAnnotation(objects: objects)
+            }
             )
             .disposed(by: bag)
         
@@ -67,11 +69,11 @@ final class CloseRoadsViewController: UIViewController {
             .roadAnnotationsObserable
             .subscribe(
                 onNext: { [unowned self] roadAnnotations in
-                self.map.addAnnotations(roadAnnotations, cluster: self.collection)
-            },
-            onCompleted: { [unowned self] in
-                self.map.mapWindow.map.mapObjects.addTapListener(with: self)
-            })
+                    self.map.addAnnotations(roadAnnotations, cluster: self.collection)
+                },
+                onCompleted: { [unowned self] in
+                    self.map.mapWindow.map.mapObjects.addTapListener(with: self)
+                })
             .disposed(by: bag)
         
         viewModel

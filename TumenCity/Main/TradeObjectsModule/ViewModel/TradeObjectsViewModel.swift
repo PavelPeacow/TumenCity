@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class TradeObjectsViewModel {
@@ -32,6 +33,8 @@ final class TradeObjectsViewModel {
     var tradeObjectsAnnotationsObservable: Observable<[MKTradeObjectAnnotation]> {
         tradeObjectsAnnotations.asObservable()
     }
+    
+    var onError: ((AFError) -> ())?
     
     init() {
         Task {
@@ -91,48 +94,63 @@ final class TradeObjectsViewModel {
     }
     
     func getTradeObjects() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: TradeObjects.self, endpoint: .tradeObjects)
-            tradeObjects = result.row
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: TradeObjects.self,
+                                                                    endpoint: .tradeObjects)
+        switch result {
+        case .success(let success):
+            tradeObjects = success.row
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     
     func getTradeObjectsType() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: TradeObjectType.self, endpoint: .tradeObjectsGetType)
-            tradeObjectsType = result.row
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: TradeObjectType.self,
+                                                                    endpoint: .tradeObjectsGetType)
+        switch result {
+        case .success(let success):
+            tradeObjectsType = success.row
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     
     func getTradeObjectsPeriod() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: TradeObjectPeriod.self, endpoint: .tradeObjectsGetPeriod)
-            tradeObjectsPeriod = result.row
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: TradeObjectPeriod.self,
+                                                                    endpoint: .tradeObjectsGetPeriod)
+        switch result {
+        case .success(let success):
+            tradeObjectsPeriod = success.row
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     
     func getFilteredTradeObjectByFilter(_ searchFilter: TradeObjectsSearch) async -> [TradeObjectsRow]? {
-        do {
-            let result = try await APIManager().getAPIContent(type: TradeObjects.self, endpoint: .tradeObjectsSearch(search: searchFilter))
-            return result.row
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: TradeObjects.self,
+                                                                    endpoint: .tradeObjectsSearch(search: searchFilter))
+        switch result {
+        case .success(let success):
+            return success.row
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
             return nil
         }
     }
     
     func getTradeObjectById(_ id: String) async -> TradeObject? {
-        do {
-            let result = try await APIManager().getAPIContent(type: TradeObject.self, endpoint: .tradeObjectBy(id: id))
-            return result
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: TradeObject.self,
+                                                                    endpoint: .tradeObjectBy(id: id))
+        switch result {
+        case .success(let success):
+            return success
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
             return nil
         }
     }

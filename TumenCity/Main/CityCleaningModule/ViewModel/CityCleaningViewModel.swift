@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxRelay
+import Alamofire
 
 @MainActor
 final class CityCleaningViewModel {
@@ -23,6 +24,8 @@ final class CityCleaningViewModel {
     var isLoadingObservable: Observable<Bool> {
         isLoading.asObservable()
     }
+    
+    var onError: ((AFError) -> ())?
     
     init() {
         Task {
@@ -51,11 +54,14 @@ final class CityCleaningViewModel {
     }
     
     private func getCityCleaningItems() async {
-        do {
-            let result = try await APIManager().getAPIContent(type: CityCleaning.self, endpoint: .cityCleaning)
-            cityCleaningItems = result.info
-        } catch {
-            print(error)
+        let result = await APIManager().fetchDataWithParameters(type: CityCleaning.self,
+                                                                    endpoint: .cityCleaning)
+        switch result {
+        case .success(let success):
+            cityCleaningItems = success.info
+        case .failure(let failure):
+            print(failure)
+            onError?(failure)
         }
     }
     
