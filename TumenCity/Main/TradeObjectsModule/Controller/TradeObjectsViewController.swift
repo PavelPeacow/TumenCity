@@ -7,6 +7,7 @@
 
 import UIKit
 import YandexMapsMobile
+import Combine
 import RxSwift
 
 class TradeObjectsViewController: UIViewController {
@@ -15,6 +16,7 @@ class TradeObjectsViewController: UIViewController {
     
     var currentTappedFilter: TradeObjectsTypeView?
     
+    var cancellables = Set<AnyCancellable>()
     let bag = DisposeBag()
     
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
@@ -71,12 +73,13 @@ class TradeObjectsViewController: UIViewController {
             guard let self else { return }
             $0.top.equalTo(self.tradeObjectsFilterTypeStackView.snp.bottom).offset(5)
         }
+        map.mapWindow.map.mapObjects.addTapListener(with: self)
     }
 #warning("Refactore rxswift code")
     private func setUpBindings() {
         viewModel
             .isLoadingObservable
-            .subscribe(onNext: { [unowned self] isLoading in
+            .sink(receiveValue: { [unowned self] isLoading in
                 if isLoading {
                     loadingController.showLoadingViewControllerIn(self) {
                         self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -87,35 +90,32 @@ class TradeObjectsViewController: UIViewController {
                     }
                 }
             })
-            .disposed(by: bag)
-        
+            .store(in: &cancellables)
+            
         viewModel.onError = { [weak self] error in
             guard let self else { return }
             ErrorSnackBar(errorDesciptrion: error.localizedDescription,
                           andShowOn: self.view)
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
         viewModel
             .currentVisibleTradeObjectsAnnotationsObservable
-            .skip(1)
-            .subscribe(onNext: { [unowned self] annotations in
+            .dropFirst()
+            .sink { [unowned self] annotations in
                 collection.clear()
                 map.addAnnotations(annotations, cluster: collection)
                 setTradeObjectsCount(from: annotations)
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
         
         viewModel
             .tradeObjectsAnnotationsObservable
-            .subscribe(
-                onNext: { [unowned self] annotations in
-                    map.addAnnotations(annotations, cluster: collection)
-                    setTradeObjectsCount(from: annotations)
-                },
-                onCompleted: { [unowned self] in
-                    map.mapWindow.map.mapObjects.addTapListener(with: self)
-                })
-            .disposed(by: bag)
+            .sink { [unowned self] annotations in
+                map.addAnnotations(annotations, cluster: collection)
+                setTradeObjectsCount(from: annotations)
+            }
+            .store(in: &cancellables)
     }
     
     private func setTradeObjectsCount(from annotations: [MKTradeObjectAnnotation]) {
@@ -215,8 +215,7 @@ extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
             if let result = await viewModel.getFilteredTradeObjectByFilter(searchFilter) {
                 collection.clear()
                 let annotations = viewModel.addAnnotations(tradeObjects: result)
-                viewModel.currentVisibleTradeObjectsAnnotations
-                    .onNext(annotations)
+                viewModel.currentVisibleTradeObjectsAnnotations = annotations
             }
             loadingControllerForModal.removeLoadingViewControllerIn(self) { [unowned self] in
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -227,8 +226,7 @@ extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
     func didTapClearBtn() {
         collection.clear()
         let defaultAnnotations = viewModel.getDefualtTradeAnnotations()
-        viewModel.currentVisibleTradeObjectsAnnotations
-            .onNext(defaultAnnotations)
+        viewModel.currentVisibleTradeObjectsAnnotations = defaultAnnotations
     }
     
 }

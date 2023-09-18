@@ -8,16 +8,16 @@
 import UIKit
 import YandexMapsMobile
 import SnapKit
-import RxSwift
+import Combine
 
 class BikePathsViewController: UIViewController {
     
     private let viewModel = BikePathsViewModel()
-    private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
     
     private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
     private lazy var loadingController = LoadingViewController()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
@@ -36,7 +36,7 @@ class BikePathsViewController: UIViewController {
     private func setUpBindings() {
         viewModel
             .isLoadingObservable
-            .subscribe(onNext: { [unowned self] isLoading in
+            .sink { [unowned self] isLoading in
                 if isLoading {
                     loadingController.showLoadingViewControllerIn(self) {
                         self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -46,19 +46,20 @@ class BikePathsViewController: UIViewController {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
                     }
                 }
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
             ErrorSnackBar(errorDesciptrion: error.localizedDescription,
                           andShowOn: self.view)
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
         viewModel
             .mapObjectsObservable
-            .subscribe(onNext: { [unowned self] (polygons, polylines) in
-                polygons.forEach { polygon in
+            .sink { [unowned self] data in
+                data?.polygons.forEach { polygon in
                     let polygonCreated = map.mapWindow.map.mapObjects.addPolygon(with: polygon.key)
                     polygonCreated.strokeWidth = 1
                     polygonCreated.strokeColor = .systemGray
@@ -67,13 +68,13 @@ class BikePathsViewController: UIViewController {
                     _ = map.mapWindow.map.mapObjects.addPlacemark(with: polygon.value, image: .init(named: "bikeInWork")!)
                 }
                 
-                polylines.forEach { polyline in
+                data?.polilines.forEach { polyline in
                     let polylineCreated = map.mapWindow.map.mapObjects.addPolyline(with: polyline.key)
                     polylineCreated.strokeWidth = 2.5
                     polylineCreated.setStrokeColorWith(polyline.value)
                 }
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
     }
     
 }

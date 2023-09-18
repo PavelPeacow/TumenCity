@@ -7,13 +7,12 @@
 
 import Foundation
 import YandexMapsMobile
-import RxSwift
-import RxRelay
 import Alamofire
+import Combine
 
 @MainActor
 final class BikePathsViewModel {
-    typealias MapObjectsTypealias = (polygons: [YMKPolygon : YMKPoint], polilines: [YMKPolyline : UIColor])
+    typealias MapObjectsTypealias = (polygons: [YMKPolygon : YMKPoint], polilines: [YMKPolyline : UIColor])?
     
     private var objects = [Object]()
     private var lines = [Line]()
@@ -22,53 +21,56 @@ final class BikePathsViewModel {
     private var bikePoliline = [YMKPolyline : UIColor]()
     var bikeInfoLegendItems = [BikePathInfoLegend]()
     
-    private let mapObjects = PublishSubject<MapObjectsTypealias>()
-    private let isLoading = BehaviorRelay<Bool>(value: false)
+    @Published private var mapObjects = MapObjectsTypealias(nil)
+    @Published private var isLoading = true
     
-    var mapObjectsObservable: Observable<MapObjectsTypealias> {
-        mapObjects.asObservable()
+    private var cancellables = Set<AnyCancellable>()
+    
+    var mapObjectsObservable: AnyPublisher<MapObjectsTypealias, Never> {
+        $mapObjects.eraseToAnyPublisher()
     }
-    var isLoadingObservable: Observable<Bool> {
-        isLoading.asObservable()
+    var isLoadingObservable: AnyPublisher<Bool, Never> {
+        $isLoading.eraseToAnyPublisher()
     }
     
     var onError: ((AFError) -> ())?
     
     init() {
         Task {
-            isLoading.accept(true)
-            await getBikePathsElements()
-            await getBikeInfoLegendItems()
+            isLoading = true
+            async let bikePublisher = getBikePathsElements()
+            async let infoPublisher = getBikeInfoLegendItems()
+        
+            Publishers
+                .CombineLatest(await bikePublisher, await infoPublisher)
+                .sink(receiveCompletion: { [unowned self] completion in
+                    isLoading = false
+                    if case let .failure(error) = completion {
+                        self.onError?(error)
+                    }
+                }) { paths, info in
+                    self.objects = paths.row.object
+                    self.lines = paths.row.line
+                    self.bikeInfoLegendItems = info
+                }
+                .store(in: &cancellables)
+            
             formatBikeLine()
-            isLoading.accept(false)
-            mapObjects
-                .onNext((bikePoligons, bikePoliline))
+            
+            mapObjects = (bikePoligons, bikePoliline)
         }
     }
     
-    func getBikePathsElements() async {
-        let result = await APIManager().fetchDataWithParameters(type: BikePaths.self,
-                                                                    endpoint: .bikePath)
-        switch result {
-        case .success(let success):
-            objects = success.row.object
-            lines = success.row.line
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
-        }
+    func getBikePathsElements() async -> Result<BikePaths, AFError>.Publisher {
+        await APIManager()
+            .fetchDataWithParameters(type: BikePaths.self, endpoint: .bikePath)
+            .publisher
     }
     
-    func getBikeInfoLegendItems() async {
-        let result = await APIManager().fetchDataWithParameters(type: [BikePathInfoLegend].self,
-                                                                    endpoint: .bikeLegend)
-        switch result {
-        case .success(let success):
-            bikeInfoLegendItems = success
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
-        }
+    func getBikeInfoLegendItems() async -> Result<[BikePathInfoLegend], AFError>.Publisher {
+        await APIManager()
+            .fetchDataWithParameters(type: [BikePathInfoLegend].self,  endpoint: .bikeLegend)
+            .publisher
     }
     
     private func getMiddleCoordinate(from coordinates: [[Double]]) -> (lat: Double, long: Double) {
@@ -80,13 +82,13 @@ final class BikePathsViewModel {
         let maxLatitude = coordinates.min(by: { $0[0] > $1[0] })![0]
         let minLongitude = coordinates.min(by: { $0[1] < $1[1] })![1]
         let maxLongitude = coordinates.min(by: { $0[1] > $1[1] })![1]
-
+        
         let middleLatitude = (minLatitude + maxLatitude) / 2.0
         let middleLongitude = (minLongitude + maxLongitude) / 2.0
-
+        
         return (middleLatitude, middleLongitude)
     }
-
+    
     func formatBikeLine() {
         objects.forEach { object in
             guard let strPoligonData = object.fields.poligon.data(using: .utf8) else { return }
@@ -138,7 +140,7 @@ final class BikePathsViewModel {
             let color = UIColor(named: colorID) ?? .black
             bikePoliline[mapPolyline] = color
         }
-
+        
         print(bikePoliline)
     }
     

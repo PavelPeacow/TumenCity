@@ -6,72 +6,76 @@
 //
 
 import Foundation
-import RxSwift
-import RxRelay
 import Alamofire
+import Combine
 
 @MainActor
 final class TradeObjectsViewModel {
     
-    var currentVisibleTradeObjectsAnnotations = BehaviorSubject<[MKTradeObjectAnnotation]>(value: [])
+    @Published var currentVisibleTradeObjectsAnnotations = [MKTradeObjectAnnotation]()
     
     var tradeObjects = [TradeObjectsRow]()
-    var tradeObjectsAnnotations = BehaviorSubject<[MKTradeObjectAnnotation]>(value: [])
+    @Published var tradeObjectsAnnotations = [MKTradeObjectAnnotation]()
     
     var tradeObjectsType = [TradeObjectTypeRow]()
     var tradeObjectsPeriod = [TradeObjectPeriodRow]()
     
-    private var isLoading = BehaviorRelay(value: false)
-    var isLoadingObservable: Observable<Bool> {
-        isLoading.asObservable()
+    var cancellables = Set<AnyCancellable>()
+    
+    @Published private var isLoading = false
+    var isLoadingObservable: AnyPublisher<Bool, Never> {
+        $isLoading.eraseToAnyPublisher()
     }
     
-    var currentVisibleTradeObjectsAnnotationsObservable: Observable<[MKTradeObjectAnnotation]> {
-        currentVisibleTradeObjectsAnnotations.asObservable()
+    var currentVisibleTradeObjectsAnnotationsObservable: AnyPublisher<[MKTradeObjectAnnotation], Never> {
+        $currentVisibleTradeObjectsAnnotations.eraseToAnyPublisher()
     }
     
-    var tradeObjectsAnnotationsObservable: Observable<[MKTradeObjectAnnotation]> {
-        tradeObjectsAnnotations.asObservable()
+    var tradeObjectsAnnotationsObservable: AnyPublisher<[MKTradeObjectAnnotation], Never> {
+        $tradeObjectsAnnotations.eraseToAnyPublisher()
     }
     
     var onError: ((AFError) -> ())?
     
     init() {
         Task {
-            isLoading.accept(true)
-            await getTradeObjects()
-            await getTradeObjectsType()
-            await getTradeObjectsPeriod()
+            isLoading = true
+            async let tradeObjectsPublisher = getTradeObjects()
+            async let tradeObjectsTypePublisher = getTradeObjectsType()
+            async let tradeObjectsPeriodPublisher = getTradeObjectsPeriod()
+            
+            Publishers
+                .CombineLatest3(await tradeObjectsPublisher, await tradeObjectsTypePublisher, await tradeObjectsPeriodPublisher)
+                .sink(receiveCompletion: { [unowned self] completion in
+                    isLoading = false
+                    if case let .failure(error) = completion {
+                        self.onError?(error)
+                    }
+                }) { [unowned self] trade, tradeType, tradePeriod in
+                    tradeObjects = trade.row
+                    tradeObjectsType = tradeType.row
+                    tradeObjectsPeriod = tradePeriod.row
+                }
+                .store(in: &cancellables)
+
             
             let annotations = addAnnotations(tradeObjects: tradeObjects)
             
-            tradeObjectsAnnotations
-                .onNext(annotations)
-            
-            tradeObjectsAnnotations
-                .onCompleted()
-            
-            currentVisibleTradeObjectsAnnotations
-                .onNext(annotations)
-            isLoading.accept(false)
+            tradeObjectsAnnotations = annotations
+            currentVisibleTradeObjectsAnnotations = annotations
         }
     }
     
     func getDefualtTradeAnnotations() -> [MKTradeObjectAnnotation] {
-        guard let values = try? tradeObjectsAnnotations.value() else { return [] }
-        return values
+        tradeObjectsAnnotations
     }
     
     func getCurrentVisibleTradeAnnotations() -> [MKTradeObjectAnnotation] {
-        guard let values = try? currentVisibleTradeObjectsAnnotations.value() else { return [] }
-        return values
+        currentVisibleTradeObjectsAnnotations
     }
     
     func filterAnnotationsByType(_ type: MKTradeObjectAnnotation.AnnotationType) -> [MKTradeObjectAnnotation] {
-        guard let annotations = try? currentVisibleTradeObjectsAnnotations.value() else {
-            return []
-        }
-        return annotations.filter { $0.type == type }
+        currentVisibleTradeObjectsAnnotations.filter { $0.type == type }
     }
     
     func isClusterWithTheSameCoordinates(annotations: [MKTradeObjectAnnotation]) -> Bool {
@@ -93,40 +97,22 @@ final class TradeObjectsViewModel {
         return false
     }
     
-    func getTradeObjects() async {
-        let result = await APIManager().fetchDataWithParameters(type: TradeObjects.self,
-                                                                    endpoint: .tradeObjects)
-        switch result {
-        case .success(let success):
-            tradeObjects = success.row
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
-        }
+    func getTradeObjects() async -> Result<TradeObjects, AFError>.Publisher {
+        await APIManager()
+            .fetchDataWithParameters(type: TradeObjects.self, endpoint: .tradeObjects)
+            .publisher
     }
     
-    func getTradeObjectsType() async {
-        let result = await APIManager().fetchDataWithParameters(type: TradeObjectType.self,
-                                                                    endpoint: .tradeObjectsGetType)
-        switch result {
-        case .success(let success):
-            tradeObjectsType = success.row
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
-        }
+    func getTradeObjectsType() async -> Result<TradeObjectType, AFError>.Publisher {
+        await APIManager()
+            .fetchDataWithParameters(type: TradeObjectType.self, endpoint: .tradeObjectsGetType)
+            .publisher
     }
     
-    func getTradeObjectsPeriod() async {
-        let result = await APIManager().fetchDataWithParameters(type: TradeObjectPeriod.self,
-                                                                    endpoint: .tradeObjectsGetPeriod)
-        switch result {
-        case .success(let success):
-            tradeObjectsPeriod = success.row
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
-        }
+    func getTradeObjectsPeriod() async -> Result<TradeObjectPeriod, AFError>.Publisher {
+        await APIManager()
+            .fetchDataWithParameters(type: TradeObjectPeriod.self, endpoint: .tradeObjectsGetPeriod)
+            .publisher
     }
     
     func getFilteredTradeObjectByFilter(_ searchFilter: TradeObjectsSearch) async -> [TradeObjectsRow]? {
