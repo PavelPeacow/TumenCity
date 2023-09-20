@@ -50,9 +50,6 @@ final class MainMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        
         view.addSubview(collectionView)
         
         collectionView.snp.makeConstraints {
@@ -60,6 +57,16 @@ final class MainMenuViewController: UIViewController {
             $0.topMargin.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setClearAppearence()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setStandartAppearence()
     }
     
 }

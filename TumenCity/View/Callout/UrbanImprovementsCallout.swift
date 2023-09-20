@@ -92,8 +92,8 @@ final class UrbanImprovementsCallout: Callout {
         super.viewDidLoad()
         
         contentView.addSubview(stackViewContent)
-        
-        calloutTapGesture.delegate = self
+#warning("added button for callouts, may not be needed anymore")
+//        calloutTapGesture.delegate = self
         
         setConstaints()
     }
@@ -137,14 +137,15 @@ final class UrbanImprovementsCallout: Callout {
     }
 }
 
-extension UrbanImprovementsCallout: UIGestureRecognizerDelegate {
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        let touchLocation = touch.location(in: collectionView)
-        return !collectionView.bounds.contains(touchLocation)
-    }
-    
-}
+#warning("added button for callouts, may not be needed anymore")
+//extension UrbanImprovementsCallout: UIGestureRecognizerDelegate {
+//    
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+//        let touchLocation = touch.location(in: collectionView)
+//        return !collectionView.bounds.contains(touchLocation)
+//    }
+//    
+//}
 
 extension UrbanImprovementsCallout: UICollectionViewDataSource {
     

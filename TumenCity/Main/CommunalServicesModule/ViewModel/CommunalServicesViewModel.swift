@@ -16,12 +16,12 @@ final class CommunalServicesViewModel {
     
     //MARK: - Properties
     private let communalAnnotations = BehaviorSubject<[MKItemAnnotation]>(value: [])
-    private let filteredAnnotations = BehaviorSubject<[MKItemAnnotation]>(value: [])
+    private let filteredAnnotations = BehaviorSubject<([MKItemAnnotation], [CommunalServicesFormatted])>(value: ([], []))
     
     var communalAnnotationsObservable: Observable<[MKItemAnnotation]> {
         communalAnnotations.asObservable()
     }
-    var filteredAnnotationsObservable: Observable<[MKItemAnnotation]> {
+    var filteredAnnotationsObservable: Observable<([MKItemAnnotation], [CommunalServicesFormatted])> {
         filteredAnnotations.asObservable()
     }
     
@@ -50,22 +50,25 @@ final class CommunalServicesViewModel {
     func filterCommunalServices(with filterID: Int) {
         if let communalValue = try? communalAnnotations.value() {
             let filtered = communalValue.filter { $0.markDescription.accidentID.rawValue == filterID }
+            let communalServicesFiltered = communalServicesFormatted
+                .filter { $0.mark.contains(where: { $0.accidentID.rawValue == filterID }) }
             filteredAnnotations
-                .onNext(filtered)
+                .onNext((filtered, communalServicesFiltered))
         }
     }
     
     func resetFilterCommunalServices() {
         if let communalValue = try? communalAnnotations.value() {
+            let communalServicesFiltered = communalServicesFormatted
             filteredAnnotations
-                .onNext(communalValue)
+                .onNext((communalValue, communalServicesFiltered))
         }
     }
     
     func findAnnotationByAddressName(_ address: String) -> Observable<MKItemAnnotation?> {
         filteredAnnotations
             .map { annotations in
-                annotations.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
+                annotations.0.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
             }
     }
     
@@ -95,7 +98,10 @@ final class CommunalServicesViewModel {
     }
     
     private func isDateToday(_ date: Date) -> Bool {
-        return Date() >= date
+        let calendar = Calendar.current
+        let day = calendar.component(.day, from: date)
+        let currentDay = calendar.component(.day, from: Date())
+        return currentDay >= day
     }
     
     //MARK: - Format data
@@ -176,7 +182,7 @@ final class CommunalServicesViewModel {
         communalAnnotations
             .onCompleted()
         filteredAnnotations
-            .onNext(createdAnnotations)
+            .onNext((createdAnnotations, communalServicesFormatted))
     }
     
 }

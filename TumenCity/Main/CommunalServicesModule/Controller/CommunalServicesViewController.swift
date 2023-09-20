@@ -165,10 +165,15 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
         viewModel
             .filteredAnnotationsObservable
             .skip(1)
-            .subscribe(onNext: { [unowned self] annotations in
+            .subscribe(onNext: { [unowned self] (annotations, communalServicesFormatted) in
                 collection.clear()
+                
                 serviceMap.map.addAnnotations(annotations, cluster: collection)
                 serviceMap.map.setDefaultRegion()
+                // Filter for registry
+                serviceRegistry.cards = communalServicesFormatted
+                serviceRegistry.tableView.reloadData()
+                serviceSearch.configure(communalServicesFormatted: communalServicesFormatted)
             })
             .disposed(by: bag)
     }

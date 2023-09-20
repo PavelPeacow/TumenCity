@@ -72,6 +72,7 @@
 		B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */; };
 		B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */; };
 		B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */; };
+		B53400FE2ABB4BBE00B37208 /* UINavigationController+Appearence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
 		B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D664B2A0293430010F846 /* CloseRoad.swift */; };
@@ -214,6 +215,7 @@
 		B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkCallout.swift; sourceTree = "<group>"; };
 		B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
 		B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkBottomSheet.swift; sourceTree = "<group>"; };
+		B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Appearence.swift"; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
 		B53D664B2A0293430010F846 /* CloseRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoad.swift; sourceTree = "<group>"; };
@@ -685,6 +687,7 @@
 		B571088E29A216F8003698C8 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */,
 				B51C33DA2A5E92E900BC8A8E /* UIViewController+Child.swift */,
 				B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */,
 				B5D4B7832A76B2A900817C42 /* UIButton+TapAnimation.swift */,
@@ -1165,6 +1168,7 @@
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
 				B51C33D92A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
+				B53400FE2ABB4BBE00B37208 /* UINavigationController+Appearence.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
 				B50D325C2A1A0F050034B860 /* TradeObjectsSearch.swift in Sources */,
 				B528965D2A0A1E82006A85D9 /* DigWork.swift in Sources */,
