@@ -48,6 +48,7 @@ class CityCleaningViewController: UIViewController {
             guard let self else { return }
             ErrorSnackBar(errorDesciptrion: error.localizedDescription,
                           andShowOn: self.view)
+            navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
         viewModel

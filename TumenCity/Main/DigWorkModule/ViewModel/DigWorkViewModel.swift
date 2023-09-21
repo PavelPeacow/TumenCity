@@ -6,23 +6,26 @@
 //
 
 import MapKit
-import RxSwift
-import RxRelay
+import Combine
 import Alamofire
 
 @MainActor
 final class DigWorkViewModel {
     
     private var digWorkElements = [DigWorkElement]()
-    private var digWorkAnnotations = BehaviorSubject<[MKDigWorkAnnotation]>(value: [])
-    var searchQuery = PublishSubject<String>()
-    private var isLoading = BehaviorRelay(value: false)
+    @Published private var digWorkAnnotations = [MKDigWorkAnnotation]()
+    @Published var searchQuery = ""
+    @Published private var isLoading = true
+    var cancellables = Set<AnyCancellable>()
     
-    var digWorkAnnotationsObservable: Observable<[MKDigWorkAnnotation]> {
-        digWorkAnnotations.asObservable()
+    var digWorkAnnotationsObservable: AnyPublisher<[MKDigWorkAnnotation], Never> {
+        $digWorkAnnotations.eraseToAnyPublisher()
     }
-    var isLoadingObservable: Observable<Bool> {
-        isLoading.asObservable()
+    var searchQueryObservable: AnyPublisher<String, Never> {
+        $searchQuery.eraseToAnyPublisher()
+    }
+    var isLoadingObservable: AnyPublisher<Bool, Never> {
+        $isLoading.eraseToAnyPublisher()
     }
     
     var onError: ((AFError) -> ())?
@@ -33,11 +36,12 @@ final class DigWorkViewModel {
         }
     }
     
-    func findAnnotationByAddressName(_ address: String) -> Observable<MKDigWorkAnnotation?> {
-        digWorkAnnotations
+    func findAnnotationByAddressName(_ address: String) -> AnyPublisher<MKDigWorkAnnotation?, Never> {
+        $digWorkAnnotations
             .map { annotations in
                 annotations.first(where: { $0.address.lowercased().contains(address.lowercased()) } )
             }
+            .eraseToAnyPublisher()
     }
     
     func isClusterWithTheSameCoordinates(annotations: [MKDigWorkAnnotation]) -> Bool {
@@ -56,18 +60,20 @@ final class DigWorkViewModel {
     }
     
     func getDigWorkElements(filter: DigWorkFilter? = nil) async {
-        isLoading.accept(true)
-        let result = await APIManager().fetchDataWithParameters(type: DigWork.self,
-                                                                endpoint: .digWork(filter: filter))
-        switch result {
-        case .success(let success):
-            digWorkElements = success.features
-            addDigWorkAnnotations()
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
+        isLoading = true
+        await APIManager().fetchDataWithParameters(type: DigWork.self,
+                                                   endpoint: .digWork(filter: filter))
+        .publisher
+        .sink { completion in
+            self.isLoading = false
+            if case let .failure(error) = completion {
+                self.onError?(error)
+            }
+        } receiveValue: { digWork in
+            self.digWorkElements = digWork.features
+            self.addDigWorkAnnotations()
         }
-        isLoading.accept(false)
+        .store(in: &cancellables)
     }
     
     func addDigWorkAnnotations() {
@@ -84,8 +90,7 @@ final class DigWorkViewModel {
             return nil
         }
         
-        digWorkAnnotations
-            .onNext(annotations)
+        digWorkAnnotations = annotations
     }
     
 }

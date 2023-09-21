@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import Alamofire
+import Combine
 
 @MainActor
 final class CityCleaningViewModel {
@@ -17,6 +18,7 @@ final class CityCleaningViewModel {
     private var cityCleaningAnnotationsDefault = [MKCityCleaningAnnotation]()
     private var cityCleaningItems = [CityCleaningItemInfo]()
     private var isLoading = BehaviorRelay<Bool>(value: false)
+    private var cancellables = Set<AnyCancellable>()
     
     var cityCleaningAnnotationsObservable: Observable<[MKCityCleaningAnnotation]> {
         cityCleaningAnnotations.asObservable()
@@ -30,9 +32,17 @@ final class CityCleaningViewModel {
     init() {
         Task {
             isLoading.accept(true)
-            await getCityCleaningItems()
+            let items = await getCityCleaningItems()
+                .sink { completion in
+                    self.isLoading.accept(false)
+                    if case let .failure(error) = completion {
+                        self.onError?(error)
+                    }
+                } receiveValue: { cityCleaning in
+                    self.cityCleaningItems = cityCleaning.info
+                }
+
             createAnnotations()
-            isLoading.accept(false)
             print(cityCleaningItems)
         }
     }
@@ -53,16 +63,11 @@ final class CityCleaningViewModel {
         cityCleaningAnnotations.accept(filtered)
     }
     
-    private func getCityCleaningItems() async {
-        let result = await APIManager().fetchDataWithParameters(type: CityCleaning.self,
+    private func getCityCleaningItems() async -> Result<CityCleaning, AFError>.Publisher {
+        await APIManager().fetchDataWithParameters(type: CityCleaning.self,
                                                                     endpoint: .cityCleaning)
-        switch result {
-        case .success(let success):
-            cityCleaningItems = success.info
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
-        }
+            .publisher
+    
     }
     
     private func getAnnotationTypeByIcon(_ icon: CityCleaningItemIcon) -> UIImage? {

@@ -9,11 +9,13 @@ import UIKit
 import YandexMapsMobile
 import SnapKit
 import RxSwift
+import Combine
 
 final class DigWorkViewController: UIViewController {
     
     private let viewModel = DigWorkViewModel()
     private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
     
     private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
@@ -58,7 +60,7 @@ final class DigWorkViewController: UIViewController {
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { [unowned self] str in
-                viewModel.searchQuery.onNext(str)
+                viewModel.searchQuery = str
             })
             .disposed(by: bag)
     }
@@ -68,8 +70,7 @@ final class DigWorkViewController: UIViewController {
         
         viewModel
             .isLoadingObservable
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] in
+            .sink { [unowned self] in
                 if $0 {
                     loadingViewController.showLoadingViewControllerIn(self) { [unowned self] in
                         navigationItem.searchController?.searchBar.isHidden = true
@@ -81,37 +82,37 @@ final class DigWorkViewController: UIViewController {
                         navigationItem.rightBarButtonItem?.isEnabled = true
                     }
                 }
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
             ErrorSnackBar(errorDesciptrion: error.localizedDescription,
                           andShowOn: self.view)
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
         viewModel
-            .searchQuery
+            .searchQueryObservable
             .flatMap { [unowned self] query in
-                return viewModel.findAnnotationByAddressName(query)
+                return viewModel.findAnnotationByAddressName(String(query))
             }
-            .subscribe(onNext: { [unowned self] annotation in
+            .sink { [unowned self] annotation in
                 if let annotation{
                     map.moveCameraToAnnotation(annotation)
                 } else {
                     map.setDefaultRegion()
                 }
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
         
         viewModel
             .digWorkAnnotationsObservable
-            .subscribe(
-                onNext: { [unowned self] annotations in
-                    collection.clear()
-                    map.addAnnotations(annotations, cluster: collection)
-                })
-            .disposed(by: bag)
+            .sink { [unowned self] annotations in
+                collection.clear()
+                map.addAnnotations(annotations, cluster: collection)
+            }
+            .store(in: &cancellables)
     }
     
     private func configureModalSubscription(for modal: DigWorkBottomSheet, with annotations: [MKDigWorkAnnotation]) {
