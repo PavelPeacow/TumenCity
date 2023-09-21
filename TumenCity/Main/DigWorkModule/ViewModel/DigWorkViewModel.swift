@@ -58,7 +58,7 @@ final class DigWorkViewModel {
     func getDigWorkElements(filter: DigWorkFilter? = nil) async {
         isLoading.accept(true)
         let result = await APIManager().fetchDataWithParameters(type: DigWork.self,
-                                                                    endpoint: .digWork(filter: filter))
+                                                                endpoint: .digWork(filter: filter))
         switch result {
         case .success(let success):
             digWorkElements = success.features
@@ -71,14 +71,17 @@ final class DigWorkViewModel {
     }
     
     func addDigWorkAnnotations() {
-        let annotations = digWorkElements.map { element in
-            let lat = element.geometry.coordinates?.first ?? 0
-            let long = element.geometry.coordinates?.last ?? 0
-            
-            return MKDigWorkAnnotation(title: element.info.balloonContentHeader, address: element.options.address ?? "",
-                                       contentDescription: element.info.balloonContentBody,
-                                       icon: UIImage(named: "digWorkPin") ?? .add,
-                                       coordinates: CLLocationCoordinate2D(latitude: lat, longitude: long))
+        let annotations = digWorkElements.compactMap { element in
+            if let lat = element.geometry.coordinates?.first, let long = element.geometry.coordinates?.last {
+                return MKDigWorkAnnotation(
+                    title: element.info.balloonContentHeader,
+                    address: element.options.address ?? "",
+                    contentDescription: element.info.balloonContentBody,
+                    icon: UIImage(named: "digWorkPin") ?? .add,
+                    coordinates: CLLocationCoordinate2D(latitude: lat, longitude: long)
+                )
+            }
+            return nil
         }
         
         digWorkAnnotations

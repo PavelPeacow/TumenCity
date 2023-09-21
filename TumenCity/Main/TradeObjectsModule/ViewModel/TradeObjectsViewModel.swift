@@ -149,7 +149,10 @@ final class TradeObjectsViewModel {
             stringCoordinates.removeFirst()
             stringCoordinates.removeLast()
             print(stringCoordinates)
-            let coordinates = stringCoordinates.components(separatedBy: ",")
+            let coordinates = stringCoordinates
+                .replacingOccurrences(of: " ", with: "")
+                .components(separatedBy: ",")
+            
             let lat = Double(coordinates.first ?? "") ?? 0
             let long = Double(coordinates.last ?? "") ?? 0
             

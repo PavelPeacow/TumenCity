@@ -99,8 +99,8 @@ final class SportViewModel {
                     latFormatted = string
                 }
                 
-                if let longStr = longFormatted as? String, let latStr = latFormatted as? String {
-                    let annotation = MKSportAnnotation(icon: UIImage(named: "sportPin") ?? .add, title: title, coordinates: CLLocationCoordinate2D(latitude: Double(latStr) ?? 0, longitude: Double(longStr) ?? 0), contacts: contacts, addresses: addresses)
+                if let longStr = Double(longFormatted as? String ?? ""), let latStr = Double(latFormatted as? String ?? "") {
+                    let annotation = MKSportAnnotation(icon: UIImage(named: "sportPin") ?? .add, title: title, coordinates: CLLocationCoordinate2D(latitude: latStr, longitude: longStr), contacts: contacts, addresses: addresses)
                     annotations.append(annotation)
                 }
                 
