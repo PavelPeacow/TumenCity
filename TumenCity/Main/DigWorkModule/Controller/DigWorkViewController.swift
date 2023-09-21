@@ -92,6 +92,13 @@ final class DigWorkViewController: UIViewController {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
+        viewModel.onEmptyResult = { [weak self] in
+            guard let self else { return }
+            ErrorSnackBar(errorDesciptrion: "Нет доступной информации по заданному фильтру",
+                          type: .warning,
+                          andShowOn: self.view)
+        }
+        
         viewModel
             .searchQueryObservable
             .flatMap { [unowned self] query in

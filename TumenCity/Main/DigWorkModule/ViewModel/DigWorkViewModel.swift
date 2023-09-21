@@ -29,6 +29,7 @@ final class DigWorkViewModel {
     }
     
     var onError: ((AFError) -> ())?
+    var onEmptyResult: (() -> ())?
     
     init() {
         Task {
@@ -70,6 +71,10 @@ final class DigWorkViewModel {
                 self.onError?(error)
             }
         } receiveValue: { digWork in
+            if digWork.features.isEmpty {
+                self.onEmptyResult?()
+                return
+            }
             self.digWorkElements = digWork.features
             self.addDigWorkAnnotations()
         }

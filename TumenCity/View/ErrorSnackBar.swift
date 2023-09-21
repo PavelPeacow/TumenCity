@@ -17,6 +17,13 @@ final class ErrorSnackBar: UIView {
         static let disappearingTime = appearingTime + 4.0
     }
     
+    enum SnackBarType {
+        case error
+        case warning
+    }
+    
+    private var type: SnackBarType = .error
+    
     private let errorDesciptrion: String
     private let parentView: UIView
     
@@ -24,9 +31,10 @@ final class ErrorSnackBar: UIView {
     
     // MARK: Lifecycle
     @discardableResult
-    init(errorDesciptrion: String, andShowOn parentView: UIView) {
+    init(errorDesciptrion: String, type: SnackBarType = .error, andShowOn parentView: UIView) {
         self.errorDesciptrion = errorDesciptrion
         self.parentView = parentView
+        self.type = type
         
         super.init(frame: .zero)
         guard parentView.subviews.firstIndex(where: { $0 is Self }) == nil else { return }
@@ -80,7 +88,13 @@ final class ErrorSnackBar: UIView {
 extension ErrorSnackBar {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemRed.withAlphaComponent(0.95)
+        switch type {
+        case .error:
+            backgroundColor = .systemRed.withAlphaComponent(0.95)
+        case .warning:
+            backgroundColor = .systemYellow.withAlphaComponent(0.95)
+        }
+        
         layer.cornerRadius = 16
         clipsToBounds = true
     }
