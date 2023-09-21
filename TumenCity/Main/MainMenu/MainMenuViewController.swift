@@ -17,7 +17,6 @@ enum MenuItemType: String {
     case roadClose = "Перекрытие дорог"
     case digWork = "Земляные работы"
     case tradeObjects = "Нестационарные торговые объекты"
-    case none
 }
 
 final class MainMenuViewController: UIViewController {
@@ -25,6 +24,8 @@ final class MainMenuViewController: UIViewController {
     let menuTypes: [MenuItemType] = [.sport, .cityCleaning, .bikePaths, .urbanImprovements, .communalServices, .roadClose, .digWork, .tradeObjects]
     let menuTitles = ["Спорт", "Уборка города", "Велодорожки", "Благоустройство", "Отключение ЖКУ", "Перекрытие дорог", "Земляные работы", "Нестационарные торговые объекты"]
     let images = ["main-1", "main-2", "main-3"]
+    
+    private let router: MainMenuRouterProtocol
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout(section: .createMainLayout())
@@ -47,6 +48,15 @@ final class MainMenuViewController: UIViewController {
         image.image = UIImage(named: images.randomElement()!)
         return image
     }()
+    
+    init(router: MainMenuRouterProtocol) {
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,41 +115,28 @@ extension MainMenuViewController: UICollectionViewDelegate {
         let type = tappedItem.type
         tappedItem.tapAnimation()
         
-        switch type {
+        let mappedType = mapMenuItemTypeToRouterPath(type)
+        router.navigateTo(path: mappedType, from: self)
+    }
+
+    private func mapMenuItemTypeToRouterPath(_ itemType: MenuItemType) -> MainMenuRouterPaths {
+        switch itemType {
         case .sport:
-            let vc = SportViewController(sportRegistryView: SportRegistryView(), sportRegistrySearchResult: SportRegistrySearchViewController())
-            navigationController?.pushViewController(vc, animated: true)
-            return
+            return .sport
         case .cityCleaning:
-            let vc = CityCleaningViewController()
-            navigationController?.pushViewController(vc, animated: true)
-            return
+            return .cityCleaning
         case .bikePaths:
-            let vc = BikePathsViewController()
-            navigationController?.pushViewController(vc, animated: true)
-            return
+            return .bikePaths
         case .urbanImprovements:
-            let vc = UrbanImprovementsViewController()
-            navigationController?.pushViewController(vc, animated: true)
-            return
+            return .urbanImprovements
         case .communalServices:
-            let vc = CommunalServicesViewController(serviceMap: CommunalServicesView(), serviceRegistry: RegistryView(), serviceSearch: RegistySearchResultViewController())
-            navigationController?.pushViewController(vc, animated: true)
+            return .communalServices
         case .roadClose:
-            let vc = CloseRoadsViewController()
-            navigationController?.pushViewController(vc, animated: true)
-            return
+            return .roadClose
         case .digWork:
-            let vc = DigWorkViewController()
-            navigationController?.pushViewController(vc, animated: true)
-            return
+            return .digWork
         case .tradeObjects:
-            let vc = TradeObjectsViewController()
-            navigationController?.pushViewController(vc, animated: true)
-            return
-        case .none:
-            return
+            return .tradeObjects
         }
     }
-    
 }

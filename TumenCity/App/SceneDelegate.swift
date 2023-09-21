@@ -16,11 +16,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let nav = UINavigationController(rootViewController: MainMenuViewController())
+        let controller = buildMainMenuController()
+        let nav = UINavigationController(rootViewController: controller)
         window.rootViewController = nav
         window.makeKeyAndVisible()
         
         self.window = window
+    }
+    
+    private func buildMainMenuController() -> UIViewController {
+        let builder = MainMenuBuilder()
+        let router = MainMenuRouter(builder: builder)
+        return MainMenuViewController(router: router)
     }
 
 }

@@ -11,7 +11,7 @@ final class MenuCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "MenuTableViewCell"
     
-    var type: MenuItemType = .none
+    var type: MenuItemType = .sport
     
     lazy var menuStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [mainMenuIcon, separator, mainMenuTitle])
