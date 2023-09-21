@@ -89,6 +89,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     lazy var personFilter: FilterView = {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.personFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
+        filter.textField.delegate = self
         return filter
     }()
     
@@ -97,6 +98,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.text = zones[0].rawValue
         filter.textField.inputView = filterTypePickerView
+        filter.textField.inputAccessoryView = createDoneToolbar()
         filter.textField.delegate = self
         return filter
     }()
@@ -105,6 +107,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.typeOfWorkFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterTypePickerView
+        filter.textField.inputAccessoryView = createDoneToolbar()
         filter.textField.text = typeOfWork[0].rawValue
         filter.textField.delegate = self
         return filter
@@ -114,6 +117,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.statusFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterTypePickerView
+        filter.textField.inputAccessoryView = createDoneToolbar()
         filter.textField.text = status[0].rawValue
         filter.textField.delegate = self
         return filter
@@ -123,6 +127,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateAfterFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterDatePickerViewAfter
+        filter.textField.inputAccessoryView = createDoneToolbar()
         return filter
     }()
     
@@ -130,6 +135,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateBeforeFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterDatePickerViewBefore
+        filter.textField.inputAccessoryView = createDoneToolbar()
         return filter
     }()
     
@@ -207,6 +213,19 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         contentStackView.layoutIfNeeded()
         setViewsForCalculatingPrefferedSize(scrollView: scrollView, fittingView: contentStackView)
         setPrefferdSize()
+    }
+    
+    func createDoneToolbar() -> UIToolbar {
+        let toolbar = UIToolbar()
+        toolbar.barStyle = .default
+        toolbar.isTranslucent = true
+        toolbar.sizeToFit()
+
+        let doneButton = UIBarButtonItem(title: "Готово", style: .done, target: self, action: #selector(doneButtonTapped))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        return toolbar
     }
     
     private func formatDate(_ date: Date) -> String {
@@ -316,6 +335,9 @@ extension DigWorkFilterBottomSheet {
         dismiss(animated: true)
     }
     
+    @objc func doneButtonTapped() {
+        view.endEditing(true)
+    }
 }
 
 extension DigWorkFilterBottomSheet: UITextFieldDelegate {
@@ -375,7 +397,6 @@ extension DigWorkFilterBottomSheet: UIPickerViewDelegate {
             statusFilter.textField.text = status[row].rawValue
             selectedStatus = status[row]
         }
-        view.endEditing(true)
     }
     
 }
