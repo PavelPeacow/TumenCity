@@ -95,6 +95,7 @@
 		B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */; };
 		B5608A7C2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */; };
 		B566647C29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */; };
+		B5668C622ABC7A53005F0C5A /* EmptyDataMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */; };
 		B56E9BD72A3E0DF0000E69AD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B56E9BD62A3E0DF0000E69AD /* RxCocoa */; };
 		B56E9BD92A3E0DF0000E69AD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B56E9BD82A3E0DF0000E69AD /* RxSwift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
@@ -238,6 +239,7 @@
 		B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlayerWebView.swift; sourceTree = "<group>"; };
 		B5608A7D2A2DF65000A69B9C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
+		B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDataMessageView.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
 		B571088729A215D3003698C8 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
@@ -646,6 +648,7 @@
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */,
 				B54CA1652AB5EF4600CDE9E7 /* ErrorSnackBar.swift */,
 				B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */,
 				B51C33E32A62746300BC8A8E /* SwitchWithTitleCouncil.swift */,
@@ -1135,6 +1138,7 @@
 				B51FACF62A3DA75200BB6D81 /* CalloutIconWithTitleView.swift in Sources */,
 				B51C33D32A5E849D00BC8A8E /* CityCleaningEnvControlViewController.swift in Sources */,
 				B5EF44FB2A11273B00AFAFEF /* BikePathsInfoItemView.swift in Sources */,
+				B5668C622ABC7A53005F0C5A /* EmptyDataMessageView.swift in Sources */,
 				B52896452A07BB3D006A85D9 /* CalloutLabelView.swift in Sources */,
 				B5D4B77C2A6D243900817C42 /* IndicatorCollectionViewListCell.swift in Sources */,
 				B5E23F682AB703B1008977E3 /* APIEndpoint.swift in Sources */,
@@ -1331,6 +1335,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V352R4M2J4;
@@ -1347,8 +1352,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pavel.TumenCity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tuymenServices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1365,6 +1371,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V352R4M2J4;
@@ -1381,8 +1388,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pavel.TumenCity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tuymenServices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

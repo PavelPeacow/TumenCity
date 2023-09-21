@@ -10,7 +10,11 @@ import RxSwift
 
 final class RegistryView: UIView {
     
-    var cards = [CommunalServicesFormatted]()
+    var cards = [CommunalServicesFormatted]() {
+        willSet {
+            emptyDataMessageView.isHidden = !newValue.isEmpty
+        }
+    }
     
     private let bag = DisposeBag()
     private let selectedAddress = PublishSubject<MarkDescription>()
@@ -29,11 +33,22 @@ final class RegistryView: UIView {
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
+        
+    lazy var emptyDataMessageView: EmptyDataMessageView = {
+        let view = EmptyDataMessageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         addSubview(tableView)
+        addSubview(emptyDataMessageView)
+        
+        emptyDataMessageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
         
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()

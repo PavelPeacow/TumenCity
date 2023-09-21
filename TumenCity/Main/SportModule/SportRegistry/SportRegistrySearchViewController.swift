@@ -20,6 +20,12 @@ final class SportRegistrySearchViewController: UITableViewController {
         selectedSportElement.asObservable()
     }
     
+    lazy var emptyDataMessageView: EmptyDataMessageView = {
+        let view = EmptyDataMessageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
@@ -32,12 +38,19 @@ final class SportRegistrySearchViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = nil
         tableView.dataSource = nil
+        view.addSubview(emptyDataMessageView)
+        
+        emptyDataMessageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(20)
+        }
     }
     
     private func setUpBindings() {
         Observable.combineLatest(filteredSportElements, sportElements)
             .map { filteredElements, allElements in
-                filteredElements.isEmpty ? allElements : filteredElements
+                self.emptyDataMessageView.isHidden = !filteredElements.isEmpty
+                return filteredElements
             }
             .bind(to: tableView.rx.items(cellIdentifier: "cell")) { (row, element, cell) in
                 cell.textLabel?.text = element.title
