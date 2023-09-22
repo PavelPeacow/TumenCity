@@ -19,5 +19,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Необходим доступ к местоположению для отображения вас на картах!</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Необходим доступ к местоположению для отображения вас на картах!</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Необходим доступ к местоположению для отображения вас на картах!</string>
 </dict>
 </plist>
