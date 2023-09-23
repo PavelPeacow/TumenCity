@@ -49,17 +49,22 @@ final class LoadingViewController: UIViewController {
         self.view.frame = viewController.view.bounds
         viewController.view.addSubview(self.view)
         self.didMove(toParent: viewController)
+        viewController.navigationItem.searchController?.searchBar.isHidden = true
+        viewController.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
         then?()
     }
     
     func removeLoadingViewControllerIn(_ viewController: UIViewController, then: (() -> Void)? = nil) {
-        for childVC in viewController.children {
-            if childVC is LoadingViewController {
-                childVC.willMove(toParent: nil)
-                childVC.view.removeFromSuperview()
-                childVC.removeFromParent()
-            }
+        UIView.animate(withDuration: 0.3) {
+            self.view.alpha = 0.0
+            viewController.navigationItem.searchController?.searchBar.isHidden = false
+            viewController.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
+        } completion: { _ in
+            let load = viewController.children.first { $0 is LoadingViewController }
+            load?.willMove(toParent: nil)
+            load?.view.removeFromSuperview()
+            load?.removeFromParent()
+            then?()
         }
-        then?()
     }
 }

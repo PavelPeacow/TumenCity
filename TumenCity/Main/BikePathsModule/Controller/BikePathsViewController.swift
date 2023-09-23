@@ -15,7 +15,7 @@ class BikePathsViewController: UIViewController {
     private let viewModel = BikePathsViewModel()
     private var cancellables = Set<AnyCancellable>()
     
-    private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private lazy var map = YandexMapView()
     private lazy var loadingController = LoadingViewController()
     
     override func viewDidLoad() {
@@ -26,11 +26,10 @@ class BikePathsViewController: UIViewController {
     
     private func setUpView() {
         title = "Велодорожки"
-        view.addSubview(map)
         view.backgroundColor = .systemBackground
         navigationItem.rightBarButtonItem = .init(image: UIImage(systemName: "info.square"),
                                                   style: .done, target: self, action: #selector(didTapBikeStatInfo))
-        YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
+        map.setYandexMapLayout(in: self.view)
     }
     
     private func setUpBindings() {
@@ -38,13 +37,9 @@ class BikePathsViewController: UIViewController {
             .isLoadingObservable
             .sink { [unowned self] isLoading in
                 if isLoading {
-                    loadingController.showLoadingViewControllerIn(self) {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = false
-                    }
+                    loadingController.showLoadingViewControllerIn(self)
                 } else {
-                    loadingController.removeLoadingViewControllerIn(self) {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = true
-                    }
+                    loadingController.removeLoadingViewControllerIn(self)
                 }
             }
             .store(in: &cancellables)
@@ -60,16 +55,16 @@ class BikePathsViewController: UIViewController {
             .mapObjectsObservable
             .sink { [unowned self] data in
                 data?.polygons.forEach { polygon in
-                    let polygonCreated = map.mapWindow.map.mapObjects.addPolygon(with: polygon.key)
+                    let polygonCreated = map.mapView.mapWindow.map.mapObjects.addPolygon(with: polygon.key)
                     polygonCreated.strokeWidth = 1
                     polygonCreated.strokeColor = .systemGray
                     polygonCreated.fillColor = .clear
                     
-                    _ = map.mapWindow.map.mapObjects.addPlacemark(with: polygon.value, image: .init(named: "bikeInWork")!)
+                    _ = map.mapView.mapWindow.map.mapObjects.addPlacemark(with: polygon.value, image: .init(named: "bikeInWork")!)
                 }
                 
                 data?.polilines.forEach { polyline in
-                    let polylineCreated = map.mapWindow.map.mapObjects.addPolyline(with: polyline.key)
+                    let polylineCreated = map.mapView.mapWindow.map.mapObjects.addPolyline(with: polyline.key)
                     polylineCreated.strokeWidth = 2.5
                     polylineCreated.setStrokeColorWith(polyline.value)
                 }

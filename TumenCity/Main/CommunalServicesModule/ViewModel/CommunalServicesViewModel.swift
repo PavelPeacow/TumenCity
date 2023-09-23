@@ -25,7 +25,7 @@ final class CommunalServicesViewModel {
         filteredAnnotations.asObservable()
     }
     
-    private var isLoading = BehaviorRelay<Bool>(value: false)
+    private var isLoading = BehaviorRelay<Bool>(value: true)
     var searchQuery = PublishSubject<String>()
     
     var isLoadingObservable: Observable<Bool> {

@@ -19,7 +19,7 @@ class TradeObjectsViewController: UIViewController {
     var cancellables = Set<AnyCancellable>()
     let bag = DisposeBag()
     
-    private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     lazy var tradeObjectsFilterTypeStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [filterViewFree, filterViewActive])
@@ -47,7 +47,7 @@ class TradeObjectsViewController: UIViewController {
     lazy var loadingController = LoadingViewController()
     lazy var loadingControllerForModal = LoadingViewController(type: .secondaryLoading)
     
-    lazy var map = YandexMapMaker.makeYandexMap()
+    lazy var map = YandexMapView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +60,12 @@ class TradeObjectsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         view.addSubview(tradeObjectsFilterTypeStackView)
-        view.addSubview(map)
         
+        map.setYandexMapLayout(in: view) { [weak self] in
+            guard let self else { return }
+            $0.top.equalTo(tradeObjectsFilterTypeStackView.snp.bottom).offset(5)
+        }
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterIcon))
         
         tradeObjectsFilterTypeStackView.snp.makeConstraints {
@@ -69,11 +73,7 @@ class TradeObjectsViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(10)
         }
         
-        YandexMapMaker.setYandexMapLayout(map: map, in: view) { [weak self] in
-            guard let self else { return }
-            $0.top.equalTo(self.tradeObjectsFilterTypeStackView.snp.bottom).offset(5)
-        }
-        map.mapWindow.map.mapObjects.addTapListener(with: self)
+        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
     }
 #warning("Refactore rxswift code")
     private func setUpBindings() {
@@ -81,13 +81,9 @@ class TradeObjectsViewController: UIViewController {
             .isLoadingObservable
             .sink(receiveValue: { [unowned self] isLoading in
                 if isLoading {
-                    loadingController.showLoadingViewControllerIn(self) {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = false
-                    }
+                    loadingController.showLoadingViewControllerIn(self)
                 } else {
-                    loadingController.removeLoadingViewControllerIn(self) {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = true
-                    }
+                    loadingController.removeLoadingViewControllerIn(self)
                 }
             })
             .store(in: &cancellables)
@@ -104,7 +100,7 @@ class TradeObjectsViewController: UIViewController {
             .dropFirst()
             .sink { [unowned self] annotations in
                 collection.clear()
-                map.addAnnotations(annotations, cluster: collection)
+                map.mapView.addAnnotations(annotations, cluster: collection)
                 setTradeObjectsCount(from: annotations)
             }
             .store(in: &cancellables)
@@ -112,7 +108,7 @@ class TradeObjectsViewController: UIViewController {
         viewModel
             .tradeObjectsAnnotationsObservable
             .sink { [unowned self] annotations in
-                map.addAnnotations(annotations, cluster: collection)
+                map.mapView.addAnnotations(annotations, cluster: collection)
                 setTradeObjectsCount(from: annotations)
             }
             .store(in: &cancellables)
@@ -165,7 +161,7 @@ private extension TradeObjectsViewController {
         
         let annotation = viewModel.filterAnnotationsByType(.freeTrade)
         collection.clear()
-        map.addAnnotations(annotation, cluster: collection)
+        map.mapView.addAnnotations(annotation, cluster: collection)
     }
     
     @objc func didTapActiveFilter(_ sender: UITapGestureRecognizer) {
@@ -176,7 +172,7 @@ private extension TradeObjectsViewController {
         
         let annotation = viewModel.filterAnnotationsByType(.activeTrade)
         collection.clear()
-        map.addAnnotations(annotation, cluster: collection)
+        map.mapView.addAnnotations(annotation, cluster: collection)
     }
     
     func isAlreadyTapped(on view: TradeObjectsTypeView) -> Bool {
@@ -193,7 +189,7 @@ private extension TradeObjectsViewController {
         
         collection.clear()
         let current = viewModel.getCurrentVisibleTradeAnnotations()
-        map.addAnnotations(current, cluster: collection)
+        map.mapView.addAnnotations(current, cluster: collection)
     }
     
     func selectFilter(_ filter: TradeObjectsTypeView) {
@@ -209,17 +205,13 @@ extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
     
     func didTapSubmitBtn(_ searchFilter: TradeObjectsSearch) {
         Task {
-            loadingControllerForModal.showLoadingViewControllerIn(self) { [unowned self] in
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
-            }
+            loadingControllerForModal.showLoadingViewControllerIn(self)
             if let result = await viewModel.getFilteredTradeObjectByFilter(searchFilter) {
                 collection.clear()
                 let annotations = viewModel.addAnnotations(tradeObjects: result)
                 viewModel.currentVisibleTradeObjectsAnnotations = annotations
             }
-            loadingControllerForModal.removeLoadingViewControllerIn(self) { [unowned self] in
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
-            }
+            loadingControllerForModal.removeLoadingViewControllerIn(self)
         }
     }
     

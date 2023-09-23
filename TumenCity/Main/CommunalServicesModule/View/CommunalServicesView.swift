@@ -41,7 +41,7 @@ final class CommunalServicesView: UIView {
         return label
     }()
     
-    lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    lazy var map = YandexMapView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -49,7 +49,6 @@ final class CommunalServicesView: UIView {
         backgroundColor = .systemBackground
         
         addSubview(servicesInfoStackViewWithTitle)
-        addSubview(map)
         
         setConstraints()
     }
@@ -68,7 +67,7 @@ extension CommunalServicesView {
             $0.horizontalEdges.equalToSuperview().inset(5)
         }
         
-        YandexMapMaker.setYandexMapLayout(map: map, in: self) { [weak self] in
+        map.setYandexMapLayout(in: self) { [weak self] in
             guard let self else { return }
             $0.top.equalTo(self.servicesInfoStackViewWithTitle.snp.bottom).offset(5)
         }

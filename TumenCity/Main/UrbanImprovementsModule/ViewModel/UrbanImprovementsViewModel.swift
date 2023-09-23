@@ -24,7 +24,7 @@ final class UrbanImprovementsViewModel {
     var urbanAnnotations = [MKUrbanAnnotation]()
     var polygonsFormatted = [(YMKPolygon, UrbanPolygon)]()
     
-    private let isLoading = BehaviorRelay<Bool>(value: false)
+    private let isLoading = BehaviorRelay<Bool>(value: true)
     private let mapObjects = PublishSubject<MapObjectsTypealias>()
     
     var isLoadingObservable: Observable<Bool> {
@@ -38,12 +38,10 @@ final class UrbanImprovementsViewModel {
     
     init() {
         Task {
-            isLoading.accept(true)
             await getUrbanImprovements()
             createPoints()
             createPolygons()
             formatFilter()
-            isLoading.accept(false)
 
             mapObjects
                 .onNext((urbanAnnotations, polygonsFormatted))
@@ -64,17 +62,20 @@ final class UrbanImprovementsViewModel {
     }
     
     func getUrbanImprovements() async {
+        isLoading.accept(true)
         let result = await APIManager().fetchDataWithParameters(type: UrbanImprovements.self,
-                                                                    endpoint: .urbanImprovements)
-        switch result {
-        case .success(let success):
-            filters = success.filter
-            pointsFeature = success.geo.points.features
-            polygonsFeature = success.geo.polygons.features
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
-        }
+                                                                endpoint: .urbanImprovements)
+            .publisher
+            .sink { completion in
+                self.isLoading.accept(false)
+                if case let .failure(error) = completion {
+                    self.onError?(error)
+                }
+            } receiveValue: { urbanImprovements in
+                self.filters = urbanImprovements.filter
+                self.pointsFeature = urbanImprovements.geo.points.features
+                self.polygonsFeature = urbanImprovements.geo.polygons.features
+            }
     }
     
     func getUrbanImprovementsDetailInfoByID(_ id: Int) async -> UrbanImprovementsDetailInfo? {

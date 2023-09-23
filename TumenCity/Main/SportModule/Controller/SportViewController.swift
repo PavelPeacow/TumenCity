@@ -19,9 +19,9 @@ class SportViewController: UIViewControllerMapSegmented {
     private let viewModel = SportViewModel()
     private let bag = DisposeBag()
     
-    private let map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private let map = YandexMapView()
     
-    private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     private lazy var loadingViewController = LoadingViewController()
     
@@ -56,7 +56,7 @@ class SportViewController: UIViewControllerMapSegmented {
                 guard case .double(let lat) = address.latitude else { return }
                 guard case .double(let long) = address.longitude else { return }
                 
-                map.moveCameraToAnnotation(latitude: lat, longitude: long)
+                map.mapView.moveCameraToAnnotation(latitude: lat, longitude: long)
             })
             .disposed(by: bag)
         
@@ -68,9 +68,9 @@ class SportViewController: UIViewControllerMapSegmented {
             }
             .subscribe(onNext: { [unowned self] annotation in
                 if let annotation{
-                    map.moveCameraToAnnotation(annotation)
+                    map.mapView.moveCameraToAnnotation(annotation)
                 } else {
-                    map.setDefaultRegion()
+                    map.mapView.setDefaultRegion()
                 }
             })
             .disposed(by: bag)
@@ -100,13 +100,9 @@ class SportViewController: UIViewControllerMapSegmented {
             .isLoadingObservable
             .subscribe(onNext: { [unowned self] in
                 if $0 {
-                    loadingViewController.showLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = true
-                    }
+                    loadingViewController.showLoadingViewControllerIn(self)
                 } else {
-                    loadingViewController.removeLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = false
-                    }
+                    loadingViewController.removeLoadingViewControllerIn(self)
                 }
             })
             .disposed(by: bag)
@@ -127,14 +123,14 @@ class SportViewController: UIViewControllerMapSegmented {
                     sportRegistryView.tableView.reloadData()
                 },
                 onCompleted: { [unowned self] in
-                    map.mapWindow.map.mapObjects.addTapListener(with: self)
+                    map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
                 })
             .disposed(by: bag)
         
         viewModel
             .sportAnnotationsObservable
             .subscribe(onNext: { [unowned self] annotations in
-                map.addAnnotations(annotations, cluster: collection)
+                map.mapView.addAnnotations(annotations, cluster: collection)
             })
             .disposed(by: bag)
         
@@ -146,9 +142,9 @@ class SportViewController: UIViewControllerMapSegmented {
             }
             .subscribe(onNext: { [unowned self] annotation in
                 if let annotation{
-                    map.moveCameraToAnnotation(annotation)
+                    map.mapView.moveCameraToAnnotation(annotation)
                 } else {
-                    map.setDefaultRegion()
+                    map.mapView.setDefaultRegion()
                 }
             })
             .disposed(by: bag)

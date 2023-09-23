@@ -13,7 +13,7 @@ final class CityCleaningFilterViewModel {
     
     var filterItems = [CityCleaningTypeElement]()
     var contractorsItems = [CityCleaningContractorElement]()
-    private var isLoading = BehaviorRelay(value: false)
+    private var isLoading = BehaviorRelay(value: true)
     var isLoadingObservable: Observable<Bool> {
         isLoading.asObservable()
     }

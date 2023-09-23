@@ -17,7 +17,7 @@ final class CityCleaningViewModel {
     private var cityCleaningAnnotations = BehaviorRelay<[MKCityCleaningAnnotation]>(value: [])
     private var cityCleaningAnnotationsDefault = [MKCityCleaningAnnotation]()
     private var cityCleaningItems = [CityCleaningItemInfo]()
-    private var isLoading = BehaviorRelay<Bool>(value: false)
+    private var isLoading = BehaviorRelay<Bool>(value: true)
     private var cancellables = Set<AnyCancellable>()
     
     var cityCleaningAnnotationsObservable: Observable<[MKCityCleaningAnnotation]> {
@@ -31,17 +31,7 @@ final class CityCleaningViewModel {
     
     init() {
         Task {
-            isLoading.accept(true)
-            let items = await getCityCleaningItems()
-                .sink { completion in
-                    self.isLoading.accept(false)
-                    if case let .failure(error) = completion {
-                        self.onError?(error)
-                    }
-                } receiveValue: { cityCleaning in
-                    self.cityCleaningItems = cityCleaning.info
-                }
-
+            await getCityCleaningItems()
             createAnnotations()
             print(cityCleaningItems)
         }
@@ -63,11 +53,20 @@ final class CityCleaningViewModel {
         cityCleaningAnnotations.accept(filtered)
     }
     
-    private func getCityCleaningItems() async -> Result<CityCleaning, AFError>.Publisher {
+    func getCityCleaningItems() async {
+        isLoading.accept(true)
         await APIManager().fetchDataWithParameters(type: CityCleaning.self,
-                                                                    endpoint: .cityCleaning)
-            .publisher
-    
+                                                   endpoint: .cityCleaning)
+        .publisher
+        .sink { completion in
+            self.isLoading.accept(false)
+            if case let .failure(error) = completion {
+                self.onError?(error)
+            }
+        } receiveValue: { cityCleaning in
+            self.cityCleaningItems = cityCleaning.info
+        }
+        .store(in: &cancellables)
     }
     
     private func getAnnotationTypeByIcon(_ icon: CityCleaningItemIcon) -> UIImage? {
@@ -92,7 +91,7 @@ final class CityCleaningViewModel {
             return nil
         }
     }
- 
+    
     private func createAnnotations() {
         var annotations = [MKCityCleaningAnnotation]()
         

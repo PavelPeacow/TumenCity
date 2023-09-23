@@ -17,7 +17,7 @@ final class DigWorkViewController: UIViewController {
     private let bag = DisposeBag()
     private var cancellables = Set<AnyCancellable>()
     
-    private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     private lazy var searchController: UISearchController = {
         let search = UISearchController()
@@ -29,7 +29,7 @@ final class DigWorkViewController: UIViewController {
     
     private lazy var loadingViewController = LoadingViewController()
     
-    private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private lazy var map = YandexMapView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,9 +41,8 @@ final class DigWorkViewController: UIViewController {
     private func setUpView() {
         title = "Земляные работы"
         view.backgroundColor = .systemBackground
-        view.addSubview(map)
-        YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
-        map.mapWindow.map.mapObjects.addTapListener(with: self)
+        map.setYandexMapLayout(in: self.view)
+        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
     }
     
     private func setUpNavigationBar() {
@@ -72,15 +71,9 @@ final class DigWorkViewController: UIViewController {
             .isLoadingObservable
             .sink { [unowned self] in
                 if $0 {
-                    loadingViewController.showLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = true
-                        navigationItem.rightBarButtonItem?.isEnabled = false
-                    }
+                    loadingViewController.showLoadingViewControllerIn(self)
                 } else {
-                    loadingViewController.removeLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = false
-                        navigationItem.rightBarButtonItem?.isEnabled = true
-                    }
+                    loadingViewController.removeLoadingViewControllerIn(self)
                 }
             }
             .store(in: &cancellables)
@@ -106,9 +99,9 @@ final class DigWorkViewController: UIViewController {
             }
             .sink { [unowned self] annotation in
                 if let annotation{
-                    map.moveCameraToAnnotation(annotation)
+                    map.mapView.moveCameraToAnnotation(annotation)
                 } else {
-                    map.setDefaultRegion()
+                    map.mapView.setDefaultRegion()
                 }
             }
             .store(in: &cancellables)
@@ -117,7 +110,7 @@ final class DigWorkViewController: UIViewController {
             .digWorkAnnotationsObservable
             .sink { [unowned self] annotations in
                 collection.clear()
-                map.addAnnotations(annotations, cluster: collection)
+                map.mapView.addAnnotations(annotations, cluster: collection)
             }
             .store(in: &cancellables)
     }

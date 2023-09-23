@@ -13,10 +13,10 @@ class CityCleaningViewController: UIViewController {
     
     private let viewModel = CityCleaningViewModel()
     private let bag = DisposeBag()
-    private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     private lazy var loadingController = LoadingViewController()
-    private lazy var map = YandexMapMaker.makeYandexMap()
+    private lazy var map = YandexMapView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,10 +28,14 @@ class CityCleaningViewController: UIViewController {
     private func setUpView() {
         title = "Уборка города"
         view.backgroundColor = .systemBackground
-        view.addSubview(map)
-        YandexMapMaker.setYandexMapLayout(map: map, in: view)
-        navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"),
-                                                  style: .done, target: self, action: #selector(didTapFilter))
+        
+        map.setYandexMapLayout(in: self.view)
+        
+        let filterButton = UIBarButtonItem(image: .init(named: "filterIcon"),
+                                           style: .done, target: self, action: #selector(didTapFilter))
+        let reloadButton = UIBarButtonItem(image: .init(systemName: "arrow.counterclockwise"),
+                                           style: .done, target: self, action: #selector(didTapReload))
+        navigationItem.rightBarButtonItems = [filterButton, reloadButton]
         collection.addTapListener(with: self)
     }
     
@@ -40,7 +44,7 @@ class CityCleaningViewController: UIViewController {
             .cityCleaningAnnotationsObservable
             .subscribe(onNext: { [unowned self] annotations in
                 collection.clear()
-                map.addAnnotations(annotations, cluster: collection)
+                map.mapView.addAnnotations(annotations, cluster: collection)
             })
             .disposed(by: bag)
         
@@ -48,30 +52,27 @@ class CityCleaningViewController: UIViewController {
             guard let self else { return }
             ErrorSnackBar(errorDesciptrion: error.localizedDescription,
                           andShowOn: self.view)
-            navigationItem.rightBarButtonItem?.isEnabled = false
+            navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
         }
         
         viewModel
             .isLoadingObservable
             .subscribe(onNext: { [unowned self] isLoading in
                 if isLoading {
-                    loadingController.showLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.rightBarButtonItem?.isEnabled = false
-                    }
+                    loadingController.showLoadingViewControllerIn(self)
                 } else {
-                    loadingController.removeLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.rightBarButtonItem?.isEnabled = true
-                    }
+                    loadingController.removeLoadingViewControllerIn(self)
                 }
             })
             .disposed(by: bag)
     }
-
+    
 }
 
 extension CityCleaningViewController {
     
-    @objc func didTapFilter() {
+    @objc
+    func didTapFilter() {
         let vc = CityCleaningFilterViewController()
         
         vc
@@ -91,6 +92,12 @@ extension CityCleaningViewController {
         present(vc, animated: true)
     }
     
+    @objc
+    func didTapReload() {
+        Task {
+            await viewModel.getCityCleaningItems()
+        }
+    }
 }
 
 extension CityCleaningViewController: YMKMapObjectTapListener {

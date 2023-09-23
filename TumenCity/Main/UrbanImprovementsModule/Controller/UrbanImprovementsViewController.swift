@@ -13,10 +13,10 @@ class UrbanImprovementsViewController: UIViewController {
 
     private let viewModel = UrbanImprovementsViewModel()
     private let bag = DisposeBag()
-    private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     private var currentActiveFilterID: Int?
     
-    private lazy var map = YandexMapMaker.makeYandexMap()
+    private lazy var map = YandexMapView()
     private lazy var loadingController = LoadingViewController()
     
     override func viewDidLoad() {
@@ -28,8 +28,7 @@ class UrbanImprovementsViewController: UIViewController {
     private func setUpView() {
         title = "Благоустройство"
         view.backgroundColor = .systemBackground
-        view.addSubview(map)
-        YandexMapMaker.setYandexMapLayout(map: map, in: view)
+        map.setYandexMapLayout(in: self.view)
         navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterBtn))
     }
     
@@ -38,13 +37,9 @@ class UrbanImprovementsViewController: UIViewController {
             .isLoadingObservable
             .subscribe(onNext: { [unowned self] isLoading in
                 if isLoading {
-                    loadingController.showLoadingViewControllerIn(self) {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = false
-                    }
+                    loadingController.showLoadingViewControllerIn(self)
                 } else {
-                    loadingController.removeLoadingViewControllerIn(self) {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = true
-                    }
+                    loadingController.removeLoadingViewControllerIn(self)
                 }
             })
             .disposed(by: bag)
@@ -53,16 +48,17 @@ class UrbanImprovementsViewController: UIViewController {
             guard let self else { return }
             ErrorSnackBar(errorDesciptrion: error.localizedDescription,
                           andShowOn: self.view)
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
         viewModel
             .mapObjectsObservable
             .subscribe(onNext: { [unowned self] pointsAnnotations, polygons in
-                map.addAnnotations(pointsAnnotations, cluster: collection)
+                map.mapView.addAnnotations(pointsAnnotations, cluster: collection)
                 collection.addTapListener(with: self)
                 
                 polygons.forEach { polygon in
-                    map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
                 }
             })
             .disposed(by: bag)
@@ -77,10 +73,10 @@ class UrbanImprovementsViewController: UIViewController {
                 let filteredAnnotations = viewModel.filterAnnotationsByFilterID(selectedFilterIndex)
                 let filteredPolygons = viewModel.filterPolygonsByFilterID(selectedFilterIndex)
                 
-                map.addAnnotations(filteredAnnotations, cluster: collection)
+                map.mapView.addAnnotations(filteredAnnotations, cluster: collection)
                 
                 filteredPolygons.forEach { polygon in
-                    map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
                 }
                 
                 currentActiveFilterID = selectedFilterIndex
@@ -95,10 +91,10 @@ class UrbanImprovementsViewController: UIViewController {
                 let annotations = viewModel.urbanAnnotations
                 let polygons = viewModel.polygonsFormatted
                 
-                map.addAnnotations(annotations, cluster: collection)
+                map.mapView.addAnnotations(annotations, cluster: collection)
                 
                 polygons.forEach { polygon in
-                    map.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
                 }
                 
                 currentActiveFilterID = nil
@@ -122,8 +118,8 @@ class UrbanImprovementsViewController: UIViewController {
     }
     
     private func resetMap() {
-        map.mapWindow.map.mapObjects.clear()
-        collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+        map.mapView.mapWindow.map.mapObjects.clear()
+        collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     }
 
 }

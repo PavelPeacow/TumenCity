@@ -16,7 +16,7 @@ final class SportViewModel {
     
     private var sportElements = PublishSubject<[SportElement]>()
     private var sportAnnotations = BehaviorSubject<[MKSportAnnotation]>(value: [])
-    private var isLoading = BehaviorRelay<Bool>(value: false)
+    private var isLoading = BehaviorRelay<Bool>(value: true)
     var searchQuery = PublishSubject<String>()
     
     var sportElementsObservable: Observable<[SportElement]> {

@@ -11,7 +11,7 @@ import RxSwift
 
 final class CommunalServicesViewController: UIViewControllerMapSegmented {
     
-    private lazy var collection = serviceMap.map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = serviceMap.map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     private let viewModel = CommunalServicesViewModel()
     private let bag = DisposeBag()
@@ -57,9 +57,9 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             .subscribe(onNext: { [unowned self] annotation in
                 serviceMap.infoTitle.isHidden = true
                 if let annotation {
-                    serviceMap.map.moveCameraToAnnotation(annotation)
+                    serviceMap.map.mapView.moveCameraToAnnotation(annotation)
                 } else {
-                    serviceMap.map.setDefaultRegion()
+                    serviceMap.map.mapView.setDefaultRegion()
                 }
             })
             .disposed(by: bag)
@@ -73,9 +73,9 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             .subscribe(onNext: { [unowned self] annotation in
                 serviceMap.infoTitle.isHidden = true
                 if let annotation{
-                    serviceMap.map.moveCameraToAnnotation(annotation)
+                    serviceMap.map.mapView.moveCameraToAnnotation(annotation)
                 } else {
-                    serviceMap.map.setDefaultRegion()
+                    serviceMap.map.mapView.setDefaultRegion()
                 }
             })
             .disposed(by: bag)
@@ -105,13 +105,9 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             .isLoadingObservable
             .subscribe(onNext: { [unowned self] in
                 if $0 {
-                    loadingController.showLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = true
-                    }
+                    loadingController.showLoadingViewControllerIn(self)
                 } else {
-                    loadingController.removeLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = false
-                    }
+                    loadingController.removeLoadingViewControllerIn(self)
                 }
             })
             .disposed(by: bag)
@@ -126,7 +122,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             .communalAnnotationsObservable
             .subscribe(
                 onNext: { [unowned self] annotations in
-                    serviceMap.map.addAnnotations(annotations, cluster: collection)
+                    serviceMap.map.mapView.addAnnotations(annotations, cluster: collection)
                     
                     addServicesInfo()
                     serviceRegistry.cards = viewModel.communalServicesFormatted
@@ -135,7 +131,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
                     serviceSearch.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
                 },
                 onCompleted: { [unowned self] in
-                    serviceMap.map.mapWindow.map.mapObjects.addTapListener(with: self)
+                    serviceMap.map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
                 })
             .disposed(by: bag)
         
@@ -146,10 +142,10 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
                 viewModel.findAnnotationByAddressName(query)
             }
             .subscribe(onNext: { [unowned self] annotation in
-                if let annotation{
-                    serviceMap.map.moveCameraToAnnotation(annotation)
+                if let annotation {
+                    serviceMap.map.mapView.moveCameraToAnnotation(annotation)
                 } else {
-                    serviceMap.map.setDefaultRegion()
+                    serviceMap.map.mapView.setDefaultRegion()
                 }
             })
             .disposed(by: bag)
@@ -168,8 +164,8 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             .subscribe(onNext: { [unowned self] (annotations, communalServicesFormatted) in
                 collection.clear()
                 
-                serviceMap.map.addAnnotations(annotations, cluster: collection)
-                serviceMap.map.setDefaultRegion()
+                serviceMap.map.mapView.addAnnotations(annotations, cluster: collection)
+                serviceMap.map.mapView.setDefaultRegion()
                 // Filter for registry
                 serviceRegistry.cards = communalServicesFormatted
                 serviceRegistry.tableView.reloadData()

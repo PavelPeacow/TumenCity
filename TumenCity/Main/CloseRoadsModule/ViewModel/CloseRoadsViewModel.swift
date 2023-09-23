@@ -19,7 +19,7 @@ final class CloseRoadsViewModel {
     private var roadPolygons = PublishSubject<[YMKPolygon]>()
     private var roadAnnotations = PublishSubject<[MKCloseRoadAnnotation]>()
     
-    private var isLoading = BehaviorRelay<Bool>(value: false)
+    private var isLoading = BehaviorRelay<Bool>(value: true)
     
     var closeRoadsObserable: Observable<[RoadCloseObject]> {
         closeRoads.asObservable()

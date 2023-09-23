@@ -22,7 +22,7 @@ final class TradeObjectsViewModel {
     
     var cancellables = Set<AnyCancellable>()
     
-    @Published private var isLoading = false
+    @Published private var isLoading = true
     var isLoadingObservable: AnyPublisher<Bool, Never> {
         $isLoading.eraseToAnyPublisher()
     }

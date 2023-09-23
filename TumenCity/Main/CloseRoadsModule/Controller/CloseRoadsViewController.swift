@@ -15,9 +15,9 @@ final class CloseRoadsViewController: UIViewController {
     private let viewModel = CloseRoadsViewModel()
     private let bag = DisposeBag()
     
-    private lazy var collection = map.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var collection = self.map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    private lazy var map: YMKMapView = YandexMapMaker.makeYandexMap()
+    private lazy var map = YandexMapView()
     
     private lazy var loadingView = LoadingViewController()
     
@@ -30,8 +30,7 @@ final class CloseRoadsViewController: UIViewController {
     private func setUpView() {
         title = "Перекрытие дорог"
         view.backgroundColor = .systemBackground
-        view.addSubview(map)
-        YandexMapMaker.setYandexMapLayout(map: map, in: self.view)
+        map.setYandexMapLayout(in: self.view)
     }
     
     private func setUpBindings() {
@@ -40,13 +39,9 @@ final class CloseRoadsViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [unowned self] in
                 if $0 {
-                    loadingView.showLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = true
-                    }
+                    loadingView.showLoadingViewControllerIn(self)
                 } else {
-                    loadingView.removeLoadingViewControllerIn(self) { [unowned self] in
-                        navigationItem.searchController?.searchBar.isHidden = true
-                    }
+                    loadingView.removeLoadingViewControllerIn(self)
                 }
             })
             .disposed(by: bag)
@@ -69,10 +64,10 @@ final class CloseRoadsViewController: UIViewController {
             .roadAnnotationsObserable
             .subscribe(
                 onNext: { [unowned self] roadAnnotations in
-                    self.map.addAnnotations(roadAnnotations, cluster: self.collection)
+                    self.map.mapView.addAnnotations(roadAnnotations, cluster: self.collection)
                 },
                 onCompleted: { [unowned self] in
-                    self.map.mapWindow.map.mapObjects.addTapListener(with: self)
+                    self.map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
                 })
             .disposed(by: bag)
         
@@ -80,7 +75,7 @@ final class CloseRoadsViewController: UIViewController {
             .roadPolygonsObserable
             .subscribe(onNext: { [unowned self] roadPolygons in
                 roadPolygons.forEach { polygon in
-                    self.map.addPolygon(polygon, color: .red.withAlphaComponent(0.15))
+                    self.map.mapView.addPolygon(polygon, color: .red.withAlphaComponent(0.15))
                 }
             })
             .disposed(by: bag)
