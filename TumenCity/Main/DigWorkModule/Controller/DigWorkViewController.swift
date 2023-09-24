@@ -36,6 +36,11 @@ final class DigWorkViewController: UIViewController {
         setUpView()
         setUpNavigationBar()
         setUpBindings()
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getDigWorkElements()
+            }
+        })
     }
     
     private func setUpView() {
@@ -80,16 +85,15 @@ final class DigWorkViewController: UIViewController {
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
         viewModel.onEmptyResult = { [weak self] in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: "Нет доступной информации по заданному фильтру",
-                          type: .warning,
-                          andShowOn: self.view)
+            SnackBarView(type: .warning("Нет доступной информации по заданному фильтру"),
+                         andShowOn: self.view)
         }
         
         viewModel

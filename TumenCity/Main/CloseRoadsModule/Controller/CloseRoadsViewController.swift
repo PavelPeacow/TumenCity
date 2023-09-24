@@ -7,13 +7,13 @@
 
 import UIKit
 import YandexMapsMobile
-import RxSwift
-import RxCocoa
+import Combine
 
 final class CloseRoadsViewController: UIViewController {
     
     private let viewModel = CloseRoadsViewModel()
-    private let bag = DisposeBag()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     private lazy var collection = self.map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
@@ -25,60 +25,63 @@ final class CloseRoadsViewController: UIViewController {
         super.viewDidLoad()
         setUpView()
         setUpBindings()
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getCloseRoads()
+            }
+        })
     }
     
     private func setUpView() {
         title = "Перекрытие дорог"
         view.backgroundColor = .systemBackground
         map.setYandexMapLayout(in: self.view)
+        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
     }
     
     private func setUpBindings() {
         viewModel
             .isLoadingObserable
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] in
+            .sink { [unowned self] in
                 if $0 {
                     loadingView.showLoadingViewControllerIn(self)
                 } else {
                     loadingView.removeLoadingViewControllerIn(self)
                 }
-            })
-            .disposed(by: bag)
+                
+            }
+            .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
         }
         
         viewModel
             .closeRoadsObserable
-            .subscribe(onNext: { [unowned self] objects in
+            .sink { [unowned self] objects in
                 self.viewModel.createCloseRoadAnnotation(objects: objects)
+                
             }
-            )
-            .disposed(by: bag)
+            .store(in: &cancellables)
         
         viewModel
             .roadAnnotationsObserable
-            .subscribe(
-                onNext: { [unowned self] roadAnnotations in
-                    self.map.mapView.addAnnotations(roadAnnotations, cluster: self.collection)
-                },
-                onCompleted: { [unowned self] in
-                    self.map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
-                })
-            .disposed(by: bag)
+            .sink { [unowned self] roadAnnotations in
+                self.map.mapView.addAnnotations(roadAnnotations, cluster: self.collection)
+            }
+            .store(in: &cancellables)
         
         viewModel
             .roadPolygonsObserable
-            .subscribe(onNext: { [unowned self] roadPolygons in
+            .sink { [unowned self] roadPolygons in
                 roadPolygons.forEach { polygon in
                     self.map.mapView.addPolygon(polygon, color: .red.withAlphaComponent(0.15))
                 }
-            })
-            .disposed(by: bag)
+                
+            }
+            .store(in: &cancellables)
     }
     
 }

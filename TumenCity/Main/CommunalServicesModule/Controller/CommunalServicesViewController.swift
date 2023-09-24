@@ -44,7 +44,12 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
         addItemsToSegmentControll()
         view.backgroundColor = .systemBackground
         title = "Отключение ЖКУ"
-
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getCommunalServices()
+            }
+        })
+        
         serviceRegistry
             .selectedAddressObservable
             .flatMap { [unowned self] address in
@@ -114,8 +119,8 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
         }
         
         viewModel
@@ -197,7 +202,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
         serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
         
         viewModel.filterCommunalServices(with: serviceType)
-
+        
         UIView.animate(withDuration: 0.15) { [weak self] in
             self?.serviceMap.infoTitle.isHidden = false
             self?.serviceMap.infoTitle.text = view.serviceTitle
@@ -221,7 +226,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             serviceMap.servicesInfoStackView.addArrangedSubview(serviceInfoView)
         }
     }
-
+    
     private func addItemsToSegmentControll() {
         super.addItemsToSegmentControll(["Карта", "Реестр"])
     }
@@ -231,14 +236,14 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
 //MARK: - MapDelegate
 
 extension CommunalServicesViewController: YMKClusterListener {
-  
+    
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKItemAnnotation }
         
         cluster.appearance.setPieChart(clusterAnnotations: annotations)
         cluster.addClusterTapListener(with: self)
     }
-
+    
 }
 
 extension CommunalServicesViewController: YMKMapObjectTapListener {

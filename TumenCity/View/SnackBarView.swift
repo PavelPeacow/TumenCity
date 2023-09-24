@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ErrorSnackBar: UIView {
+final class SnackBarView: UIView {
     // MARK: Properties
     private enum Constants {
         static let paddingConstant = 16
@@ -18,21 +18,21 @@ final class ErrorSnackBar: UIView {
     }
     
     enum SnackBarType {
-        case error
-        case warning
+        case error(String)
+        case warning(String)
+        
+        case noConnection
+        case withConnection
     }
     
-    private var type: SnackBarType = .error
-    
-    private let errorDesciptrion: String
+    private var type: SnackBarType
     private let parentView: UIView
     
-    private lazy var errorTitleLabel = UILabel()
+    private lazy var snackBarLabel = UILabel()
     
     // MARK: Lifecycle
     @discardableResult
-    init(errorDesciptrion: String, type: SnackBarType = .error, andShowOn parentView: UIView) {
-        self.errorDesciptrion = errorDesciptrion
+    init(type: SnackBarType, andShowOn parentView: UIView) {
         self.parentView = parentView
         self.type = type
         
@@ -85,14 +85,24 @@ final class ErrorSnackBar: UIView {
 }
 
 // MARK: - Setup
-extension ErrorSnackBar {
+extension SnackBarView {
     private func setupView() {
+        snackBarLabel.text = ""
         translatesAutoresizingMaskIntoConstraints = false
         switch type {
-        case .error:
+        case .error(let error):
             backgroundColor = .systemRed.withAlphaComponent(0.95)
-        case .warning:
+            snackBarLabel.text = error
+        case .warning(let warning):
             backgroundColor = .systemYellow.withAlphaComponent(0.95)
+            snackBarLabel.text = warning
+            
+        case .noConnection:
+            backgroundColor = .systemRed.withAlphaComponent(0.95)
+            snackBarLabel.text = "Пропало соединение с интернетом!"
+        case .withConnection:
+            backgroundColor = .systemGreen.withAlphaComponent(0.95)
+            snackBarLabel.text = "Соединение с интернетом восстановлено!"
         }
         
         layer.cornerRadius = 16
@@ -105,14 +115,13 @@ extension ErrorSnackBar {
     }
     
     private func setupErrorLabel() {
-        errorTitleLabel.text = errorDesciptrion
-        errorTitleLabel.numberOfLines = 0
-        errorTitleLabel.textAlignment = .center
-        errorTitleLabel.font = .preferredFont(forTextStyle: .callout)
-        errorTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        snackBarLabel.numberOfLines = 0
+        snackBarLabel.textAlignment = .center
+        snackBarLabel.font = .preferredFont(forTextStyle: .callout)
+        snackBarLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(errorTitleLabel)
-        errorTitleLabel.snp.makeConstraints {
+        addSubview(snackBarLabel)
+        snackBarLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(Constants.paddingConstant)
             $0.leading.trailing.equalToSuperview().inset(Constants.paddingConstant)
             $0.bottom.equalToSuperview().inset(Constants.paddingConstant)
@@ -120,7 +129,7 @@ extension ErrorSnackBar {
     }
 }
 
-extension ErrorSnackBar {
+extension SnackBarView {
     @objc
     func didTapSnackBar() {
         snp.updateConstraints {

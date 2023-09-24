@@ -9,6 +9,7 @@ import MapKit
 import YandexMapsMobile
 import RxSwift
 import RxRelay
+import Combine
 import Alamofire
 
 @MainActor
@@ -25,6 +26,8 @@ final class CommunalServicesViewModel {
         filteredAnnotations.asObservable()
     }
     
+    private var cancellables = Set<AnyCancellable>()
+    
     private var isLoading = BehaviorRelay<Bool>(value: true)
     var searchQuery = PublishSubject<String>()
     
@@ -39,11 +42,7 @@ final class CommunalServicesViewModel {
     
     init() {
         Task {
-            isLoading.accept(true)
             await getCommunalServices()
-            formatData()
-            addAnnotations()
-            isLoading.accept(false)
         }
     }
     
@@ -78,16 +77,25 @@ final class CommunalServicesViewModel {
     
     //MARK: - API Call
     
-    private func getCommunalServices() async {
-        let result = await APIManager().fetchDataWithParameters(type: CommunalServices.self,
-                                                                    endpoint: .communalServices)
-        switch result {
-        case .success(let success):
-            communalServices = success
-        case .failure(let failure):
-            onError?(failure)
+    func getCommunalServices() async {
+        isLoading.accept(true)
+        await APIManager().fetchDataWithParameters(type: CommunalServices.self,
+                                                   endpoint: .communalServices)
+        .publisher
+        .sink { completion in
+            self.isLoading.accept(false)
+            if case let .failure(error) = completion {
+                self.onError?(error)
+            }
+        } receiveValue: { success in
+            self.communalServices = success
+            
+            self.formatData()
+            self.addAnnotations()
         }
+        .store(in: &cancellables)
     }
+    
     
     //MARK: - Format Date
     

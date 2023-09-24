@@ -18,11 +18,17 @@ class UrbanImprovementsViewController: UIViewController {
     
     private lazy var map = YandexMapView()
     private lazy var loadingController = LoadingViewController()
+    private lazy var loadingControllerForModal = LoadingViewController(type: .secondaryLoading)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
         setUpBindings()
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getUrbanImprovements()
+            }
+        })
     }
     
     private func setUpView() {
@@ -46,8 +52,8 @@ class UrbanImprovementsViewController: UIViewController {
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         

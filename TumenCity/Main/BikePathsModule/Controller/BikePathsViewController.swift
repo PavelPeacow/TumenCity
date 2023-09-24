@@ -22,6 +22,11 @@ class BikePathsViewController: UIViewController {
         super.viewDidLoad()
         setUpView()
         setUpBindings()
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getBikePathsData()
+            }
+        })
     }
     
     private func setUpView() {
@@ -46,8 +51,8 @@ class BikePathsViewController: UIViewController {
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         

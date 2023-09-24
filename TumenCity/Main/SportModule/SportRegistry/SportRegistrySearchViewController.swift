@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Combine
 
 final class SportRegistrySearchViewController: UITableViewController {
     
@@ -15,9 +16,9 @@ final class SportRegistrySearchViewController: UITableViewController {
     private var filteredSportElements = BehaviorSubject<[SportElement]>(value: [])
     private let bag = DisposeBag()
     
-    private var selectedSportElement = PublishSubject<SportElement>()
-    var selectedSportElementObservable: Observable<SportElement> {
-        selectedSportElement.asObservable()
+    private var selectedSportElement = PassthroughSubject<SportElement, Never>()
+    var selectedSportElementObservable: AnyPublisher<SportElement, Never> {
+        selectedSportElement.eraseToAnyPublisher()
     }
     
     lazy var emptyDataMessageView: EmptyDataMessageView = {
@@ -59,8 +60,7 @@ final class SportRegistrySearchViewController: UITableViewController {
         
         tableView.rx.modelSelected(SportElement.self)
             .subscribe(onNext: { [unowned self] sportElement in
-                selectedSportElement
-                    .onNext(sportElement)
+                selectedSportElement.send(sportElement)
             })
             .disposed(by: bag)
     }

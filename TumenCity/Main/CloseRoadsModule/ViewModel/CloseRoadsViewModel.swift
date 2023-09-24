@@ -8,56 +8,55 @@
 import Foundation
 import YandexMapsMobile
 import MapKit
-import RxSwift
-import RxRelay
+import Combine
 import Alamofire
 
 @MainActor
 final class CloseRoadsViewModel {
     
-    private var closeRoads = PublishSubject<[RoadCloseObject]>()
-    private var roadPolygons = PublishSubject<[YMKPolygon]>()
-    private var roadAnnotations = PublishSubject<[MKCloseRoadAnnotation]>()
+    private var closeRoads = PassthroughSubject<[RoadCloseObject], Never>()
+    private var roadPolygons = PassthroughSubject<[YMKPolygon], Never>()
+    private var roadAnnotations = PassthroughSubject<[MKCloseRoadAnnotation], Never>()
     
-    private var isLoading = BehaviorRelay<Bool>(value: true)
+    @Published var isLoading = true
     
-    var closeRoadsObserable: Observable<[RoadCloseObject]> {
-        closeRoads.asObservable()
-    }
-    var roadPolygonsObserable: Observable<[YMKPolygon]> {
-        roadPolygons.asObservable()
-    }
-    var roadAnnotationsObserable: Observable<[MKCloseRoadAnnotation]> {
-        roadAnnotations.asObservable()
-    }
+    private var cancellables = Set<AnyCancellable>()
     
-    var isLoadingObserable: Observable<Bool> {
-        isLoading.asObservable()
+    var closeRoadsObserable: AnyPublisher<[RoadCloseObject], Never> {
+        closeRoads.eraseToAnyPublisher()
+    }
+    var roadPolygonsObserable: AnyPublisher<[YMKPolygon], Never> {
+        roadPolygons.eraseToAnyPublisher()
+    }
+    var roadAnnotationsObserable: AnyPublisher<[MKCloseRoadAnnotation], Never> {
+        roadAnnotations.eraseToAnyPublisher()
+    }
+    var isLoadingObserable: AnyPublisher<Bool, Never> {
+        $isLoading.eraseToAnyPublisher()
     }
     
     var onError: ((AFError) -> ())?
     
     init() {
         Task {
-            isLoading.accept(true)
             await getCloseRoads()
-            isLoading.accept(false)
         }
     }
     
-    private func getCloseRoads() async {
-        let result = await APIManager().fetchDataWithParameters(type: RoadCloseResponse.self,
-                                                                    endpoint: .closeRoads)
-        switch result {
-        case .success(let success):
-            closeRoads
-                .onNext(success.objects)
-            closeRoads
-                .onCompleted()
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
+    func getCloseRoads() async {
+        isLoading = true
+        await APIManager().fetchDataWithParameters(type: RoadCloseResponse.self,
+                                                   endpoint: .closeRoads)
+        .publisher
+        .sink { completion in
+            self.isLoading = false
+            if case let .failure(error) = completion {
+                self.onError?(error)
+            }
+        } receiveValue: { roadClose in
+            self.closeRoads.send(roadClose.objects)
         }
+        .store(in: &cancellables)
     }
     
     private func getImageForRoad(by intEnum: RoadCloseIcon) -> UIImage? {
@@ -108,14 +107,8 @@ final class CloseRoadsViewModel {
             }
         }
         
-        roadAnnotations
-            .onNext(annotations)
-        roadAnnotations
-            .onCompleted()
+        roadAnnotations.send(annotations)
         
-        roadPolygons
-            .onNext(polygons)
-        roadPolygons
-            .onCompleted()
+        roadPolygons.send(polygons)
     }
 }

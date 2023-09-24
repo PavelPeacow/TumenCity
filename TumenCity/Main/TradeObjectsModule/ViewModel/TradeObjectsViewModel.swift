@@ -39,30 +39,7 @@ final class TradeObjectsViewModel {
     
     init() {
         Task {
-            isLoading = true
-            async let tradeObjectsPublisher = getTradeObjects()
-            async let tradeObjectsTypePublisher = getTradeObjectsType()
-            async let tradeObjectsPeriodPublisher = getTradeObjectsPeriod()
-            
-            Publishers
-                .CombineLatest3(await tradeObjectsPublisher, await tradeObjectsTypePublisher, await tradeObjectsPeriodPublisher)
-                .sink(receiveCompletion: { [unowned self] completion in
-                    isLoading = false
-                    if case let .failure(error) = completion {
-                        self.onError?(error)
-                    }
-                }) { [unowned self] trade, tradeType, tradePeriod in
-                    tradeObjects = trade.row
-                    tradeObjectsType = tradeType.row
-                    tradeObjectsPeriod = tradePeriod.row
-                }
-                .store(in: &cancellables)
-
-            
-            let annotations = addAnnotations(tradeObjects: tradeObjects)
-            
-            tradeObjectsAnnotations = annotations
-            currentVisibleTradeObjectsAnnotations = annotations
+            await getTradeObjectsData()
         }
     }
     
@@ -95,6 +72,32 @@ final class TradeObjectsViewModel {
         }
         
         return false
+    }
+    
+    func getTradeObjectsData() async {
+        isLoading = true
+        async let tradeObjectsPublisher = getTradeObjects()
+        async let tradeObjectsTypePublisher = getTradeObjectsType()
+        async let tradeObjectsPeriodPublisher = getTradeObjectsPeriod()
+        
+        Publishers
+            .CombineLatest3(await tradeObjectsPublisher, await tradeObjectsTypePublisher, await tradeObjectsPeriodPublisher)
+            .sink(receiveCompletion: { [unowned self] completion in
+                isLoading = false
+                if case let .failure(error) = completion {
+                    self.onError?(error)
+                }
+            }) { [unowned self] trade, tradeType, tradePeriod in
+                tradeObjects = trade.row
+                tradeObjectsType = tradeType.row
+                tradeObjectsPeriod = tradePeriod.row
+                
+                let annotations = self.addAnnotations(tradeObjects: tradeObjects)
+                
+                self.tradeObjectsAnnotations = annotations
+                self.currentVisibleTradeObjectsAnnotations = annotations
+            }
+            .store(in: &cancellables)
     }
     
     func getTradeObjects() async -> Result<TradeObjects, AFError>.Publisher {

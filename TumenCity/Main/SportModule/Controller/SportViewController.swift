@@ -7,6 +7,7 @@
 
 import UIKit
 import YandexMapsMobile
+import Combine
 import RxSwift
 
 class SportViewController: UIViewControllerMapSegmented {
@@ -18,6 +19,7 @@ class SportViewController: UIViewControllerMapSegmented {
     
     private let viewModel = SportViewModel()
     private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
     
     private let map = YandexMapView()
     
@@ -42,6 +44,11 @@ class SportViewController: UIViewControllerMapSegmented {
         setUpView()
         bindSearchController()
         setUpBindings()
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getSportElements()
+            }
+        })
     }
     
     private func setUpView() {
@@ -66,14 +73,14 @@ class SportViewController: UIViewControllerMapSegmented {
                 resetSegmentedControlAfterRegistryView()
                 return viewModel.searchAnnotationByName(sportElement.title)
             }
-            .subscribe(onNext: { [unowned self] annotation in
+            .sink { [unowned self] annotation in
                 if let annotation{
                     map.mapView.moveCameraToAnnotation(annotation)
                 } else {
                     map.mapView.setDefaultRegion()
                 }
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
         
         didChangeSearchController
             .subscribe(onNext: { [unowned self] _ in
@@ -82,80 +89,82 @@ class SportViewController: UIViewControllerMapSegmented {
                 print("che")
             })
             .disposed(by: bag)
+        
+        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
     }
     
     private func bindSearchController() {
-        searchController.searchBar.rx.text
-            .orEmpty
-            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [unowned self] str in
-                viewModel.searchQuery.onNext(str)
-            })
-            .disposed(by: bag)
+        searchController.searchBar.searchTextField
+            .textPublisher
+            .throttle(for: .milliseconds(300), scheduler: RunLoop.main, latest: true)
+            .removeDuplicates()
+            .sink { [unowned self] str in
+                print(str)
+                viewModel.searchQuery = str
+            }
+            .store(in: &cancellables)
     }
     
     private func setUpBindings() {
         viewModel
             .isLoadingObservable
-            .subscribe(onNext: { [unowned self] in
+            .sink { [unowned self] in
                 if $0 {
                     loadingViewController.showLoadingViewControllerIn(self)
                 } else {
                     loadingViewController.removeLoadingViewControllerIn(self)
                 }
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
         }
         
         viewModel
             .sportElementsObservable
-            .subscribe(
-                onNext: { [unowned self] objects in
-                    viewModel.addSportAnnotations(objects: objects)
-                    sportRegistryView.sportElements = objects
-                    sportRegistrySearchResult.configure(sportElements: objects)
-                    sportRegistryView.tableView.reloadData()
-                },
-                onCompleted: { [unowned self] in
-                    map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
-                })
-            .disposed(by: bag)
+            .sink { [unowned self] objects in
+                viewModel.addSportAnnotations(objects: objects)
+                sportRegistryView.sportElements = objects
+                sportRegistrySearchResult.configure(sportElements: objects)
+                sportRegistryView.tableView.reloadData()
+            }
+            .store(in: &cancellables)
         
         viewModel
             .sportAnnotationsObservable
-            .subscribe(onNext: { [unowned self] annotations in
+            .sink { [unowned self] annotations in
                 map.mapView.addAnnotations(annotations, cluster: collection)
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
         
         viewModel
-            .searchQuery
+            .$searchQuery
             .filter { [unowned self] _ in segmentedIndex == 0 }
             .flatMap { [unowned self] query in
-                viewModel.searchAnnotationByName(query)
+                print(query)
+                return viewModel.searchAnnotationByName(String(query))
             }
-            .subscribe(onNext: { [unowned self] annotation in
+            .eraseToAnyPublisher()
+            .sink { [unowned self] annotation in
                 if let annotation{
                     map.mapView.moveCameraToAnnotation(annotation)
                 } else {
                     map.mapView.setDefaultRegion()
                 }
-            })
-            .disposed(by: bag)
+                
+            }
+            .store(in: &cancellables)
         
         viewModel
-            .searchQuery
+            .$searchQuery
             .filter { [unowned self] _ in segmentedIndex == 1 }
-            .subscribe(onNext: { [unowned self] query in
+            .sink { [unowned self] query in
                 sportRegistrySearchResult.filterSearch(with: query)
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
     }
     
 }

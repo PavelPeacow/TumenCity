@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import RxSwift
-import RxRelay
 
 enum LoadingViewType {
     case secondaryLoading
@@ -33,7 +31,7 @@ final class LoadingViewController: UIViewController {
     
     private func setUpView() {
         view.backgroundColor = .systemBackground
-        if let type {
+        if type != nil {
             view.backgroundColor = .systemBackground.withAlphaComponent(0.5)
         }
         
@@ -49,16 +47,13 @@ final class LoadingViewController: UIViewController {
         self.view.frame = viewController.view.bounds
         viewController.view.addSubview(self.view)
         self.didMove(toParent: viewController)
-        viewController.navigationItem.searchController?.searchBar.isHidden = true
-        viewController.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
+        setViewControllerState(viewController, isLoading: true)
         then?()
     }
     
     func removeLoadingViewControllerIn(_ viewController: UIViewController, then: (() -> Void)? = nil) {
         UIView.animate(withDuration: 0.3) {
-            self.view.alpha = 0.0
-            viewController.navigationItem.searchController?.searchBar.isHidden = false
-            viewController.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
+            self.setViewControllerState(viewController, isLoading: false)
         } completion: { _ in
             let load = viewController.children.first { $0 is LoadingViewController }
             load?.willMove(toParent: nil)
@@ -66,5 +61,11 @@ final class LoadingViewController: UIViewController {
             load?.removeFromParent()
             then?()
         }
+    }
+    
+    private func setViewControllerState(_ viewController: UIViewController, isLoading: Bool) {
+        self.view.alpha = isLoading ? 1.0 : 0.0
+        viewController.navigationItem.searchController?.searchBar.isHidden = isLoading
+        viewController.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = !isLoading }
     }
 }

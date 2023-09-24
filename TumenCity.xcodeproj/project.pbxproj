@@ -89,7 +89,7 @@
 		B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */; };
 		B54CA1622AB4C56D00CDE9E7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B54CA1612AB4C56D00CDE9E7 /* Alamofire */; };
 		B54CA1642AB4C5A500CDE9E7 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */; };
-		B54CA1662AB5EF4600CDE9E7 /* ErrorSnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1652AB5EF4600CDE9E7 /* ErrorSnackBar.swift */; };
+		B54CA1662AB5EF4600CDE9E7 /* SnackBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */; };
 		B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */; };
 		B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */; };
 		B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */; };
@@ -125,6 +125,9 @@
 		B5E126142ABC9B4F006A6135 /* MainMenuRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E126132ABC9B4F006A6135 /* MainMenuRouter.swift */; };
 		B5E126162ABC9CDF006A6135 /* MainMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E126152ABC9CDF006A6135 /* MainMenuBuilder.swift */; };
 		B5E23F682AB703B1008977E3 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E23F672AB703B1008977E3 /* APIEndpoint.swift */; };
+		B5E9BECD2ABEF46A005EAE89 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E9BECC2ABEF46A005EAE89 /* NetworkReachability.swift */; };
+		B5E9BECF2ABF0C0F005EAE89 /* UIViewController+NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E9BECE2ABF0C0F005EAE89 /* UIViewController+NetworkReachability.swift */; };
+		B5E9BED12ABF3B23005EAE89 /* SearchTextfield+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E9BED02ABF3B23005EAE89 /* SearchTextfield+Combine.swift */; };
 		B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */; };
 		B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E32A10DD3600AFAFEF /* FilterView.swift */; };
 		B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E72A10DE5B00AFAFEF /* Strings.swift */; };
@@ -235,7 +238,7 @@
 		B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanPolygon.swift; sourceTree = "<group>"; };
 		B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddPolygon.swift"; sourceTree = "<group>"; };
 		B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
-		B54CA1652AB5EF4600CDE9E7 /* ErrorSnackBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorSnackBar.swift; sourceTree = "<group>"; };
+		B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarView.swift; sourceTree = "<group>"; };
 		B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsBottomSheet.swift; sourceTree = "<group>"; };
 		B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsDetailInfo.swift; sourceTree = "<group>"; };
 		B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsCallout.swift; sourceTree = "<group>"; };
@@ -270,6 +273,9 @@
 		B5E126132ABC9B4F006A6135 /* MainMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuRouter.swift; sourceTree = "<group>"; };
 		B5E126152ABC9CDF006A6135 /* MainMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuBuilder.swift; sourceTree = "<group>"; };
 		B5E23F672AB703B1008977E3 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
+		B5E9BECC2ABEF46A005EAE89 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
+		B5E9BECE2ABF0C0F005EAE89 /* UIViewController+NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NetworkReachability.swift"; sourceTree = "<group>"; };
+		B5E9BED02ABF3B23005EAE89 /* SearchTextfield+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchTextfield+Combine.swift"; sourceTree = "<group>"; };
 		B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkFilterBottomSheet.swift; sourceTree = "<group>"; };
 		B5EF44E32A10DD3600AFAFEF /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		B5EF44E72A10DE5B00AFAFEF /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -655,7 +661,7 @@
 			isa = PBXGroup;
 			children = (
 				B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */,
-				B54CA1652AB5EF4600CDE9E7 /* ErrorSnackBar.swift */,
+				B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */,
 				B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */,
 				B51C33E32A62746300BC8A8E /* SwitchWithTitleCouncil.swift */,
 				B5D92ACA2A40ABEA00BAA7F5 /* LoadingViewController.swift */,
@@ -698,7 +704,9 @@
 		B571088E29A216F8003698C8 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B5E9BED02ABF3B23005EAE89 /* SearchTextfield+Combine.swift */,
 				B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */,
+				B5E9BECE2ABF0C0F005EAE89 /* UIViewController+NetworkReachability.swift */,
 				B51C33DA2A5E92E900BC8A8E /* UIViewController+Child.swift */,
 				B5D92ACE2A42EE5B00BAA7F5 /* Observable+FlipBool.swift */,
 				B5D4B7832A76B2A900817C42 /* UIButton+TapAnimation.swift */,
@@ -924,6 +932,7 @@
 			children = (
 				B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */,
 				B5E23F672AB703B1008977E3 /* APIEndpoint.swift */,
+				B5E9BECC2ABEF46A005EAE89 /* NetworkReachability.swift */,
 				B5E126112ABC98A9006A6135 /* AFError+CustomLocalize.swift */,
 				B5CBE4382AA8D7C6000C85AA /* Logger.swift */,
 				B50D32412A18CA1E0034B860 /* tradeObjectsMock.json */,
@@ -1182,19 +1191,22 @@
 				B5F7A871299D33060001ED69 /* SceneDelegate.swift in Sources */,
 				B50D32442A18CCE50034B860 /* MKTradeObjectAnnotation.swift in Sources */,
 				B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */,
+				B5E9BECF2ABF0C0F005EAE89 /* UIViewController+NetworkReachability.swift in Sources */,
 				B51C33D92A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
 				B53400FE2ABB4BBE00B37208 /* UINavigationController+Appearence.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
 				B50D325C2A1A0F050034B860 /* TradeObjectsSearch.swift in Sources */,
 				B528965D2A0A1E82006A85D9 /* DigWork.swift in Sources */,
-				B54CA1662AB5EF4600CDE9E7 /* ErrorSnackBar.swift in Sources */,
+				B54CA1662AB5EF4600CDE9E7 /* SnackBarView.swift in Sources */,
 				B52896542A091726006A85D9 /* SportRegistryTableViewCell.swift in Sources */,
 				B5D4B7802A6D382D00817C42 /* CityCleaningIndicatorCallout.swift in Sources */,
 				B51C33D12A5E848100BC8A8E /* CityCleaningIndicatorsViewController.swift in Sources */,
+				B5E9BECD2ABEF46A005EAE89 /* NetworkReachability.swift in Sources */,
 				B50D32562A19F9840034B860 /* ScrollableCheckBoxesList.swift in Sources */,
 				B51C33C02A5DAC7D00BC8A8E /* DigWorkFilter.swift in Sources */,
 				B51C33DB2A5E92E900BC8A8E /* UIViewController+Child.swift in Sources */,
+				B5E9BED12ABF3B23005EAE89 /* SearchTextfield+Combine.swift in Sources */,
 				B5D4B7842A76B2A900817C42 /* UIButton+TapAnimation.swift in Sources */,
 				B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */,
 				B51C33C22A5E58B900BC8A8E /* CityCleaningFilterViewController.swift in Sources */,

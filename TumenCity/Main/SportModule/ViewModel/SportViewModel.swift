@@ -7,40 +7,39 @@
 
 import UIKit
 import MapKit
-import RxSwift
-import RxRelay
 import Alamofire
+import Combine
 
 @MainActor
 final class SportViewModel {
     
-    private var sportElements = PublishSubject<[SportElement]>()
-    private var sportAnnotations = BehaviorSubject<[MKSportAnnotation]>(value: [])
-    private var isLoading = BehaviorRelay<Bool>(value: true)
-    var searchQuery = PublishSubject<String>()
+    @Published private var sportElements = [SportElement]()
+    @Published private var sportAnnotations = [MKSportAnnotation]()
+    @Published private var isLoading = true
+    @Published var searchQuery = ""
     
-    var sportElementsObservable: Observable<[SportElement]> {
-        sportElements.asObservable()
+    var cancellables = Set<AnyCancellable>()
+    
+    var sportElementsObservable: AnyPublisher<[SportElement], Never> {
+        $sportElements.eraseToAnyPublisher()
     }
-    var sportAnnotationsObservable: Observable<[MKSportAnnotation]> {
-        sportAnnotations.asObservable()
+    var sportAnnotationsObservable: AnyPublisher<[MKSportAnnotation], Never> {
+        $sportAnnotations.eraseToAnyPublisher()
     }
-    var isLoadingObservable: Observable<Bool> {
-        isLoading.asObservable()
+    var isLoadingObservable: AnyPublisher<Bool, Never> {
+        $isLoading.eraseToAnyPublisher()
     }
     
     var onError: ((AFError) -> ())?
     
     init() {
         Task {
-            isLoading.accept(true)
             await getSportElements()
-            isLoading.accept(false)
         }
     }
     
-    func searchAnnotationByName(_ name: String) -> Observable<MKSportAnnotation?> {
-        sportAnnotations
+    func searchAnnotationByName(_ name: String) -> AnyPublisher<MKSportAnnotation?, Never> {
+        $sportAnnotations
             .map { annotations in
                 let filteredAnnotations = annotations.filter { annotation in
                     let annotationTitle = annotation.title.lowercased()
@@ -49,22 +48,26 @@ final class SportViewModel {
                 }
                 return filteredAnnotations.first
             }
+            .eraseToAnyPublisher()
     }
     
     func getSportElements() async {
-        let result = await APIManager().fetchDataWithParameters(type: [SportElement].self,
-                                                                    endpoint: .sport)
-        switch result {
-        case .success(let success):
-            sportElements
-                .onNext(success)
-            sportElements
-                .onCompleted()
-        case .failure(let failure):
-            print(failure)
-            onError?(failure)
+        isLoading = true
+        await APIManager().fetchDataWithParameters(type: [SportElement].self,
+                                                   endpoint: .sport)
+        .publisher
+        .sink { completion in
+            self.isLoading = false
+            if case let .failure(error) = completion {
+                print(error)
+                self.onError?(error)
+            }
+        } receiveValue: { sportElements in
+            self.sportElements = sportElements
         }
+        .store(in: &cancellables)
     }
+    
     
     func addSportAnnotations(objects: [SportElement]) {
         var annotations = [MKSportAnnotation]()
@@ -113,8 +116,6 @@ final class SportViewModel {
             }
         }
         
-        sportAnnotations
-            .onNext(annotations)
+        sportAnnotations = annotations
     }
-    
 }

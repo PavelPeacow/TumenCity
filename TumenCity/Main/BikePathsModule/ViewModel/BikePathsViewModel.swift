@@ -37,28 +37,31 @@ final class BikePathsViewModel {
     
     init() {
         Task {
-            isLoading = true
-            async let bikePublisher = getBikePathsElements()
-            async let infoPublisher = getBikeInfoLegendItems()
-        
-            Publishers
-                .CombineLatest(await bikePublisher, await infoPublisher)
-                .sink(receiveCompletion: { [unowned self] completion in
-                    isLoading = false
-                    if case let .failure(error) = completion {
-                        self.onError?(error)
-                    }
-                }) { paths, info in
-                    self.objects = paths.row.object
-                    self.lines = paths.row.line
-                    self.bikeInfoLegendItems = info
-                }
-                .store(in: &cancellables)
-            
-            formatBikeLine()
-            
-            mapObjects = (bikePoligons, bikePoliline)
+            await getBikePathsData()
         }
+    }
+    
+    func getBikePathsData() async {
+        isLoading = true
+        async let bikePublisher = getBikePathsElements()
+        async let infoPublisher = getBikeInfoLegendItems()
+    
+        Publishers
+            .CombineLatest(await bikePublisher, await infoPublisher)
+            .sink(receiveCompletion: { [unowned self] completion in
+                isLoading = false
+                if case let .failure(error) = completion {
+                    self.onError?(error)
+                }
+            }) { paths, info in
+                self.objects = paths.row.object
+                self.lines = paths.row.line
+                self.bikeInfoLegendItems = info
+            }
+            .store(in: &cancellables)
+        
+        formatBikeLine()
+        mapObjects = (bikePoligons, bikePoliline)
     }
     
     func getBikePathsElements() async -> Result<BikePaths, AFError>.Publisher {

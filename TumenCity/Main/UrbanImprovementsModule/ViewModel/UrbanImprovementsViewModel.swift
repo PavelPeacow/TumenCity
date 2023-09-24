@@ -10,6 +10,7 @@ import YandexMapsMobile
 import RxSwift
 import RxRelay
 import Alamofire
+import Combine
 
 @MainActor
 final class UrbanImprovementsViewModel {
@@ -23,6 +24,8 @@ final class UrbanImprovementsViewModel {
     
     var urbanAnnotations = [MKUrbanAnnotation]()
     var polygonsFormatted = [(YMKPolygon, UrbanPolygon)]()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     private let isLoading = BehaviorRelay<Bool>(value: true)
     private let mapObjects = PublishSubject<MapObjectsTypealias>()
@@ -39,12 +42,6 @@ final class UrbanImprovementsViewModel {
     init() {
         Task {
             await getUrbanImprovements()
-            createPoints()
-            createPolygons()
-            formatFilter()
-
-            mapObjects
-                .onNext((urbanAnnotations, polygonsFormatted))
         }
     }
     
@@ -75,12 +72,19 @@ final class UrbanImprovementsViewModel {
                 self.filters = urbanImprovements.filter
                 self.pointsFeature = urbanImprovements.geo.points.features
                 self.polygonsFeature = urbanImprovements.geo.polygons.features
+                
+                self.createPoints()
+                self.createPolygons()
+                self.formatFilter()
+                
+                self.mapObjects
+                    .onNext((self.urbanAnnotations, self.polygonsFormatted))
             }
     }
     
     func getUrbanImprovementsDetailInfoByID(_ id: Int) async -> UrbanImprovementsDetailInfo? {
         let result = await APIManager().fetchDataWithParameters(type: UrbanImprovementsDetailInfo.self,
-                                                                    endpoint: .urbanImprovementsInfo(id: id))
+                                                                endpoint: .urbanImprovementsInfo(id: id))
         switch result {
         case .success(let success):
             return success

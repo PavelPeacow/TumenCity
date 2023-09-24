@@ -28,6 +28,13 @@ class CityCleaningViewController: UIViewController {
     private func setUpView() {
         title = "Уборка города"
         view.backgroundColor = .systemBackground
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getCityCleaningItems()
+            }
+        }, becomeUnavailable: {
+            self.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
+        })
         
         map.setYandexMapLayout(in: self.view)
         
@@ -50,8 +57,8 @@ class CityCleaningViewController: UIViewController {
         
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
             navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
         }
         

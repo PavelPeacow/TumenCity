@@ -58,6 +58,11 @@ class TradeObjectsViewController: UIViewController {
     private func setUpView() {
         title = "НТО"
         view.backgroundColor = .systemBackground
+        setupNetworkReachability(becomeAvailable: {
+            Task {
+                await self.viewModel.getTradeObjectsData()
+            }
+        })
         
         view.addSubview(tradeObjectsFilterTypeStackView)
         
@@ -87,11 +92,11 @@ class TradeObjectsViewController: UIViewController {
                 }
             })
             .store(in: &cancellables)
-            
+        
         viewModel.onError = { [weak self] error in
             guard let self else { return }
-            ErrorSnackBar(errorDesciptrion: error.localizedDescription,
-                          andShowOn: self.view)
+            SnackBarView(type: .error(error.localizedDescription),
+                         andShowOn: self.view)
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
         
@@ -205,13 +210,13 @@ extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
     
     func didTapSubmitBtn(_ searchFilter: TradeObjectsSearch) {
         Task {
-            loadingControllerForModal.showLoadingViewControllerIn(self)
+            loadingController.showLoadingViewControllerIn(self)
             if let result = await viewModel.getFilteredTradeObjectByFilter(searchFilter) {
                 collection.clear()
                 let annotations = viewModel.addAnnotations(tradeObjects: result)
                 viewModel.currentVisibleTradeObjectsAnnotations = annotations
             }
-            loadingControllerForModal.removeLoadingViewControllerIn(self)
+            loadingController.removeLoadingViewControllerIn(self)
         }
     }
     

@@ -32,7 +32,6 @@ final class CityCleaningViewModel {
     init() {
         Task {
             await getCityCleaningItems()
-            createAnnotations()
             print(cityCleaningItems)
         }
     }
@@ -65,6 +64,7 @@ final class CityCleaningViewModel {
             }
         } receiveValue: { cityCleaning in
             self.cityCleaningItems = cityCleaning.info
+            self.createAnnotations()
         }
         .store(in: &cancellables)
     }
