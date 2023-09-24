@@ -13,10 +13,10 @@ import Alamofire
 
 @MainActor
 final class CloseRoadsViewModel {
+    typealias RoadObjects = (annotations: [MKCloseRoadAnnotation], polygons: [YMKPolygon])
     
     private var closeRoads = PassthroughSubject<[RoadCloseObject], Never>()
-    private var roadPolygons = PassthroughSubject<[YMKPolygon], Never>()
-    private var roadAnnotations = PassthroughSubject<[MKCloseRoadAnnotation], Never>()
+    private var roadObjects = PassthroughSubject<(RoadObjects), Never>()
     
     @Published var isLoading = true
     
@@ -25,11 +25,8 @@ final class CloseRoadsViewModel {
     var closeRoadsObserable: AnyPublisher<[RoadCloseObject], Never> {
         closeRoads.eraseToAnyPublisher()
     }
-    var roadPolygonsObserable: AnyPublisher<[YMKPolygon], Never> {
-        roadPolygons.eraseToAnyPublisher()
-    }
-    var roadAnnotationsObserable: AnyPublisher<[MKCloseRoadAnnotation], Never> {
-        roadAnnotations.eraseToAnyPublisher()
+    var roadObjectsObserable: AnyPublisher<RoadObjects, Never> {
+        roadObjects.eraseToAnyPublisher()
     }
     var isLoadingObserable: AnyPublisher<Bool, Never> {
         $isLoading.eraseToAnyPublisher()
@@ -55,6 +52,7 @@ final class CloseRoadsViewModel {
             }
         } receiveValue: { roadClose in
             self.closeRoads.send(roadClose.objects)
+            self.createCloseRoadAnnotation(objects: roadClose.objects)
         }
         .store(in: &cancellables)
     }
@@ -70,7 +68,7 @@ final class CloseRoadsViewModel {
         }
     }
     
-    func createCloseRoadAnnotation(objects: [RoadCloseObject]) {
+    private func createCloseRoadAnnotation(objects: [RoadCloseObject]) {
         var annotations = [MKCloseRoadAnnotation]()
         var polygons = [YMKPolygon]()
         
@@ -107,8 +105,6 @@ final class CloseRoadsViewModel {
             }
         }
         
-        roadAnnotations.send(annotations)
-        
-        roadPolygons.send(polygons)
+        roadObjects.send((annotations, polygons))
     }
 }

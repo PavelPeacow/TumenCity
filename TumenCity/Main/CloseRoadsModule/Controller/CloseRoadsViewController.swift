@@ -16,6 +16,7 @@ final class CloseRoadsViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private lazy var collection = self.map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var mapObjectsCollection = map.mapView.mapWindow.map.mapObjects.add()
     
     private lazy var map = YandexMapView()
     
@@ -59,27 +60,16 @@ final class CloseRoadsViewController: UIViewController {
         }
         
         viewModel
-            .closeRoadsObserable
-            .sink { [unowned self] objects in
-                self.viewModel.createCloseRoadAnnotation(objects: objects)
+            .roadObjectsObserable
+            .sink { [unowned self] (annotations, polygons) in
+                collection.clear()
+                mapObjectsCollection.clear()
                 
-            }
-            .store(in: &cancellables)
-        
-        viewModel
-            .roadAnnotationsObserable
-            .sink { [unowned self] roadAnnotations in
-                self.map.mapView.addAnnotations(roadAnnotations, cluster: self.collection)
-            }
-            .store(in: &cancellables)
-        
-        viewModel
-            .roadPolygonsObserable
-            .sink { [unowned self] roadPolygons in
-                roadPolygons.forEach { polygon in
-                    self.map.mapView.addPolygon(polygon, color: .red.withAlphaComponent(0.15))
+                map.mapView.addAnnotations(annotations, cluster: self.collection)
+                
+                polygons.forEach { polygon in
+                    self.map.mapView.addPolygon(polygon, color: .red.withAlphaComponent(0.15), collection: mapObjectsCollection)
                 }
-                
             }
             .store(in: &cancellables)
     }

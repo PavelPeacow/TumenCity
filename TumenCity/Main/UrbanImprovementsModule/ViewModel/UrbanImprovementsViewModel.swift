@@ -73,6 +73,10 @@ final class UrbanImprovementsViewModel {
                 self.pointsFeature = urbanImprovements.geo.points.features
                 self.polygonsFeature = urbanImprovements.geo.polygons.features
                 
+                self.urbanAnnotations = []
+                self.polygonsFormatted = []
+                self.filterItems = []
+                
                 self.createPoints()
                 self.createPolygons()
                 self.formatFilter()

@@ -127,6 +127,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             .communalAnnotationsObservable
             .subscribe(
                 onNext: { [unowned self] annotations in
+                    collection.clear()
                     serviceMap.map.mapView.addAnnotations(annotations, cluster: collection)
                     
                     addServicesInfo()

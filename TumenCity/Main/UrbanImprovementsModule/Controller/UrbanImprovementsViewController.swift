@@ -14,6 +14,7 @@ class UrbanImprovementsViewController: UIViewController {
     private let viewModel = UrbanImprovementsViewModel()
     private let bag = DisposeBag()
     private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+    private lazy var mapObjectsCollection = map.mapView.mapWindow.map.mapObjects.add()
     private var currentActiveFilterID: Int?
     
     private lazy var map = YandexMapView()
@@ -36,6 +37,8 @@ class UrbanImprovementsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         map.setYandexMapLayout(in: self.view)
         navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterBtn))
+        mapObjectsCollection.addTapListener(with: self)
+        collection.addTapListener(with: self)
     }
     
     private func setUpBindings() {
@@ -60,11 +63,14 @@ class UrbanImprovementsViewController: UIViewController {
         viewModel
             .mapObjectsObservable
             .subscribe(onNext: { [unowned self] pointsAnnotations, polygons in
+                resetMap()
+                
                 map.mapView.addAnnotations(pointsAnnotations, cluster: collection)
-                collection.addTapListener(with: self)
                 
                 polygons.forEach { polygon in
-                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1,
+                                           color: polygon.1.polygonColor.withAlphaComponent(0.5),
+                                           collection: mapObjectsCollection)
                 }
             })
             .disposed(by: bag)
@@ -82,7 +88,9 @@ class UrbanImprovementsViewController: UIViewController {
                 map.mapView.addAnnotations(filteredAnnotations, cluster: collection)
                 
                 filteredPolygons.forEach { polygon in
-                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1,
+                                           color: polygon.1.polygonColor.withAlphaComponent(0.5),
+                                           collection: mapObjectsCollection)
                 }
                 
                 currentActiveFilterID = selectedFilterIndex
@@ -100,7 +108,9 @@ class UrbanImprovementsViewController: UIViewController {
                 map.mapView.addAnnotations(annotations, cluster: collection)
                 
                 polygons.forEach { polygon in
-                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), tapListener: self)
+                    map.mapView.addPolygon(polygon.0, polygonData: polygon.1,
+                                           color: polygon.1.polygonColor.withAlphaComponent(0.5),
+                                           collection: mapObjectsCollection)
                 }
                 
                 currentActiveFilterID = nil
@@ -124,8 +134,8 @@ class UrbanImprovementsViewController: UIViewController {
     }
     
     private func resetMap() {
-        map.mapView.mapWindow.map.mapObjects.clear()
-        collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
+        collection.clear()
+        mapObjectsCollection.clear()
     }
 
 }

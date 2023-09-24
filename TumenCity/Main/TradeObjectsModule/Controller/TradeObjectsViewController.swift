@@ -113,6 +113,7 @@ class TradeObjectsViewController: UIViewController {
         viewModel
             .tradeObjectsAnnotationsObservable
             .sink { [unowned self] annotations in
+                collection.clear()
                 map.mapView.addAnnotations(annotations, cluster: collection)
                 setTradeObjectsCount(from: annotations)
             }

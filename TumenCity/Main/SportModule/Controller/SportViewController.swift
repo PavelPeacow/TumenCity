@@ -126,6 +126,7 @@ class SportViewController: UIViewControllerMapSegmented {
         viewModel
             .sportElementsObservable
             .sink { [unowned self] objects in
+                collection.clear()
                 viewModel.addSportAnnotations(objects: objects)
                 sportRegistryView.sportElements = objects
                 sportRegistrySearchResult.configure(sportElements: objects)

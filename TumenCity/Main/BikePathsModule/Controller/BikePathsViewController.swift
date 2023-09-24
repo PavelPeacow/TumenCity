@@ -16,6 +16,7 @@ class BikePathsViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private lazy var map = YandexMapView()
+    private lazy var mapObjectsCollection = map.mapView.mapWindow.map.mapObjects.add()
     private lazy var loadingController = LoadingViewController()
     
     override func viewDidLoad() {
@@ -59,17 +60,17 @@ class BikePathsViewController: UIViewController {
         viewModel
             .mapObjectsObservable
             .sink { [unowned self] data in
+                mapObjectsCollection.clear()
                 data?.polygons.forEach { polygon in
-                    let polygonCreated = map.mapView.mapWindow.map.mapObjects.addPolygon(with: polygon.key)
-                    polygonCreated.strokeWidth = 1
-                    polygonCreated.strokeColor = .systemGray
-                    polygonCreated.fillColor = .clear
-                    
+                    map.mapView.addPolygon(polygon.key,
+                                           color: .clear, strokeColor: .systemGray, stroreWidth: 1,
+                                           collection: mapObjectsCollection)
+
                     _ = map.mapView.mapWindow.map.mapObjects.addPlacemark(with: polygon.value, image: .init(named: "bikeInWork")!)
                 }
                 
                 data?.polilines.forEach { polyline in
-                    let polylineCreated = map.mapView.mapWindow.map.mapObjects.addPolyline(with: polyline.key)
+                    let polylineCreated = mapObjectsCollection.addPolyline(with: polyline.key)
                     polylineCreated.strokeWidth = 2.5
                     polylineCreated.setStrokeColorWith(polyline.value)
                 }
