@@ -118,11 +118,12 @@ class UrbanImprovementsViewController: UIViewController {
             .disposed(by: bag)
     }
     
-    private func setUpBindingsForUrbanImprovementsBottomSheet(for modal: UrbanImprovementsBottomSheet) {
+    private func setUpBindingsForUrbanImprovementsBottomSheet(for modal: ClusterItemsListBottomSheet) {
         modal
             .selectedAddressObservable
             .subscribe(onNext: { [unowned self] annotation in
                 Task {
+                    guard let annotation = annotation as? MKUrbanAnnotation else { return }
                     if let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) {
                         let callout = UrbanImprovementsCallout()
                         callout.configure(urbanDetailInfo: detailInfo, calloutImage: annotation.icon)
@@ -165,9 +166,9 @@ extension UrbanImprovementsViewController: YMKClusterTapListener {
     
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKUrbanAnnotation }
-        guard viewModel.isClusterWithTheSameCoordinates(annotations: annotations) else { return false }
+        guard isClusterWithTheSameCoordinates(annotations: annotations) else { return false }
         
-        let bottomSheet = UrbanImprovementsBottomSheet()
+        let bottomSheet = ClusterItemsListBottomSheet()
         bottomSheet.configureModal(annotations: annotations)
         setUpBindingsForUrbanImprovementsBottomSheet(for: bottomSheet)
         present(bottomSheet, animated: true)

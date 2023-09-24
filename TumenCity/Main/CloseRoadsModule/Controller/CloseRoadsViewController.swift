@@ -8,12 +8,14 @@
 import UIKit
 import YandexMapsMobile
 import Combine
+import RxSwift
 
 final class CloseRoadsViewController: UIViewController {
     
     private let viewModel = CloseRoadsViewModel()
     
     private var cancellables = Set<AnyCancellable>()
+    private var bag = DisposeBag()
     
     private lazy var collection = self.map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     private lazy var mapObjectsCollection = map.mapView.mapWindow.map.mapObjects.add()
@@ -74,20 +76,42 @@ final class CloseRoadsViewController: UIViewController {
             .store(in: &cancellables)
     }
     
+    private func setUpBindingsForTradeObjectsBottomSheet(for modal: ClusterItemsListBottomSheet) {
+        modal
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] annotation in
+                guard let annotation = annotation as? MKCloseRoadAnnotation else { return }
+                let callout = CloseRoadCallout()
+                callout.configure(annotation: annotation)
+                callout.showAlert(in: self)
+            })
+            .disposed(by: bag)
+    }
 }
 
 extension CloseRoadsViewController: YMKClusterListener {
-    
-#warning("Probably contains annotaions with the same coordinates")
     func onClusterAdded(with cluster: YMKCluster) {
-        let annotations = cluster.placemarks.compactMap { $0.userData as? MKCloseRoadAnnotation }
         cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .red)
+        cluster.addClusterTapListener(with: self)
     }
-    
+}
+
+extension CloseRoadsViewController: YMKClusterTapListener {
+    func onClusterTap(with cluster: YMKCluster) -> Bool {
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKCloseRoadAnnotation }
+        if isClusterWithTheSameCoordinates(annotations: annotations) {
+            let bottomSheet = ClusterItemsListBottomSheet()
+            bottomSheet.configureModal(annotations: annotations)
+            setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
+            present(bottomSheet, animated: true)
+            return true
+        }
+        
+        return false
+    }
 }
 
 extension CloseRoadsViewController: YMKMapObjectTapListener {
-    
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         guard let annotation = mapObject.userData as? MKCloseRoadAnnotation else { return false }
         
@@ -96,5 +120,4 @@ extension CloseRoadsViewController: YMKMapObjectTapListener {
         callout.showAlert(in: self)
         return true
     }
-    
 }

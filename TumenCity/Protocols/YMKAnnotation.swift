@@ -8,6 +8,7 @@
 import MapKit
 
 protocol YMKAnnotation {
+    var title: String { get }
     var icon: UIImage { get }
     var coordinates: CLLocationCoordinate2D { get }
 }

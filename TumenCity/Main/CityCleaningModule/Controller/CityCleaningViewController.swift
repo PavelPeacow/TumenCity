@@ -74,6 +74,19 @@ class CityCleaningViewController: UIViewController {
             .disposed(by: bag)
     }
     
+    private func setUpBindingsForTradeObjectsBottomSheet(for modal: ClusterItemsListBottomSheet) {
+        modal
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] annotation in
+                guard let annotation = annotation as? MKCityCleaningAnnotation else { return }
+                let callout = CityCleaningCallout()
+                callout.configure(annotation: annotation)
+                callout.showAlert(in: self)
+                
+            })
+            .disposed(by: bag)
+    }
+    
 }
 
 extension CityCleaningViewController {
@@ -124,6 +137,22 @@ extension CityCleaningViewController: YMKClusterListener {
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKCityCleaningAnnotation }
         cluster.appearance.setStaticImage(inClusterItemsCount: UInt(annotations.count), color: .orange)
+        cluster.addClusterTapListener(with: self)
     }
     
+}
+
+extension CityCleaningViewController: YMKClusterTapListener {
+    func onClusterTap(with cluster: YMKCluster) -> Bool {
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKCityCleaningAnnotation }
+        if isClusterWithTheSameCoordinates(annotations: annotations) {
+            let bottomSheet = ClusterItemsListBottomSheet()
+            bottomSheet.configureModal(annotations: annotations)
+            setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
+            present(bottomSheet, animated: true)
+            return true
+        }
+        
+        return false
+    }
 }

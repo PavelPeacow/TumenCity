@@ -71,10 +71,6 @@ final class CommunalServicesViewModel {
             }
     }
     
-    func isClusterWithTheSameCoordinates(annotations: [MKItemAnnotation]) -> Bool {
-        return annotations.dropFirst().allSatisfy( { $0.coordinates.latitude == annotations.first?.coordinates.latitude } )
-    }
-    
     //MARK: - API Call
     
     func getCommunalServices() async {

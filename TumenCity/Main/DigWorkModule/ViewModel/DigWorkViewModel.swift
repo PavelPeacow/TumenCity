@@ -45,21 +45,6 @@ final class DigWorkViewModel {
             .eraseToAnyPublisher()
     }
     
-    func isClusterWithTheSameCoordinates(annotations: [MKDigWorkAnnotation]) -> Bool {
-        guard let firstAnnotation = annotations.first else {
-            return false
-        }
-        
-        let remainingAnnotations = annotations.dropFirst()
-        
-        let hasSameTitles = remainingAnnotations.allSatisfy { $0.title == firstAnnotation.title }
-        let hasSameLatitude = remainingAnnotations.allSatisfy {
-            abs($0.coordinates.latitude - firstAnnotation.coordinates.latitude) < 0.0001
-        }
-        
-        return hasSameTitles || hasSameLatitude
-    }
-    
     func getDigWorkElements(filter: DigWorkFilter? = nil) async {
         isLoading = true
         await APIManager().fetchDataWithParameters(type: DigWork.self,

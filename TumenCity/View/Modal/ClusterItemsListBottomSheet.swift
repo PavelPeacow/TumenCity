@@ -8,12 +8,12 @@
 import UIKit
 import RxSwift
 
-final class DigWorkBottomSheet: CustomBottomSheet {
+final class ClusterItemsListBottomSheet: CustomBottomSheet {
     
-    private var annotations = [MKDigWorkAnnotation]()
-    private var selectedAddress = PublishSubject<MKDigWorkAnnotation>()
+    private var annotations = [YMKAnnotation]()
+    private var selectedAddress = PublishSubject<YMKAnnotation>()
     
-    var selectedAddressObservable: Observable<MKDigWorkAnnotation> {
+    var selectedAddressObservable: Observable<YMKAnnotation> {
         selectedAddress
     }
     
@@ -51,13 +51,13 @@ final class DigWorkBottomSheet: CustomBottomSheet {
                                       height: prefferedSize)
     }
     
-    func configureModal(annotations: [MKDigWorkAnnotation]) {
+    func configureModal(annotations: [YMKAnnotation]) {
         self.annotations = annotations
     }
     
 }
 
-private extension DigWorkBottomSheet {
+private extension ClusterItemsListBottomSheet {
     
     func setConstraints() {
         tableView.snp.makeConstraints {
@@ -69,7 +69,7 @@ private extension DigWorkBottomSheet {
     
 }
 
-extension DigWorkBottomSheet: UITableViewDataSource {
+extension ClusterItemsListBottomSheet: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         annotations.count
@@ -78,13 +78,14 @@ extension DigWorkBottomSheet: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         cell.textLabel?.text = annotations[indexPath.row].title
+        cell.imageView?.image = annotations[indexPath.row].icon
         cell.textLabel?.numberOfLines = 0
         return cell
     }
     
 }
 
-extension DigWorkBottomSheet: UITableViewDelegate {
+extension ClusterItemsListBottomSheet: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

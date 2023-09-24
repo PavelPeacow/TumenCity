@@ -16,6 +16,7 @@ final class MKItemAnnotation: YMKPoint, YMKAnnotation {
     let dateFinish: String
     let orgTitle: String
     let markDescription: MarkDescription
+    let title: String
     let icon: UIImage
     let color: UIColor
     let index: Int
@@ -37,6 +38,7 @@ final class MKItemAnnotation: YMKPoint, YMKAnnotation {
         self.dateFinish = dateFinish
         self.orgTitle = orgTitle
         self.markDescription = markDescription
+        self.title = markDescription.address
         self.icon = markIcon
         self.color = markColor
         self.index = index

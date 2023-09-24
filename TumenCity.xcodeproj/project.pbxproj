@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */; };
-		B50C72DD2A5AA4A8001F1427 /* TradeObjectsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C72DC2A5AA4A8001F1427 /* TradeObjectsBottomSheet.swift */; };
 		B50D32352A17CD750034B860 /* YandexMapMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32342A17CD750034B860 /* YandexMapMaker.swift */; };
 		B50D32382A18C7200034B860 /* TradeObjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32372A18C7200034B860 /* TradeObjectsViewController.swift */; };
 		B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D323B2A18C9750034B860 /* TradeObjectsViewModel.swift */; };
@@ -71,7 +70,7 @@
 		B52896622A0A2067006A85D9 /* MKDigWorkAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896612A0A2067006A85D9 /* MKDigWorkAnnotation.swift */; };
 		B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */; };
 		B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */; };
-		B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */; };
+		B52896692A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896682A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift */; };
 		B53400FE2ABB4BBE00B37208 /* UINavigationController+Appearence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
@@ -90,7 +89,6 @@
 		B54CA1622AB4C56D00CDE9E7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B54CA1612AB4C56D00CDE9E7 /* Alamofire */; };
 		B54CA1642AB4C5A500CDE9E7 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */; };
 		B54CA1662AB5EF4600CDE9E7 /* SnackBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */; };
-		B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */; };
 		B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */; };
 		B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */; };
 		B5608A7C2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */; };
@@ -109,6 +107,7 @@
 		B57108A429A63FF4003698C8 /* RegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A329A63FF4003698C8 /* RegistryView.swift */; };
 		B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */; };
 		B57E7D972A1CA64500F3E141 /* MKUrbanAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */; };
+		B5ABF1D72AC0735000A68912 /* ClusterItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ABF1D62AC0735000A68912 /* ClusterItems.swift */; };
 		B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */; };
 		B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */; };
 		B5CBE4392AA8D7C6000C85AA /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBE4382AA8D7C6000C85AA /* Logger.swift */; };
@@ -159,7 +158,6 @@
 /* Begin PBXFileReference section */
 		7A77344C4C7C47ED6692D1C9 /* Pods-TumenCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.debug.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.debug.xcconfig"; sourceTree = "<group>"; };
 		95D7D91F1F0CD00991DC2652 /* Pods-TumenCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.release.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.release.xcconfig"; sourceTree = "<group>"; };
-		B50C72DC2A5AA4A8001F1427 /* TradeObjectsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsBottomSheet.swift; sourceTree = "<group>"; };
 		B50D32342A17CD750034B860 /* YandexMapMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapMaker.swift; sourceTree = "<group>"; };
 		B50D32372A18C7200034B860 /* TradeObjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsViewController.swift; sourceTree = "<group>"; };
 		B50D323B2A18C9750034B860 /* TradeObjectsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsViewModel.swift; sourceTree = "<group>"; };
@@ -221,7 +219,7 @@
 		B52896612A0A2067006A85D9 /* MKDigWorkAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKDigWorkAnnotation.swift; sourceTree = "<group>"; };
 		B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkCallout.swift; sourceTree = "<group>"; };
 		B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
-		B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkBottomSheet.swift; sourceTree = "<group>"; };
+		B52896682A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterItemsListBottomSheet.swift; sourceTree = "<group>"; };
 		B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Appearence.swift"; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
@@ -239,7 +237,6 @@
 		B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddPolygon.swift"; sourceTree = "<group>"; };
 		B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarView.swift; sourceTree = "<group>"; };
-		B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsBottomSheet.swift; sourceTree = "<group>"; };
 		B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsDetailInfo.swift; sourceTree = "<group>"; };
 		B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsCallout.swift; sourceTree = "<group>"; };
 		B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlayerWebView.swift; sourceTree = "<group>"; };
@@ -257,6 +254,7 @@
 		B57108A329A63FF4003698C8 /* RegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryView.swift; sourceTree = "<group>"; };
 		B57108A629A6415E003698C8 /* RegistryCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryCardTableViewCell.swift; sourceTree = "<group>"; };
 		B57E7D962A1CA64500F3E141 /* MKUrbanAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKUrbanAnnotation.swift; sourceTree = "<group>"; };
+		B5ABF1D62AC0735000A68912 /* ClusterItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterItems.swift; sourceTree = "<group>"; };
 		B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientBorder.swift"; sourceTree = "<group>"; };
 		B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Encrypt.swift; sourceTree = "<group>"; };
 		B5CBE4382AA8D7C6000C85AA /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -574,13 +572,11 @@
 		B52896672A0F93B5006A85D9 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				B52896682A0F93EC006A85D9 /* DigWorkBottomSheet.swift */,
+				B52896682A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift */,
 				B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */,
 				B5EF44FC2A11288000AFAFEF /* BikePathInfoBottomSheet.swift */,
 				B50D324D2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift */,
 				B50D32632A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift */,
-				B5608A752A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift */,
-				B50C72DC2A5AA4A8001F1427 /* TradeObjectsBottomSheet.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -769,6 +765,7 @@
 				B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */,
 				B50D32342A17CD750034B860 /* YandexMapMaker.swift */,
 				B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */,
+				B5ABF1D62AC0735000A68912 /* ClusterItems.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1109,6 +1106,7 @@
 				B5F249542A3AFA3E00B35F74 /* CityCleaningViewController.swift in Sources */,
 				B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */,
 				B52896492A091005006A85D9 /* UIViewControllerMapSegmented.swift in Sources */,
+				B5ABF1D72AC0735000A68912 /* ClusterItems.swift in Sources */,
 				B53D665C2A06211A0010F846 /* CommunalServiceCallout.swift in Sources */,
 				B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */,
 				B5EF44F12A10E44D00AFAFEF /* BikePathsViewModel.swift in Sources */,
@@ -1116,7 +1114,6 @@
 				B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
 				B51C33CF2A5E846B00BC8A8E /* CityCleaningContractorsViewController.swift in Sources */,
-				B5608A762A28A86600A69B9C /* UrbanImprovementsBottomSheet.swift in Sources */,
 				B5EF44FF2A112A0100AFAFEF /* BikePathInfoLegend.swift in Sources */,
 				B5F2495D2A3B026600B35F74 /* MKCityCleaningAnnotation.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
@@ -1131,7 +1128,7 @@
 				B5D4B7822A75727A00817C42 /* Cluster+TradeObjectsPieChart.swift in Sources */,
 				B51C33E42A62746300BC8A8E /* SwitchWithTitleCouncil.swift in Sources */,
 				B50D324E2A191C240034B860 /* TradeObjectsFilterBottomSheet.swift in Sources */,
-				B52896692A0F93EC006A85D9 /* DigWorkBottomSheet.swift in Sources */,
+				B52896692A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift in Sources */,
 				B51C33DD2A6183B900BC8A8E /* SwitchWithTitle.swift in Sources */,
 				B5D92ACD2A40AF9900BAA7F5 /* ShowErrorAlert.swift in Sources */,
 				B5CBE4392AA8D7C6000C85AA /* Logger.swift in Sources */,
@@ -1144,7 +1141,6 @@
 				B52896522A091464006A85D9 /* SportRegistryView.swift in Sources */,
 				B57108A729A6415E003698C8 /* RegistryCardTableViewCell.swift in Sources */,
 				B50D324C2A1907DB0034B860 /* TradeObjectsTypeView.swift in Sources */,
-				B50C72DD2A5AA4A8001F1427 /* TradeObjectsBottomSheet.swift in Sources */,
 				B50D326A2A1CA14C0034B860 /* UrbanImprovementsViewModel.swift in Sources */,
 				B5F249562A3AFA4F00B35F74 /* CityCleaningViewModel.swift in Sources */,
 				B5F7A86F299D33060001ED69 /* AppDelegate.swift in Sources */,

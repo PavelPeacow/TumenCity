@@ -129,11 +129,12 @@ class TradeObjectsViewController: UIViewController {
         filterViewActive.changeFilterCount(activeCount)
     }
     
-    private func setUpBindingsForTradeObjectsBottomSheet(for modal: TradeObjectsBottomSheet) {
+    private func setUpBindingsForTradeObjectsBottomSheet(for modal: ClusterItemsListBottomSheet) {
         modal
             .selectedAddressObservable
             .subscribe(onNext: { [unowned self] annotation in
                 Task {
+                    guard let annotation = annotation as? MKTradeObjectAnnotation else { return }
                     if let detailInfo = await viewModel.getTradeObjectById(annotation.id), let object = detailInfo.row.first {
                         let callout = TradeObjectCallout()
                         callout.configure(tradeObject: object, image: annotation.icon, type: annotation.type)
@@ -243,9 +244,8 @@ extension TradeObjectsViewController: YMKClusterTapListener {
     
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKTradeObjectAnnotation }
-        #warning("4 annotations wrong coordinates")
-        if viewModel.isClusterWithTheSameCoordinates(annotations: annotations) {
-            let bottomSheet = TradeObjectsBottomSheet()
+        if isClusterWithTheSameCoordinates(annotations: annotations) {
+            let bottomSheet = ClusterItemsListBottomSheet()
             bottomSheet.configureModal(annotations: annotations)
             setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
             present(bottomSheet, animated: true)

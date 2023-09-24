@@ -264,7 +264,7 @@ extension CommunalServicesViewController: YMKClusterTapListener {
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKItemAnnotation }
         
-        if viewModel.isClusterWithTheSameCoordinates(annotations: annotations) {
+        if isClusterWithTheSameCoordinates(annotations: annotations) {
             let callout = CommunalServiceCallout()
             callout.configure(annotations: annotations)
             callout.showAlert(in: self)

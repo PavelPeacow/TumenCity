@@ -119,9 +119,10 @@ final class DigWorkViewController: UIViewController {
             .store(in: &cancellables)
     }
     
-    private func configureModalSubscription(for modal: DigWorkBottomSheet, with annotations: [MKDigWorkAnnotation]) {
+    private func configureModalSubscription(for modal: ClusterItemsListBottomSheet, with annotations: [MKDigWorkAnnotation]) {
         modal.selectedAddressObservable
             .subscribe(onNext: { [unowned self] annotation in
+                guard let annotation = annotation as? MKDigWorkAnnotation else { return }
                 let callout = DigWorkCallout()
                 callout.configure(annotation: annotation)
                 callout.showAlert(in: self)
@@ -179,12 +180,8 @@ extension DigWorkViewController: YMKClusterTapListener {
     
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKDigWorkAnnotation }
-        
-        annotations.forEach { print($0.coordinates) }
-        annotations.forEach { print($0.title) }
-        
-        if viewModel.isClusterWithTheSameCoordinates(annotations: annotations) {
-            let modal = DigWorkBottomSheet()
+        if isClusterWithTheSameCoordinates(annotations: annotations) {
+            let modal = ClusterItemsListBottomSheet()
             configureModalSubscription(for: modal, with: annotations)
             modal.configureModal(annotations: annotations)
             present(modal, animated: true)

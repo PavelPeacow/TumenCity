@@ -15,6 +15,7 @@ final class MKTradeObjectAnnotation: YMKPoint, YMKAnnotation {
     let type: AnnotationType
     let id: String
     let address: String
+    let title: String
     
     override var longitude: Double {
         coordinates.longitude.magnitude
@@ -27,6 +28,7 @@ final class MKTradeObjectAnnotation: YMKPoint, YMKAnnotation {
     init(id: String, address: String, coordinates: CLLocationCoordinate2D, tradeType: Bool) {
         self.id = id
         self.address = address
+        self.title = address
         self.coordinates = coordinates
         self.type = tradeType ? .activeTrade : .freeTrade
     }

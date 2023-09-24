@@ -18,6 +18,7 @@ final class MKCityCleaningAnnotation: YMKPoint, YMKAnnotation {
     let speed: Int?
     let date: String
     let council: String
+    let title: String
     
     override var latitude: Double {
         coordinates.latitude.magnitude
@@ -32,6 +33,7 @@ final class MKCityCleaningAnnotation: YMKPoint, YMKAnnotation {
         self.coordinates = coordinates
         self.contractor = contractor
         self.number = number
+        self.title = number ?? ""
         self.carType = carType
         self.icon = icon
         self.speed = speed

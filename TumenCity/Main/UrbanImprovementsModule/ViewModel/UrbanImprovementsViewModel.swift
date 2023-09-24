@@ -53,11 +53,6 @@ final class UrbanImprovementsViewModel {
         polygonsFormatted.filter { $0.1.filterTypeID == filterID }
     }
     
-    func isClusterWithTheSameCoordinates(annotations: [MKUrbanAnnotation]) -> Bool {
-        annotations.dropFirst().allSatisfy( { $0.coordinates.latitude == annotations.first?.coordinates.latitude } ) ||
-        annotations.dropFirst().allSatisfy( { String(format: "%.4f", $0.coordinates.latitude) == String(format: "%.4f", annotations.first!.coordinates.latitude) } )
-    }
-    
     func getUrbanImprovements() async {
         isLoading.accept(true)
         let result = await APIManager().fetchDataWithParameters(type: UrbanImprovements.self,

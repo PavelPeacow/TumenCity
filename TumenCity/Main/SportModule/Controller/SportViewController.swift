@@ -168,6 +168,18 @@ class SportViewController: UIViewControllerMapSegmented {
             .store(in: &cancellables)
     }
     
+    private func setUpBindingsForTradeObjectsBottomSheet(for modal: ClusterItemsListBottomSheet) {
+        modal
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] annotation in
+                guard let annotation = annotation as? MKSportAnnotation else { return }
+                let callout = SportCallout()
+                callout.configure(annotation: annotation)
+                callout.showAlert(in: self)
+                
+            })
+            .disposed(by: bag)
+    }
 }
 
 extension SportViewController: YMKMapObjectTapListener {
@@ -184,9 +196,23 @@ extension SportViewController: YMKMapObjectTapListener {
 }
 
 extension SportViewController: YMKClusterListener {
-    
     func onClusterAdded(with cluster: YMKCluster) {
         cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .green)
+        cluster.addClusterTapListener(with: self)
     }
-    
+}
+
+extension SportViewController: YMKClusterTapListener {
+    func onClusterTap(with cluster: YMKCluster) -> Bool {
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKSportAnnotation }
+        if isClusterWithTheSameCoordinates(annotations: annotations) {
+            let bottomSheet = ClusterItemsListBottomSheet()
+            bottomSheet.configureModal(annotations: annotations)
+            setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
+            present(bottomSheet, animated: true)
+            return true
+        }
+        
+        return false
+    }
 }

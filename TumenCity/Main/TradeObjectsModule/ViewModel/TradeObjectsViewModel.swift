@@ -55,10 +55,6 @@ final class TradeObjectsViewModel {
         currentVisibleTradeObjectsAnnotations.filter { $0.type == type }
     }
     
-    func isClusterWithTheSameCoordinates(annotations: [MKTradeObjectAnnotation]) -> Bool {
-        return annotations.dropFirst().allSatisfy( { $0.coordinates.latitude == annotations.first?.coordinates.latitude } )
-    }
-    
     func isTradeObjectDateGreaterThanToday(_ strDate: String?, numberDocument: String?) -> Bool {
         guard let strDate, let _ = numberDocument else { return false }
         
