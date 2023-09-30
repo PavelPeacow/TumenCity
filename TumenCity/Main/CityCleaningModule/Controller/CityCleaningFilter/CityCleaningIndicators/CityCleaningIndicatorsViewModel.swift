@@ -46,7 +46,7 @@ final class CityCleaningIndicatorsViewModel {
     
     private func createItems() {
         if let item = indicators?.all {
-            let indicatorItem = CityCleaningIndicatorItem(idCouncil: nil, council: "Город",
+            let indicatorItem = CityCleaningIndicatorItem(idCouncil: nil, council: L10n.CityCleaning.Indicator.Callout.councilPlaceholder,
                                                            timelinessData: item.timelinessData,
                                                            activeDuringDay: item.activeDuringDay,
                                                            countContractor: item.countContractor,

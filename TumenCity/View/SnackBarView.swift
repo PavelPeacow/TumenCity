@@ -99,10 +99,10 @@ extension SnackBarView {
             
         case .noConnection:
             backgroundColor = .systemRed.withAlphaComponent(0.95)
-            snackBarLabel.text = "Пропало соединение с интернетом!"
+            snackBarLabel.text = L10n.SnackBar.noConnection
         case .withConnection:
             backgroundColor = .systemGreen.withAlphaComponent(0.95)
-            snackBarLabel.text = "Соединение с интернетом восстановлено!"
+            snackBarLabel.text = L10n.SnackBar.withConnection
         }
         
         layer.cornerRadius = 16

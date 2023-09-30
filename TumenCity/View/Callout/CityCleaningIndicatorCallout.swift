@@ -28,11 +28,11 @@ final class CityCleaningIndicatorCallout: Callout {
     
     func configureItem(model: CityCleaningIndicatorItem) {
         let dayNight = "\(model.sumMorning) | \(model.sumNight)"
-        [(model.council, "Заказчик: "),
-        (String(model.countContractor), "Всего техники: "),
-        (String(model.activeDuringDay), "Передавали данные о местоположении техники за последние 3 суток: "),
-        (dayNight, "Данные о местоположении техники\nдень | ночь: "),
-        (String(model.timelinessData), "Своевременность передачи данных: "),
+        [(model.council, L10n.CityCleaning.Indicator.Callout.council),
+         (String(model.countContractor), L10n.CityCleaning.Indicator.Callout.countContractor),
+         (String(model.activeDuringDay), L10n.CityCleaning.Indicator.Callout.activeDuringDay),
+         (dayNight, L10n.CityCleaning.Indicator.Callout.dayNight),
+         (String(model.timelinessData), L10n.CityCleaning.Indicator.Callout.timelinessData),
         ].forEach { (label, description) in
             let labelView = CalloutLabelView()
             labelView.setLabelWithDescription(description, label: label)
@@ -42,11 +42,11 @@ final class CityCleaningIndicatorCallout: Callout {
     
     func configureSubitem(model: Detal) {
         let dayNight = "\(model.morningActivity ?? 0) | \(model.nightActivity ?? 0)"
-        [(model.contractor, "Подрядчик"),
-        (String(model.countContractor), "Всего техники: "),
-        (String(model.activeDuringDay), "Передавали данные о местоположении техники за последние 3 суток: "),
-        (dayNight, "Данные о местоположении техники\nдень | ночь: "),
-        (String(model.timelinessData), "Своевременность передачи данных: "),
+        [(model.contractor, L10n.CityCleaning.Indicator.Callout.contractor),
+         (String(model.countContractor), L10n.CityCleaning.Indicator.Callout.countContractor),
+         (String(model.activeDuringDay), L10n.CityCleaning.Indicator.Callout.activeDuringDay),
+         (dayNight, L10n.CityCleaning.Indicator.Callout.dayNight),
+         (String(model.timelinessData), L10n.CityCleaning.Indicator.Callout.timelinessData),
         ].forEach { (label, description) in
             let labelView = CalloutLabelView()
             labelView.setLabelWithDescription(description, label: label)

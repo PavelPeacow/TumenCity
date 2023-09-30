@@ -10,7 +10,6 @@ import SnapKit
 import RxSwift
 
 enum CityCleaningFilterSelectedType {
-    case controlEnvMenuItem
     case indicatorsMenuItem
     case contractorsMenuItem
     case typeMenuItem
@@ -48,7 +47,7 @@ final class CityCleaningFilterViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .secondaryLabel
-        label.text = "Выбранный индикатор"
+        label.text = L10n.CityCleaning.Filter.selectedFilter
         label.textAlignment = .center
         return label
     }()
@@ -56,7 +55,7 @@ final class CityCleaningFilterViewController: UIViewController {
     lazy var indicatorBtn: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Вид техники", for: .normal)
+        btn.setTitle(L10n.CityCleaning.Filter.machineType, for: .normal)
         btn.setTitleColor(.label, for: .normal)
         btn.setImage(.init(named: "machineType"), for: .normal)
         btn.contentEdgeInsets = .init(top: 10, left: 10, bottom: 10, right: 20)
@@ -152,22 +151,17 @@ final class CityCleaningFilterViewController: UIViewController {
     }
     
     private func createFilterMenuForBtn() -> UIMenu {
-//        let controlEnvMenuItem = UIAction(title: "Контроль среды",
-//                                          image: .init(named: "envControl")) { [unowned self] _ in
-//            changeSelectedFilter(filterType: .controlEnvMenuItem)
-//        }
-        
-        let indicatorsMenuItem = UIAction(title: "Показатели",
+        let indicatorsMenuItem = UIAction(title: L10n.CityCleaning.Filter.indicators,
                                           image: .init(named: "indicators")) { [unowned self] _ in
             changeSelectedFilter(filterType: .indicatorsMenuItem)
         }
         
-        let contractorsMenuItem = UIAction(title: "Подрядчики",
+        let contractorsMenuItem = UIAction(title: L10n.CityCleaning.Filter.contractors,
                                            image: .init(named: "contractors")) { [unowned self] _ in
             changeSelectedFilter(filterType: .contractorsMenuItem)
         }
         
-        let typeMenuItem = UIAction(title: "Тип техники",
+        let typeMenuItem = UIAction(title: L10n.CityCleaning.Filter.machineType,
                                     image: .init(named: "machineType")) { [unowned self] _ in
             changeSelectedFilter(filterType: .typeMenuItem)
         }
@@ -177,18 +171,14 @@ final class CityCleaningFilterViewController: UIViewController {
     
     private func changeSelectedFilter(filterType: CityCleaningFilterSelectedType) {
         switch filterType {
-            
-        case .controlEnvMenuItem:
-            changeSelectedFilterTitleAndImage(title: "Контроль среды", image: .init(named: "envControl"))
-            showSelectedFilterViewController(envControlFilterViewController)
         case .indicatorsMenuItem:
-            changeSelectedFilterTitleAndImage(title: "Индикаторы", image: .init(named: "indicators"))
+            changeSelectedFilterTitleAndImage(title: L10n.CityCleaning.Filter.indicators, image: .init(named: "indicators"))
             showSelectedFilterViewController(indicatorsFilterViewController)
         case .contractorsMenuItem:
-            changeSelectedFilterTitleAndImage(title: "Подрядчики", image: .init(named: "contractors"))
+            changeSelectedFilterTitleAndImage(title: L10n.CityCleaning.Filter.contractors, image: .init(named: "contractors"))
             showSelectedFilterViewController(contractorsFilterViewController)
         case .typeMenuItem:
-            changeSelectedFilterTitleAndImage(title: "Тип техники", image: .init(named: "machineType"))
+            changeSelectedFilterTitleAndImage(title: L10n.CityCleaning.Filter.machineType, image: .init(named: "machineType"))
             showSelectedFilterViewController(typeMachineFilterViewController)
         }
     }

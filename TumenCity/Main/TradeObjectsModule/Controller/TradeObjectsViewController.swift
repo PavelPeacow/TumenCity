@@ -56,7 +56,7 @@ class TradeObjectsViewController: UIViewController {
     }
     
     private func setUpView() {
-        title = "НТО"
+        title = L10n.TradeObjects.title
         view.backgroundColor = .systemBackground
         setupNetworkReachability(becomeAvailable: {
             Task {

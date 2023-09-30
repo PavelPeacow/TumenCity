@@ -33,7 +33,7 @@ class UrbanImprovementsViewController: UIViewController {
     }
     
     private func setUpView() {
-        title = "Благоустройство"
+        title = L10n.UrbanImprovements.title
         view.backgroundColor = .systemBackground
         map.setYandexMapLayout(in: self.view)
         navigationItem.rightBarButtonItem = .init(image: .init(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterBtn))

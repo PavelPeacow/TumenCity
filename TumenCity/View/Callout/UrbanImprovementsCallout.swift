@@ -61,7 +61,7 @@ final class UrbanImprovementsCallout: Callout {
         let label = UILabel()
         label.font = . systemFont(ofSize: 17, weight: .bold)
         label.numberOfLines = 0
-        label.text = "Фото: "
+        label.text = L10n.UrbanImprovements.Callout.photoTitle
         return label
     }()
     
@@ -84,7 +84,7 @@ final class UrbanImprovementsCallout: Callout {
         let label = UILabel()
         label.font = . systemFont(ofSize: 17, weight: .bold)
         label.numberOfLines = 0
-        label.text = "Видео: "
+        label.text = L10n.UrbanImprovements.Callout.videoTitle
         return label
     }()
     

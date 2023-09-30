@@ -40,7 +40,8 @@ final class DigWorkViewController: UIViewController {
     }
     
     private func setUpView() {
-        title = "Земляные работы"
+        
+        title = L10n.DigWork.title
         view.backgroundColor = .systemBackground
         view.addSubview(searchTextfield)
         searchTextfield.setupTextfieldLayoutIn(view: view)
@@ -92,7 +93,7 @@ final class DigWorkViewController: UIViewController {
         
         viewModel.onEmptyResult = { [weak self] in
             guard let self else { return }
-            SnackBarView(type: .warning("Нет доступной информации по заданному фильтру"),
+            SnackBarView(type: .warning(L10n.SnackBar.warning),
                          andShowOn: self.view)
         }
         

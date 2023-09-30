@@ -10,13 +10,23 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  internal enum BikePaths {
+    /// Велодорожки
+    internal static let title = L10n.tr("Localizable", "BikePaths.title", fallback: "Велодорожки")
+  }
   internal enum ButtonTitle {
     /// Очистить
     internal static let clearFilterBtn = L10n.tr("Localizable", "ButtonTitle.clearFilterBtn", fallback: "Очистить")
     /// Применить
     internal static let submitFilterBtnStrings = L10n.tr("Localizable", "ButtonTitle.submitFilterBtnStrings", fallback: "Применить")
   }
+  internal enum Callout {
+    /// Закрыть
+    internal static let close = L10n.tr("Localizable", "Callout.close", fallback: "Закрыть")
+  }
   internal enum CityCleaning {
+    /// Уборка города
+    internal static let title = L10n.tr("Localizable", "CityCleaning.title", fallback: "Уборка города")
     internal enum Callout {
       /// Тип ТС:
       internal static let carType = L10n.tr("Localizable", "CityCleaning.callout.carType", fallback: "Тип ТС:")
@@ -28,6 +38,47 @@ internal enum L10n {
       internal static let iAmSpeed = L10n.tr("Localizable", "CityCleaning.callout.iAmSpeed", fallback: "Скорость:")
       /// Последнее обновление данных произошло в
       internal static let lastTimeUpdated = L10n.tr("Localizable", "CityCleaning.callout.lastTimeUpdated", fallback: "Последнее обновление данных произошло в")
+    }
+    internal enum Contractors {
+      /// Управляющие организации:
+      internal static let title = L10n.tr("Localizable", "CityCleaning.contractors.title", fallback: "Управляющие организации:")
+    }
+    internal enum Filter {
+      /// Подрядчики
+      internal static let contractors = L10n.tr("Localizable", "CityCleaning.filter.contractors", fallback: "Подрядчики")
+      /// Показатели
+      internal static let indicators = L10n.tr("Localizable", "CityCleaning.filter.indicators", fallback: "Показатели")
+      /// Тип техники
+      internal static let machineType = L10n.tr("Localizable", "CityCleaning.filter.machineType", fallback: "Тип техники")
+      /// Выбранный индикатор
+      internal static let selectedFilter = L10n.tr("Localizable", "CityCleaning.filter.selectedFilter", fallback: "Выбранный индикатор")
+      /// Вид техники
+      internal static let selectedMachine = L10n.tr("Localizable", "CityCleaning.filter.selectedMachine", fallback: "Вид техники")
+    }
+    internal enum Indicator {
+      internal enum Callout {
+        /// Передавали данные о местоположении техники за последние 3 суток: 
+        internal static let activeDuringDay = L10n.tr("Localizable", "CityCleaning.indicator.callout.activeDuringDay", fallback: "Передавали данные о местоположении техники за последние 3 суток: ")
+        /// Подрядчик: 
+        internal static let contractor = L10n.tr("Localizable", "CityCleaning.indicator.callout.contractor", fallback: "Подрядчик: ")
+        /// Заказчик: 
+        internal static let council = L10n.tr("Localizable", "CityCleaning.indicator.callout.council", fallback: "Заказчик: ")
+        /// Город
+        internal static let councilPlaceholder = L10n.tr("Localizable", "CityCleaning.indicator.callout.councilPlaceholder", fallback: "Город")
+        /// Всего техники: 
+        internal static let countContractor = L10n.tr("Localizable", "CityCleaning.indicator.callout.countContractor", fallback: "Всего техники: ")
+        /// Данные о местоположении техники
+        /// день | ночь: 
+        internal static let dayNight = L10n.tr("Localizable", "CityCleaning.indicator.callout.dayNight", fallback: "Данные о местоположении техники\nдень | ночь: ")
+        /// Своевременность передачи данных: 
+        internal static let timelinessData = L10n.tr("Localizable", "CityCleaning.indicator.callout.timelinessData", fallback: "Своевременность передачи данных: ")
+      }
+    }
+    internal enum MachineType {
+      /// Все
+      internal static let switcthAllTitle = L10n.tr("Localizable", "CityCleaning.machineType.switcthAllTitle", fallback: "Все")
+      /// Виды техники: 
+      internal static let title = L10n.tr("Localizable", "CityCleaning.machineType.title", fallback: "Виды техники: ")
     }
   }
   internal enum CloseRoad {
@@ -51,6 +102,8 @@ internal enum L10n {
     }
   }
   internal enum DigWork {
+    /// Земляные работы
+    internal static let title = L10n.tr("Localizable", "DigWork.title", fallback: "Земляные работы")
     internal enum BottomSheet {
       /// Период осуществляемых работ после:
       internal static let dateAfterFilterString = L10n.tr("Localizable", "DigWork.bottomSheet.dateAfterFilterString", fallback: "Период осуществляемых работ после:")
@@ -60,6 +113,8 @@ internal enum L10n {
       internal static let personFilterString = L10n.tr("Localizable", "DigWork.bottomSheet.personFilterString", fallback: "Заинтересованное лицо")
       /// Статус
       internal static let statusFilterString = L10n.tr("Localizable", "DigWork.bottomSheet.statusFilterString", fallback: "Статус")
+      /// Готово
+      internal static let toolbarDone = L10n.tr("Localizable", "DigWork.bottomSheet.toolbarDone", fallback: "Готово")
       /// Цель работ
       internal static let typeOfWorkFilterString = L10n.tr("Localizable", "DigWork.bottomSheet.typeOfWorkFilterString", fallback: "Цель работ")
       /// Район
@@ -116,7 +171,31 @@ internal enum L10n {
       }
     }
   }
+  internal enum Empty {
+    /// Нет доступных данных
+    internal static let tableMessage = L10n.tr("Localizable", "Empty.tableMessage", fallback: "Нет доступных данных")
+  }
+  internal enum MapSegmentSwitcher {
+    /// Карта
+    internal static let map = L10n.tr("Localizable", "MapSegmentSwitcher.map", fallback: "Карта")
+    /// Реестр
+    internal static let registry = L10n.tr("Localizable", "MapSegmentSwitcher.registry", fallback: "Реестр")
+  }
+  internal enum SearchTextfield {
+    /// Введите адрес...
+    internal static let placeholder = L10n.tr("Localizable", "SearchTextfield.placeholder", fallback: "Введите адрес...")
+  }
+  internal enum SnackBar {
+    /// Пропало соединение с интернетом!
+    internal static let noConnection = L10n.tr("Localizable", "SnackBar.noConnection", fallback: "Пропало соединение с интернетом!")
+    /// Нет доступной информации по заданному фильтру
+    internal static let warning = L10n.tr("Localizable", "SnackBar.warning", fallback: "Нет доступной информации по заданному фильтру")
+    /// Соединение с интернетом восстановлено!
+    internal static let withConnection = L10n.tr("Localizable", "SnackBar.withConnection", fallback: "Соединение с интернетом восстановлено!")
+  }
   internal enum Sport {
+    /// Спорт
+    internal static let title = L10n.tr("Localizable", "Sport.title", fallback: "Спорт")
     internal enum Callout {
       /// Адреса:
       internal static let addresses = L10n.tr("Localizable", "Sport.Callout.addresses", fallback: "Адреса:")
@@ -127,6 +206,8 @@ internal enum L10n {
     }
   }
   internal enum TradeObjects {
+    /// НТО
+    internal static let title = L10n.tr("Localizable", "TradeObjects.title", fallback: "НТО")
     internal enum BottomSheet {
       /// Адрес местоположения
       internal static let address = L10n.tr("Localizable", "TradeObjects.bottomSheet.address", fallback: "Адрес местоположения")
@@ -136,6 +217,12 @@ internal enum L10n {
       internal static let period = L10n.tr("Localizable", "TradeObjects.bottomSheet.period", fallback: "Период функционирования")
       /// Целевое назначение
       internal static let purpose = L10n.tr("Localizable", "TradeObjects.bottomSheet.purpose", fallback: "Целевое назначение")
+      internal enum Buttons {
+        /// Убрать все
+        internal static let deselectAll = L10n.tr("Localizable", "TradeObjects.bottomSheet.buttons.deselectAll", fallback: "Убрать все")
+        /// Выбрать все
+        internal static let selectAll = L10n.tr("Localizable", "TradeObjects.bottomSheet.buttons.selectAll", fallback: "Выбрать все")
+      }
       internal enum CheckBoxPeriod {
         /// Круглогодичный
         internal static let allYear = L10n.tr("Localizable", "TradeObjects.bottomSheet.checkBoxPeriod.allYear", fallback: "Круглогодичный")
@@ -199,6 +286,8 @@ internal enum L10n {
     }
   }
   internal enum UrbanImprovements {
+    /// Благоустройство
+    internal static let title = L10n.tr("Localizable", "UrbanImprovements.title", fallback: "Благоустройство")
     internal enum Callout {
       /// Период проведения работ:
       internal static let dateStart = L10n.tr("Localizable", "UrbanImprovements.callout.dateStart", fallback: "Период проведения работ:")
@@ -210,6 +299,12 @@ internal enum L10n {
       internal static let videoTitle = L10n.tr("Localizable", "UrbanImprovements.callout.videoTitle", fallback: "Видео:")
       /// Вид работ:
       internal static let workType = L10n.tr("Localizable", "UrbanImprovements.callout.workType", fallback: "Вид работ:")
+    }
+    internal enum Filter {
+      internal enum Buttons {
+        /// Отменить фильтр
+        internal static let cancelFilter = L10n.tr("Localizable", "UrbanImprovements.filter.buttons.cancelFilter", fallback: "Отменить фильтр")
+      }
     }
   }
 }

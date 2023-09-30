@@ -211,7 +211,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
     }
     
     private func addItemsToSegmentControll() {
-        super.addItemsToSegmentControll(["Карта", "Реестр"])
+        super.addItemsToSegmentControll([L10n.MapSegmentSwitcher.map, L10n.MapSegmentSwitcher.registry])
     }
     
 }

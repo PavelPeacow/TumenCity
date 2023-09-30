@@ -31,7 +31,8 @@ class BikePathsViewController: UIViewController {
     }
     
     private func setUpView() {
-        title = "Велодорожки"
+        
+        title = L10n.BikePaths.title
         view.backgroundColor = .systemBackground
         navigationItem.rightBarButtonItem = .init(image: UIImage(systemName: "info.square"),
                                                   style: .done, target: self, action: #selector(didTapBikeStatInfo))

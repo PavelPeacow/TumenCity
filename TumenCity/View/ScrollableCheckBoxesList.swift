@@ -55,13 +55,13 @@ final class ScrollableCheckBoxesList: UIView {
     }()
     
     lazy var selectAllObjectTypeCheckboxes: MainButton = {
-        let btn = MainButton(title: "Выбрать все")
+        let btn = MainButton(title: L10n.TradeObjects.BottomSheet.Buttons.selectAll)
         btn.addTarget(self, action: #selector(didTapSelectAllObjectTypeCheckboxesBtn), for: .touchUpInside)
         return btn
     }()
     
     lazy var unSelectAllObjectTypeCheckboxes: MainButton = {
-        let btn = MainButton(title: "Убрать все")
+        let btn = MainButton(title: L10n.TradeObjects.BottomSheet.Buttons.deselectAll)
         btn.addTarget(self, action: #selector(didTapUnSelectAllObjectTypeCheckboxesBtn), for: .touchUpInside)
         return btn
     }()

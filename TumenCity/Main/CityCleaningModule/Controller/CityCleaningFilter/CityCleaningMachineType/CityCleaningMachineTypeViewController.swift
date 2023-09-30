@@ -36,13 +36,24 @@ final class CityCleaningMachineTypeViewController: UIViewController {
     
     lazy var typesSwitcherTitle: UILabel = {
         let label = UILabel()
-        label.text = "Виды техники: "
+        label.text = L10n.CityCleaning.MachineType.title
         return label
     }()
     
     lazy var allTypesSwitcher: SwitchWithTitle = {
-        let switcher = SwitchWithTitle(switchTitle: "Все", isOn: true, onTintColor: .systemOrange, backgroundColor: .secondarySystemBackground)
-        switcher.switcher.addTarget(self, action: #selector(didSwitchToAllTypes), for: .valueChanged)
+        let switcher = SwitchWithTitle(
+            switchTitle: L10n.CityCleaning.MachineType.switcthAllTitle,
+            isOn: true,
+            onTintColor: .systemOrange,
+            backgroundColor: .secondarySystemBackground
+        )
+        switcher.switcher.addTarget(
+            self,
+            action: #selector(
+                didSwitchToAllTypes
+            ),
+            for: .valueChanged
+        )
         return switcher
     }()
     

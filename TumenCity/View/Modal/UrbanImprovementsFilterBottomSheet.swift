@@ -104,7 +104,7 @@ final class UrbanImprovementsFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var discardFilterBtn: MainButton = {
-        let btn = MainButton(title: "Отменить фильтр", cornerRadius: 12)
+        let btn = MainButton(title: L10n.UrbanImprovements.Filter.Buttons.cancelFilter, cornerRadius: 12)
         btn.isHidden = true
         btn.addTarget(self, action: #selector(didTapDiscardBtn), for: .touchUpInside)
         return btn

@@ -1,3 +1,21 @@
+// MARK: - MapSegmentSwitcher
+"MapSegmentSwitcher.map" = "Карта";
+"MapSegmentSwitcher.registry" = "Реестр";
+
+// MARK: - SnackBar
+"SnackBar.noConnection" = "Пропало соединение с интернетом!";
+"SnackBar.withConnection" = "Соединение с интернетом восстановлено!";
+"SnackBar.warning" = "Нет доступной информации по заданному фильтру";
+
+// MARK: - SearchTextfield
+"SearchTextfield.placeholder" = "Введите адрес...";
+
+// MARK: - EmptyState
+"Empty.tableMessage" = "Нет доступных данных";
+
+// MARK: - Callout
+"Callout.close" = "Закрыть";
+
 // MARK: - Button
 "ButtonTitle.submitFilterBtnStrings" = "Применить";
 "ButtonTitle.clearFilterBtn" = "Очистить";
@@ -13,6 +31,10 @@
 "CloseRoad.Callout.datePeriod" = "Период:";
 
 // MARK: - UrbanImprovementsModule
+"UrbanImprovements.title" = "Благоустройство";
+
+"UrbanImprovements.filter.buttons.cancelFilter" = "Отменить фильтр";
+
 "UrbanImprovements.callout.photoTitle" = "Фото:";
 "UrbanImprovements.callout.videoTitle" = "Видео:";
 "UrbanImprovements.callout.stageWork" = "Стадия работ:";
@@ -20,25 +42,52 @@
 "UrbanImprovements.callout.workType" = "Вид работ:";
 
 // MARK: - CityCleaningModule
+"CityCleaning.title" = "Уборка города";
+
 "CityCleaning.callout.lastTimeUpdated" = "Последнее обновление данных произошло в";
 "CityCleaning.callout.council" = "Управляющая организация:";
 "CityCleaning.callout.contractor" = "Подрядчик:";
 "CityCleaning.callout.carType" = "Тип ТС:";
 "CityCleaning.callout.iAmSpeed" = "Скорость:";
 
+"CityCleaning.contractors.title" = "Управляющие организации:";
+
+"CityCleaning.machineType.title" = "Виды техники: ";
+"CityCleaning.machineType.switcthAllTitle" = "Все";
+
+"CityCleaning.indicator.callout.contractor" = "Подрядчик: ";
+"CityCleaning.indicator.callout.councilPlaceholder" = "Город";
+"CityCleaning.indicator.callout.council" = "Заказчик: ";
+"CityCleaning.indicator.callout.countContractor" = "Всего техники: ";
+"CityCleaning.indicator.callout.activeDuringDay" = "Передавали данные о местоположении техники за последние 3 суток: ";
+"CityCleaning.indicator.callout.dayNight" = "Данные о местоположении техники\nдень | ночь: ";
+"CityCleaning.indicator.callout.timelinessData" = "Своевременность передачи данных: ";
+
+"CityCleaning.filter.selectedFilter" = "Выбранный индикатор";
+"CityCleaning.filter.selectedMachine" = "Вид техники";
+"CityCleaning.filter.indicators" = "Показатели";
+"CityCleaning.filter.contractors" = "Подрядчики";
+"CityCleaning.filter.machineType" = "Тип техники";
+
 // MARK: - SportModule
+"Sport.title" = "Спорт";
+
 "Sport.Callout.email" = "Электронная почта:";
 "Sport.Callout.contacts" = "Контакты:";
 "Sport.Callout.addresses" = "Адреса:";
 
 
 // MARK: - DigWorkModule
+"DigWork.title" = "Земляные работы";
+
 "DigWork.bottomSheet.personFilterString" = "Заинтересованное лицо";
 "DigWork.bottomSheet.zoneFilterString" = "Район";
 "DigWork.bottomSheet.typeOfWorkFilterString" = "Цель работ";
 "DigWork.bottomSheet.statusFilterString" = "Статус";
 "DigWork.bottomSheet.dateAfterFilterString" = "Период осуществляемых работ после:";
 "DigWork.bottomSheet.dateBeforeFilterString" = "Период осуществляемых работ до:";
+
+"DigWork.bottomSheet.toolbarDone" = "Готово";
 
 "DigWork.bottomSheet.zones.all" = "Все";
 "DigWork.bottomSheet.zones.VAO" = "ВАО";
@@ -66,6 +115,8 @@
 "DigWork.bottomSheet.status.error" = "Ошибка";
 
 // MARK: - TradeObjectsModule
+"TradeObjects.title" = "НТО";
+
 "TradeObjects.callout.filterActiveTitle" = "НТО с действующими договорами: ";
 "TradeObjects.callout.filterFreeTitle" = "Свободные места: ";
 "TradeObjects.callout.urName" = "Наименование юридического лица: ";
@@ -85,6 +136,9 @@
 "TradeObjects.bottomSheet.objectType" = "Тип объекта";
 "TradeObjects.bottomSheet.period" = "Период функционирования";
 
+"TradeObjects.bottomSheet.buttons.selectAll" = "Выбрать все";
+"TradeObjects.bottomSheet.buttons.deselectAll" = "Убрать все";
+
 "TradeObjects.bottomSheet.checkBoxTypes.pavilion" = "Павильон";
 "TradeObjects.bottomSheet.checkBoxTypes.kiosk" = "Киоск";
 "TradeObjects.bottomSheet.checkBoxTypes.rollBar" = "Ролл-бар";
@@ -100,3 +154,6 @@
 "TradeObjects.bottomSheet.checkBoxPeriod.massEvent" = "Период проведения массового мероприятия";
 "TradeObjects.bottomSheet.checkBoxPeriod.autumnWinter" = "Осенне-зимний период (с 10 октября до 20 апреля)";
 "TradeObjects.bottomSheet.checkBoxPeriod.winter" = "Зимний период (с 10 декабря по 10 января)";
+
+// MARK: - BikePathsModule
+"BikePaths.title" = "Велодорожки";

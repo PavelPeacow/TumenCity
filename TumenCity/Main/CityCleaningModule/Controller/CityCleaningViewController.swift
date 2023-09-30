@@ -26,7 +26,8 @@ class CityCleaningViewController: UIViewController {
     }
     
     private func setUpView() {
-        title = "Уборка города"
+        
+        title = L10n.CityCleaning.title
         view.backgroundColor = .systemBackground
         setupNetworkReachability(becomeAvailable: {
             Task {

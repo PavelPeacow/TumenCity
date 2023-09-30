@@ -38,7 +38,7 @@ class Callout: UIViewController {
     }()
     
     lazy var closeButton: MainButton = {
-        let button = MainButton(title: "Закрыть", cornerRadius: 12)
+        let button = MainButton(title: L10n.Callout.close, cornerRadius: 12)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemGray
         button.addTarget(self, action: #selector(didTapView), for: .touchUpInside)

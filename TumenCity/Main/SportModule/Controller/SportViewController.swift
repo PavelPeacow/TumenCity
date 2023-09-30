@@ -32,7 +32,7 @@ class SportViewController: UIViewControllerMapSegmented {
         self.sportRegistrySearchResult = sportRegistrySearchResult
         
         super.init(mainMapView: map, registryView: sportRegistryView, registrySearchResult: sportRegistrySearchResult)
-        super.addItemsToSegmentControll(["Карта", "Реестр"])
+        super.addItemsToSegmentControll([L10n.MapSegmentSwitcher.map, L10n.MapSegmentSwitcher.registry])
     }
     
     required init?(coder: NSCoder) {
@@ -51,7 +51,7 @@ class SportViewController: UIViewControllerMapSegmented {
     }
     
     private func setUpView() {
-        title = "Спорт"
+        title = L10n.Sport.title
         view.backgroundColor = .systemBackground
         
         sportRegistryView

@@ -18,7 +18,7 @@ final class EmptyDataMessageView: UIView {
     
     lazy var emptyMessageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Нет доступных данных"
+        label.text = L10n.Empty.tableMessage
         label.textAlignment = .center
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .subheadline)

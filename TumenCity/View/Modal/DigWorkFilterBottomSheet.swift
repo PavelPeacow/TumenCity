@@ -221,7 +221,12 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         toolbar.isTranslucent = true
         toolbar.sizeToFit()
 
-        let doneButton = UIBarButtonItem(title: "Готово", style: .done, target: self, action: #selector(doneButtonTapped))
+        let doneButton = UIBarButtonItem(
+            title: L10n.DigWork.BottomSheet.toolbarDone,
+            style: .done,
+            target: self,
+            action: #selector(doneButtonTapped)
+        )
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         toolbar.setItems([flexibleSpace, doneButton], animated: false)

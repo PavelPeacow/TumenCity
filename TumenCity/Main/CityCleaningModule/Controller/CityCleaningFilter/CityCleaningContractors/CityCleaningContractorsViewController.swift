@@ -29,7 +29,7 @@ class CityCleaningContractorsViewController: UIViewController {
     
     lazy var mainContractorsTitle: UILabel = {
         let label = UILabel()
-        label.text = "Управляющие организации:"
+        label.text = L10n.CityCleaning.Contractors.title
         label.textColor = .secondaryLabel
         return label
     }()

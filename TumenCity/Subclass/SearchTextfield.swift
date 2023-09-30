@@ -42,8 +42,7 @@ final class SearchTextField: UITextField {
     
     init() {
         super.init(frame: .zero)
-        
-        placeholder = "Введите адрес"
+        placeholder = L10n.SearchTextfield.placeholder
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 12
         
