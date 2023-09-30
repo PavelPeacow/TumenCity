@@ -87,14 +87,14 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var personFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.personFilterString)
+        let filter = FilterView(filterLabel: L10n.DigWork.BottomSheet.personFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.delegate = self
         return filter
     }()
     
     lazy var zoneFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.zoneFilterString)
+        let filter = FilterView(filterLabel: L10n.DigWork.BottomSheet.zoneFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.text = zones[0].rawValue
         filter.textField.inputView = filterTypePickerView
@@ -104,7 +104,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var typeOfWorkFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.typeOfWorkFilterString)
+        let filter = FilterView(filterLabel: L10n.DigWork.BottomSheet.typeOfWorkFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterTypePickerView
         filter.textField.inputAccessoryView = createDoneToolbar()
@@ -114,7 +114,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var statusFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.statusFilterString)
+        let filter = FilterView(filterLabel: L10n.DigWork.BottomSheet.statusFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterTypePickerView
         filter.textField.inputAccessoryView = createDoneToolbar()
@@ -124,7 +124,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var dateAfterFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateAfterFilterString)
+        let filter = FilterView(filterLabel: L10n.DigWork.BottomSheet.dateAfterFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterDatePickerViewAfter
         filter.textField.inputAccessoryView = createDoneToolbar()
@@ -132,7 +132,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var dateBeforeFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.DigWorkFilterBottomSheet.dateBeforeFilterString)
+        let filter = FilterView(filterLabel: L10n.DigWork.BottomSheet.dateBeforeFilterString)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterDatePickerViewBefore
         filter.textField.inputAccessoryView = createDoneToolbar()
@@ -171,14 +171,14 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var submitFilterBtn: MainButton = {
-        let btn = MainButton(title: Strings.ButtonTitle.submitFilterBtnStrings)
+        let btn = MainButton(title: L10n.ButtonTitle.submitFilterBtnStrings)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapSubmitBtn), for: .touchUpInside)
         return btn
     }()
     
     lazy var clearFilterBtn: MainButton = {
-        let btn = MainButton(title: Strings.ButtonTitle.clearFilterBtn)
+        let btn = MainButton(title: L10n.ButtonTitle.clearFilterBtn)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapClearBtn), for: .touchUpInside)
         return btn

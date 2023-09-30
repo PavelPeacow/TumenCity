@@ -41,7 +41,7 @@ final class TradeObjectCallout: Callout {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .bold)
         label.numberOfLines = 0
-        label.text = Strings.TradeObjectsModule.parametersTitle
+        label.text = L10n.TradeObjects.Callout.parametersTitle
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -65,21 +65,23 @@ final class TradeObjectCallout: Callout {
         }
         
         [
-         (tradeObject.fields.urName, Strings.TradeObjectsModule.urName),
-         (tradeObject.fields.numDoc, Strings.TradeObjectsModule.numDoc),
-         (tradeObject.fields.date, Strings.TradeObjectsModule.dateDoc),
-         (tradeObject.fields.okr, Strings.TradeObjectsModule.area),
-         (tradeObject.fields.object, Strings.TradeObjectsModule.typeObject),
-         (tradeObject.fields.spurpose, Strings.TradeObjectsModule.purpose),
-         (tradeObject.fields.period, Strings.TradeObjectsModule.period)
+            (tradeObject.fields.urName, L10n.TradeObjects.Callout.urName),
+            (tradeObject.fields.numDoc, L10n.TradeObjects.Callout.numDoc),
+            (tradeObject.fields.date, L10n.TradeObjects.Callout.dateDoc),
+            (tradeObject.fields.okr, L10n.TradeObjects.Callout.area),
+            (tradeObject.fields.object, L10n.TradeObjects.Callout.typeObject),
+            (tradeObject.fields.spurpose, L10n.TradeObjects.Callout.purpose),
+            (tradeObject.fields.period, L10n.TradeObjects.Callout.period)
         ].forEach { (text, description) in
-            createCalloutLabelView(description: description, text: text)
+            createCalloutLabelView( description: description, text: text)
         }
         
-        [(tradeObject.fields.area, Strings.TradeObjectsModule.areaSquare),
-         (tradeObject.fields.floors, Strings.TradeObjectsModule.floors),
-         (tradeObject.fields.height, Strings.TradeObjectsModule.height)].forEach { (text, description) in
-           createCalloutLabelView(description: description, text: text, isParameterForStackView: true)
+        [
+            (tradeObject.fields.area, L10n.TradeObjects.Callout.areaSquare),
+            (tradeObject.fields.floors, L10n.TradeObjects.Callout.floors),
+            (tradeObject.fields.height, L10n.TradeObjects.Callout.height)
+        ].forEach { (text, description) in
+            createCalloutLabelView(description: description, text: text, isParameterForStackView: true)
         }
     }
     

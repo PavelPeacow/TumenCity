@@ -73,21 +73,21 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var addressFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.TradeObjectsModule.BottomSheet.address)
+        let filter = FilterView(filterLabel: L10n.TradeObjects.BottomSheet.address)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.delegate = self
         return filter
     }()
     
     lazy var purposeFilter: FilterView = {
-        let filter = FilterView(filterLabel: Strings.TradeObjectsModule.BottomSheet.purpose)
+        let filter = FilterView(filterLabel: L10n.TradeObjects.BottomSheet.purpose)
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.delegate = self
         return filter
     }()
     
     lazy var objectTypeFilterBtn: MainButton = {
-        let btn = MainButton(title: Strings.TradeObjectsModule.typeObject, cornerRadius: 8)
+        let btn = MainButton(title: L10n.TradeObjects.Callout.typeObject, cornerRadius: 8)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapObjectTypeFilterBtn), for: .touchUpInside)
         btn.backgroundColor = .systemGray5
@@ -95,7 +95,7 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var periodFilterBtn: MainButton = {
-        let btn = MainButton(title: Strings.TradeObjectsModule.period, cornerRadius: 8)
+        let btn = MainButton(title: L10n.TradeObjects.Callout.period, cornerRadius: 8)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapPeriodFilterBtn), for: .touchUpInside)
         btn.backgroundColor = .systemGray5
@@ -103,14 +103,14 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
     }()
     
     lazy var submitFilterBtn: MainButton = {
-        let btn = MainButton(title: Strings.ButtonTitle.submitFilterBtnStrings)
+        let btn = MainButton(title: L10n.ButtonTitle.submitFilterBtnStrings)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapSubmitBtn), for: .touchUpInside)
         return btn
     }()
     
     lazy var clearFilterBtn: UIButton = {
-        let btn = MainButton(title: Strings.ButtonTitle.clearFilterBtn)
+        let btn = MainButton(title: L10n.ButtonTitle.clearFilterBtn)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapClearBtn), for: .touchUpInside)
         return btn

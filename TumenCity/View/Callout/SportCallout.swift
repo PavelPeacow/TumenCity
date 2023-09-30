@@ -42,7 +42,7 @@ final class SportCallout: Callout {
     
     lazy var calloutContacts: UILabel = {
         let label = UILabel()
-        label.text = Strings.SportModule.SportCallout.contacts
+        label.text = L10n.Sport.Callout.contacts
         label.font = . systemFont(ofSize: 17, weight: .bold)
         return label
     }()
@@ -59,7 +59,7 @@ final class SportCallout: Callout {
     
     lazy var calloutEmail: UILabel = {
         let label = UILabel()
-        label.text = Strings.SportModule.SportCallout.email
+        label.text = L10n.Sport.Callout.email
         label.font = . systemFont(ofSize: 17, weight: .bold)
         return label
     }()
@@ -88,7 +88,7 @@ final class SportCallout: Callout {
     
     lazy var calloutAddresses: UILabel = {
         let label = UILabel()
-        label.text = Strings.SportModule.SportCallout.addresses
+        label.text = L10n.Sport.Callout.addresses
         label.font = . systemFont(ofSize: 17, weight: .bold)
         return label
     }()

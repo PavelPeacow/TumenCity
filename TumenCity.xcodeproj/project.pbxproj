@@ -89,6 +89,7 @@
 		B54CA1622AB4C56D00CDE9E7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B54CA1612AB4C56D00CDE9E7 /* Alamofire */; };
 		B54CA1642AB4C5A500CDE9E7 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */; };
 		B54CA1662AB5EF4600CDE9E7 /* SnackBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */; };
+		B557B1532AC820AF00B0AE1E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B557B1522AC820AF00B0AE1E /* Localizable.strings */; };
 		B5608A782A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */; };
 		B5608A7A2A28C11600A69B9C /* UrbanImprovementsCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */; };
 		B5608A7C2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */; };
@@ -111,6 +112,7 @@
 		B5ABF1D72AC0735000A68912 /* ClusterItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ABF1D62AC0735000A68912 /* ClusterItems.swift */; };
 		B5B06B5F29FE96A900614772 /* UIView+GradientBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */; };
 		B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */; };
+		B5C842FB2AC834A2008F669E /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C842FA2AC834A2008F669E /* Strings.swift */; };
 		B5CBE4392AA8D7C6000C85AA /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBE4382AA8D7C6000C85AA /* Logger.swift */; };
 		B5D4B77C2A6D243900817C42 /* IndicatorCollectionViewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77B2A6D243900817C42 /* IndicatorCollectionViewListCell.swift */; };
 		B5D4B77E2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */; };
@@ -130,7 +132,6 @@
 		B5E9BED12ABF3B23005EAE89 /* SearchTextfield+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E9BED02ABF3B23005EAE89 /* SearchTextfield+Combine.swift */; };
 		B5EF44E22A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */; };
 		B5EF44E42A10DD3600AFAFEF /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E32A10DD3600AFAFEF /* FilterView.swift */; };
-		B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44E72A10DE5B00AFAFEF /* Strings.swift */; };
 		B5EF44EE2A10E42D00AFAFEF /* BikePathsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44ED2A10E42D00AFAFEF /* BikePathsViewController.swift */; };
 		B5EF44F12A10E44D00AFAFEF /* BikePathsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44F02A10E44D00AFAFEF /* BikePathsViewModel.swift */; };
 		B5EF44F42A10E45800AFAFEF /* BikePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF44F32A10E45800AFAFEF /* BikePaths.swift */; };
@@ -238,6 +239,7 @@
 		B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddPolygon.swift"; sourceTree = "<group>"; };
 		B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarView.swift; sourceTree = "<group>"; };
+		B557B1522AC820AF00B0AE1E /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		B5608A772A28BB0A00A69B9C /* UrbanImprovementsDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsDetailInfo.swift; sourceTree = "<group>"; };
 		B5608A792A28C11600A69B9C /* UrbanImprovementsCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanImprovementsCallout.swift; sourceTree = "<group>"; };
 		B5608A7B2A2DE9EB00A69B9C /* YoutubePlayerWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlayerWebView.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 		B5ABF1D62AC0735000A68912 /* ClusterItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterItems.swift; sourceTree = "<group>"; };
 		B5B06B5E29FE96A900614772 /* UIView+GradientBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientBorder.swift"; sourceTree = "<group>"; };
 		B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Encrypt.swift; sourceTree = "<group>"; };
+		B5C842FA2AC834A2008F669E /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		B5CBE4382AA8D7C6000C85AA /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		B5D4B77B2A6D243900817C42 /* IndicatorCollectionViewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorCollectionViewListCell.swift; sourceTree = "<group>"; };
 		B5D4B77D2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCleaningIndicatorsViewModel.swift; sourceTree = "<group>"; };
@@ -278,7 +281,6 @@
 		B5E9BED02ABF3B23005EAE89 /* SearchTextfield+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchTextfield+Combine.swift"; sourceTree = "<group>"; };
 		B5EF44E12A0FDA6500AFAFEF /* DigWorkFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkFilterBottomSheet.swift; sourceTree = "<group>"; };
 		B5EF44E32A10DD3600AFAFEF /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
-		B5EF44E72A10DE5B00AFAFEF /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		B5EF44ED2A10E42D00AFAFEF /* BikePathsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathsViewController.swift; sourceTree = "<group>"; };
 		B5EF44F02A10E44D00AFAFEF /* BikePathsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePathsViewModel.swift; sourceTree = "<group>"; };
 		B5EF44F32A10E45800AFAFEF /* BikePaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikePaths.swift; sourceTree = "<group>"; };
@@ -773,6 +775,14 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		B5C842F92AC8348B008F669E /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				B5C842FA2AC834A2008F669E /* Strings.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 		B5EF44EC2A10E41200AFAFEF /* BikePathsModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -895,8 +905,9 @@
 		B5F7A883299DFD380001ED69 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B5C842F92AC8348B008F669E /* Generated */,
 				B5F7A877299D33070001ED69 /* Assets.xcassets */,
-				B5EF44E72A10DE5B00AFAFEF /* Strings.swift */,
+				B557B1522AC820AF00B0AE1E /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -963,6 +974,7 @@
 			buildConfigurationList = B5F7A87F299D33070001ED69 /* Build configuration list for PBXNativeTarget "TumenCity" */;
 			buildPhases = (
 				66C9E01D15796033B496FF74 /* [CP] Check Pods Manifest.lock */,
+				B5C842F22AC8213F008F669E /* SwiftGen */,
 				B5F7A867299D33060001ED69 /* Sources */,
 				B5F7A868299D33060001ED69 /* Frameworks */,
 				B5F7A869299D33060001ED69 /* Resources */,
@@ -1032,6 +1044,7 @@
 			files = (
 				B5464CA52A1CB324000147F8 /* urbanMock.json in Resources */,
 				B5EF45012A112A8800AFAFEF /* bikePathInfoLegend.json in Resources */,
+				B557B1532AC820AF00B0AE1E /* Localizable.strings in Resources */,
 				B5EF44F72A110D0C00AFAFEF /* bikePathMock.json in Resources */,
 				B50D32422A18CA1E0034B860 /* tradeObjectsMock.json in Resources */,
 				B5F7A87B299D33070001ED69 /* LaunchScreen.storyboard in Resources */,
@@ -1084,6 +1097,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B5C842F22AC8213F008F669E /* SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftGen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftgen >/dev/null; then\n  swiftgen config run --config ${PROJECT_DIR}/swiftgen.yml\nelse\n  echo \"warning: SwiftGen not installed, download it from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1114,7 +1145,6 @@
 				B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */,
 				B5EF44F12A10E44D00AFAFEF /* BikePathsViewModel.swift in Sources */,
 				B52896382A064145006A85D9 /* MKSportAnnotation.swift in Sources */,
-				B5EF44E82A10DE5B00AFAFEF /* Strings.swift in Sources */,
 				B53D66542A02C6F90010F846 /* MKCloseRoadAnnotation.swift in Sources */,
 				B51C33CF2A5E846B00BC8A8E /* CityCleaningContractorsViewController.swift in Sources */,
 				B5EF44FF2A112A0100AFAFEF /* BikePathInfoLegend.swift in Sources */,
@@ -1152,6 +1182,7 @@
 				B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */,
 				B51C33C62A5E600100BC8A8E /* CityCleaningContractor.swift in Sources */,
 				B53D66502A029A270010F846 /* CloseRoadsViewModel.swift in Sources */,
+				B5C842FB2AC834A2008F669E /* Strings.swift in Sources */,
 				B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */,
 				B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */,
 				B50D32612A1C98D80034B860 /* UrbanImprovementsViewController.swift in Sources */,

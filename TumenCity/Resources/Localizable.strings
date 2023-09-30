@@ -1,0 +1,102 @@
+// MARK: - Button
+"ButtonTitle.submitFilterBtnStrings" = "Применить";
+"ButtonTitle.clearFilterBtn" = "Очистить";
+
+// MARK: - CommunalServicesModule
+"CommunalServices.callout.adress" = "Адрес:";
+"CommunalServices.callout.organization" = "Устраняющая организация:";
+"CommunalServices.callout.dateStart" = "Дата начала работ:";
+"CommunalServices.callout.dateFinish" = "Дата окончания работ:";
+
+// MARK: - CommunalServicesModule
+"CloseRoad.Callout.description" = "Описание:";
+"CloseRoad.Callout.datePeriod" = "Период:";
+
+// MARK: - UrbanImprovementsModule
+"UrbanImprovements.callout.photoTitle" = "Фото:";
+"UrbanImprovements.callout.videoTitle" = "Видео:";
+"UrbanImprovements.callout.stageWork" = "Стадия работ:";
+"UrbanImprovements.callout.dateStart" = "Период проведения работ:";
+"UrbanImprovements.callout.workType" = "Вид работ:";
+
+// MARK: - CityCleaningModule
+"CityCleaning.callout.lastTimeUpdated" = "Последнее обновление данных произошло в";
+"CityCleaning.callout.council" = "Управляющая организация:";
+"CityCleaning.callout.contractor" = "Подрядчик:";
+"CityCleaning.callout.carType" = "Тип ТС:";
+"CityCleaning.callout.iAmSpeed" = "Скорость:";
+
+// MARK: - SportModule
+"Sport.Callout.email" = "Электронная почта:";
+"Sport.Callout.contacts" = "Контакты:";
+"Sport.Callout.addresses" = "Адреса:";
+
+
+// MARK: - DigWorkModule
+"DigWork.bottomSheet.personFilterString" = "Заинтересованное лицо";
+"DigWork.bottomSheet.zoneFilterString" = "Район";
+"DigWork.bottomSheet.typeOfWorkFilterString" = "Цель работ";
+"DigWork.bottomSheet.statusFilterString" = "Статус";
+"DigWork.bottomSheet.dateAfterFilterString" = "Период осуществляемых работ после:";
+"DigWork.bottomSheet.dateBeforeFilterString" = "Период осуществляемых работ до:";
+
+"DigWork.bottomSheet.zones.all" = "Все";
+"DigWork.bottomSheet.zones.VAO" = "ВАО";
+"DigWork.bottomSheet.zones.CAO" = "ЦАО";
+"DigWork.bottomSheet.zones.LAO" = "ЛАО";
+"DigWork.bottomSheet.zones.KAO" = "КАО";
+
+"DigWork.bottomSheet.typeOfWork.all" = "Все";
+"DigWork.bottomSheet.typeOfWork.reconstructionRelocationRepairIK" = "Реконструкция, перенос, переустройство, ремонт ИК";
+"DigWork.bottomSheet.typeOfWork.accidentsIncidentsIK" = "Аварии, инцидента на ИК";
+"DigWork.bottomSheet.typeOfWork.technologicalConnectionITNetworks" = "Технологическое присоединение к сетям ИТ";
+"DigWork.bottomSheet.typeOfWork.installationOperationAdvertisingStructures" = "Установка/эксплуатация рекламных конструкций";
+
+"DigWork.bottomSheet.status.all" = "Все";
+"DigWork.bottomSheet.status.notificationSubmitted" = "Подано уведомление";
+"DigWork.bottomSheet.status.registered" = "Зарегистрировано";
+"DigWork.bottomSheet.status.denied" = "Отказано";
+"DigWork.bottomSheet.status.waitingForWork" = "Ожидание работы";
+"DigWork.bottomSheet.status.inProgress" = "В работе";
+"DigWork.bottomSheet.status.restoration" = "Восстановление";
+"DigWork.bottomSheet.status.warrantyPeriod" = "Гарантийный период";
+"DigWork.bottomSheet.status.completedWork" = "Завершенная работа";
+"DigWork.bottomSheet.status.expertise" = "Экспертиза";
+"DigWork.bottomSheet.status.waitingForSummerRestoration" = "Ожидание восстановления в летнем варианте";
+"DigWork.bottomSheet.status.error" = "Ошибка";
+
+// MARK: - TradeObjectsModule
+"TradeObjects.callout.filterActiveTitle" = "НТО с действующими договорами: ";
+"TradeObjects.callout.filterFreeTitle" = "Свободные места: ";
+"TradeObjects.callout.urName" = "Наименование юридического лица: ";
+"TradeObjects.callout.numDoc" = "Номер договора: ";
+"TradeObjects.callout.dateDoc" = "Срок действия договора: ";
+"TradeObjects.callout.area" = "Округ: ";
+"TradeObjects.callout.typeObject" = "Тип объекта: ";
+"TradeObjects.callout.purpose" = "Целевое назначение: ";
+"TradeObjects.callout.period" = "Период функционирования: ";
+"TradeObjects.callout.parametersTitle" = "Параметры и характеристики нестационарного торгового объекта";
+"TradeObjects.callout.areaSquare" = "Площадь, кв.м: ";
+"TradeObjects.callout.floors" = "Количество этажей: ";
+"TradeObjects.callout.height" = "Высота, м: ";
+
+"TradeObjects.bottomSheet.address" = "Адрес местоположения";
+"TradeObjects.bottomSheet.purpose" = "Целевое назначение";
+"TradeObjects.bottomSheet.objectType" = "Тип объекта";
+"TradeObjects.bottomSheet.period" = "Период функционирования";
+
+"TradeObjects.bottomSheet.checkBoxTypes.pavilion" = "Павильон";
+"TradeObjects.bottomSheet.checkBoxTypes.kiosk" = "Киоск";
+"TradeObjects.bottomSheet.checkBoxTypes.rollBar" = "Ролл-бар";
+"TradeObjects.bottomSheet.checkBoxTypes.refrigerationEquipment" = "Холодильное оборудование";
+"TradeObjects.bottomSheet.checkBoxTypes.stalls" = "Лотки";
+"TradeObjects.bottomSheet.checkBoxTypes.pressStand" = "Пресс-стенд";
+"TradeObjects.bottomSheet.checkBoxTypes.tentStallsRefrigeration" = "Палатка, лотки, холодильное оборудование, передвижное сооружение";
+"TradeObjects.bottomSheet.checkBoxTypes.vendingMachine" = "Вендинговый автомат";
+"TradeObjects.bottomSheet.checkBoxTypes.christmasMarket" = "Елочный базар";
+
+"TradeObjects.bottomSheet.checkBoxPeriod.allYear" = "Круглогодичный";
+"TradeObjects.bottomSheet.checkBoxPeriod.springSummer" = "Весенне-летний период (с 01 мая до 01 октября)";
+"TradeObjects.bottomSheet.checkBoxPeriod.massEvent" = "Период проведения массового мероприятия";
+"TradeObjects.bottomSheet.checkBoxPeriod.autumnWinter" = "Осенне-зимний период (с 10 октября до 20 апреля)";
+"TradeObjects.bottomSheet.checkBoxPeriod.winter" = "Зимний период (с 10 декабря по 10 января)";

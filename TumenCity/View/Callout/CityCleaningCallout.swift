@@ -38,11 +38,11 @@ final class CityCleaningCallout: Callout {
     
     func configure(annotation: MKCityCleaningAnnotation) {
         titleView.setTitle(with: annotation.number ?? "", icon: annotation.icon ?? .add)
-        itemUpdatedTime.setLabelWithDescription(Strings.CityCleaningModule.CityCleaningCallout.lastTimeUpdated, label: annotation.date)
+        itemUpdatedTime.setLabelWithDescription(L10n.CityCleaning.Callout.lastTimeUpdated, label: annotation.date)
         
-        [(annotation.council, Strings.CityCleaningModule.CityCleaningCallout.council),
-         (annotation.contractor, Strings.CityCleaningModule.CityCleaningCallout.contractor),
-         (annotation.carType, Strings.CityCleaningModule.CityCleaningCallout.carType)].forEach { (text, description) in
+        [(annotation.council, L10n.CityCleaning.Callout.council),
+         (annotation.contractor, L10n.CityCleaning.Callout.contractor),
+         (annotation.carType, L10n.CityCleaning.Callout.carType)].forEach { (text, description) in
             let label = CalloutLabelView()
             label.setLabelWithDescription(description, label: text)
             stackViewContent.addArrangedSubview(label)
@@ -50,7 +50,7 @@ final class CityCleaningCallout: Callout {
         
         if let speed = annotation.speed {
             let label = CalloutLabelView()
-            label.setLabelWithDescription(Strings.CityCleaningModule.CityCleaningCallout.iAmSpeed, label: String(speed))
+            label.setLabelWithDescription(L10n.CityCleaning.Callout.iAmSpeed, label: String(speed))
             stackViewContent.addArrangedSubview(label)
         }
     }

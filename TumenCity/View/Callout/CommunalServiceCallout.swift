@@ -63,13 +63,13 @@ final class CommunalServiceCallout: Callout {
     func configure(annotations: [MKItemAnnotation]) {
         guard let annotation = annotations.first else { return }
         
-        address.text = "\(Strings.CommunalServicesModule.CommunalServiceCallout.adress) \(annotation.markDescription.address)"
+        address.text = "\(L10n.CommunalServices.Callout.adress) \(annotation.markDescription.address)"
         
-        organization.setLabelWithDescription(Strings.CommunalServicesModule.CommunalServiceCallout.organization,
+        organization.setLabelWithDescription(L10n.CommunalServices.Callout.organization,
                                              label: annotation.orgTitle)
-        dateStart.setLabelWithDescription(Strings.CommunalServicesModule.CommunalServiceCallout.dateStart,
+        dateStart.setLabelWithDescription(L10n.CommunalServices.Callout.dateStart,
                                           label: annotation.dateStart)
-        dateFinish.setLabelWithDescription(Strings.CommunalServicesModule.CommunalServiceCallout.dateFinish,
+        dateFinish.setLabelWithDescription(L10n.CommunalServices.Callout.dateFinish,
                                            label: annotation.dateFinish)
         
         let colors = annotations.uniques(by: \.color).map { $0.color }

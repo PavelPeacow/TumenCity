@@ -31,14 +31,14 @@ class TradeObjectsViewController: UIViewController {
     }()
     
     lazy var filterViewFree: TradeObjectsTypeView = {
-        let filter = TradeObjectsTypeView(icon: .init(named: "filterFree") ?? .add, filterTitle: Strings.TradeObjectsModule.filterFreeTitle)
+        let filter = TradeObjectsTypeView(icon: .init(named: "filterFree") ?? .add, filterTitle: L10n.TradeObjects.Callout.filterFreeTitle)
         let filterFreeGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFreeFilter))
         filter.addGestureRecognizer(filterFreeGesture)
         return filter
     }()
     
     lazy var filterViewActive: TradeObjectsTypeView = {
-        let filter = TradeObjectsTypeView(icon: .init(named: "filterActive") ?? .add, filterTitle: Strings.TradeObjectsModule.filterActiveTitle)
+        let filter = TradeObjectsTypeView(icon: .init(named: "filterActive") ?? .add, filterTitle: L10n.TradeObjects.Callout.filterActiveTitle)
         let filterFreeGesture = UITapGestureRecognizer(target: self, action: #selector(didTapActiveFilter))
         filter.addGestureRecognizer(filterFreeGesture)
         return filter

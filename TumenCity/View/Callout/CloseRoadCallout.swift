@@ -41,11 +41,11 @@ final class CloseRoadCallout: Callout {
     }
     
     func configure(annotation: MKCloseRoadAnnotation) {
-        titleView.setTitle(with: annotation.title, icon: annotation.icon ?? .add)
+        titleView.setTitle(with: annotation.title, icon: annotation.icon)
         
-        calloutDescription.setLabelWithDescription(Strings.CloseRoadModule.CloseRoadCallout.description,
+        calloutDescription.setLabelWithDescription(L10n.CloseRoad.Callout.description,
                                                    label: annotation.itemDescription)
-        calloutDate.setLabelWithDescription(Strings.CloseRoadModule.CloseRoadCallout.datePeriod,
+        calloutDate.setLabelWithDescription(L10n.CloseRoad.Callout.datePeriod,
                                             label: annotation.dateEnd)
     }
     

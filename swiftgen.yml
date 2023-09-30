@@ -1,0 +1,5 @@
+strings:
+  inputs: TumenCity/Resources/Localizable.strings
+  outputs:
+    templateName: structured-swift5
+    output: TumenCity/Resources/Generated/Strings.swift

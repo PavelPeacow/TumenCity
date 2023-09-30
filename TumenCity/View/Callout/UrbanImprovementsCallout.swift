@@ -101,9 +101,9 @@ final class UrbanImprovementsCallout: Callout {
     func configure(urbanDetailInfo: UrbanImprovementsDetailInfo, calloutImage: UIImage) {
         titleView.setTitle(with: urbanDetailInfo.fields.title ?? "", icon: calloutImage)
         
-        [(urbanDetailInfo.fields.stageWork?.value, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.stageWork),
-         (urbanDetailInfo.fields.dateStart, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.dateStart),
-         (urbanDetailInfo.fields.vidWork, Strings.UrbanImprovementsModule.UrbanImprovementsCallout.workType)].forEach { (text, description) in
+        [(urbanDetailInfo.fields.stageWork?.value, L10n.UrbanImprovements.Callout.stageWork),
+         (urbanDetailInfo.fields.dateStart, L10n.UrbanImprovements.Callout.dateStart),
+         (urbanDetailInfo.fields.vidWork, L10n.UrbanImprovements.Callout.workType)].forEach { (text, description) in
             if let text {
                 let label = CalloutLabelView()
                 label.setLabelWithDescription(description, label: text)
