@@ -64,12 +64,13 @@ final class CommunalServicesViewModel {
         }
     }
     
-    func findAnnotationByAddressName(_ address: String) -> Observable<MKItemAnnotation?> {
-        filteredAnnotations
-            .map { annotations in
-                annotations.0.first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) } )
-            }
+    func findAnnotationByAddressName(_ address: String) -> MKItemAnnotation? {
+        return try? filteredAnnotations
+            .value() // Get the current value from BehaviorSubject
+            .0
+            .first(where: { $0.markDescription.address.lowercased().contains(address.lowercased()) })
     }
+
     
     //MARK: - API Call
     

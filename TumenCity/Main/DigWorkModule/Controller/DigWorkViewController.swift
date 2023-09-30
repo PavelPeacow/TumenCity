@@ -19,12 +19,8 @@ final class DigWorkViewController: UIViewController {
     
     private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    private lazy var searchController: UISearchController = {
-        let search = UISearchController()
-        search.searchResultsUpdater = self
-        search.searchBar.placeholder = "Введите адрес..."
-        search.hidesNavigationBarDuringPresentation = false
-        return search
+    private lazy var searchTextfield: SearchTextField = {
+        SearchTextField()
     }()
     
     private lazy var loadingViewController = LoadingViewController()
@@ -46,12 +42,15 @@ final class DigWorkViewController: UIViewController {
     private func setUpView() {
         title = "Земляные работы"
         view.backgroundColor = .systemBackground
-        map.setYandexMapLayout(in: self.view)
+        view.addSubview(searchTextfield)
+        searchTextfield.setupTextfieldLayoutIn(view: view)
+        map.setYandexMapLayout(in: self.view) {
+            $0.top.equalTo(self.searchTextfield.snp.bottom).offset(5)
+        }
         map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
     }
     
     private func setUpNavigationBar() {
-        navigationItem.searchController = searchController
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "filterIcon"),
                                                             style: .done,
                                                             target: self,
@@ -59,14 +58,15 @@ final class DigWorkViewController: UIViewController {
     }
     
     private func bindSearchController() {
-        searchController.searchBar.rx.text
-            .orEmpty
-            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [unowned self] str in
+        searchTextfield
+            .textPublisher
+            .throttle(for: .milliseconds(300), scheduler: RunLoop.main, latest: true)
+            .removeDuplicates()
+            .sink { [unowned self] str in
+                print(str)
                 viewModel.searchQuery = str
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
     }
     
     private func setUpBindings() {
@@ -159,16 +159,8 @@ extension DigWorkViewController {
     
 }
 
-extension DigWorkViewController: UISearchResultsUpdating {
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
-    
-}
-
 extension DigWorkViewController: YMKClusterListener {
-    
+
     func onClusterAdded(with cluster: YMKCluster) {
         cluster.appearance.setStaticImage(inClusterItemsCount: cluster.size, color: .green)
         cluster.addClusterTapListener(with: self)

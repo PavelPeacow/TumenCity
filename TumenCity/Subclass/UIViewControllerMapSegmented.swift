@@ -6,25 +6,23 @@
 //
 
 import UIKit
-import RxSwift
+import Combine
 
 class UIViewControllerMapSegmented: UIViewController {
-        
     private var mainMapView: UIView
     private var registryView: UIView
     private var registrySearchResult: UITableViewController
     
-    var didChangeSearchController = PublishSubject<Void>()
+    private var cancellables = Set<AnyCancellable>()
+    private var isRegistrySearchEnabled = false
     
+    var didEnterText = PassthroughSubject<String, Never>()
     var segmentedIndex: Int {
         segmentControl.selectedSegmentIndex
     }
     
-    lazy var searchController: UISearchController = {
-        let search = UISearchController()
-        search.searchResultsUpdater = self
-        search.hidesNavigationBarDuringPresentation = false
-        return search
+    private lazy var searchTextfield: SearchTextField = {
+        SearchTextField()
     }()
     
     private lazy var scrollView: UIScrollView = {
@@ -46,7 +44,7 @@ class UIViewControllerMapSegmented: UIViewController {
         return stackView
     }()
     
-    lazy var segmentControl: UISegmentedControl = {
+    private lazy var segmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
         segment.translatesAutoresizingMaskIntoConstraints = false
         return segment
@@ -62,6 +60,7 @@ class UIViewControllerMapSegmented: UIViewController {
         stackView.addArrangedSubview(mainMapView)
         stackView.addArrangedSubview(registryView)
         
+        view.addSubview(searchTextfield)
         view.addSubview(segmentControl)
         
         view.addSubview(scrollView)
@@ -76,22 +75,71 @@ class UIViewControllerMapSegmented: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func changeToMapSearch() {
+        searchTextfield.resignFirstResponder()
+        searchTextfield.text = ""
+        registrySearchResult.view.isHidden = true
+        isRegistrySearchEnabled = false
         
-    private func changeSearchController(withSearchResultsController: Bool = false) {
-        let search = UISearchController(searchResultsController: withSearchResultsController ? registrySearchResult : nil)
-        search.searchResultsUpdater = self
-        search.hidesNavigationBarDuringPresentation = false
-        searchController = search
-        setUpSearchController()
+        registrySearchResult.removeFromParent()
+        registrySearchResult.view.removeFromSuperview()
     }
     
+    private func changeToRegistrySearch() {
+        searchTextfield.resignFirstResponder()
+        searchTextfield.text = ""
+        isRegistrySearchEnabled = true
+        
+        self.addChild(registrySearchResult)
+        registrySearchResult.view.frame = view.frame
+        view.addSubview(registrySearchResult.view)
+        registrySearchResult.didMove(toParent: self)
+        
+        registrySearchResult.view.snp.makeConstraints {
+            $0.top.equalTo(searchTextfield.snp.bottom).offset(5)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+        
     private func setUpSearchController() {
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Введите адрес..."
-        didChangeSearchController
-            .onNext(())
+        searchTextfield
+            .didClearTextPublisher
+            .sink { [weak self] in
+                self?.registrySearchResult.view.isHidden = true
+                print("cleearr")
+            }
+            .store(in: &cancellables)
+
+        searchTextfield
+            .textPublisher
+            .sink { [weak self] text in
+                print("text entered")
+                if self?.isRegistrySearchEnabled == true && text.count > 0 {
+                    self?.registrySearchResult.view.isHidden = false
+                } else {
+                    self?.registrySearchResult.view.isHidden = true
+                }
+                self?.didEnterText.send(text)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func animateAppearingRegistrySearch() {
+        self.registrySearchResult.view.isHidden = false
+        self.registrySearchResult.view.alpha = 0.0
+        
+        UIView.animate(withDuration: 0.3) {
+            self.registrySearchResult.view.alpha = 1.0
+        }
+    }
+    
+    private func animateDissapearingRegistrySearch() {
+        UIView.animate(withDuration: 0.3) {
+            self.registrySearchResult.view.alpha = 0.0
+        } completion: { _ in
+            self.registrySearchResult.view.isHidden = true
+        }
     }
     
     private func addTarget() {
@@ -109,15 +157,9 @@ class UIViewControllerMapSegmented: UIViewController {
         segmentControl.selectedSegmentIndex = 0
         segmentControl.sendActions(for: .valueChanged)
     }
-    
-}
-
-extension UIViewControllerMapSegmented: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) { }
 }
 
 private extension UIViewControllerMapSegmented {
-    
     @objc func didSlideSegmentedControl(_ sender: UISegmentedControl) {
         navigationItem.searchController = nil
         let index = sender.selectedSegmentIndex
@@ -126,28 +168,29 @@ private extension UIViewControllerMapSegmented {
             
         case 0:
             scrollView.scrollRectToVisible(mainMapView.frame, animated: true)
-            changeSearchController()
+            changeToMapSearch()
         case 1:
             scrollView.scrollRectToVisible(registryView.frame, animated: true)
-            changeSearchController(withSearchResultsController: true)
+            changeToRegistrySearch()
         default:
             return
         }
     }
-    
 }
 
 private extension UIViewControllerMapSegmented {
-    
     func setConstraints() {
         mainMapView.translatesAutoresizingMaskIntoConstraints = false
         registryView.translatesAutoresizingMaskIntoConstraints = false
+        registrySearchResult.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        searchTextfield.setupTextfieldLayoutIn(view: view)
         
         segmentControl.snp.makeConstraints {
             $0.height.equalTo(25)
-            $0.width.equalToSuperview().multipliedBy(0.8)
+            $0.width.equalToSuperview().multipliedBy(0.95)
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(searchTextfield.snp.bottom).offset(5)
         }
         
         stackView.snp.makeConstraints {
@@ -168,7 +211,6 @@ private extension UIViewControllerMapSegmented {
             $0.bottom.equalToSuperview()
         }
     }
-    
 }
 
 //MARK: - NotificationCenter

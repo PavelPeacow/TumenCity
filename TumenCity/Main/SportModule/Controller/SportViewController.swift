@@ -42,7 +42,6 @@ class SportViewController: UIViewControllerMapSegmented {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
-        bindSearchController()
         setUpBindings()
         setupNetworkReachability(becomeAvailable: {
             Task {
@@ -69,12 +68,10 @@ class SportViewController: UIViewControllerMapSegmented {
         
         sportRegistrySearchResult
             .selectedSportElementObservable
-            .flatMap { [unowned self] sportElement in
+            .sink { [unowned self] sportElement in
                 resetSegmentedControlAfterRegistryView()
-                return viewModel.searchAnnotationByName(sportElement.title)
-            }
-            .sink { [unowned self] annotation in
-                if let annotation{
+                let annotation = viewModel.searchAnnotationByName(sportElement.title)
+                if let annotation {
                     map.mapView.moveCameraToAnnotation(annotation)
                 } else {
                     map.mapView.setDefaultRegion()
@@ -82,27 +79,15 @@ class SportViewController: UIViewControllerMapSegmented {
             }
             .store(in: &cancellables)
         
-        didChangeSearchController
-            .subscribe(onNext: { [unowned self] _ in
-                searchController.searchBar.rx.text.onCompleted()
-                bindSearchController()
-                print("che")
-            })
-            .disposed(by: bag)
-        
-        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
-    }
-    
-    private func bindSearchController() {
-        searchController.searchBar.searchTextField
-            .textPublisher
-            .throttle(for: .milliseconds(300), scheduler: RunLoop.main, latest: true)
+        didEnterText
             .removeDuplicates()
             .sink { [unowned self] str in
                 print(str)
                 viewModel.searchQuery = str
             }
             .store(in: &cancellables)
+        
+        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
     }
     
     private func setUpBindings() {
@@ -144,13 +129,9 @@ class SportViewController: UIViewControllerMapSegmented {
         viewModel
             .$searchQuery
             .filter { [unowned self] _ in segmentedIndex == 0 }
-            .flatMap { [unowned self] query in
-                print(query)
-                return viewModel.searchAnnotationByName(String(query))
-            }
-            .eraseToAnyPublisher()
-            .sink { [unowned self] annotation in
-                if let annotation{
+            .sink { [unowned self] query in
+                let annotation = viewModel.searchAnnotationByName(String(query))
+                if let annotation {
                     map.mapView.moveCameraToAnnotation(annotation)
                 } else {
                     map.mapView.setDefaultRegion()

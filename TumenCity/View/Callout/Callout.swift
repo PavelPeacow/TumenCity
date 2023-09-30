@@ -95,7 +95,8 @@ class Callout: UIViewController {
     
     func showAlert(in viewController: UIViewController) {
         #warning("show only one callout at time fixed")
-        guard viewController.children.count == 0 ||
+        guard viewController.children.count == 0 || 
+                viewController.children.contains(where: { $0 is UIViewControllerMapSegmented }) ||
                 viewController is CityCleaningFilterViewController ||
                 viewController is TradeObjectsViewController
         else {

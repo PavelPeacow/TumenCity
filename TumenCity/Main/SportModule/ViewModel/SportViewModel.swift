@@ -38,19 +38,15 @@ final class SportViewModel {
         }
     }
     
-    func searchAnnotationByName(_ name: String) -> AnyPublisher<MKSportAnnotation?, Never> {
-        $sportAnnotations
-            .map { annotations in
-                let filteredAnnotations = annotations.filter { annotation in
-                    let annotationTitle = annotation.title.lowercased()
-                    let searchKeyword = name.lowercased()
-                    return annotationTitle.contains(searchKeyword)
-                }
-                return filteredAnnotations.first
-            }
-            .eraseToAnyPublisher()
+    func searchAnnotationByName(_ name: String) -> MKSportAnnotation? {
+        let filteredAnnotations = sportAnnotations.filter { annotation in
+            let annotationTitle = annotation.title.lowercased()
+            let searchKeyword = name.lowercased()
+            return annotationTitle.contains(searchKeyword)
+        }
+        return filteredAnnotations.first
     }
-    
+
     func getSportElements() async {
         isLoading = true
         await APIManager().fetchDataWithParameters(type: [SportElement].self,

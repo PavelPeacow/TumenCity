@@ -8,6 +8,7 @@
 import UIKit
 import YandexMapsMobile
 import RxSwift
+import Combine
 
 final class CommunalServicesViewController: UIViewControllerMapSegmented {
     
@@ -15,6 +16,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
     
     private let viewModel = CommunalServicesViewModel()
     private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
     private var timer: Timer?
     
     private let serviceMap: CommunalServicesView
@@ -52,15 +54,10 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
         
         serviceRegistry
             .selectedAddressObservable
-            .flatMap { [unowned self] address in
-                viewModel.resetFilterCommunalServices()
-                serviceMap.servicesInfoStackView.arrangedSubviews.forEach { ($0 as? ServiceInfoView)?.isTapAlready = false }
-                resetSegmentedControlAfterRegistryView()
-                
-                return viewModel.findAnnotationByAddressName(address.address)
-            }
-            .subscribe(onNext: { [unowned self] annotation in
+            .subscribe(onNext: { [unowned self] address in
                 serviceMap.infoTitle.isHidden = true
+                resetSegmentedControlAfterRegistryView()
+                let annotation = viewModel.findAnnotationByAddressName(address.address)
                 if let annotation {
                     serviceMap.map.mapView.moveCameraToAnnotation(annotation)
                 } else {
@@ -71,13 +68,11 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
         
         serviceSearch
             .selectedAddressesElementObservable
-            .flatMap { [unowned self] address in
-                resetSegmentedControlAfterRegistryView()
-                return viewModel.findAnnotationByAddressName(address.address)
-            }
-            .subscribe(onNext: { [unowned self] annotation in
+            .subscribe(onNext: { [unowned self] address in
                 serviceMap.infoTitle.isHidden = true
-                if let annotation{
+                resetSegmentedControlAfterRegistryView()
+                let annotation = viewModel.findAnnotationByAddressName(address.address)
+                if let annotation {
                     serviceMap.map.mapView.moveCameraToAnnotation(annotation)
                 } else {
                     serviceMap.map.mapView.setDefaultRegion()
@@ -85,24 +80,13 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
             })
             .disposed(by: bag)
         
-        didChangeSearchController
-            .subscribe(onNext: { [unowned self] _ in
-                searchController.searchBar.rx.text.onCompleted()
-                bindSearchController()
-                print("che")
-            })
-            .disposed(by: bag)
-    }
-    
-    private func bindSearchController() {
-        searchController.searchBar.rx.text
-            .orEmpty
-            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [unowned self] str in
+        didEnterText
+            .removeDuplicates()
+            .sink { [unowned self] str in
+                print(str)
                 viewModel.searchQuery.onNext(str)
-            })
-            .disposed(by: bag)
+            }
+            .store(in: &cancellables)
     }
     
     private func setUpBindings() {
@@ -144,10 +128,8 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
         viewModel
             .searchQuery
             .filter { [unowned self] _ in segmentedIndex == 0 }
-            .flatMap { [unowned self] query in
-                viewModel.findAnnotationByAddressName(query)
-            }
-            .subscribe(onNext: { [unowned self] annotation in
+            .subscribe(onNext: { [unowned self] query in
+                let annotation = viewModel.findAnnotationByAddressName(query)
                 if let annotation {
                     serviceMap.map.mapView.moveCameraToAnnotation(annotation)
                 } else {
