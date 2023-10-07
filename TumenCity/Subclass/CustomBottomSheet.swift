@@ -145,28 +145,34 @@ extension CustomBottomSheet {
 }
 
 private extension CustomBottomSheet {
-#warning("currently remove draggin because of keyboard appearing")
-    @objc private func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
-//        guard let pointOrigin = self.pointOrigin else { return }
-//        
-//        let translation = sender.translation(in: view)
-//        guard translation.y >= 0 else { return }
-//        
-//        view.frame.origin.y = pointOrigin.y + translation.y
-//        
-//        if sender.state == .ended {
-//            let draggedToDismiss = translation.y > view.bounds.height / 3.0
-//            let dragVelocity = sender.velocity(in: view)
-//            if draggedToDismiss || dragVelocity.y >= 1300 {
-//                dismiss(animated: true, completion: nil)
-//            } else {
-//                UIView.animate(withDuration: 0.3) {
-//                    self.view.frame.origin.y = pointOrigin.y
-//                }
-//            }
-//        }
+    @objc
+    func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
+        guard let pointOrigin = self.pointOrigin else { return }
+        guard !isKeyboardActive else { return }
+        
+        let translation = sender.translation(in: view)
+        guard translation.y >= 0 else { 
+            view.frame.origin.y = pointOrigin.y
+            return
+        }
+        
+        view.frame.origin.y = pointOrigin.y + translation.y
+        
+        if sender.state == .ended {
+            let draggedToDismiss = translation.y > view.bounds.height / 3.0
+            let dragVelocity = sender.velocity(in: view)
+            
+            let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.7) { [weak self] in
+                if draggedToDismiss || dragVelocity.y >= 1300 {
+                    self?.dismiss(animated: true)
+                } else {
+                    self?.view.frame.origin.y = pointOrigin.y
+                }
+            }
+            
+            animator.startAnimation()
+        }
     }
-    
 }
 
 extension CustomBottomSheet: UIViewControllerTransitioningDelegate {
