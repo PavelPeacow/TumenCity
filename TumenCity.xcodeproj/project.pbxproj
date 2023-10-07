@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9FB2286DDA6BA63DAE338CE0 /* Pods_TumenCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA9CE4E3546632B74B273CF4 /* Pods_TumenCity.framework */; };
-		B50D32352A17CD750034B860 /* YandexMapMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32342A17CD750034B860 /* YandexMapMaker.swift */; };
+		B50D32352A17CD750034B860 /* YandexMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32342A17CD750034B860 /* YandexMapView.swift */; };
 		B50D32382A18C7200034B860 /* TradeObjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D32372A18C7200034B860 /* TradeObjectsViewController.swift */; };
 		B50D323C2A18C9750034B860 /* TradeObjectsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D323B2A18C9750034B860 /* TradeObjectsViewModel.swift */; };
 		B50D323F2A18C9C80034B860 /* TradeObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D323E2A18C9C80034B860 /* TradeObjects.swift */; };
@@ -86,6 +86,8 @@
 		B5464CA92A1D143C000147F8 /* UrbanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CA82A1D143C000147F8 /* UrbanFilter.swift */; };
 		B5464CAF2A28920E000147F8 /* UrbanPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */; };
 		B5464CB12A28A527000147F8 /* YandexMK+AddPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */; };
+		B54A11792AD0417200A23FB0 /* MapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A11782AD0417200A23FB0 /* MapButton.swift */; };
+		B54A117B2AD0622100A23FB0 /* YandexMapUserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A117A2AD0622100A23FB0 /* YandexMapUserLocationManager.swift */; };
 		B54CA1622AB4C56D00CDE9E7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B54CA1612AB4C56D00CDE9E7 /* Alamofire */; };
 		B54CA1642AB4C5A500CDE9E7 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */; };
 		B54CA1662AB5EF4600CDE9E7 /* SnackBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */; };
@@ -160,7 +162,7 @@
 /* Begin PBXFileReference section */
 		7A77344C4C7C47ED6692D1C9 /* Pods-TumenCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.debug.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.debug.xcconfig"; sourceTree = "<group>"; };
 		95D7D91F1F0CD00991DC2652 /* Pods-TumenCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TumenCity.release.xcconfig"; path = "Target Support Files/Pods-TumenCity/Pods-TumenCity.release.xcconfig"; sourceTree = "<group>"; };
-		B50D32342A17CD750034B860 /* YandexMapMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapMaker.swift; sourceTree = "<group>"; };
+		B50D32342A17CD750034B860 /* YandexMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapView.swift; sourceTree = "<group>"; };
 		B50D32372A18C7200034B860 /* TradeObjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsViewController.swift; sourceTree = "<group>"; };
 		B50D323B2A18C9750034B860 /* TradeObjectsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjectsViewModel.swift; sourceTree = "<group>"; };
 		B50D323E2A18C9C80034B860 /* TradeObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeObjects.swift; sourceTree = "<group>"; };
@@ -237,6 +239,8 @@
 		B5464CA82A1D143C000147F8 /* UrbanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanFilter.swift; sourceTree = "<group>"; };
 		B5464CAE2A28920E000147F8 /* UrbanPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanPolygon.swift; sourceTree = "<group>"; };
 		B5464CB02A28A527000147F8 /* YandexMK+AddPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YandexMK+AddPolygon.swift"; sourceTree = "<group>"; };
+		B54A11782AD0417200A23FB0 /* MapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButton.swift; sourceTree = "<group>"; };
+		B54A117A2AD0622100A23FB0 /* YandexMapUserLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapUserLocationManager.swift; sourceTree = "<group>"; };
 		B54CA1632AB4C5A500CDE9E7 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarView.swift; sourceTree = "<group>"; };
 		B557B1522AC820AF00B0AE1E /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -658,9 +662,20 @@
 			path = Callout;
 			sourceTree = "<group>";
 		};
+		B54A11772AD0416300A23FB0 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				B50D32342A17CD750034B860 /* YandexMapView.swift */,
+				B54A117A2AD0622100A23FB0 /* YandexMapUserLocationManager.swift */,
+				B54A11782AD0417200A23FB0 /* MapButton.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B54A11772AD0416300A23FB0 /* Map */,
 				B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */,
 				B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */,
 				B51C33DC2A6183B900BC8A8E /* SwitchWithTitle.swift */,
@@ -768,7 +783,6 @@
 			isa = PBXGroup;
 			children = (
 				B5B06B632A000E0D00614772 /* SHA256Encrypt.swift */,
-				B50D32342A17CD750034B860 /* YandexMapMaker.swift */,
 				B5D92ACC2A40AF9900BAA7F5 /* ShowErrorAlert.swift */,
 				B5ABF1D62AC0735000A68912 /* ClusterItems.swift */,
 			);
@@ -1150,7 +1164,8 @@
 				B5EF44FF2A112A0100AFAFEF /* BikePathInfoLegend.swift in Sources */,
 				B5F2495D2A3B026600B35F74 /* MKCityCleaningAnnotation.swift in Sources */,
 				B5F7A897299E44180001ED69 /* CommunalServicesViewModel.swift in Sources */,
-				B50D32352A17CD750034B860 /* YandexMapMaker.swift in Sources */,
+				B54A11792AD0417200A23FB0 /* MapButton.swift in Sources */,
+				B50D32352A17CD750034B860 /* YandexMapView.swift in Sources */,
 				B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */,
 				B5B06B642A000E0D00614772 /* SHA256Encrypt.swift in Sources */,
 				B571088D29A216F6003698C8 /* UIButton+Blur.swift in Sources */,
@@ -1225,6 +1240,7 @@
 				B5E9BECF2ABF0C0F005EAE89 /* UIViewController+NetworkReachability.swift in Sources */,
 				B51C33D92A5E85C000BC8A8E /* CityCleaningFilterViewModel.swift in Sources */,
 				B571089F29A519B6003698C8 /* CreateSectionForMainMenu.swift in Sources */,
+				B54A117B2AD0622100A23FB0 /* YandexMapUserLocationManager.swift in Sources */,
 				B53400FE2ABB4BBE00B37208 /* UINavigationController+Appearence.swift in Sources */,
 				B51698A329F55DB80094E3B0 /* Callout.swift in Sources */,
 				B50D325C2A1A0F050034B860 /* TradeObjectsSearch.swift in Sources */,

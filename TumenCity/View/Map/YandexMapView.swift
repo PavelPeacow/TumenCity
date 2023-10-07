@@ -1,5 +1,5 @@
 //
-//  MapMakeHelper.swift
+//  YandexMapView.swift
 //  TumenCity
 //
 //  Created by Павел Кай on 19.05.2023.
@@ -10,6 +10,10 @@ import YandexMapsMobile
 import SnapKit
 
 final class YandexMapView: UIView {
+    private lazy var locationManager: YandexMapUserLocationManager = {
+        YandexMapUserLocationManager()
+    }()
+    
     lazy var mapView: YMKMapView = {
         let view = YMKMapView()
         view.mapWindow.map.logo.setPaddingWith(.init(horizontalPadding: 25, verticalPadding: 10))
@@ -19,26 +23,14 @@ final class YandexMapView: UIView {
         return view
     }()
     
-    private lazy var buttonBackgroundView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = true
-        view.backgroundColor = .systemBackground.withAlphaComponent(0.9)
-        return view
+    private lazy var defaultLocationButtonView: MapButtonView = {
+        MapButtonView(action: #selector(didTapDefaultLocationButton), systemImage: "map.fill")
     }()
     
-    private lazy var defaultLocationButton: UIButton = {
-        let button = UIButton()
-        button.addTarget(self, action: #selector(didTapDefaultLocationButton), for: .touchUpInside)
-        let sfImage = UIImage(systemName: "location.fill")?
-            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 28))
-            .withTintColor(.systemBlue, renderingMode: .alwaysOriginal)
+    private lazy var personLocationButtonView: MapButtonView = {
+        MapButtonView(action: #selector(didTapPersonLocationButton), systemImage: "location.fill")
+    }()
         
-        button.setImage(sfImage, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     init() {
         super.init(frame: .zero)
         setupView()
@@ -61,22 +53,23 @@ final class YandexMapView: UIView {
         clipsToBounds = true
         mapView.setDefaultRegion()
         
-        addSubview(mapView)
-        addSubview(buttonBackgroundView)
-        buttonBackgroundView.addSubview(defaultLocationButton)
+        locationManager.createUserLocationLayer(mapWindow: mapView.mapWindow)
         
-        buttonBackgroundView.snp.makeConstraints {
+        addSubview(mapView)
+        addSubview(defaultLocationButtonView)
+        addSubview(personLocationButtonView)
+        
+        defaultLocationButtonView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(25)
             $0.bottomMargin.equalToSuperview().inset(25)
-            $0.size.equalTo(44)
+            $0.size.equalTo(50)
         }
         
-        defaultLocationButton.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        personLocationButtonView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(25)
+            $0.bottom.equalTo(defaultLocationButtonView).inset(75)
+            $0.size.equalTo(50)
         }
-        
-        buttonBackgroundView.layoutIfNeeded()
-        buttonBackgroundView.layer.cornerRadius = buttonBackgroundView.bounds.size.width / 2
     }
     
     func setYandexMapLayout(in view: UIView, withPaddingFrom: ((ConstraintMaker) -> Void)? = nil) {
@@ -107,5 +100,18 @@ private extension YandexMapView {
     @objc
     func didTapDefaultLocationButton() {
         mapView.setDefaultRegion()
+    }
+    
+    @objc
+    func didTapPersonLocationButton() {
+        guard let userPosition = locationManager.getUserPosition()  else {
+            if let viewController = UIApplication.shared.windows.last(where: { $0.isKeyWindow })?.rootViewController {
+                let alert = locationManager.requestUserLocationAgain()
+                viewController.present(alert, animated: true)
+            }
+            return
+        }
+
+        mapView.mapWindow.map.move(with: userPosition, animationType: .init(type: .smooth, duration: 0.35))
     }
 }
