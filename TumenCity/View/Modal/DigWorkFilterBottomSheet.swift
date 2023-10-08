@@ -128,6 +128,7 @@ final class DigWorkFilterBottomSheet: CustomBottomSheet {
         filter.translatesAutoresizingMaskIntoConstraints = false
         filter.textField.inputView = filterDatePickerViewAfter
         filter.textField.inputAccessoryView = createDoneToolbar()
+        filter.textField.text = formatDate(Date())
         return filter
     }()
     
