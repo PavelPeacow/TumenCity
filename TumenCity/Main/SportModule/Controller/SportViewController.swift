@@ -18,7 +18,6 @@ class SportViewController: UIViewControllerMapSegmented {
     private var timer: Timer?
     
     private let viewModel = SportViewModel()
-    private let bag = DisposeBag()
     private var cancellables = Set<AnyCancellable>()
     
     private let map = YandexMapView()
@@ -114,8 +113,10 @@ class SportViewController: UIViewControllerMapSegmented {
                 collection.clear()
                 viewModel.addSportAnnotations(objects: objects)
                 sportRegistryView.sportElements = objects
+                
                 sportRegistrySearchResult.configure(sportElements: objects)
                 sportRegistryView.tableView.reloadData()
+                configureSuggestions(objects.map { $0.title })
             }
             .store(in: &cancellables)
         
@@ -147,6 +148,15 @@ class SportViewController: UIViewControllerMapSegmented {
                 sportRegistrySearchResult.filterSearch(with: query)
             }
             .store(in: &cancellables)
+        
+        didSelectSuggestion = { [unowned self] text in
+            let annotation = viewModel.searchAnnotationByName(text)
+            if let annotation {
+                map.mapView.moveCameraToAnnotation(annotation)
+            } else {
+                map.mapView.setDefaultRegion()
+            }
+        }
     }
     
     private func setUpBindingsForTradeObjectsBottomSheet(for modal: ClusterItemsListBottomSheet) {

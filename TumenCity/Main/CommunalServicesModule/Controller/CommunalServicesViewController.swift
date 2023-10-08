@@ -15,7 +15,6 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
     private lazy var collection = serviceMap.map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     private let viewModel = CommunalServicesViewModel()
-    private let bag = DisposeBag()
     private var cancellables = Set<AnyCancellable>()
     private var timer: Timer?
     
@@ -119,6 +118,7 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
                     serviceRegistry.tableView.reloadData()
                     
                     serviceSearch.configure(communalServicesFormatted: viewModel.communalServicesFormatted)
+                    configureSuggestions(annotations.map { $0.title })
                 },
                 onCompleted: { [unowned self] in
                     serviceMap.map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
@@ -160,6 +160,15 @@ final class CommunalServicesViewController: UIViewControllerMapSegmented {
                 serviceSearch.configure(communalServicesFormatted: communalServicesFormatted)
             })
             .disposed(by: bag)
+        
+        didSelectSuggestion = { [unowned self] text in
+            let annotation = viewModel.findAnnotationByAddressName(text)
+            if let annotation {
+                serviceMap.map.mapView.moveCameraToAnnotation(annotation)
+            } else {
+                serviceMap.map.mapView.setDefaultRegion()
+            }
+        }
     }
     
     private func addBingingForService(_ service: ServiceInfoView) {

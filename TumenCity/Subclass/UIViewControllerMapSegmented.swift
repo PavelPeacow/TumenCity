@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import RxSwift
 
 class UIViewControllerMapSegmented: UIViewController {
     private var mainMapView: UIView
@@ -21,8 +22,16 @@ class UIViewControllerMapSegmented: UIViewController {
         segmentControl.selectedSegmentIndex
     }
     
+    var didSelectSuggestion: ((String) -> Void)?
+    
+    var bag = DisposeBag()
+    
     private lazy var searchTextfield: SearchTextField = {
         SearchTextField()
+    }()
+    
+    private lazy var suggestionTableView: SuggestionTableView = {
+        SuggestionTableView()
     }()
     
     private lazy var scrollView: UIScrollView = {
@@ -62,6 +71,7 @@ class UIViewControllerMapSegmented: UIViewController {
         
         view.addSubview(searchTextfield)
         view.addSubview(segmentControl)
+        view.addSubview(suggestionTableView)
         
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
@@ -77,8 +87,7 @@ class UIViewControllerMapSegmented: UIViewController {
     }
     
     private func changeToMapSearch() {
-        searchTextfield.resignFirstResponder()
-        searchTextfield.text = ""
+        searchTextfield.resetTextfieldState()
         registrySearchResult.view.isHidden = true
         isRegistrySearchEnabled = false
         
@@ -87,8 +96,7 @@ class UIViewControllerMapSegmented: UIViewController {
     }
     
     private func changeToRegistrySearch() {
-        searchTextfield.resignFirstResponder()
-        searchTextfield.text = ""
+        searchTextfield.resetTextfieldState()
         isRegistrySearchEnabled = true
         
         self.addChild(registrySearchResult)
@@ -107,6 +115,7 @@ class UIViewControllerMapSegmented: UIViewController {
             .didClearTextPublisher
             .sink { [weak self] in
                 self?.registrySearchResult.view.isHidden = true
+                self?.suggestionTableView.hideTableSuggestions()
                 print("cleearr")
             }
             .store(in: &cancellables)
@@ -115,14 +124,32 @@ class UIViewControllerMapSegmented: UIViewController {
             .textPublisher
             .sink { [weak self] text in
                 print("text entered")
-                if self?.isRegistrySearchEnabled == true && text.count > 0 {
+                
+                guard text.count > 0 else {
+                    self?.registrySearchResult.view.isHidden = true
+                    self?.suggestionTableView.hideTableSuggestions()
+                    return
+                }
+                
+                if self?.isRegistrySearchEnabled == true {
                     self?.registrySearchResult.view.isHidden = false
+                    self?.suggestionTableView.hideTableSuggestions()
                 } else {
                     self?.registrySearchResult.view.isHidden = true
+                    self?.suggestionTableView.showTableSuggestions()
+                    self?.suggestionTableView.search(text: text)
                 }
                 self?.didEnterText.send(text)
             }
             .store(in: &cancellables)
+        
+        suggestionTableView
+            .selectedSuggestionObservable
+            .subscribe(onNext: { [unowned self] text in
+                searchTextfield.resetTextfieldState()
+                didSelectSuggestion?(text)
+            })
+            .disposed(by: bag)
     }
     
     private func animateAppearingRegistrySearch() {
@@ -157,6 +184,10 @@ class UIViewControllerMapSegmented: UIViewController {
         segmentControl.selectedSegmentIndex = 0
         segmentControl.sendActions(for: .valueChanged)
     }
+    
+    func configureSuggestions(_ suggestions: [String]) {
+        suggestionTableView.configure(suggestions: suggestions)
+    }
 }
 
 private extension UIViewControllerMapSegmented {
@@ -185,6 +216,10 @@ private extension UIViewControllerMapSegmented {
         registrySearchResult.view.translatesAutoresizingMaskIntoConstraints = false
         
         searchTextfield.setupTextfieldLayoutIn(view: view)
+        
+        suggestionTableView.setupSuggestionTableViewInView(view, topConstraint: {
+            $0.top.equalTo(searchTextfield.snp.bottom)
+        })
         
         segmentControl.snp.makeConstraints {
             $0.height.equalTo(25)

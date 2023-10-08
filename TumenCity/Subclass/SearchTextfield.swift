@@ -76,12 +76,16 @@ final class SearchTextField: UITextField {
             $0.top.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
+    func resetTextfieldState() {
+        resignFirstResponder()
+        text = ""
+    }
 }
 
 private extension SearchTextField {
     @objc func clearText() {
-        text = ""
-        resignFirstResponder()
+        resetTextfieldState()
         didClearText.send(())
     }
     

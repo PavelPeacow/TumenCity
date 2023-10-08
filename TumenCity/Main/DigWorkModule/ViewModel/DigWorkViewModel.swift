@@ -37,12 +37,9 @@ final class DigWorkViewModel {
         }
     }
     
-    func findAnnotationByAddressName(_ address: String) -> AnyPublisher<MKDigWorkAnnotation?, Never> {
-        $digWorkAnnotations
-            .map { annotations in
-                annotations.first(where: { $0.address.lowercased().contains(address.lowercased()) } )
-            }
-            .eraseToAnyPublisher()
+    func findAnnotationByAddressName(_ address: String) -> MKDigWorkAnnotation? {
+        digWorkAnnotations
+            .first(where: { $0.address.lowercased().contains(address.lowercased()) } )
     }
     
     func getDigWorkElements(filter: DigWorkFilter? = nil) async {

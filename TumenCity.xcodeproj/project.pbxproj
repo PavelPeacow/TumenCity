@@ -99,6 +99,7 @@
 		B5668C622ABC7A53005F0C5A /* EmptyDataMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */; };
 		B56E9BD72A3E0DF0000E69AD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B56E9BD62A3E0DF0000E69AD /* RxCocoa */; };
 		B56E9BD92A3E0DF0000E69AD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B56E9BD82A3E0DF0000E69AD /* RxSwift */; };
+		B570643D2AD28F9E00AFBE71 /* SuggestionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570643C2AD28F9E00AFBE71 /* SuggestionTableView.swift */; };
 		B571088229A0E9C4003698C8 /* CommunalServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088129A0E9C4003698C8 /* CommunalServicesView.swift */; };
 		B571088429A0EC3F003698C8 /* ServiceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088329A0EC3F003698C8 /* ServiceInfoView.swift */; };
 		B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571088729A215D3003698C8 /* MainMenuViewController.swift */; };
@@ -250,6 +251,7 @@
 		B5608A7D2A2DF65000A69B9C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B566647B29A8A36A00D4D5D8 /* RegistySearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistySearchResultViewController.swift; sourceTree = "<group>"; };
 		B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDataMessageView.swift; sourceTree = "<group>"; };
+		B570643C2AD28F9E00AFBE71 /* SuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableView.swift; sourceTree = "<group>"; };
 		B571088129A0E9C4003698C8 /* CommunalServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunalServicesView.swift; sourceTree = "<group>"; };
 		B571088329A0EC3F003698C8 /* ServiceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInfoView.swift; sourceTree = "<group>"; };
 		B571088729A215D3003698C8 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
@@ -675,6 +677,7 @@
 		B571088529A0F1FB003698C8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B570643C2AD28F9E00AFBE71 /* SuggestionTableView.swift */,
 				B54A11772AD0416300A23FB0 /* Map */,
 				B5668C612ABC7A53005F0C5A /* EmptyDataMessageView.swift */,
 				B54CA1652AB5EF4600CDE9E7 /* SnackBarView.swift */,
@@ -1223,6 +1226,7 @@
 				B5D4B7862A76B58300817C42 /* UICollectionViewCell+Animation.swift in Sources */,
 				B571088829A215D3003698C8 /* MainMenuViewController.swift in Sources */,
 				B51C33E12A618F8700BC8A8E /* CityCleaningContractorsHeader.swift in Sources */,
+				B570643D2AD28F9E00AFBE71 /* SuggestionTableView.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
 				B50D32642A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift in Sources */,
 				B5D4B77E2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift in Sources */,

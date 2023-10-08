@@ -23,6 +23,10 @@ final class DigWorkViewController: UIViewController {
         SearchTextField()
     }()
     
+    private lazy var suggestionTableView: SuggestionTableView = {
+        SuggestionTableView()
+    }()
+    
     private lazy var loadingViewController = LoadingViewController()
     
     private lazy var map = YandexMapView()
@@ -40,15 +44,21 @@ final class DigWorkViewController: UIViewController {
     }
     
     private func setUpView() {
-        
         title = L10n.DigWork.title
         view.backgroundColor = .systemBackground
+        
+        view.addSubview(suggestionTableView)
         view.addSubview(searchTextfield)
-        searchTextfield.setupTextfieldLayoutIn(view: view)
+        
         map.setYandexMapLayout(in: self.view) {
             $0.top.equalTo(self.searchTextfield.snp.bottom).offset(5)
         }
         map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
+        
+        searchTextfield.setupTextfieldLayoutIn(view: view)
+        suggestionTableView.setupSuggestionTableViewInView(view, topConstraint: {
+            $0.top.equalTo(searchTextfield.snp.bottom)
+        })
     }
     
     private func setUpNavigationBar() {
@@ -61,11 +71,13 @@ final class DigWorkViewController: UIViewController {
     private func bindSearchController() {
         searchTextfield
             .textPublisher
-            .throttle(for: .milliseconds(300), scheduler: RunLoop.main, latest: true)
-            .removeDuplicates()
             .sink { [unowned self] str in
-                print(str)
+                guard str.count > 0 else {
+                    suggestionTableView.hideTableSuggestions()
+                    return
+                }
                 viewModel.searchQuery = str
+                suggestionTableView.showTableSuggestions()
             }
             .store(in: &cancellables)
     }
@@ -99,11 +111,10 @@ final class DigWorkViewController: UIViewController {
         
         viewModel
             .searchQueryObservable
-            .flatMap { [unowned self] query in
-                return viewModel.findAnnotationByAddressName(String(query))
-            }
-            .sink { [unowned self] annotation in
-                if let annotation{
+            .sink { [unowned self] query in
+                suggestionTableView.search(text: query)
+                let annotation = viewModel.findAnnotationByAddressName(query)
+                if let annotation {
                     map.mapView.moveCameraToAnnotation(annotation)
                 } else {
                     map.mapView.setDefaultRegion()
@@ -116,6 +127,27 @@ final class DigWorkViewController: UIViewController {
             .sink { [unowned self] annotations in
                 collection.clear()
                 map.mapView.addAnnotations(annotations, cluster: collection)
+                suggestionTableView.configure(suggestions: annotations.map { $0.address })
+            }
+            .store(in: &cancellables)
+        
+        suggestionTableView
+            .selectedSuggestionObservable
+            .subscribe(onNext: { [unowned self] text in
+                searchTextfield.resetTextfieldState()
+                let annotation = viewModel.findAnnotationByAddressName(text)
+                if let annotation{
+                    map.mapView.moveCameraToAnnotation(annotation)
+                } else {
+                    map.mapView.setDefaultRegion()
+                }
+            })
+            .disposed(by: bag)
+        
+        searchTextfield
+            .didClearTextPublisher
+            .sink { [unowned self] in
+                suggestionTableView.hideTableSuggestions()
             }
             .store(in: &cancellables)
     }
