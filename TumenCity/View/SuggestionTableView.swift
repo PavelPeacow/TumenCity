@@ -28,6 +28,9 @@ final class SuggestionTableView: UIView {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = nil
         tableView.dataSource = nil
+        tableView.backgroundColor = .systemGray6
+        tableView.layer.cornerRadius = 8
+        tableView.clipsToBounds = true
         return tableView
     }()
     
@@ -63,6 +66,8 @@ final class SuggestionTableView: UIView {
             }
             .bind(to: suggestionTableView.rx.items(cellIdentifier: "cell")) { (row, element, cell) in
                 cell.textLabel?.text = element
+                cell.backgroundColor = .systemGray5
+                cell.textLabel?.numberOfLines = 0
             }
             .disposed(by: bag)
         
@@ -105,7 +110,7 @@ final class SuggestionTableView: UIView {
             topConstraint($0)
             $0.width.equalToSuperview().multipliedBy(0.95)
             $0.centerX.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.15)
+            $0.height.equalToSuperview().multipliedBy(0.25)
         }
         view.bringSubviewToFront(self)
     }
@@ -114,7 +119,7 @@ final class SuggestionTableView: UIView {
 private extension SuggestionTableView {
     func setupConstaints() {
         suggestionTableView.snp.makeConstraints {
-            $0.top.equalTo(snp.top).offset(5)
+            $0.top.equalTo(snp.top)
             $0.width.equalToSuperview()
             $0.height.equalToSuperview()
         }

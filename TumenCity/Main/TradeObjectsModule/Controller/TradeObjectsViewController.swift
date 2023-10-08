@@ -155,8 +155,9 @@ private extension TradeObjectsViewController {
         
         let tradeObjectsType = viewModel.tradeObjectsType
         let tradeObjectsPeriod = viewModel.tradeObjectsPeriod
+        let suggestions = viewModel.tradeObjectsAnnotations.map { $0.address }
         
-        bottomSheet.configureFilters(tradeObjectsType: tradeObjectsType, tradeObjectsPeriod: tradeObjectsPeriod)
+        bottomSheet.configureFilters(tradeObjectsType: tradeObjectsType, tradeObjectsPeriod: tradeObjectsPeriod, suggestions: suggestions)
         present(bottomSheet, animated: true)
     }
     

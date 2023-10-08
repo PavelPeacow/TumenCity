@@ -9,6 +9,8 @@ import UIKit
 
 final class FilterView: UIView {
     
+    var changeText: ((String) -> Void)?
+    
     lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [filterLabel, textField])
         stackView.axis = .vertical
@@ -29,6 +31,7 @@ final class FilterView: UIView {
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = .systemGray5
+        textField.addTarget(self, action: #selector(didCnangeText), for: .editingChanged)
         return textField
     }()
     
@@ -48,4 +51,11 @@ final class FilterView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+}
+
+extension FilterView {
+    @objc
+    func didCnangeText(_ sender: UITextField) {
+        changeText?(sender.text ?? "")
+    }
 }

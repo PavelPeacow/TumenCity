@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 protocol TradeObjectsFilterBottomSheetDelegate: AnyObject {
     func didTapSubmitBtn(_ searchFilter: TradeObjectsSearch)
@@ -27,13 +28,21 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
         }
     }
     
+    private let bag = DisposeBag()
+    
     var tradeObjectsType = [TradeObjectTypeRow]()
     var tradeObjectsPeriod = [TradeObjectPeriodRow]()
+    
+    var tradeObjectsSuggestionAddresses = [String]()
     
     var selectedTradeObjectsTypeID = Set<String>()
     var selectedTradeObjectsPeriodID = Set<String>()
     
     weak var delegate: TradeObjectsFilterBottomSheetDelegate?
+    
+    lazy var suggestionsTableView: SuggestionTableView = {
+        SuggestionTableView()
+    }()
     
     lazy var scrollViewMain: UIScrollView = {
         let scrollView = UIScrollView()
@@ -155,6 +164,32 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
         
         setViewsForCalculatingPrefferedSize(scrollView: scrollViewMain, fittingView: contentStackView)
         setPrefferdSize()
+        
+        setupSuggestions()
+    }
+    
+    private func setupSuggestions() {
+        view.addSubview(suggestionsTableView)
+        suggestionsTableView.setupSuggestionTableViewInView(view, topConstraint: {
+            $0.top.equalTo(addressFilter.snp.bottom)
+        })
+        
+        suggestionsTableView
+            .selectedSuggestionObservable
+            .subscribe(onNext: { [unowned self] text in
+                addressFilter.textField.text = text
+            })
+            .disposed(by: bag)
+        
+        addressFilter.changeText = { [unowned self] text in
+            guard text.count > 0 else {
+                suggestionsTableView.hideTableSuggestions()
+                return
+            }
+            
+            suggestionsTableView.search(text: text)
+            suggestionsTableView.showTableSuggestions()
+        }
     }
     
     private func setCheckBoxes() {
@@ -225,11 +260,12 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
         print(objectType)
     }
     
-    func configureFilters(tradeObjectsType: [TradeObjectTypeRow], tradeObjectsPeriod: [TradeObjectPeriodRow]) {
+    func configureFilters(tradeObjectsType: [TradeObjectTypeRow], tradeObjectsPeriod: [TradeObjectPeriodRow], suggestions: [String]) {
         self.tradeObjectsType = tradeObjectsType
         self.tradeObjectsPeriod = tradeObjectsPeriod
         
         setCheckBoxes()
+        suggestionsTableView.configure(suggestions: suggestions)
     }
     
 }
@@ -290,6 +326,7 @@ extension TradeObjectsFilterBottomSheet: ScrollableCheckBoxesListDelegate {
 extension TradeObjectsFilterBottomSheet: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        suggestionsTableView.hideTableSuggestions()
         textField.resignFirstResponder()
         return true
     }
