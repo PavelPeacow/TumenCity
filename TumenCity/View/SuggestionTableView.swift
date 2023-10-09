@@ -14,6 +14,8 @@ final class SuggestionTableView: UIView {
     private var suggestions = BehaviorSubject<[String]>(value: [])
     private var filteredSuggestions = BehaviorSubject<[String]>(value: [])
     
+    private var tableViewHeightConstraint: NSLayoutConstraint?
+    
     private lazy var selectedSuggestion = PublishSubject<String>()
     var selectedSuggestionObservable: Observable<String> {
         selectedSuggestion.asObservable()
@@ -36,6 +38,7 @@ final class SuggestionTableView: UIView {
     
     private lazy var emptyDataMessageView: EmptyDataMessageView = {
         let view = EmptyDataMessageView()
+        view.backgroundColor = .systemGray5
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -56,6 +59,9 @@ final class SuggestionTableView: UIView {
         isHidden = true
         addSubview(suggestionTableView)
         suggestionTableView.addSubview(emptyDataMessageView)
+        
+        tableViewHeightConstraint = suggestionTableView.heightAnchor.constraint(equalToConstant: 0)
+        tableViewHeightConstraint?.isActive = true
     }
     
     private func setupBindings() {
@@ -76,6 +82,21 @@ final class SuggestionTableView: UIView {
                 selectedSuggestion
                     .onNext(text)
                 hideTableSuggestions()
+            })
+            .disposed(by: bag)
+        
+        suggestionTableView.rx.observe(CGSize.self, "contentSize")
+            .subscribe(onNext: { [weak self] contentSize in
+                print(contentSize?.height)
+                guard let contentSize else { return }
+                if contentSize.height < 200 && contentSize.height != 0 {
+                    self?.tableViewHeightConstraint?.constant = contentSize.height
+                } else {
+                    self?.tableViewHeightConstraint?.constant = 200
+                }
+                if let sug = try? self?.filteredSuggestions.value(), sug.isEmpty {
+                    self?.tableViewHeightConstraint?.constant = 100
+                }
             })
             .disposed(by: bag)
     }
@@ -110,7 +131,6 @@ final class SuggestionTableView: UIView {
             topConstraint($0)
             $0.width.equalToSuperview().multipliedBy(0.95)
             $0.centerX.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.25)
         }
         view.bringSubviewToFront(self)
     }
