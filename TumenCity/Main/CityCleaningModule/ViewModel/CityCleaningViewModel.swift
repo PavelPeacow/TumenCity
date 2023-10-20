@@ -83,10 +83,16 @@ final class CityCleaningViewModel {
             return .init(named: "pin-3")
         case .modulesGraderNewImgTypesType4SVG:
             return .init(named: "pin-4")
+        case .modulesGraderNewImgTypesType5SVG:
+            return .init(named: "pin-5")
         case .modulesGraderNewImgTypesType6SVG:
             return .init(named: "pin-6")
+        case .modulesGraderNewImgTypesType7SVG:
+            return .init(named: "pin-7")
         case .modulesGraderNewImgTypesType8SVG:
             return .init(named: "pin-8")
+        case .modulesGraderNewImgTypesType9SVG:
+            return .init(named: "pin-9")
         case .modulesGraderNewImgTypesTypeSVG:
             return nil
         }

@@ -9,24 +9,53 @@ import UIKit
 import YandexMapsMobile
 import RxSwift
 
-class CityCleaningViewController: UIViewController {
+protocol CityCleaningActionsHandable {
+    func handleSetLoading(_ isLoading: Bool)
+    func handleShowCallout(annotation: MKCityCleaningAnnotation)
+    func handleClusterTap(annotations: [MKCityCleaningAnnotation])
+    func handleShowSnackbarError(_ error: String)
+    func handleFilterTap()
+    func handleAddAnnotations(_ annotations: [MKCityCleaningAnnotation])
+}
+
+final class CityCleaningViewController: UIViewController {
+    enum Actions {
+        case setLoading(isLoading: Bool)
+        case showCallout(annotation: MKCityCleaningAnnotation)
+        case clusterTap(annotations: [MKCityCleaningAnnotation])
+        case showSnackbarError(error: String)
+        case filterTap
+        case addAnnotations(annotations: [MKCityCleaningAnnotation])
+    }
     
-    private let viewModel = CityCleaningViewModel()
+    var actionsHandable: CityCleaningActionsHandable?
+    
+    private let viewModel: CityCleaningViewModel
     private let bag = DisposeBag()
     private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
     private lazy var loadingController = LoadingViewController()
     private lazy var map = YandexMapView()
     
+    init(viewModel: CityCleaningViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        actionsHandable = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print(createToken())
         setUpView()
         setUpBindings()
+        setUpNavigationBar()
     }
     
     private func setUpView() {
-        
         title = L10n.CityCleaning.title
         view.backgroundColor = .systemBackground
         setupNetworkReachability(becomeAvailable: {
@@ -38,13 +67,15 @@ class CityCleaningViewController: UIViewController {
         })
         
         map.setYandexMapLayout(in: self.view)
-        
+        collection.addTapListener(with: self)
+    }
+    
+    private func setUpNavigationBar() {
         let filterButton = UIBarButtonItem(image: .init(named: "filterIcon"),
                                            style: .done, target: self, action: #selector(didTapFilter))
         let reloadButton = UIBarButtonItem(image: .init(systemName: "arrow.counterclockwise"),
                                            style: .done, target: self, action: #selector(didTapReload))
         navigationItem.rightBarButtonItems = [filterButton, reloadButton]
-        collection.addTapListener(with: self)
     }
     
     private func setUpBindings() {
@@ -52,25 +83,18 @@ class CityCleaningViewController: UIViewController {
             .cityCleaningAnnotationsObservable
             .subscribe(onNext: { [unowned self] annotations in
                 collection.clear()
-                map.mapView.addAnnotations(annotations, cluster: collection)
+                action(.addAnnotations(annotations: annotations))
             })
             .disposed(by: bag)
         
         viewModel.onError = { [weak self] error in
-            guard let self else { return }
-            SnackBarView(type: .error(error.localizedDescription),
-                         andShowOn: self.view)
-            navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
+            self?.action(.showSnackbarError(error: error.localizedDescription))
         }
         
         viewModel
             .isLoadingObservable
             .subscribe(onNext: { [unowned self] isLoading in
-                if isLoading {
-                    loadingController.showLoadingViewControllerIn(self)
-                } else {
-                    loadingController.removeLoadingViewControllerIn(self)
-                }
+                action(.setLoading(isLoading: isLoading))
             })
             .disposed(by: bag)
     }
@@ -80,20 +104,63 @@ class CityCleaningViewController: UIViewController {
             .selectedAddressObservable
             .subscribe(onNext: { [unowned self] annotation in
                 guard let annotation = annotation as? MKCityCleaningAnnotation else { return }
-                let callout = CityCleaningCallout()
-                callout.configure(annotation: annotation)
-                callout.showAlert(in: self)
-                
+                action(.showCallout(annotation: annotation))
             })
             .disposed(by: bag)
     }
-    
 }
 
-extension CityCleaningViewController {
+// MARK: - Actions
+extension CityCleaningViewController: ViewActionsInteractable {
+    func action(_ action: Actions) {
+        switch action {
+            
+        case .setLoading(let isLoading):
+            actionsHandable?.handleSetLoading(isLoading)
+        case .showCallout(let annotation):
+            actionsHandable?.handleShowCallout(annotation: annotation)
+        case .clusterTap(let annotations):
+            actionsHandable?.handleClusterTap(annotations: annotations)
+        case .showSnackbarError(let error):
+            actionsHandable?.handleShowSnackbarError(error)
+        case .filterTap:
+            actionsHandable?.handleFilterTap()
+        case .addAnnotations(let annotations):
+            actionsHandable?.handleAddAnnotations(annotations)
+        }
+    }
+}
+
+// MARK: - Actions handable
+extension CityCleaningViewController: CityCleaningActionsHandable {
+    func handleSetLoading(_ isLoading: Bool) {
+        if isLoading {
+            loadingController.showLoadingViewControllerIn(self)
+        } else {
+            loadingController.removeLoadingViewControllerIn(self)
+        }
+    }
     
-    @objc
-    func didTapFilter() {
+    func handleShowCallout(annotation: MKCityCleaningAnnotation) {
+        let callout = CityCleaningCallout()
+        callout.configure(annotation: annotation)
+        callout.showAlert(in: self)
+    }
+    
+    func handleClusterTap(annotations: [MKCityCleaningAnnotation]) {
+        let bottomSheet = ClusterItemsListBottomSheet()
+        bottomSheet.configureModal(annotations: annotations)
+        setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
+        present(bottomSheet, animated: true)
+    }
+    
+    func handleShowSnackbarError(_ error: String) {
+        SnackBarView(type: .error(error),
+                     andShowOn: self.view)
+        navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
+    }
+    
+    func handleFilterTap() {
         let vc = CityCleaningFilterViewController()
         
         vc
@@ -113,6 +180,17 @@ extension CityCleaningViewController {
         present(vc, animated: true)
     }
     
+    func handleAddAnnotations(_ annotations: [MKCityCleaningAnnotation]) {
+        map.mapView.addAnnotations(annotations, cluster: collection)
+    }
+}
+
+private extension CityCleaningViewController {
+    @objc
+    func didTapFilter() {
+        action(.filterTap)
+    }
+    
     @objc
     func didTapReload() {
         Task {
@@ -121,39 +199,30 @@ extension CityCleaningViewController {
     }
 }
 
+// MARK: - Map Logic
 extension CityCleaningViewController: YMKMapObjectTapListener {
-    
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         guard let annotation = mapObject.userData as? MKCityCleaningAnnotation else { return false }
-        let callout = CityCleaningCallout()
-        callout.configure(annotation: annotation)
-        callout.showAlert(in: self)
+        action(.showCallout(annotation: annotation))
         return true
     }
-    
 }
 
 extension CityCleaningViewController: YMKClusterListener {
-    
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKCityCleaningAnnotation }
         cluster.appearance.setStaticImage(inClusterItemsCount: UInt(annotations.count), color: .orange)
         cluster.addClusterTapListener(with: self)
     }
-    
 }
 
 extension CityCleaningViewController: YMKClusterTapListener {
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKCityCleaningAnnotation }
         if isClusterWithTheSameCoordinates(annotations: annotations) {
-            let bottomSheet = ClusterItemsListBottomSheet()
-            bottomSheet.configureModal(annotations: annotations)
-            setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
-            present(bottomSheet, animated: true)
+            action(.clusterTap(annotations: annotations))
             return true
         }
-        
         return false
     }
 }

@@ -75,8 +75,11 @@ enum CityCleaningItemIcon: String, Codable {
     case modulesGraderNewImgTypesType2SVG = "/modules/grader_new/img/types/type-2.svg"
     case modulesGraderNewImgTypesType3SVG = "/modules/grader_new/img/types/type-3.svg"
     case modulesGraderNewImgTypesType4SVG = "/modules/grader_new/img/types/type-4.svg"
+    case modulesGraderNewImgTypesType5SVG = "/modules/grader_new/img/types/type-5.svg"
     case modulesGraderNewImgTypesType6SVG = "/modules/grader_new/img/types/type-6.svg"
+    case modulesGraderNewImgTypesType7SVG = "/modules/grader_new/img/types/type-7.svg"
     case modulesGraderNewImgTypesType8SVG = "/modules/grader_new/img/types/type-8.svg"
+    case modulesGraderNewImgTypesType9SVG = "/modules/grader_new/img/types/type-9.svg"
     case modulesGraderNewImgTypesTypeSVG = "/modules/grader_new/img/types/type-.svg"
 }
 

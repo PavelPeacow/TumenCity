@@ -25,16 +25,19 @@ final class MainMenuBuilder: MainMenuBuilderProtocol {
         return SportViewController(sportRegistryView: registryView, sportRegistrySearchResult: searchResult)
     }
     
-    func buildCityCleaningModule() -> CityCleaningViewController {
-        .init()
+    @MainActor func buildCityCleaningModule() -> CityCleaningViewController {
+        let viewModel = CityCleaningViewModel()
+        return .init(viewModel: viewModel)
     }
     
-    func buildBikePathsModule() -> BikePathsViewController {
-        .init()
+    @MainActor func buildBikePathsModule() -> BikePathsViewController {
+        let viewModel = BikePathsViewModel()
+        return .init(viewModel: viewModel)
     }
     
-    func buildUrbanImprovementsModule() -> UrbanImprovementsViewController {
-        .init()
+    @MainActor func buildUrbanImprovementsModule() -> UrbanImprovementsViewController {
+        let viewModel = UrbanImprovementsViewModel()
+        return .init(viewModel: viewModel)
     }
     
     func buildCommunalServicesModule() -> CommunalServicesViewController {
@@ -48,8 +51,9 @@ final class MainMenuBuilder: MainMenuBuilderProtocol {
         .init()
     }
     
-    func buildDigWorkModule() -> DigWorkViewController {
-        .init()
+    @MainActor func buildDigWorkModule() -> DigWorkViewController {
+        let viewModel = DigWorkViewModel()
+        return .init(viewModel: viewModel)
     }
     
     func buildTradeObjectsModule() -> TradeObjectsViewController {

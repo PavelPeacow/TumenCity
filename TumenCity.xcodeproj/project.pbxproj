@@ -71,6 +71,7 @@
 		B52896642A0A24A5006A85D9 /* DigWorkCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */; };
 		B52896662A0F8343006A85D9 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */; };
 		B52896692A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52896682A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift */; };
+		B52C63A02AE180A9000A9C4E /* ViewActionsInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C639F2AE180A9000A9C4E /* ViewActionsInteractable.swift */; };
 		B53400FE2ABB4BBE00B37208 /* UINavigationController+Appearence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */; };
 		B53A680329F54564005DE734 /* Cluster+PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A680229F54564005DE734 /* Cluster+PieChart.swift */; };
 		B53D66492A028E4F0010F846 /* CloseRoadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */; };
@@ -225,6 +226,7 @@
 		B52896632A0A24A5006A85D9 /* DigWorkCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigWorkCallout.swift; sourceTree = "<group>"; };
 		B52896652A0F8343006A85D9 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
 		B52896682A0F93EC006A85D9 /* ClusterItemsListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterItemsListBottomSheet.swift; sourceTree = "<group>"; };
+		B52C639F2AE180A9000A9C4E /* ViewActionsInteractable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewActionsInteractable.swift; sourceTree = "<group>"; };
 		B53400FD2ABB4BBE00B37208 /* UINavigationController+Appearence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Appearence.swift"; sourceTree = "<group>"; };
 		B53A680229F54564005DE734 /* Cluster+PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cluster+PieChart.swift"; sourceTree = "<group>"; };
 		B53D66482A028E4F0010F846 /* CloseRoadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseRoadsViewController.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 		B51FACF72A3DCC5900BB6D81 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				B52C639F2AE180A9000A9C4E /* ViewActionsInteractable.swift */,
 				B51FACF82A3DCC8D00BB6D81 /* YMKAnnotation.swift */,
 			);
 			path = Protocols;
@@ -1228,6 +1231,7 @@
 				B51C33E12A618F8700BC8A8E /* CityCleaningContractorsHeader.swift in Sources */,
 				B570643D2AD28F9E00AFBE71 /* SuggestionTableView.swift in Sources */,
 				B53D664C2A0293430010F846 /* CloseRoad.swift in Sources */,
+				B52C63A02AE180A9000A9C4E /* ViewActionsInteractable.swift in Sources */,
 				B50D32642A1C9A480034B860 /* UrbanImprovementsFilterBottomSheet.swift in Sources */,
 				B5D4B77E2A6D252800817C42 /* CityCleaningIndicatorsViewModel.swift in Sources */,
 				B52896312A063447006A85D9 /* Sport.swift in Sources */,
