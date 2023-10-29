@@ -60,7 +60,6 @@ final class DigWorkViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
-        setUpMap()
         setUpNavigationBar()
         setUpBindings()
         setupNetworkReachability(becomeAvailable: {
@@ -77,17 +76,15 @@ final class DigWorkViewController: UIViewController {
         view.addSubview(suggestionTableView)
         view.addSubview(searchTextfield)
         
-        searchTextfield.setupTextfieldLayoutIn(view: view)
-        suggestionTableView.setupSuggestionTableViewInView(view, topConstraint: {
-            $0.top.equalTo(searchTextfield.snp.bottom)
-        })
-    }
-    
-    private func setUpMap() {
         map.setYandexMapLayout(in: view) {
             $0.top.equalTo(self.searchTextfield.snp.bottom).offset(5)
         }
         map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
+        
+        searchTextfield.setupTextfieldLayoutIn(view: view)
+        suggestionTableView.setupSuggestionTableViewInView(view, topConstraint: {
+            $0.top.equalTo(searchTextfield.snp.bottom)
+        })
     }
     
     private func setUpNavigationBar() {
