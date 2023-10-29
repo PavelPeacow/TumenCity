@@ -115,7 +115,7 @@ class UIViewControllerMapSegmented: UIViewController {
             .didClearTextPublisher
             .sink { [weak self] in
                 self?.registrySearchResult.view.isHidden = true
-                self?.suggestionTableView.hideTableSuggestions()
+                self?.suggestionTableView.action(.hideTableSuggestions)
                 print("cleearr")
             }
             .store(in: &cancellables)
@@ -127,17 +127,17 @@ class UIViewControllerMapSegmented: UIViewController {
                 
                 guard text.count > 0 else {
                     self?.registrySearchResult.view.isHidden = true
-                    self?.suggestionTableView.hideTableSuggestions()
+                    self?.suggestionTableView.action(.hideTableSuggestions)
                     return
                 }
                 
                 if self?.isRegistrySearchEnabled == true {
                     self?.registrySearchResult.view.isHidden = false
-                    self?.suggestionTableView.hideTableSuggestions()
+                    self?.suggestionTableView.action(.hideTableSuggestions)
                 } else {
                     self?.registrySearchResult.view.isHidden = true
-                    self?.suggestionTableView.showTableSuggestions()
-                    self?.suggestionTableView.search(text: text)
+                    self?.suggestionTableView.action(.showTableSuggestions)
+                    self?.suggestionTableView.action(.search(query: text))
                 }
                 self?.didEnterText.send(text)
             }

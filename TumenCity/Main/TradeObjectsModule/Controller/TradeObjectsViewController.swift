@@ -10,18 +10,42 @@ import YandexMapsMobile
 import Combine
 import RxSwift
 
-class TradeObjectsViewController: UIViewController {
+protocol TradeObjectsActionsHandable: ViewActionBaseMapHandable {
+    func handleTapFilterBottomSheet()
+    func handleSetTradeObjectsCount(from annotations: [MKTradeObjectAnnotation])
+    func handleSearchTradeObjects(search: TradeObjectsSearch)
+    func handleResetSearch()
+    func handleTapFilter(type: MKTradeObjectAnnotation.AnnotationType, fitlerView: TradeObjectsTypeView)
+}
+
+final class TradeObjectsViewController: UIViewController {
+    enum Actions {
+        case setLoading(isLoading: Bool)
+        case tapCluster(annotations: [YMKAnnotation])
+        case showCallout(annotation: YMKAnnotation)
+        case tapFilterBottomSheet
+        case showSnackbar(type: SnackBarView.SnackBarType)
+        case addAnootations(annotations: [YMKAnnotation])
+        case setTradeObjectsCount(annotations: [MKTradeObjectAnnotation])
+        case searchTradeObjects(search: TradeObjectsSearch)
+        case resetSearch
+        case tapFilter(type: MKTradeObjectAnnotation.AnnotationType, fitlerView: TradeObjectsTypeView)
+    }
     
-    let viewModel = TradeObjectsViewModel()
+    // MARK: - Properties
+    var actionsHandable: TradeObjectsActionsHandable?
     
-    var currentTappedFilter: TradeObjectsTypeView?
+    private let viewModel: TradeObjectsViewModel
     
-    var cancellables = Set<AnyCancellable>()
-    let bag = DisposeBag()
+    private var currentTappedFilter: TradeObjectsTypeView?
+    
+    private var cancellables = Set<AnyCancellable>()
+    private  let bag = DisposeBag()
     
     private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
-    lazy var tradeObjectsFilterTypeStackView: UIStackView = {
+    // MARK: - Views
+    private lazy var tradeObjectsFilterTypeStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [filterViewFree, filterViewActive])
         stackView.axis = .vertical
         stackView.spacing = 8
@@ -30,97 +54,152 @@ class TradeObjectsViewController: UIViewController {
         return stackView
     }()
     
-    lazy var filterViewFree: TradeObjectsTypeView = {
+    private lazy var filterViewFree: TradeObjectsTypeView = {
         let filter = TradeObjectsTypeView(icon: .init(named: "filterFree") ?? .add, filterTitle: L10n.TradeObjects.Callout.filterFreeTitle)
         let filterFreeGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFreeFilter))
         filter.addGestureRecognizer(filterFreeGesture)
         return filter
     }()
     
-    lazy var filterViewActive: TradeObjectsTypeView = {
+    private lazy var filterViewActive: TradeObjectsTypeView = {
         let filter = TradeObjectsTypeView(icon: .init(named: "filterActive") ?? .add, filterTitle: L10n.TradeObjects.Callout.filterActiveTitle)
         let filterFreeGesture = UITapGestureRecognizer(target: self, action: #selector(didTapActiveFilter))
         filter.addGestureRecognizer(filterFreeGesture)
         return filter
     }()
     
-    lazy var loadingController = LoadingViewController()
-    lazy var loadingControllerForModal = LoadingViewController(type: .secondaryLoading)
+    private lazy var loadingController = LoadingViewController()
+    private lazy var loadingControllerForModal = LoadingViewController(type: .secondaryLoading)
     
-    lazy var map = YandexMapView()
+    private lazy var map = YandexMapView()
     
+    //MARK: - Init
+    init(viewModel: TradeObjectsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        actionsHandable = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
+        setUpMap()
+        setUpNavBar()
         setUpBindings()
-    }
-    
-    private func setUpView() {
-        title = L10n.TradeObjects.title
-        view.backgroundColor = .systemBackground
         setupNetworkReachability(becomeAvailable: {
             Task {
                 await self.viewModel.getTradeObjectsData()
             }
         })
-        
+    }
+    
+    // MARK: - Setup
+    private func setUpView() {
+        title = L10n.TradeObjects.title
+        view.backgroundColor = .systemBackground
         view.addSubview(tradeObjectsFilterTypeStackView)
-        
-        map.setYandexMapLayout(in: view) { [weak self] in
-            guard let self else { return }
-            $0.top.equalTo(tradeObjectsFilterTypeStackView.snp.bottom).offset(5)
-        }
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterIcon))
         
         tradeObjectsFilterTypeStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview().inset(10)
         }
-        
+    }
+    
+    private func setUpNavBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(named: "filterIcon"), style: .done, target: self, action: #selector(didTapFilterIcon))
+    }
+    
+    private func setUpMap() {
+        map.setYandexMapLayout(in: view) { [weak self] in
+            guard let self else { return }
+            $0.top.equalTo(tradeObjectsFilterTypeStackView.snp.bottom).offset(5)
+        }
         map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
     }
-#warning("Refactore rxswift code")
+    
+    // MARK: - Setup bindings
     private func setUpBindings() {
         viewModel
             .isLoadingObservable
             .sink(receiveValue: { [unowned self] isLoading in
-                if isLoading {
-                    loadingController.showLoadingViewControllerIn(self)
-                } else {
-                    loadingController.removeLoadingViewControllerIn(self)
-                }
+                action(.setLoading(isLoading: isLoading))
             })
             .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
-            guard let self else { return }
-            SnackBarView(type: .error(error.localizedDescription),
-                         andShowOn: self.view)
-            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            self?.action(.showSnackbar(type: .error(error.localizedDescription)))
         }
         
         viewModel
             .currentVisibleTradeObjectsAnnotationsObservable
             .dropFirst()
             .sink { [unowned self] annotations in
-                collection.clear()
-                map.mapView.addAnnotations(annotations, cluster: collection)
-                setTradeObjectsCount(from: annotations)
+                addAnnotations(annotations)
             }
             .store(in: &cancellables)
         
         viewModel
             .tradeObjectsAnnotationsObservable
             .sink { [unowned self] annotations in
-                collection.clear()
-                map.mapView.addAnnotations(annotations, cluster: collection)
-                setTradeObjectsCount(from: annotations)
+                addAnnotations(annotations)
             }
             .store(in: &cancellables)
     }
     
-    private func setTradeObjectsCount(from annotations: [MKTradeObjectAnnotation]) {
+    private func setUpBindingsForTradeObjectsBottomSheet(for modal: ClusterItemsListBottomSheet) {
+        modal
+            .selectedAddressObservable
+            .subscribe(onNext: { [unowned self] annotation in
+                action(.showCallout(annotation: annotation))
+            })
+            .disposed(by: bag)
+    }
+    
+    // MARK: - Functions
+    private func addAnnotations(_ annotations: [MKTradeObjectAnnotation]) {
+        collection.clear()
+        action(.addAnootations(annotations: annotations))
+        action(.setTradeObjectsCount(annotations: annotations))
+    }
+}
+
+// MARK: - Actions
+extension TradeObjectsViewController: ViewActionsInteractable {
+    func action(_ action: Actions) {
+        switch action {
+            
+        case .setLoading(let isLoading):
+            actionsHandable?.handleSetLoading(isLoading)
+        case .tapCluster(let annotations):
+            actionsHandable?.handleTapCluster(annotations: annotations)
+        case .showCallout(let annotation):
+            actionsHandable?.handleShowCallout(annotation: annotation)
+        case .tapFilterBottomSheet:
+            actionsHandable?.handleTapFilterBottomSheet()
+        case .addAnootations(let annotations):
+            actionsHandable?.handleAddAnnotations(annotations)
+        case .showSnackbar(let type):
+            actionsHandable?.handleShowSnackbar(type: type)
+        case .setTradeObjectsCount(let annotations):
+            actionsHandable?.handleSetTradeObjectsCount(from: annotations)
+        case .searchTradeObjects(let search):
+            actionsHandable?.handleSearchTradeObjects(search: search)
+        case .resetSearch:
+            actionsHandable?.handleResetSearch()
+        case .tapFilter(let type, let fitlerView):
+            actionsHandable?.handleTapFilter(type: type, fitlerView: fitlerView)
+        }
+    }
+}
+
+// MARK: - Actinos handable
+extension TradeObjectsViewController: TradeObjectsActionsHandable {
+    func handleSetTradeObjectsCount(from annotations: [MKTradeObjectAnnotation]) {
         let count = annotations.map({ $0.type })
         let freeCount = count.filter({ $0 == .freeTrade }).count
         let activeCount = count.filter({ $0 == .activeTrade }).count
@@ -129,27 +208,45 @@ class TradeObjectsViewController: UIViewController {
         filterViewActive.changeFilterCount(activeCount)
     }
     
-    private func setUpBindingsForTradeObjectsBottomSheet(for modal: ClusterItemsListBottomSheet) {
-        modal
-            .selectedAddressObservable
-            .subscribe(onNext: { [unowned self] annotation in
-                Task {
-                    guard let annotation = annotation as? MKTradeObjectAnnotation else { return }
-                    if let detailInfo = await viewModel.getTradeObjectById(annotation.id), let object = detailInfo.row.first {
-                        let callout = TradeObjectCallout()
-                        callout.configure(tradeObject: object, image: annotation.icon, type: annotation.type)
-                        callout.showAlert(in: self)
-                    }
-                }
-            })
-            .disposed(by: bag)
+    func handleShowCallout(annotation: YMKAnnotation) {
+        guard let annotation = annotation as? MKTradeObjectAnnotation else { return }
+        loadingControllerForModal.showLoadingViewControllerIn(self)
+        Task {
+            guard let tradeObject = await viewModel.getTradeObjectById(annotation.id) else { return }
+            guard let item = tradeObject.row.first else { return }
+            
+            let modal = TradeObjectCallout()
+            modal.configure(tradeObject: item, image: annotation.icon, type: annotation.type)
+            modal.showAlert(in: self)
+            loadingControllerForModal.removeLoadingViewControllerIn(self)
+        }
     }
     
-}
-
-private extension TradeObjectsViewController {
+    func handleTapCluster(annotations: [YMKAnnotation]) {
+        let bottomSheet = ClusterItemsListBottomSheet()
+        bottomSheet.configureModal(annotations: annotations)
+        setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
+        present(bottomSheet, animated: true)
+    }
     
-    @objc func didTapFilterIcon() {
+    func handleAddAnnotations(_ annotations: [YMKAnnotation]) {
+        map.mapView.addAnnotations(annotations, cluster: collection)
+    }
+    
+    func handleSetLoading(_ isLoading: Bool) {
+        if isLoading {
+            loadingController.showLoadingViewControllerIn(self)
+        } else {
+            loadingController.removeLoadingViewControllerIn(self)
+        }
+    }
+    
+    func handleShowSnackbar(type: SnackBarView.SnackBarType) {
+        SnackBarView(type: type, andShowOn: view)
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    func handleTapFilterBottomSheet() {
         let bottomSheet = TradeObjectsFilterBottomSheet()
         bottomSheet.delegate = self
         
@@ -161,26 +258,48 @@ private extension TradeObjectsViewController {
         present(bottomSheet, animated: true)
     }
     
-    @objc func didTapFreeFilter(_ sender: UITapGestureRecognizer) {
-        guard let freeFilterView = sender.view as? TradeObjectsTypeView else { return }
+    func handleTapFilter(type: MKTradeObjectAnnotation.AnnotationType, fitlerView: TradeObjectsTypeView) {
+        if isAlreadyTapped(on: fitlerView) { return }
+        selectFilter(fitlerView)
         
-        if isAlreadyTapped(on: freeFilterView) { return }
-        selectFilter(freeFilterView)
-        
-        let annotation = viewModel.filterAnnotationsByType(.freeTrade)
+        let annotation = viewModel.filterAnnotationsByType(type)
         collection.clear()
         map.mapView.addAnnotations(annotation, cluster: collection)
     }
     
+    func handleSearchTradeObjects(search: TradeObjectsSearch) {
+        Task {
+            loadingController.showLoadingViewControllerIn(self)
+            if let result = await viewModel.getFilteredTradeObjectByFilter(search) {
+                collection.clear()
+                let annotations = viewModel.addAnnotations(tradeObjects: result)
+                viewModel.currentVisibleTradeObjectsAnnotations = annotations
+            }
+            loadingController.removeLoadingViewControllerIn(self)
+        }
+    }
+    
+    func handleResetSearch() {
+        collection.clear()
+        let defaultAnnotations = viewModel.getDefualtTradeAnnotations()
+        viewModel.currentVisibleTradeObjectsAnnotations = defaultAnnotations
+    }
+}
+
+// MARK: - Objs functions
+private extension TradeObjectsViewController {
+    @objc func didTapFilterIcon() {
+        action(.tapFilterBottomSheet)
+    }
+    
+    @objc func didTapFreeFilter(_ sender: UITapGestureRecognizer) {
+        guard let activeFilterView = sender.view as? TradeObjectsTypeView else { return }
+        action(.tapFilter(type: .freeTrade, fitlerView: activeFilterView))
+    }
+    
     @objc func didTapActiveFilter(_ sender: UITapGestureRecognizer) {
         guard let activeFilterView = sender.view as? TradeObjectsTypeView else { return }
-        
-        if isAlreadyTapped(on: activeFilterView) { return }
-        selectFilter(activeFilterView)
-        
-        let annotation = viewModel.filterAnnotationsByType(.activeTrade)
-        collection.clear()
-        map.mapView.addAnnotations(annotation, cluster: collection)
+        action(.tapFilter(type: .activeTrade, fitlerView: activeFilterView))
     }
     
     func isAlreadyTapped(on view: TradeObjectsTypeView) -> Bool {
@@ -197,7 +316,7 @@ private extension TradeObjectsViewController {
         
         collection.clear()
         let current = viewModel.getCurrentVisibleTradeAnnotations()
-        map.mapView.addAnnotations(current, cluster: collection)
+        action(.addAnootations(annotations: current))
     }
     
     func selectFilter(_ filter: TradeObjectsTypeView) {
@@ -206,74 +325,44 @@ private extension TradeObjectsViewController {
         
         currentTappedFilter?.isTappedFilterView = true
     }
-    
 }
 
+// MARK: - Delegate
 extension TradeObjectsViewController: TradeObjectsFilterBottomSheetDelegate {
-    
     func didTapSubmitBtn(_ searchFilter: TradeObjectsSearch) {
-        Task {
-            loadingController.showLoadingViewControllerIn(self)
-            if let result = await viewModel.getFilteredTradeObjectByFilter(searchFilter) {
-                collection.clear()
-                let annotations = viewModel.addAnnotations(tradeObjects: result)
-                viewModel.currentVisibleTradeObjectsAnnotations = annotations
-            }
-            loadingController.removeLoadingViewControllerIn(self)
-        }
+        action(.searchTradeObjects(search: searchFilter))
     }
     
     func didTapClearBtn() {
-        collection.clear()
-        let defaultAnnotations = viewModel.getDefualtTradeAnnotations()
-        viewModel.currentVisibleTradeObjectsAnnotations = defaultAnnotations
+        action(.resetSearch)
     }
-    
 }
 
+// MARK: - Map logic
 extension TradeObjectsViewController: YMKClusterListener {
-    
     func onClusterAdded(with cluster: YMKCluster) {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKTradeObjectAnnotation }
         cluster.appearance.setPieChart(clusterAnnotations: annotations)
         cluster.addClusterTapListener(with: self)
     }
-    
 }
 
 extension TradeObjectsViewController: YMKClusterTapListener {
-    
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKTradeObjectAnnotation }
         if isClusterWithTheSameCoordinates(annotations: annotations) {
-            let bottomSheet = ClusterItemsListBottomSheet()
-            bottomSheet.configureModal(annotations: annotations)
-            setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
-            present(bottomSheet, animated: true)
+            action(.tapCluster(annotations: annotations))
             return true
         }
         
         return false
     }
-    
 }
 
 extension TradeObjectsViewController: YMKMapObjectTapListener {
-    
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         guard let annotation = mapObject.userData as? MKTradeObjectAnnotation else { return false }
-        loadingControllerForModal.showLoadingViewControllerIn(self)
-        Task {
-            guard let tradeObject = await viewModel.getTradeObjectById(annotation.id) else { return }
-            guard let item = tradeObject.row.first else { return }
-            
-            let modal = TradeObjectCallout()
-            modal.configure(tradeObject: item, image: annotation.icon, type: annotation.type)
-            modal.showAlert(in: self)
-            loadingControllerForModal.removeLoadingViewControllerIn(self)
-        }
-        
+        action(.showCallout(annotation: annotation))
         return true
     }
-    
 }

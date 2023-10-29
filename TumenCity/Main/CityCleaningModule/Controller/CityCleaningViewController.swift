@@ -9,23 +9,18 @@ import UIKit
 import YandexMapsMobile
 import RxSwift
 
-protocol CityCleaningActionsHandable {
-    func handleSetLoading(_ isLoading: Bool)
-    func handleShowCallout(annotation: MKCityCleaningAnnotation)
-    func handleClusterTap(annotations: [MKCityCleaningAnnotation])
-    func handleShowSnackbarError(_ error: String)
+protocol CityCleaningActionsHandable: ViewActionBaseMapHandable {
     func handleFilterTap()
-    func handleAddAnnotations(_ annotations: [MKCityCleaningAnnotation])
 }
 
 final class CityCleaningViewController: UIViewController {
     enum Actions {
         case setLoading(isLoading: Bool)
-        case showCallout(annotation: MKCityCleaningAnnotation)
-        case clusterTap(annotations: [MKCityCleaningAnnotation])
-        case showSnackbarError(error: String)
+        case showCallout(annotation: YMKAnnotation)
+        case clusterTap(annotations: [YMKAnnotation])
+        case showSnackbar(type: SnackBarView.SnackBarType)
         case filterTap
-        case addAnnotations(annotations: [MKCityCleaningAnnotation])
+        case addAnnotations(annotations: [YMKAnnotation])
     }
     
     var actionsHandable: CityCleaningActionsHandable?
@@ -88,7 +83,7 @@ final class CityCleaningViewController: UIViewController {
             .disposed(by: bag)
         
         viewModel.onError = { [weak self] error in
-            self?.action(.showSnackbarError(error: error.localizedDescription))
+            self?.action(.showSnackbar(type: .error(error.localizedDescription)))
         }
         
         viewModel
@@ -120,9 +115,9 @@ extension CityCleaningViewController: ViewActionsInteractable {
         case .showCallout(let annotation):
             actionsHandable?.handleShowCallout(annotation: annotation)
         case .clusterTap(let annotations):
-            actionsHandable?.handleClusterTap(annotations: annotations)
-        case .showSnackbarError(let error):
-            actionsHandable?.handleShowSnackbarError(error)
+            actionsHandable?.handleTapCluster(annotations: annotations)
+        case .showSnackbar(let type):
+            actionsHandable?.handleShowSnackbar(type: type)
         case .filterTap:
             actionsHandable?.handleFilterTap()
         case .addAnnotations(let annotations):
@@ -133,31 +128,35 @@ extension CityCleaningViewController: ViewActionsInteractable {
 
 // MARK: - Actions handable
 extension CityCleaningViewController: CityCleaningActionsHandable {
-    func handleSetLoading(_ isLoading: Bool) {
-        if isLoading {
-            loadingController.showLoadingViewControllerIn(self)
-        } else {
-            loadingController.removeLoadingViewControllerIn(self)
-        }
-    }
-    
-    func handleShowCallout(annotation: MKCityCleaningAnnotation) {
+    func handleShowCallout(annotation: YMKAnnotation) {
+        guard let annotation = annotation as? MKCityCleaningAnnotation else { return }
         let callout = CityCleaningCallout()
         callout.configure(annotation: annotation)
         callout.showAlert(in: self)
     }
     
-    func handleClusterTap(annotations: [MKCityCleaningAnnotation]) {
+    func handleTapCluster(annotations: [YMKAnnotation]) {
         let bottomSheet = ClusterItemsListBottomSheet()
         bottomSheet.configureModal(annotations: annotations)
         setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
         present(bottomSheet, animated: true)
     }
     
-    func handleShowSnackbarError(_ error: String) {
-        SnackBarView(type: .error(error),
-                     andShowOn: self.view)
+    func handleAddAnnotations(_ annotations: [YMKAnnotation]) {
+        map.mapView.addAnnotations(annotations, cluster: collection)
+    }
+    
+    func handleShowSnackbar(type: SnackBarView.SnackBarType) {
+        SnackBarView(type: type, andShowOn: self.view)
         navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
+    }
+    
+    func handleSetLoading(_ isLoading: Bool) {
+        if isLoading {
+            loadingController.showLoadingViewControllerIn(self)
+        } else {
+            loadingController.removeLoadingViewControllerIn(self)
+        }
     }
     
     func handleFilterTap() {
@@ -179,12 +178,9 @@ extension CityCleaningViewController: CityCleaningActionsHandable {
         
         present(vc, animated: true)
     }
-    
-    func handleAddAnnotations(_ annotations: [MKCityCleaningAnnotation]) {
-        map.mapView.addAnnotations(annotations, cluster: collection)
-    }
 }
 
+// MARK: - Objs functions
 private extension CityCleaningViewController {
     @objc
     func didTapFilter() {

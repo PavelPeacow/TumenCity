@@ -6,8 +6,9 @@
 //
 
 import MapKit
+import YandexMapsMobile
 
-protocol YMKAnnotation {
+protocol YMKAnnotation: YMKPoint {
     var title: String { get }
     var icon: UIImage { get }
     var coordinates: CLLocationCoordinate2D { get }

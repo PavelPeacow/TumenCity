@@ -9,7 +9,7 @@ import YandexMapsMobile
 
 extension YMKMapView {
     
-    func addAnnotations<T: YMKPoint & YMKAnnotation>(_ annotations: [T], cluster: YMKClusterizedPlacemarkCollection) {
+    func addAnnotations(_ annotations: [YMKAnnotation], cluster: YMKClusterizedPlacemarkCollection) {
         annotations.forEach { annotation in
             let placemark = cluster.addPlacemark(with: annotation, image: annotation.icon)
             placemark.userData = annotation

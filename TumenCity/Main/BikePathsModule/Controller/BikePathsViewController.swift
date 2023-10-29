@@ -10,9 +10,7 @@ import YandexMapsMobile
 import SnapKit
 import Combine
 
-protocol BikePathsActionsHandable {
-    func handleSetLoadingAction(_ isLoading: Bool)
-    func handleShowSnackbarErrorAction(_ error: String)
+protocol BikePathsActionsHandable: LoadViewActionsHandable {
     func handleShowBikeLegendBottomSheet()
     func handleAddBikePolylines(polylines: [YMKPolyline : UIColor])
     func handleAddBikePolygons(polygons: [YMKPolygon : YMKPoint])
@@ -21,21 +19,25 @@ protocol BikePathsActionsHandable {
 final class BikePathsViewController: UIViewController {
     enum Actions {
         case setLoading(isLoading: Bool)
-        case showSnackbarErrorAction(error: String)
+        case showSnackbar(type: SnackBarView.SnackBarType)
         case showBikeLegendBottomSheet
         case addBikePolylines(polylines: [YMKPolyline : UIColor])
         case aAddBikePolygons(polygons: [YMKPolygon : YMKPoint])
     }
     
+    // MARK: - Properties
     var actionsHandable: BikePathsActionsHandable?
     
     private let viewModel: BikePathsViewModel
     private var cancellables = Set<AnyCancellable>()
     
-    private lazy var map = YandexMapView()
     private lazy var mapObjectsCollection = map.mapView.mapWindow.map.mapObjects.add()
+    
+    // MARK: - Views
+    private lazy var map = YandexMapView()
     private lazy var loadingController = LoadingViewController()
     
+    // MARK: - Init
     init(viewModel: BikePathsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -46,6 +48,7 @@ final class BikePathsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
@@ -57,6 +60,7 @@ final class BikePathsViewController: UIViewController {
         })
     }
     
+    // MARK: - Setup
     private func setUpView() {
         title = L10n.BikePaths.title
         view.backgroundColor = .systemBackground
@@ -65,6 +69,7 @@ final class BikePathsViewController: UIViewController {
         map.setYandexMapLayout(in: self.view)
     }
     
+    // MARK: - Bindings
     private func setUpBindings() {
         viewModel
             .isLoadingObservable
@@ -74,7 +79,7 @@ final class BikePathsViewController: UIViewController {
             .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
-            self?.action(.showSnackbarErrorAction(error: error.localizedDescription))
+            self?.action(.showSnackbar(type: .error(error.localizedDescription)))
         }
         
         viewModel
@@ -89,14 +94,15 @@ final class BikePathsViewController: UIViewController {
     }
 }
 
+// MARK: - ACtions
 extension BikePathsViewController: ViewActionsInteractable {
     func action(_ action: Actions) {
         switch action {
             
         case .setLoading(let isLoading):
-            actionsHandable?.handleSetLoadingAction(isLoading)
-        case .showSnackbarErrorAction(let error):
-            actionsHandable?.handleShowSnackbarErrorAction(error)
+            actionsHandable?.handleSetLoading(isLoading)
+        case .showSnackbar(let type):
+            actionsHandable?.handleShowSnackbar(type: type)
         case .showBikeLegendBottomSheet:
             actionsHandable?.handleShowBikeLegendBottomSheet()
         case .addBikePolylines(let polylines):
@@ -107,8 +113,9 @@ extension BikePathsViewController: ViewActionsInteractable {
     }
 }
 
+// MARK: - Actions handable
 extension BikePathsViewController: BikePathsActionsHandable {
-    func handleSetLoadingAction(_ isLoading: Bool) {
+    func handleSetLoading(_ isLoading: Bool) {
         if isLoading {
             loadingController.showLoadingViewControllerIn(self)
         } else {
@@ -116,9 +123,8 @@ extension BikePathsViewController: BikePathsActionsHandable {
         }
     }
     
-    func handleShowSnackbarErrorAction(_ error: String) {
-        SnackBarView(type: .error(error),
-                     andShowOn: self.view)
+    func handleShowSnackbar(type: SnackBarView.SnackBarType) {
+        SnackBarView(type: type, andShowOn: self.view)
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
@@ -148,6 +154,7 @@ extension BikePathsViewController: BikePathsActionsHandable {
     }
 }
 
+// MARK: - Objs functions
 extension BikePathsViewController {
     @objc func didTapBikeStatInfo() {
         action(.showBikeLegendBottomSheet)

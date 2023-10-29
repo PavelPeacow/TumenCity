@@ -183,12 +183,12 @@ final class TradeObjectsFilterBottomSheet: CustomBottomSheet {
         
         addressFilter.changeText = { [unowned self] text in
             guard text.count > 0 else {
-                suggestionsTableView.hideTableSuggestions()
+                suggestionsTableView.action(.hideTableSuggestions)
                 return
             }
             
-            suggestionsTableView.search(text: text)
-            suggestionsTableView.showTableSuggestions()
+            suggestionsTableView.action(.search(query: text))
+            suggestionsTableView.action(.showTableSuggestions)
         }
     }
     
@@ -326,7 +326,7 @@ extension TradeObjectsFilterBottomSheet: ScrollableCheckBoxesListDelegate {
 extension TradeObjectsFilterBottomSheet: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        suggestionsTableView.hideTableSuggestions()
+        suggestionsTableView.action(.hideTableSuggestions)
         textField.resignFirstResponder()
         return true
     }

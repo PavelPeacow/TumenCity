@@ -11,26 +11,18 @@ import SnapKit
 import RxSwift
 import Combine
 
-protocol DigWorkActionsHandable {
-    func handleShowCallout(annotation: MKDigWorkAnnotation)
-    func handleSetLoading(isLoading: Bool)
-    func handleAddAnnotations(_ annotations: [MKDigWorkAnnotation])
-    func handleShowSnackbarError(_ error: String)
-    func handleShowSnackbarWarning(_ warning: String)
-    func handleClusterTap(_ annotations: [MKDigWorkAnnotation])
-    func handleMoveCameraToAnnotationByQuery(_ query: String)
+protocol DigWorkActionsHandable: ViewActionBaseMapHandable, ViewActionMoveCameraToAnnotationHandable {
     func handleShowFilterBottomSheet()
 }
 
 final class DigWorkViewController: UIViewController {
     enum Actions {
-        case showCallout(annotation: MKDigWorkAnnotation)
+        case moveCameraToAnnotation(annotation: YMKAnnotation?)
+        case showCallout(annotation: YMKAnnotation)
         case setLoading(isLoading: Bool)
-        case addAnnotations(annotations: [MKDigWorkAnnotation])
-        case showSnackbarError(error: String)
-        case handleShowSnackbarWarning(warning: String)
-        case clusterTap(annotations: [MKDigWorkAnnotation])
-        case moveCameraToAnnotationByQuery(query: String)
+        case addAnnotations(annotations: [YMKAnnotation])
+        case showSnackbar(type: SnackBarView.SnackBarType)
+        case clusterTap(annotations: [YMKAnnotation])
         case showFilterBottomSheet
     }
     
@@ -92,7 +84,7 @@ final class DigWorkViewController: UIViewController {
     }
     
     private func setUpMap() {
-        map.setYandexMapLayout(in: self.view) {
+        map.setYandexMapLayout(in: view) {
             $0.top.equalTo(self.searchTextfield.snp.bottom).offset(5)
         }
         map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
@@ -111,11 +103,11 @@ final class DigWorkViewController: UIViewController {
             .textPublisher
             .sink { [unowned self] str in
                 guard str.count > 0 else {
-                    suggestionTableView.hideTableSuggestions()
+                    suggestionTableView.action(.hideTableSuggestions)
                     return
                 }
                 viewModel.searchQuery = str
-                suggestionTableView.showTableSuggestions()
+                suggestionTableView.action(.showTableSuggestions)
             }
             .store(in: &cancellables)
     }
@@ -131,18 +123,19 @@ final class DigWorkViewController: UIViewController {
             .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
-            self?.action(.showSnackbarError(error: error.localizedDescription))
+            self?.action(.showSnackbar(type: .error(error.localizedDescription)))
         }
         
         viewModel.onEmptyResult = { [weak self] in
-            self?.action(.handleShowSnackbarWarning(warning: L10n.SnackBar.warning))
+            self?.action(.showSnackbar(type: .warning(L10n.SnackBar.warning)))
         }
         
         viewModel
             .searchQueryObservable
             .sink { [unowned self] query in
-                suggestionTableView.search(text: query)
-                action(.moveCameraToAnnotationByQuery(query: query))
+                suggestionTableView.action(.search(query: query))
+                let annotation = viewModel.findAnnotationByAddressName(query)
+                action(.moveCameraToAnnotation(annotation: annotation))
             }
             .store(in: &cancellables)
         
@@ -159,19 +152,20 @@ final class DigWorkViewController: UIViewController {
             .selectedSuggestionObservable
             .subscribe(onNext: { [unowned self] text in
                 searchTextfield.resetTextfieldState()
-                action(.moveCameraToAnnotationByQuery(query: text))
+                let annotation = viewModel.findAnnotationByAddressName(text)
+                action(.moveCameraToAnnotation(annotation: annotation))
             })
             .disposed(by: bag)
         
         searchTextfield
             .didClearTextPublisher
             .sink { [unowned self] in
-                suggestionTableView.hideTableSuggestions()
+                suggestionTableView.action(.hideTableSuggestions)
             }
             .store(in: &cancellables)
     }
     
-    private func configureModalSubscription(for modal: ClusterItemsListBottomSheet, with annotations: [MKDigWorkAnnotation]) {
+    private func configureModalSubscription(for modal: ClusterItemsListBottomSheet, with annotations: [YMKAnnotation]) {
         modal.selectedAddressObservable
             .subscribe(onNext: { [unowned self] annotation in
                 guard let annotation = annotation as? MKDigWorkAnnotation else { return }
@@ -179,7 +173,6 @@ final class DigWorkViewController: UIViewController {
             })
             .disposed(by: bag)
     }
-    
 }
 
 // MARK: - Actions
@@ -190,61 +183,57 @@ extension DigWorkViewController: ViewActionsInteractable {
         case .showCallout(let annotation):
             actionsHandable?.handleShowCallout(annotation: annotation)
         case .setLoading(let isLoading):
-            actionsHandable?.handleSetLoading(isLoading: isLoading)
+            actionsHandable?.handleSetLoading(isLoading)
         case .addAnnotations(let annotations):
             actionsHandable?.handleAddAnnotations(annotations)
-        case .showSnackbarError(let error):
-            actionsHandable?.handleShowSnackbarError(error)
-        case .handleShowSnackbarWarning(let warning):
-            actionsHandable?.handleShowSnackbarWarning(warning)
+        case .showSnackbar(let type):
+            actionsHandable?.handleShowSnackbar(type: type)
         case .clusterTap(let annotations):
-            actionsHandable?.handleClusterTap(annotations)
-        case .moveCameraToAnnotationByQuery(let query):
-            actionsHandable?.handleMoveCameraToAnnotationByQuery(query)
+            actionsHandable?.handleTapCluster(annotations: annotations)
         case .showFilterBottomSheet:
             actionsHandable?.handleShowFilterBottomSheet()
+        case .moveCameraToAnnotation(annotation: let annotation):
+            actionsHandable?.handleMoveToAnnotation(annotation: annotation)
         }
     }
 }
 
 // MARK: - Actions Handable
 extension DigWorkViewController: DigWorkActionsHandable {
-    func handleShowCallout(annotation: MKDigWorkAnnotation) {
+    func handleShowCallout(annotation: YMKAnnotation) {
+        guard let annotation = annotation as? MKDigWorkAnnotation else { return }
         let callout = DigWorkCallout()
         callout.configure(annotation: annotation)
         callout.showAlert(in: self)
     }
     
-    func handleSetLoading(isLoading: Bool) {
-        if isLoading {
-            loadingViewController.showLoadingViewControllerIn(self)
-        } else {
-            loadingViewController.removeLoadingViewControllerIn(self)
-        }
-    }
-    
-    func handleAddAnnotations(_ annotations: [MKDigWorkAnnotation]) {
-        map.mapView.addAnnotations(annotations, cluster: collection)
-    }
-    
-    func handleShowSnackbarError(_ error: String) {
-        SnackBarView(type: .error(error), andShowOn: self.view)
-        navigationItem.rightBarButtonItem?.isEnabled = false
-    }
-    
-    func handleShowSnackbarWarning(_ warning: String) {
-        SnackBarView(type: .warning(warning), andShowOn: self.view)
-    }
-    
-    func handleClusterTap(_ annotations: [MKDigWorkAnnotation]) {
+    func handleTapCluster(annotations: [YMKAnnotation]) {
         let modal = ClusterItemsListBottomSheet()
         configureModalSubscription(for: modal, with: annotations)
         modal.configureModal(annotations: annotations)
         present(modal, animated: true)
     }
     
-    func handleMoveCameraToAnnotationByQuery(_ query: String) {
-        let annotation = viewModel.findAnnotationByAddressName(query)
+    func handleAddAnnotations(_ annotations: [YMKAnnotation]) {
+        map.mapView.addAnnotations(annotations, cluster: collection)
+    }
+    
+    func handleShowSnackbar(type: SnackBarView.SnackBarType) {
+        if case .error = type {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+        SnackBarView(type: type, andShowOn: self.view)
+    }
+    
+    func handleSetLoading(_ isLoading: Bool) {
+        if isLoading {
+            loadingViewController.showLoadingViewControllerIn(self)
+        } else {
+            loadingViewController.removeLoadingViewControllerIn(self)
+        }
+    }
+
+    func handleMoveToAnnotation(annotation: YMKAnnotation?) {
         if let annotation {
             map.mapView.moveCameraToAnnotation(annotation)
         } else {

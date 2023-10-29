@@ -9,30 +9,27 @@ import UIKit
 import YandexMapsMobile
 import RxSwift
 
-protocol UrbanImprovementsViewControllerActionsHandable {
-    func handleOpenFilterAction()
-    func handleSetLoadingAction(_ isLoading: Bool)
-    func handleShowSnackbarErrorAction(_ error: String)
-    func handleAddPolygonsAction(_ polygons: [(YMKPolygon, UrbanPolygon)])
-    func handleAddAnnotationsAction(_ annotations: [MKUrbanAnnotation])
-    func handleTapClusterAction(_ cluster: YMKCluster)
-    func handleShowCalloutAction(_ annotation: MKUrbanAnnotation)
-    func handleShowPolygonCalloutAction(_ polygon: UrbanPolygon)
+protocol UrbanImprovementsActionsHandable: ViewActionBaseMapHandable {
+    func handleOpenFilter()
+    func handleAddPolygons(_ polygons: [(YMKPolygon, UrbanPolygon)])
+    func handleShowPolygonCallout(_ polygon: UrbanPolygon)
 }
 
 final class UrbanImprovementsViewController: UIViewController {
     enum Actions {
         case openFilter
         case setLoading(isLoading: Bool)
-        case showSnackbarError(error: String)
+        case showSnackbar(type: SnackBarView.SnackBarType)
         case addPolygons(polygons: [(YMKPolygon, UrbanPolygon)])
         case addAnnotations(annotations: [MKUrbanAnnotation])
-        case tapCluster(cluster: YMKCluster)
+        case tapCluster(annotations: [YMKAnnotation])
         case showCallout(annotation: MKUrbanAnnotation)
         case showPolygonCallout(polygon: UrbanPolygon)
     }
     
     // MARK: - Properties
+    var actionsHandable: UrbanImprovementsActionsHandable?
+    
     private let viewModel: UrbanImprovementsViewModel
     private let bag = DisposeBag()
     private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
@@ -47,6 +44,7 @@ final class UrbanImprovementsViewController: UIViewController {
     init(viewModel: UrbanImprovementsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.actionsHandable = self
     }
     
     required init?(coder: NSCoder) {
@@ -89,7 +87,7 @@ final class UrbanImprovementsViewController: UIViewController {
             .disposed(by: bag)
         
         viewModel.onError = { [weak self] error in
-            self?.action(.showSnackbarError(error: error.localizedDescription))
+            self?.action(.showSnackbar(type: .error(error.localizedDescription)))
         }
         
         viewModel
@@ -157,76 +155,59 @@ extension UrbanImprovementsViewController: ViewActionsInteractable {
     func action(_ action: Actions) {
         switch action {
         case .openFilter:
-            handleOpenFilterAction()
+            actionsHandable?.handleOpenFilter()
 
         case .setLoading(let isLoading):
-            handleSetLoadingAction(isLoading)
+            actionsHandable?.handleSetLoading(isLoading)
 
-        case .showSnackbarError(let error):
-            handleShowSnackbarErrorAction(error)
+        case .showSnackbar(let type):
+            actionsHandable?.handleShowSnackbar(type: type)
 
         case .addPolygons(let polygons):
-            handleAddPolygonsAction(polygons)
+            actionsHandable?.handleAddPolygons(polygons)
 
         case .addAnnotations(let annotations):
-            handleAddAnnotationsAction(annotations)
+            actionsHandable?.handleAddAnnotations(annotations)
 
-        case .tapCluster(let cluster):
-            handleTapClusterAction(cluster)
+        case .tapCluster(let annotations):
+            actionsHandable?.handleTapCluster(annotations: annotations)
 
         case .showCallout(let annotation):
-            handleShowCalloutAction(annotation)
+            actionsHandable?.handleShowCallout(annotation: annotation)
 
         case .showPolygonCallout(let polygon):
-            handleShowPolygonCalloutAction(polygon)
+            actionsHandable?.handleShowPolygonCallout(polygon)
         }
     }
 }
 
 // MARK: - Actions Handlers
-extension UrbanImprovementsViewController: UrbanImprovementsViewControllerActionsHandable {
-    func handleOpenFilterAction() {
+extension UrbanImprovementsViewController: UrbanImprovementsActionsHandable {
+    func handleOpenFilter() {
         let bottomSheet = UrbanImprovementsFilterBottomSheet()
         bottomSheet.configure(filters: viewModel.filterItems, currentActiveFilterID: currentActiveFilterID)
         setUpBindingsForUrbanImprovementsFilterBottomSheet(for: bottomSheet)
         present(bottomSheet, animated: true)
     }
-
-    func handleSetLoadingAction(_ isLoading: Bool) {
-        if isLoading {
-            loadingController.showLoadingViewControllerIn(self)
-        } else {
-            loadingController.removeLoadingViewControllerIn(self)
-        }
-    }
-
-    func handleShowSnackbarErrorAction(_ error: String) {
-        SnackBarView(type: .error(error),
-                     andShowOn: self.view)
-        navigationItem.rightBarButtonItem?.isEnabled = false
-    }
-
-    func handleAddPolygonsAction(_ polygons: [(YMKPolygon, UrbanPolygon)]) {
+    
+    func handleAddPolygons(_ polygons: [(YMKPolygon, UrbanPolygon)]) {
         polygons.forEach { polygon in
             map.mapView.addPolygon(polygon.0, polygonData: polygon.1, color: polygon.1.polygonColor.withAlphaComponent(0.5), collection: mapObjectsCollection)
         }
     }
+    
+    func handleShowPolygonCallout(_ polygon: UrbanPolygon) {
+        Task {
+            guard let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(polygon.id) else { return }
 
-    func handleAddAnnotationsAction(_ annotations: [MKUrbanAnnotation]) {
-        map.mapView.addAnnotations(annotations, cluster: collection)
+            let callout = UrbanImprovementsCallout()
+            callout.configure(urbanDetailInfo: detailInfo, calloutImage: polygon.icon)
+            callout.showAlert(in: self)
+        }
     }
-
-    func handleTapClusterAction(_ cluster: YMKCluster) {
-        let annotations = cluster.placemarks.compactMap { $0.userData as? MKUrbanAnnotation }
-        guard isClusterWithTheSameCoordinates(annotations: annotations) else { return }
-
-        let bottomSheet = ClusterItemsListBottomSheet()
-        bottomSheet.configureModal(annotations: annotations)
-        setUpBindingsForUrbanImprovementsBottomSheet(for: bottomSheet)
-        present(bottomSheet, animated: true)
-    }
-
-    func handleShowCalloutAction(_ annotation: MKUrbanAnnotation) {
+    
+    func handleShowCallout(annotation: YMKAnnotation) {
+        guard let annotation = annotation as? MKUrbanAnnotation else { return }
         Task {
             guard let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(annotation.id) else { return }
 
@@ -235,15 +216,31 @@ extension UrbanImprovementsViewController: UrbanImprovementsViewControllerAction
             callout.showAlert(in: self)
         }
     }
-
-    func handleShowPolygonCalloutAction(_ polygon: UrbanPolygon) {
-        Task {
-            guard let detailInfo = await viewModel.getUrbanImprovementsDetailInfoByID(polygon.id) else { return }
-
-            let callout = UrbanImprovementsCallout()
-            callout.configure(urbanDetailInfo: detailInfo, calloutImage: polygon.icon)
-            callout.showAlert(in: self)
+    
+    func handleTapCluster(annotations: [YMKAnnotation]) {
+        let bottomSheet = ClusterItemsListBottomSheet()
+        bottomSheet.configureModal(annotations: annotations)
+        setUpBindingsForUrbanImprovementsBottomSheet(for: bottomSheet)
+        present(bottomSheet, animated: true)
+    }
+    
+    func handleAddAnnotations(_ annotations: [YMKAnnotation]) {
+        map.mapView.addAnnotations(annotations, cluster: collection)
+    }
+    
+    func handleSetLoading(_ isLoading: Bool) {
+        if isLoading {
+            loadingController.showLoadingViewControllerIn(self)
+        } else {
+            loadingController.removeLoadingViewControllerIn(self)
         }
+    }
+    
+    func handleShowSnackbar(type: SnackBarView.SnackBarType) {
+        if case .error = type {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+        SnackBarView(type: type,andShowOn: view)
     }
 }
 
@@ -265,7 +262,9 @@ extension UrbanImprovementsViewController: YMKClusterListener {
 
 extension UrbanImprovementsViewController: YMKClusterTapListener {
     func onClusterTap(with cluster: YMKCluster) -> Bool {
-        action(.tapCluster(cluster: cluster))
+        let annotations = cluster.placemarks.compactMap { $0.userData as? MKUrbanAnnotation }
+        guard isClusterWithTheSameCoordinates(annotations: annotations) else { return false }
+        action(.tapCluster(annotations: annotations))
         return true
     }
 }

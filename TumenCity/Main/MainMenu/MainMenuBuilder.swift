@@ -19,10 +19,11 @@ protocol MainMenuBuilderProtocol {
 }
 
 final class MainMenuBuilder: MainMenuBuilderProtocol {
-    func buildSportModule() -> SportViewController {
+    @MainActor func buildSportModule() -> SportViewController {
         let registryView = SportRegistryView()
         let searchResult = SportRegistrySearchViewController()
-        return SportViewController(sportRegistryView: registryView, sportRegistrySearchResult: searchResult)
+        let viewModel = SportViewModel()
+        return SportViewController(viewModel: viewModel, sportRegistryView: registryView, sportRegistrySearchResult: searchResult)
     }
     
     @MainActor func buildCityCleaningModule() -> CityCleaningViewController {
@@ -40,15 +41,16 @@ final class MainMenuBuilder: MainMenuBuilderProtocol {
         return .init(viewModel: viewModel)
     }
     
-    func buildCommunalServicesModule() -> CommunalServicesViewController {
+    @MainActor func buildCommunalServicesModule() -> CommunalServicesViewController {
         let serviceMap = CommunalServicesView()
         let serviceRegistry = RegistryView()
         let serviceSearch = RegistySearchResultViewController()
         return CommunalServicesViewController(serviceMap: serviceMap, serviceRegistry: serviceRegistry, serviceSearch: serviceSearch)
     }
     
-    func buildCloseRoadsModule() -> CloseRoadsViewController {
-        .init()
+    @MainActor func buildCloseRoadsModule() -> CloseRoadsViewController {
+        let viewModel = CloseRoadsViewModel()
+        return .init(viewModel: viewModel)
     }
     
     @MainActor func buildDigWorkModule() -> DigWorkViewController {
@@ -56,7 +58,8 @@ final class MainMenuBuilder: MainMenuBuilderProtocol {
         return .init(viewModel: viewModel)
     }
     
-    func buildTradeObjectsModule() -> TradeObjectsViewController {
-        .init()
+    @MainActor func buildTradeObjectsModule() -> TradeObjectsViewController {
+        let viewModel = TradeObjectsViewModel()
+        return .init(viewModel: viewModel)
     }
 }

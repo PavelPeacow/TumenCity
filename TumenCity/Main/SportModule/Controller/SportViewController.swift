@@ -10,34 +10,49 @@ import YandexMapsMobile
 import Combine
 import RxSwift
 
-class SportViewController: UIViewControllerMapSegmented {
+protocol SportActionsHandable: ViewActionBaseMapHandable, ViewActionMoveCameraToAnnotationHandable { }
+
+final class SportViewController: UIViewControllerMapSegmented {
+    enum Actions {
+        case moveCameraToAnnotation(annotation: YMKAnnotation?)
+        case showSnackbar(type: SnackBarView.SnackBarType)
+        case tapCluster(annotations: [YMKAnnotation])
+        case showCallout(annotation: YMKAnnotation)
+        case setLoading(isLoading: Bool)
+        case addAnnotations(annotations: [YMKAnnotation])
+    }
     
-    private let sportRegistryView: SportRegistryView
-    private let sportRegistrySearchResult: SportRegistrySearchViewController
+    // MARK: - Properties
+    var actionsHandable: SportActionsHandable?
     
-    private var timer: Timer?
-    
-    private let viewModel = SportViewModel()
+    private let viewModel: SportViewModel
     private var cancellables = Set<AnyCancellable>()
-    
-    private let map = YandexMapView()
     
     private lazy var collection = map.mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
     
+    // MARK: - Views
+    private let map = YandexMapView()
+    private let sportRegistryView: SportRegistryView
+    private let sportRegistrySearchResult: SportRegistrySearchViewController
     private lazy var loadingViewController = LoadingViewController()
     
-    init(sportRegistryView: SportRegistryView, sportRegistrySearchResult: SportRegistrySearchViewController) {
+    // MARK: - Init
+    init(viewModel: SportViewModel, sportRegistryView: SportRegistryView, sportRegistrySearchResult: SportRegistrySearchViewController) {
+        self.viewModel = viewModel
         self.sportRegistryView = sportRegistryView
         self.sportRegistrySearchResult = sportRegistrySearchResult
         
         super.init(mainMapView: map, registryView: sportRegistryView, registrySearchResult: sportRegistrySearchResult)
         super.addItemsToSegmentControll([L10n.MapSegmentSwitcher.map, L10n.MapSegmentSwitcher.registry])
+        
+        actionsHandable = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
@@ -49,10 +64,15 @@ class SportViewController: UIViewControllerMapSegmented {
         })
     }
     
+    // MARK: - Setup
     private func setUpView() {
         title = L10n.Sport.title
         view.backgroundColor = .systemBackground
-        
+        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
+    }
+    
+    // MARK: - Setup bindings
+    private func setUpBindings() {
         sportRegistryView
             .selectedSportAddressObservable
             .subscribe(onNext: { [unowned self] address in
@@ -70,11 +90,7 @@ class SportViewController: UIViewControllerMapSegmented {
             .sink { [unowned self] sportElement in
                 resetSegmentedControlAfterRegistryView()
                 let annotation = viewModel.searchAnnotationByName(sportElement.title)
-                if let annotation {
-                    map.mapView.moveCameraToAnnotation(annotation)
-                } else {
-                    map.mapView.setDefaultRegion()
-                }
+                action(.moveCameraToAnnotation(annotation: annotation))
             }
             .store(in: &cancellables)
         
@@ -86,25 +102,15 @@ class SportViewController: UIViewControllerMapSegmented {
             }
             .store(in: &cancellables)
         
-        map.mapView.mapWindow.map.mapObjects.addTapListener(with: self)
-    }
-    
-    private func setUpBindings() {
         viewModel
             .isLoadingObservable
             .sink { [unowned self] in
-                if $0 {
-                    loadingViewController.showLoadingViewControllerIn(self)
-                } else {
-                    loadingViewController.removeLoadingViewControllerIn(self)
-                }
+                action(.setLoading(isLoading: $0))
             }
             .store(in: &cancellables)
         
         viewModel.onError = { [weak self] error in
-            guard let self else { return }
-            SnackBarView(type: .error(error.localizedDescription),
-                         andShowOn: self.view)
+            self?.action(.showSnackbar(type: .error(error.localizedDescription)))
         }
         
         viewModel
@@ -123,7 +129,7 @@ class SportViewController: UIViewControllerMapSegmented {
         viewModel
             .sportAnnotationsObservable
             .sink { [unowned self] annotations in
-                map.mapView.addAnnotations(annotations, cluster: collection)
+                action(.addAnnotations(annotations: annotations))
             }
             .store(in: &cancellables)
         
@@ -132,12 +138,7 @@ class SportViewController: UIViewControllerMapSegmented {
             .filter { [unowned self] _ in segmentedIndex == 0 }
             .sink { [unowned self] query in
                 let annotation = viewModel.searchAnnotationByName(String(query))
-                if let annotation {
-                    map.mapView.moveCameraToAnnotation(annotation)
-                } else {
-                    map.mapView.setDefaultRegion()
-                }
-                
+                action(.moveCameraToAnnotation(annotation: annotation))
             }
             .store(in: &cancellables)
         
@@ -151,11 +152,7 @@ class SportViewController: UIViewControllerMapSegmented {
         
         didSelectSuggestion = { [unowned self] text in
             let annotation = viewModel.searchAnnotationByName(text)
-            if let annotation {
-                map.mapView.moveCameraToAnnotation(annotation)
-            } else {
-                map.mapView.setDefaultRegion()
-            }
+            action(.moveCameraToAnnotation(annotation: annotation))
         }
     }
     
@@ -163,27 +160,83 @@ class SportViewController: UIViewControllerMapSegmented {
         modal
             .selectedAddressObservable
             .subscribe(onNext: { [unowned self] annotation in
-                guard let annotation = annotation as? MKSportAnnotation else { return }
-                let callout = SportCallout()
-                callout.configure(annotation: annotation)
-                callout.showAlert(in: self)
-                
+                action(.showCallout(annotation: annotation))
             })
             .disposed(by: bag)
     }
 }
 
-extension SportViewController: YMKMapObjectTapListener {
+// MARK: - Actions
+extension SportViewController: ViewActionsInteractable {
+    func action(_ action: Actions) {
+        switch action {
+            
+        case .showCallout(let annotation):
+            actionsHandable?.handleShowCallout(annotation: annotation)
+        case .setLoading(let isLoading):
+            actionsHandable?.handleSetLoading(isLoading)
+        case .addAnnotations(let annotations):
+            actionsHandable?.handleAddAnnotations(annotations)
+        case .tapCluster(annotations: let annotations):
+            actionsHandable?.handleTapCluster(annotations: annotations)
+        case .showSnackbar(let type):
+            actionsHandable?.handleShowSnackbar(type: type)
+        case .moveCameraToAnnotation(annotation: let annotation):
+            actionsHandable?.handleMoveToAnnotation(annotation: annotation)
+        }
+    }
+}
+
+// MARK: - Actions handable
+extension SportViewController: SportActionsHandable {
+    func handleMoveToAnnotation(annotation: YMKAnnotation?) {
+        if let annotation {
+            map.mapView.moveCameraToAnnotation(annotation)
+        } else {
+            map.mapView.setDefaultRegion()
+        }
+    }
     
-    func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
-        guard let annotation = mapObject.userData as? MKSportAnnotation else { return false }
-        
+    func handleShowCallout(annotation: YMKAnnotation) {
+        guard let annotation = annotation as? MKSportAnnotation else { return }
         let callout = SportCallout()
         callout.configure(annotation: annotation)
         callout.showAlert(in: self)
-        return true
     }
     
+    func handleTapCluster(annotations: [YMKAnnotation]) {
+        let bottomSheet = ClusterItemsListBottomSheet()
+        bottomSheet.configureModal(annotations: annotations)
+        setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
+        present(bottomSheet, animated: true)
+    }
+    
+    func handleAddAnnotations(_ annotations: [YMKAnnotation]) {
+        map.mapView.addAnnotations(annotations, cluster: collection)
+    }
+    
+    func handleSetLoading(_ isLoading: Bool) {
+        if isLoading {
+            loadingViewController.showLoadingViewControllerIn(self)
+        } else {
+            loadingViewController.removeLoadingViewControllerIn(self)
+        }
+    }
+    
+    func handleShowSnackbar(type: SnackBarView.SnackBarType) {
+        SnackBarView(type: type, andShowOn: view)
+    }
+    
+    
+}
+
+// MARK: - Map Logic
+extension SportViewController: YMKMapObjectTapListener {
+    func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
+        guard let annotation = mapObject.userData as? MKSportAnnotation else { return false }
+        action(.showCallout(annotation: annotation))
+        return true
+    }
 }
 
 extension SportViewController: YMKClusterListener {
@@ -197,10 +250,7 @@ extension SportViewController: YMKClusterTapListener {
     func onClusterTap(with cluster: YMKCluster) -> Bool {
         let annotations = cluster.placemarks.compactMap { $0.userData as? MKSportAnnotation }
         if isClusterWithTheSameCoordinates(annotations: annotations) {
-            let bottomSheet = ClusterItemsListBottomSheet()
-            bottomSheet.configureModal(annotations: annotations)
-            setUpBindingsForTradeObjectsBottomSheet(for: bottomSheet)
-            present(bottomSheet, animated: true)
+            action(.tapCluster(annotations: annotations))
             return true
         }
         
